@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <context:component-scan base-package="org.broadleafcommerce.cms">
+        <context:exclude-filter type="regex" expression="org.broadleafcommerce.cms.admin.*"/>
+    </context:component-scan>
+    <context:component-scan base-package="org.broadleafcommerce.common.locale"/>
+
+    <bean id="blConfiguration" class="org.broadleafcommerce.common.config.RuntimeEnvironmentPropertiesConfigurer" />
+
+    <bean id="blMergedPersistenceXmlLocations" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>classpath*:/META-INF/persistence-cms.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="blEntityManagerFactoryAssetStorageInfo" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="blCacheManager">
+        <property name="jpaVendorAdapter" ref="blJpaVendorAdapter"/>
+        <property name="persistenceUnitManager" ref="blPersistenceUnitManager" />
+        <property name="persistenceUnitName" value="blCMSStorage"/>
+    </bean>
+
+    <bean id="blTransactionManagerAssetStorageInfo" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="blEntityManagerFactoryAssetStorageInfo" />
+    </bean>
+
+    <bean id="blMergedCacheConfigLocations" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>classpath:bl-cms-ehcache.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="blMergedEntityContexts" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>classpath:bl-cms-applicationContext-entity.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="blSandboxItemListeners" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+        <property name="sourceList">
+            <list>
+                <ref bean="blPageService"/>
+                <ref bean="blStructuredContentService"/>
+                <ref bean="blStaticAssetService"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="blContentDefaultRuleProcessor" class="org.broadleafcommerce.cms.structure.service.StructuredContentDefaultRuleProcessor">
+        <property name="contextClassNames">
+            <map>
+                <entry key="customer" value="org.broadleafcommerce.profile.core.domain.Customer" />
+                <entry key="product" value="org.broadleafcommerce.core.catalog.domain.Product" />
+                <entry key="time" value="org.broadleafcommerce.common.TimeDTO" />
+                <entry key="request" value="org.broadleafcommerce.common.RequestDTO" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="blContentRuleProcessors" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <ref bean="blContentDefaultRuleProcessor"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="blPageDefaultRuleProcessor" class="org.broadleafcommerce.cms.page.service.PageDefaultRuleProcessor">
+        <property name="contextClassNames">
+            <map>
+                <entry key="customer" value="org.broadleafcommerce.profile.core.domain.Customer" />
+                <entry key="time" value="org.broadleafcommerce.common.TimeDTO" />
+                <entry key="request" value="org.broadleafcommerce.common.RequestDTO" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="blPageRuleProcessors" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <ref bean="blPageDefaultRuleProcessor"/>
+            </list>
+        </property>
+    </bean>    
+
+    <bean id="blNamedOperationManager" class="org.broadleafcommerce.cms.file.service.operation.NamedOperationManagerImpl">
+        <property name="namedOperationComponents">
+            <list>
+                <ref bean="blStaticMapNamedOperationComponent"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="blStaticMapNamedOperationComponent" class="org.broadleafcommerce.cms.file.service.operation.StaticMapNamedOperationComponent">
+        <property name="namedOperations">
+            <map>                                          
+                <entry key="smallAdminThumbnail">
+                    <map>
+                        <entry key="resize-width-amount" value="30"/>
+                        <entry key="resize-height-amount" value="30"/>
+                        <entry key="resize-high-quality" value="false"/>
+                        <entry key="resize-maintain-aspect-ratio" value="true"/>
+                        <entry key="resize-reduce-only" value="true"/>
+                    </map>
+                </entry>
+                <entry key="largeAdminThumbnail">
+                    <map>
+                        <entry key="resize-width-amount" value="60"/>
+                        <entry key="resize-height-amount" value="60"/>
+                        <entry key="resize-high-quality" value="false"/>
+                        <entry key="resize-maintain-aspect-ratio" value="true"/>
+                        <entry key="resize-reduce-only" value="true"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

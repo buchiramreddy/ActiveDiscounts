@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+    <tx:annotation-driven/>
+
+    <bean id="blJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="blCacheManager">
+        <property name="jpaVendorAdapter" ref="blJpaVendorAdapter"/>
+        <property name="persistenceUnitManager" ref="blPersistenceUnitManager"/>
+        <property name="persistenceUnitName" value="blPU"/>
+    </bean>
+    
+    <bean id="blMergedCacheConfigLocations" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>classpath:bl-common-ehcache.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="blMergedPersistenceXmlLocations" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>classpath*:/META-INF/persistence-common.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="blMergedEntityContexts" class="org.springframework.beans.factory.config.ListFactoryBean">
+        <property name="sourceList">
+            <list>
+                <value>classpath:bl-common-applicationContext-entity.xml</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="blPersistenceUnitManager" class="org.broadleafcommerce.common.extensibility.jpa.MergePersistenceUnitManager">
+        <property name="persistenceUnitPostProcessors">
+            <list>
+                <bean class="org.broadleafcommerce.common.extensibility.jpa.JPAPropertiesPersistenceUnitPostProcessor"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="blEntityConfiguration" class="org.broadleafcommerce.common.persistence.EntityConfiguration"/>
+
+</beans>

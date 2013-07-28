@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ActiveDiscounts</artifactId>
+        <groupId>com.activediscounts</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.activediscounts</groupId>
+    <artifactId>site</artifactId>
+    <version>${ads.version}</version>
+    <packaging>war</packaging>
+    <name>site</name>
+
+    <description>Active Discounts Site Module</description>
+    <url>http://www.activediscounts.com</url>
+
+    <properties>
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <build>
+        <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+        <finalName>activediscounts</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webappDirectory>${webappDirectory}</webappDirectory>
+                </configuration>
+            </plugin>
+
+           <!-- <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.5.v20120716</version>
+                <configuration>
+                    <webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
+                    <contextPath>/</contextPath>
+                    <stopPort>9966</stopPort>
+                    <stopKey>foo</stopKey>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>${httpPort}</port>
+
+                            <maxIdleTime>60000</maxIdleTime>
+                        </connector>
+                        <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
+                            <port>${httpsPort}</port>
+                            <keystore>${webappDirectory}/WEB-INF/blc-example.keystore</keystore>
+                            <keyPassword>broadleaf</keyPassword>
+                            <password>broadleaf</password>
+                        </connector>
+                    </connectors>
+                    <webAppConfig>
+                        <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
+                    </webAppConfig>
+                </configuration>
+            </plugin>-->
+
+        <!--    <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>clean</id>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <id>genkey</id>
+                        <goals>
+                            <goal>genkey</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keystore>${webappDirectory}/WEB-INF/blc-example.keystore</keystore>
+                    <dname>cn=localhost</dname>
+                    <keypass>broadleaf</keypass>
+                    <storepass>broadleaf</storepass>
+                    <alias>broadleaf</alias>
+                    <keyalg>RSA</keyalg>
+                </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>tomcat-maven-plugin</artifactId>
+                <configuration>
+                    <path>/site</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <configuration>
+                    <packaging>war</packaging>
+                    <rootPath>${basedir}</rootPath>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>com.activediscounts</groupId>
+            <artifactId>adscore</artifactId>
+            <version>${ads.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.activediscounts</groupId>
+            <artifactId>adsframeworkweb</artifactId>
+            <version>${ads.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--<dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>${c3p0.version}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+        </dependency>
+    </dependencies>
+</project>
