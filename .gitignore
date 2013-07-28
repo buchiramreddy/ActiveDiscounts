@@ -1,6 +1,17 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+build.properties
+target/
+.classpath
+.project
+.settings
+*.swp
+test-output
+.idea
+*.iml
+.metadata
+*.ipr
+bin/
+site/data/
+.svn
+site/solrhome
+combined/data/
+combined/solrhome
