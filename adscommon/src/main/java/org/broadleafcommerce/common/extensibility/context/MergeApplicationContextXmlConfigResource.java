@@ -47,7 +47,7 @@ public class MergeApplicationContextXmlConfigResource extends MergeXmlConfigReso
      *
      * @param sources array of input streams for the source application context files
      * @param patches array of input streams for the patch application context files
-     * @throws BeansException
+     * @throws org.springframework.beans.BeansException
      */
     public Resource[] getConfigResources(ResourceInputStream[] sources, ResourceInputStream[] patches) throws BeansException {
         Resource[] configResources = null;

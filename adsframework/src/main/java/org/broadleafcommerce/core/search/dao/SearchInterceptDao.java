@@ -22,7 +22,7 @@ import org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDao;
 import java.util.List;
 
 /**
- * @deprecated Replaced in functionality by {@link SearchRedirectDao}
+ * @deprecated Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDao}
  */
 @Deprecated
 public interface SearchInterceptDao {

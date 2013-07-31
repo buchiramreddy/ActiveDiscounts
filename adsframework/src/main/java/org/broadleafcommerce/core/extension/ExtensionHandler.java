@@ -28,7 +28,7 @@ package org.broadleafcommerce.core.extension;
  * for more typical extension patterns including overriding or extending the actual component for which 
  * alternate behavior is desired.
  * 
- * ExtensionHandler api methods should always return an instance of {@link ExtensionResultStatusType}.
+ * ExtensionHandler api methods should always return an instance of {@link org.broadleafcommerce.core.extension.ExtensionResultStatusType}.
  * 
  * @author bpolster
  */

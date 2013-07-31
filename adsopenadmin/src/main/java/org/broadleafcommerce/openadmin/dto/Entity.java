@@ -33,7 +33,7 @@ import java.util.Map;
  * which allows for further display metadata to be stored.
  * 
  * @author jfischer
- * @see {@link Property}
+ * @see {@link org.broadleafcommerce.openadmin.dto.Property}
  *
  */
 public class Entity implements Serializable {

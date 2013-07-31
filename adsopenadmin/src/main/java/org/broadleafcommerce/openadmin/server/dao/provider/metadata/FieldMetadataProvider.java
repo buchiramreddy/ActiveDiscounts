@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * Classes implementing this interface are capable of manipulating metadata for a field resulting from the inspection
  * phase for the admin. Providers are typically added in response to new admin presentation annotation support.
- * Implementers should generally extend {@link FieldMetadataProviderAdapter}.
+ * Implementers should generally extend {@link org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProviderAdapter}.
  *
  * @author Jeff Fischer
  */

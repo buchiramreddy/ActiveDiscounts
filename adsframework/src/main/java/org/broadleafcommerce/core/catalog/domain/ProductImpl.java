@@ -91,7 +91,7 @@ import java.util.Map;
  * annotations. The Entity references the following tables: BLC_PRODUCT,
  * BLC_PRODUCT_SKU_XREF, BLC_PRODUCT_IMAGE
  * @author btaylor
- * @see {@link org.broadleafcommerce.core.catalog.domain.Product}, {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}, {@link CategoryImpl}
+ * @see {@link org.broadleafcommerce.core.catalog.domain.Product}, {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}, {@link org.broadleafcommerce.core.catalog.domain.CategoryImpl}
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

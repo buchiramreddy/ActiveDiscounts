@@ -33,8 +33,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * @deprecated Superceded in functionality by {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and {@link BandedFulfillmentPricingProvider}
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link FulfillmentPricingService}
+ * @deprecated Superceded in functionality by {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
+ * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
  */
 @Repository("blShippingRatesDao")
 @Deprecated

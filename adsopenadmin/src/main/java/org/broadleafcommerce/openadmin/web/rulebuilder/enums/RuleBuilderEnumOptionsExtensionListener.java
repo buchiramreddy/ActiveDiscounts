@@ -20,7 +20,7 @@ import org.broadleafcommerce.common.BroadleafEnumerationType;
 
 
 /**
- * Extension Listener interface to provide option values for {@link BroadleafEnumerationType} for admin rule builders.
+ * Extension Listener interface to provide option values for {@link org.broadleafcommerce.common.BroadleafEnumerationType} for admin rule builders.
  * 
  * @author Andre Azzolini (apazzolini)
  */

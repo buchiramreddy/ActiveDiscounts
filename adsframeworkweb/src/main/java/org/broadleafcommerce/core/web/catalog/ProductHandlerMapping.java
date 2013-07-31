@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author bpolster
  * @since 2.0
  * @see org.broadleafcommerce.core.catalog.domain.Product
- * @see CatalogService
+ * @see org.broadleafcommerce.core.catalog.service.CatalogService
  */
 public class ProductHandlerMapping extends BLCAbstractHandlerMapping {
     

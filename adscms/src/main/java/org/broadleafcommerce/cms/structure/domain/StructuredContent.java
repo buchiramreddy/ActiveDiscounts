@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * StructuredContent implementations provide a representation of a generic content
  * item with a set of predefined fields.    The fields associated with an instance
- * of StructuredContent are defined by its associated {@link StructuredContentType}.
+ * of StructuredContent are defined by its associated {@link org.broadleafcommerce.cms.structure.domain.StructuredContentType}.
  * <br>
  * StructuredContent items are typically maintained via the Broadleaf Commerce admin.
  * <br>
@@ -43,10 +43,10 @@ import java.util.Set;
  * different ads could be shown to different users.
  *
  * It would not be typical in a Broadleaf implementation to extend this interface
- * or to use any implementation other than {@link StructuredContentImpl}.
+ * or to use any implementation other than {@link org.broadleafcommerce.cms.structure.domain.StructuredContentImpl}.
  *
- * @see {@link StructuredContentType}
- * @see {@link StructuredContentImpl}
+ * @see {@link org.broadleafcommerce.cms.structure.domain.StructuredContentType}
+ * @see {@link org.broadleafcommerce.cms.structure.domain.StructuredContentImpl}
  * @see {@link org.broadleafcommerce.cms.web.structure.DisplayContentTag}
  * @author Brian Polster
  * @author Jeff Fischer
@@ -86,7 +86,7 @@ public interface StructuredContent extends Serializable {
     public void setContentName(@Nonnull String contentName);
 
     /**
-     * Gets the {@link Locale} associated with this content item.
+     * Gets the {@link org.broadleafcommerce.common.locale.domain.Locale} associated with this content item.
      *
      * @return
      */
@@ -123,7 +123,7 @@ public interface StructuredContent extends Serializable {
     public void setSandbox(@Nullable SandBox sandbox);
 
     /**
-     * Gets the {@link StructuredContentType} associated with this content item.
+     * Gets the {@link org.broadleafcommerce.cms.structure.domain.StructuredContentType} associated with this content item.
      *
      * @return
      */
@@ -131,7 +131,7 @@ public interface StructuredContent extends Serializable {
     public StructuredContentType getStructuredContentType();
 
     /**
-     * Sets the {@link StructuredContentType} associated with this content item.
+     * Sets the {@link org.broadleafcommerce.cms.structure.domain.StructuredContentType} associated with this content item.
      *
      */
     public void setStructuredContentType(@Nonnull StructuredContentType structuredContentType);
@@ -158,7 +158,7 @@ public interface StructuredContent extends Serializable {
     /**
      * Gets the "deleted" indicator.    Deleted means that the item has been
      * marked for deletion.   If this method returns true, the item will not be returned
-     * as part {@link org.broadleafcommerce.cms.structure.service.StructuredContentService#lookupStructuredContentItemsByType(org.broadleafcommerce.common.sandbox.domain.SandBox, StructuredContentType, org.broadleafcommerce.common.locale.domain.Locale, Integer, java.util.Map)}'s}.
+     * as part {@link org.broadleafcommerce.cms.structure.service.StructuredContentService#lookupStructuredContentItemsByType(org.broadleafcommerce.common.sandbox.domain.SandBox, org.broadleafcommerce.cms.structure.domain.StructuredContentType, org.broadleafcommerce.common.locale.domain.Locale, Integer, java.util.Map)}'s}.
      *
      * In a "production sandbox", an item that returns true for <code>getDeletedFlag</code>
      * should also return true for <code>getArchivedFlag</code>

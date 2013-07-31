@@ -43,7 +43,7 @@ public interface StaticAssetService extends SandBoxItemListener {
      * asset.   
      * 
      * Depending on the the implementation, the actual asset may be saved to the DB or to 
-     * the file system.    The default implementation {@link StaticAssetServiceImpl} has a 
+     * the file system.    The default implementation {@link org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl} has a 
      * environment properties that determine this behavior <code>asset.use.filesystem.storage</code>, and 
      * <code>asset.server.file.system.path</code>.
      * 
@@ -51,7 +51,7 @@ public interface StaticAssetService extends SandBoxItemListener {
      * same time they are uploading a file.  The default implementation uses this for an optional URL to 
      * be specified.
      * 
-     * @see StaticAssetServiceImpl
+     * @see org.broadleafcommerce.cms.file.service.StaticAssetServiceImpl
      * 
      * @param file - the file being uploaded
      * @param properties - additional meta-data properties
@@ -185,8 +185,8 @@ public interface StaticAssetService extends SandBoxItemListener {
     /**
      * This method will take in an assetPath (think image url) and convert it if
      * the value contains the asseturlprefix.
-     * @see StaticAssetService#getStaticAssetUrlPrefix()
-     * @see StaticAssetService#getStaticAssetEnvironmentUrlPrefix()
+     * @see org.broadleafcommerce.cms.file.service.StaticAssetService#getStaticAssetUrlPrefix()
+     * @see org.broadleafcommerce.cms.file.service.StaticAssetService#getStaticAssetEnvironmentUrlPrefix()
      * 
      * @param assetPath - The path to rewrite if it is a cms managed asset
      * @param contextPath - The context path of the web application (if applicable)

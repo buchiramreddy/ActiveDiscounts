@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Generated resource handler for blc-rulebuilder-options.js.
  * 
- * Delegates to all registered {@link RuleBuilderEnumOptionsExtensionListener} to create the resource
+ * Delegates to all registered {@link org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsExtensionListener} to create the resource
  * 
  * @author Andre Azzolini (apazzolini)
  */

@@ -22,8 +22,8 @@ import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider;
 
 /**
- * @deprecated Superceded by functionality given by {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} and {@link FulfillmentPricingProvider}
- * @see {@link FulfillmentPricingProvider}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * @deprecated Superceded by functionality given by {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
+ * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
  */
 @Deprecated
 public interface ShippingModule {

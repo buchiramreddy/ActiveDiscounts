@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Handles admin operations for the {@link Category} entity.
+ * Handles admin operations for the {@link org.broadleafcommerce.core.catalog.domain.Category} entity.
  * 
  * @author Andre Azzolini (apazzolini)
  */

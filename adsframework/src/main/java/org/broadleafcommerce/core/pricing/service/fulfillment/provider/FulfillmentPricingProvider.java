@@ -28,7 +28,7 @@ import java.util.Set;
  * Main extension interface to allow third-party integrations to respond to fulfillment pricing
  * 
  * @author Phillip Verheyden
- * @see {@link FulfillmentPricingService}, {@link org.broadleafcommerce.core.pricing.service.workflow.FulfillmentGroupPricingActivity}
+ * @see {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.pricing.service.workflow.FulfillmentGroupPricingActivity}
  */
 public interface FulfillmentPricingProvider {
 
@@ -54,7 +54,7 @@ public interface FulfillmentPricingProvider {
      * @param fulfillmentGroup
      * @param option - the candidate option a user might select based on the estimate
      * @return <b>true</b> if this processor can estimate the costs, <b>false</b> otherwise
-     * @see {@link FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+     * @see {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
      */
     public boolean canCalculateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup, FulfillmentOption option);
 
@@ -71,7 +71,7 @@ public interface FulfillmentPricingProvider {
      * @param options - the candidate options that a user might select
      * @return a DTO that represents pricing information that might be added to the fulfillment cost of <b>fulfillmentGroup</b> when
      * {@link #calculateCostForFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup)} is invoked during the pricing workflow
-     * @see {@link FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+     * @see {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
      */
     public FulfillmentEstimationResponse estimateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup, Set<FulfillmentOption> options) throws FulfillmentPriceException;
     

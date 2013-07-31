@@ -49,12 +49,12 @@ import java.io.Serializable;
  * entity implementation and 1 FulfillmentPricingProvider implementation for that particular service.
  * 
  * <p>
- * <b>Note: even though the default Broadleaf implementation of this is non-abstract ({@link FulfillmentOptionImpl}),
- * it is very rare that you would actually want to instantiate a raw {@link FulfillmentOptionImpl} rather than using
+ * <b>Note: even though the default Broadleaf implementation of this is non-abstract ({@link org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl}),
+ * it is very rare that you would actually want to instantiate a raw {@link org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl} rather than using
  * a subclass of this.
  * </p>
  * @author Phillip Verheyden
- * @see {@link FulfillmentPricingProvider}, {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}
+ * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}, {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}
  */
 public interface FulfillmentOption extends Serializable {
     
@@ -97,19 +97,19 @@ public interface FulfillmentOption extends Serializable {
     public void setLongDescription(String longDescription);
 
     /**
-     * Tells the {@link FulfillmentPricingProvider} whether it should try to use the
-     * flat rate cost for a {@link Sku} rather than try to factor that {@link Sku}
+     * Tells the {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider} whether it should try to use the
+     * flat rate cost for a {@link org.broadleafcommerce.core.catalog.domain.Sku} rather than try to factor that {@link org.broadleafcommerce.core.catalog.domain.Sku}
      * into its shipping calculation. This defaults to <b>true</b>
      * 
-     * @return <b>true</b> if the {@link FulfillmentPricingProvider} should use 
-     * the flat rate on a {@link Sku} when it's available rather than try to calculate
+     * @return <b>true</b> if the {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider} should use 
+     * the flat rate on a {@link org.broadleafcommerce.core.catalog.domain.Sku} when it's available rather than try to calculate
      * shipping for it, <b>false</b> otherwise. Default value is <b>true</b>
      */
     public Boolean getUseFlatRates();
 
     /**
-     * Tells the {@link FulfillmentPricingProvider} whether it should try to use the
-     * flat rate cost for a {@link Sku} rather than try to factor that {@link Sku}
+     * Tells the {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider} whether it should try to use the
+     * flat rate cost for a {@link org.broadleafcommerce.core.catalog.domain.Sku} rather than try to factor that {@link org.broadleafcommerce.core.catalog.domain.Sku}
      * into its shipping calculation
      * 
      * @param useFlatRates

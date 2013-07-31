@@ -36,7 +36,7 @@ public interface RollbackHandler {
      * @param activity The Activity instance whose state is being reverted
      * @param processContext The ProcessContext for the workflow
      * @param stateConfiguration Any user-defined state configuration associated with the RollbackHandler
-     * @throws RollbackFailureException if there is a failure during the execution of the rollback
+     * @throws org.broadleafcommerce.core.workflow.state.RollbackFailureException if there is a failure during the execution of the rollback
      */
     public void rollbackState(Activity<? extends ProcessContext> activity,
                               ProcessContext processContext, Map<String, Object> stateConfiguration) throws RollbackFailureException;

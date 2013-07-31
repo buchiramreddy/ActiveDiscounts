@@ -21,7 +21,7 @@ import org.springframework.core.Ordered;
  * Use this merge processor for merging duties that should take place later in the Spring startup lifecycle.
  * This would include items that should be merged after the initialization of the persistence layer, like beans
  * that rely on EntityManager injection in some way. This is the most commonly used merge processor. Less
- * commonly used is the {@link EarlyStageMergeBeanPostProcessor}. See {@link org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor} for
+ * commonly used is the {@link org.broadleafcommerce.common.extensibility.context.merge.EarlyStageMergeBeanPostProcessor}. See {@link org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor} for
  * usage information.
  *
  * @see org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor

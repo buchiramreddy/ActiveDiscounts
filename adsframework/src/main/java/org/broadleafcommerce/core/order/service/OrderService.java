@@ -78,7 +78,7 @@ public interface OrderService {
      * 
      * This is typically used to retrieve a "wishlist" order.
      * 
-     * @see #createNamedOrderForCustomer(String name, Customer customer)
+     * @see #createNamedOrderForCustomer(String name, org.broadleafcommerce.profile.core.domain.Customer customer)
      * 
      * @param name
      * @param customer
@@ -165,7 +165,7 @@ public interface OrderService {
      * @param order
      * @param priceOrder
      * @return the persisted Order, which will be a different instance than the Order passed in
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public Order save(Order order, Boolean priceOrder) throws PricingException;
     
@@ -184,7 +184,7 @@ public interface OrderService {
      * @param offerCode
      * @param priceOrder
      * @return the modified Order
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      * @throws org.broadleafcommerce.core.offer.service.exception.OfferMaxUseExceededException
      */
     public Order addOfferCode(Order order, OfferCode offerCode, boolean priceOrder) throws PricingException, OfferMaxUseExceededException;
@@ -196,7 +196,7 @@ public interface OrderService {
      * @param offerCode 
      * @param priceOrder
      * @return the modified Order
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public Order removeOfferCode(Order order, OfferCode offerCode, boolean priceOrder) throws PricingException;
     
@@ -206,7 +206,7 @@ public interface OrderService {
      * @param order
      * @param priceOrder
      * @return the modified Order
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public Order removeAllOfferCodes(Order order, boolean priceOrder) throws PricingException;
     
@@ -279,7 +279,7 @@ public interface OrderService {
      * @param itemRequest
      * @param priceOrder
      * @return the GiftWrapItem instance that was created and attached to the order
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public OrderItem addGiftWrapItemToOrder(Order order, GiftWrapOrderItemRequest itemRequest, boolean priceOrder) throws PricingException;
     
@@ -305,7 +305,7 @@ public interface OrderService {
      * @param orderItemRequest
      * @param priceOrder
      * @return the order the item was added to
-     * @throws WorkflowException 
+     * @throws org.broadleafcommerce.core.workflow.WorkflowException 
      * @throws Throwable 
      */
     public Order addItem(Long orderId, OrderItemRequestDTO orderItemRequestDTO, boolean priceOrder) throws AddToCartException;
@@ -333,7 +333,7 @@ public interface OrderService {
      * @param orderItemRequest
      * @param priceOrder
      * @return the order the item was added to
-     * @throws WorkflowException 
+     * @throws org.broadleafcommerce.core.workflow.WorkflowException 
      * @throws Throwable 
      */
     public Order addItemWithPriceOverrides(Long orderId, OrderItemRequestDTO orderItemRequestDTO, boolean priceOrder) throws AddToCartException;

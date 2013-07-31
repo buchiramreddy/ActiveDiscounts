@@ -25,9 +25,9 @@ import java.util.Date;
  * <br>
  * <br>
  * You should implement this class if you want to make significant changes to how the
- * class is persisted.  If you just want to add additional fields then you should extend {@link SkuAvailabilityImpl}.
+ * class is persisted.  If you just want to add additional fields then you should extend {@link org.broadleafcommerce.core.inventory.domain.SkuAvailabilityImpl}.
  *
- * @see {@link SkuAvailabilityImpl}
+ * @see {@link org.broadleafcommerce.core.inventory.domain.SkuAvailabilityImpl}
  * @author bpolster
  * 
  * @deprecated This is no longer required and is instead implemented as a third-party inventory module

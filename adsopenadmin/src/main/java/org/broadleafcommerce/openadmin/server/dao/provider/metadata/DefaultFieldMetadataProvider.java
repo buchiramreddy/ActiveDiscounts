@@ -67,7 +67,7 @@ public class DefaultFieldMetadataProvider extends BasicFieldMetadataProvider {
                 List<String> propertyNames = addMetadataRequest.getDynamicEntityDao().getPropertyNames(
                         addMetadataRequest.getTargetClass());
                 if (!CollectionUtils.isEmpty(propertyNames)) {
-                    List<org.hibernate.type.Type> propertyTypes = addMetadataRequest.getDynamicEntityDao().getPropertyTypes(
+                    List<Type> propertyTypes = addMetadataRequest.getDynamicEntityDao().getPropertyTypes(
                             addMetadataRequest.getTargetClass());
                     int index = propertyNames.indexOf(addMetadataRequest.getRequestedField().getName());
                     if (index >= 0) {

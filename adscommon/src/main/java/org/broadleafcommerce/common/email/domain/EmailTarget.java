@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * The EmailTarget interface is used to specify the recipients of the email.
  *
- * @see EmailTargetImpl
+ * @see org.broadleafcommerce.common.email.domain.EmailTargetImpl
  * @author bpolster
  */
 public interface EmailTarget extends Serializable {

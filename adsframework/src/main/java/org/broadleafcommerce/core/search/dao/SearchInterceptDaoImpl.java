@@ -27,7 +27,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 /**
- * @deprecated Replaced in functionality by {@link SearchRedirectDaoImpl}
+ * @deprecated Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDaoImpl}
  */
 @Repository("blSearchInterceptDao")
 @Deprecated

@@ -31,8 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 public interface MergeCartProcessor {
 
     /**
-     * Convenience method. This will wrap the given <b>request</b> and <b>response</b> inside of a {@link ServletWebRequest}
-     * and forward to {@link #execute(WebRequest, Authentication)}
+     * Convenience method. This will wrap the given <b>request</b> and <b>response</b> inside of a {@link org.springframework.web.context.request.ServletWebRequest}
+     * and forward to {@link #execute(org.springframework.web.context.request.WebRequest, org.springframework.security.core.Authentication)}
      * 
      * @param request
      * @param response

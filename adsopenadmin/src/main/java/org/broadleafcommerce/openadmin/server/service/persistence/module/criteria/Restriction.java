@@ -66,8 +66,8 @@ public class Restriction {
     }
     
     /**
-     * This method is deprecated in favor of {@link #buildPolymorphicRestriction(CriteriaBuilder, From, String, String, 
-     * Path, java.util.List, boolean, CriteriaQuery, java.util.List)}
+     * This method is deprecated in favor of {@link #buildPolymorphicRestriction(javax.persistence.criteria.CriteriaBuilder, javax.persistence.criteria.From, String, String, 
+     * javax.persistence.criteria.Path, java.util.List, boolean, javax.persistence.criteria.CriteriaQuery, java.util.List)}
      * 
      * It will be removed in Broadleaf version 3.1.0 and buildPolymorphicRestriction will be renamed to buildRestriction
      * 

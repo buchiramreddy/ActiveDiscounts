@@ -36,7 +36,7 @@ import java.util.Map;
  * Instead, we've opted to create this interface which allows other components to
  * add rule-processors as needed.
  *
- * @see {@link StructuredContentDefaultRuleProcessor}
+ * @see {@link org.broadleafcommerce.cms.structure.service.StructuredContentDefaultRuleProcessor}
  *
  *
  * @author bpolster.

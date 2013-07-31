@@ -48,11 +48,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Handles admin operations for the {@link Product} entity. Editing a product requires custom criteria in order to properly
- * invoke the {@link ProductCustomPersistenceHandler}
+ * Handles admin operations for the {@link org.broadleafcommerce.core.catalog.domain.Product} entity. Editing a product requires custom criteria in order to properly
+ * invoke the {@link org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler}
  * 
  * @author Andre Azzolini (apazzolini)
- * @see {@link ProductCustomPersistenceHandler}
+ * @see {@link org.broadleafcommerce.admin.server.service.handler.ProductCustomPersistenceHandler}
  */
 @Controller("blAdminProductController")
 @RequestMapping("/" + AdminProductController.SECTION_KEY)

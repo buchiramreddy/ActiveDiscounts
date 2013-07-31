@@ -146,7 +146,7 @@ public interface StaticAsset extends Serializable {
      * 
      * If null, this method returns <code>StorageType.DATABASE</code> for backwards compatibility.
      * 
-     * @see {@link StaticAssetService}
+     * @see {@link org.broadleafcommerce.cms.file.service.StaticAssetService}
      * @return
      */
     public StorageType getStorageType();

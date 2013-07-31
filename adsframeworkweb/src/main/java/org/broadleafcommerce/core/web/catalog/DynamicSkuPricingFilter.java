@@ -25,40 +25,40 @@ import javax.servlet.ServletRequest;
 import java.util.HashMap;
 
 /**
- * Responsible for setting up the {@link SkuPricingConsiderationContext}. Rather than simply creating a filter that
- * implements this interface, consider instead subclassing the {@link DefaultDynamicSkuPricingFilter} and overriding the
+ * Responsible for setting up the {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext}. Rather than simply creating a filter that
+ * implements this interface, consider instead subclassing the {@link org.broadleafcommerce.core.web.catalog.DefaultDynamicSkuPricingFilter} and overriding the
  * appropriate methods.
  * 
  * @author jfischer
- * @see {@link DefaultDynamicSkuPricingFilter}
- * @see {@link AbstractDynamicSkuPricingFilter}
- * @see {@link DynamicSkuPricingService}
- * @see {@link SkuPricingConsiderationContext}
+ * @see {@link org.broadleafcommerce.core.web.catalog.DefaultDynamicSkuPricingFilter}
+ * @see {@link org.broadleafcommerce.core.web.catalog.AbstractDynamicSkuPricingFilter}
+ * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}
+ * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext}
  */
 public interface DynamicSkuPricingFilter extends Filter {
 
     /**
      * The result of this invocation should be set on
-     * {@link SkuPricingConsiderationContext#setSkuPricingConsiderationContext(java.util.HashMap)} and ultimately passed to
-     * {@link DynamicSkuPricingService} to determine prices.
+     * {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext#setSkuPricingConsiderationContext(java.util.HashMap)} and ultimately passed to
+     * {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService} to determine prices.
      * 
      * @param request
-     * @return a map of considerations to be used by the service in {@link #getDynamicSkuPricingService(ServletRequest)}.
-     * @see {@link SkuPricingConsiderationContext#getSkuPricingConsiderationContext()}
-     * @see {@link DynamicSkuPricingService}
+     * @return a map of considerations to be used by the service in {@link #getDynamicSkuPricingService(javax.servlet.ServletRequest)}.
+     * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext#getSkuPricingConsiderationContext()}
+     * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}
      */
     @SuppressWarnings("rawtypes")
     public HashMap getPricingConsiderations(ServletRequest request);
 
     /**
      * The result of this invocation should be set on
-     * {@link SkuPricingConsiderationContext#setSkuPricingService(DynamicSkuPricingService)}. This is the service that will
+     * {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext#setSkuPricingService(org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService)}. This is the service that will
      * be used in calculating dynamic prices for a Sku or product option value
      * 
      * @param request
      * @return
-     * @see {@link Sku#getRetailPrice()}
-     * @see {@link Sku#getSalePrice()}
+     * @see {@link org.broadleafcommerce.core.catalog.domain.Sku#getRetailPrice()}
+     * @see {@link org.broadleafcommerce.core.catalog.domain.Sku#getSalePrice()}
      */
     public DynamicSkuPricingService getDynamicSkuPricingService(ServletRequest request);
     

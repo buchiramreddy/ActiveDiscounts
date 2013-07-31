@@ -55,7 +55,7 @@ public class MVELToDataWrapperTranslatorTest extends TestCase {
 
     /**
      * Tests the creation of a DataWrapper given an mvel/quantity property
-     * @throws MVELTranslationException
+     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
      */
     public void testCreateRuleData() throws MVELTranslationException {
         MVELToDataWrapperTranslator translator = new MVELToDataWrapperTranslator();

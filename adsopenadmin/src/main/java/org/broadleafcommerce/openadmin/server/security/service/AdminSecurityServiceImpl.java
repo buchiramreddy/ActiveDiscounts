@@ -378,7 +378,7 @@ public class AdminSecurityServiceImpl implements AdminSecurityService {
      * 
      * @param customer
      * @return
-     * @see {@link AdminSecurityServiceImpl#getSalt()}
+     * @see {@link org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServiceImpl#getSalt()}
      */
     public String getSalt(AdminUser user) {
         return getSalt();

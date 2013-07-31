@@ -26,7 +26,7 @@ import javax.servlet.ServletContext;
 
 /**
  * Performs the actual initialization work for the rootId application context.
- * Called by {@link MergeContextLoaderListener}.
+ * Called by {@link org.broadleafcommerce.common.web.extensibility.MergeContextLoaderListener}.
  *
  * <p>Processes a {@link #CONFIG_LOCATION_PARAM "contextConfigLocation"}
  * context-param and passes its value to the context instance, parsing it into
@@ -45,7 +45,7 @@ import javax.servlet.ServletContext;
  * <p>Above and beyond loading the rootId application context, this class
  * can optionally load or obtain and hook up a shared parent context to
  * the rootId application context. See the
- * {@link #loadParentContext(ServletContext)} method for more information.
+ * {@link #loadParentContext(javax.servlet.ServletContext)} method for more information.
  *
  * <p>Additionally, Processes a {@link #PATCH_LOCATION_PARAM "patchConfigLocation"}
  * context-param and passes its value to the context instance, parsing it into
@@ -82,15 +82,15 @@ public class MergeContextLoader extends ContextLoader {
      * Instantiate the rootId WebApplicationContext for this loader, either the
      * default context class or a custom context class if specified.
      * <p>This implementation expects custom contexts to implement the
-     * {@link ConfigurableWebApplicationContext} interface.
+     * {@link org.springframework.web.context.ConfigurableWebApplicationContext} interface.
      * Can be overridden in subclasses.
      * <p>In addition, {@link #customizeContext} gets called prior to refreshing the
      * context, allowing subclasses to perform custom modifications to the context.
      * @param servletContext current servlet context
      * @param parent the parent ApplicationContext to use, or <code>null</code> if none
      * @return the rootId WebApplicationContext
-     * @throws BeansException if the context couldn't be initialized
-     * @see ConfigurableWebApplicationContext
+     * @throws org.springframework.beans.BeansException if the context couldn't be initialized
+     * @see org.springframework.web.context.ConfigurableWebApplicationContext
      */
     @Deprecated
     protected WebApplicationContext createWebApplicationContext(ServletContext servletContext, ApplicationContext parent) throws BeansException {
@@ -111,14 +111,14 @@ public class MergeContextLoader extends ContextLoader {
      * Instantiate the rootId WebApplicationContext for this loader, either the
      * default context class or a custom context class if specified.
      * <p>This implementation expects custom contexts to implement the
-     * {@link ConfigurableWebApplicationContext} interface.
+     * {@link org.springframework.web.context.ConfigurableWebApplicationContext} interface.
      * Can be overridden in subclasses.
      * <p>In addition, {@link #customizeContext} gets called prior to refreshing the
      * context, allowing subclasses to perform custom modifications to the context.
      * @param servletContext current servlet context
      * @return the rootId WebApplicationContext
-     * @throws BeansException if the context couldn't be initialized
-     * @see ConfigurableWebApplicationContext
+     * @throws org.springframework.beans.BeansException if the context couldn't be initialized
+     * @see org.springframework.web.context.ConfigurableWebApplicationContext
      */
     @Override
     protected WebApplicationContext createWebApplicationContext(ServletContext servletContext) throws BeansException {

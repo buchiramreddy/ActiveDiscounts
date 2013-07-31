@@ -37,7 +37,7 @@ import java.util.List;
  * only 1 FulfillmentGroup for that Order.
  * 
  * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.order.domain.Order}, {@link FulfillmentOption}, {@link Address}, {@link FulfillmentGroupItem}
+ * @see {@link org.broadleafcommerce.core.order.domain.Order}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link org.broadleafcommerce.profile.core.domain.Address}, {@link org.broadleafcommerce.core.order.domain.FulfillmentGroupItem}
  */
 public interface FulfillmentGroup extends Serializable {
 
@@ -73,14 +73,14 @@ public interface FulfillmentGroup extends Serializable {
 
     /**
      * @deprecated Should use {@link #getFulfillmentOption()} instead
-     * @see {@link FulfillmentOption}
+     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
      */
     @Deprecated
     public String getMethod();
 
     /**
      * @deprecated Should use {@link #setFulfillmentOption()} instead
-     * @see {@link FulfillmentOption}
+     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
      */
     @Deprecated
     public void setMethod(String fulfillmentMethod);
@@ -108,7 +108,7 @@ public interface FulfillmentGroup extends Serializable {
 
     /**
      * Sets the sale price for this fulfillmentGroup.  Typically not used.
-     * @see #setRetailFulfillmentPrice(Money)
+     * @see #setRetailFulfillmentPrice(org.broadleafcommerce.common.money.Money)
      * @param fulfillmentPrice
      */
     public void setSaleFulfillmentPrice(Money fulfillmentPrice);
@@ -135,7 +135,7 @@ public interface FulfillmentGroup extends Serializable {
     public Money getRetailShippingPrice();
 
     /**
-     * @deprecated - use {@link #setRetailFulfillmentPrice(Money)} instead.
+     * @deprecated - use {@link #setRetailFulfillmentPrice(org.broadleafcommerce.common.money.Money)} instead.
      * @return
      */
     public void setRetailShippingPrice(Money retailShippingPrice);
@@ -147,7 +147,7 @@ public interface FulfillmentGroup extends Serializable {
     public Money getSaleShippingPrice();
 
     /**
-     * @deprecated - use {@link #setSaleFulfillmentPrice(Money)} instead.
+     * @deprecated - use {@link #setSaleFulfillmentPrice(org.broadleafcommerce.common.money.Money)} instead.
      * @param saleShippingPrice
      */
     public void setSaleShippingPrice(Money saleShippingPrice);
@@ -159,7 +159,7 @@ public interface FulfillmentGroup extends Serializable {
     public Money getShippingPrice();
 
     /**
-     * @deprecated - use {@link #setRetailFulfillmentPrice(Money)} instead.
+     * @deprecated - use {@link #setRetailFulfillmentPrice(org.broadleafcommerce.common.money.Money)} instead.
      * @param shippingPrice
      */
     public void setShippingPrice(Money shippingPrice);
@@ -308,14 +308,14 @@ public interface FulfillmentGroup extends Serializable {
 
     /**
      * @deprecated Should use {@link #getFulfillmentOption()} instead
-     * @see {@link FulfillmentOption}
+     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
      */
     @Deprecated
     public String getService();
 
     /**
      * @deprecated Should use {@link #setFulfillmentOption()} instead
-     * @see {@link FulfillmentOption}
+     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
      */
     @Deprecated
     public void setService(String service);

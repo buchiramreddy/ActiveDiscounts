@@ -35,10 +35,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Controller that responds to custom catalog actions. These would normally be hooked up in customized controllers like 
- * {@link AdminProductController}
+ * {@link org.broadleafcommerce.admin.web.controller.entity.AdminProductController}
  * 
  * @author Phillip Verheyden (phillipuniverse)
- * @see {@link AdminProductController}
+ * @see {@link org.broadleafcommerce.admin.web.controller.entity.AdminProductController}
  */
 @Controller("blAdminCatalogActionsController")
 public class AdminCatalogActionsController extends AdminAbstractController {

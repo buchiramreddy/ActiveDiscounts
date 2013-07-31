@@ -40,7 +40,7 @@ public interface TaxProvider extends ModuleProvider {
      * @param order
      * @param config
      * @return
-     * @throws TaxException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.TaxException
      */
     public Order commitTaxForOrder(Order order, ModuleConfiguration config) throws TaxException;
 
@@ -52,7 +52,7 @@ public interface TaxProvider extends ModuleProvider {
      * 
      * @param order
      * @param config
-     * @throws TaxException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.TaxException
      */
     public void cancelTax(Order order, ModuleConfiguration config) throws TaxException;
 }

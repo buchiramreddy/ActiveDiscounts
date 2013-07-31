@@ -35,10 +35,10 @@ public interface PageDao {
     public PageTemplate readPageTemplateById(Long id);
     
     /**
-     * Saves the given {@link PageTemplate}
+     * Saves the given {@link org.broadleafcommerce.cms.page.domain.PageTemplate}
      * 
-     * @param template the {@link PageTemplate} to save
-     * @return the database-saved {@link PageTemplate}
+     * @param template the {@link org.broadleafcommerce.cms.page.domain.PageTemplate} to save
+     * @return the database-saved {@link org.broadleafcommerce.cms.page.domain.PageTemplate}
      */
     public PageTemplate savePageTemplate(PageTemplate template);
 
@@ -58,7 +58,7 @@ public interface PageDao {
     
     /**
      * Returns all page templates, regardless of any sandbox they are apart of
-     * @return all {@link PageTemplate}s configured in the system
+     * @return all {@link org.broadleafcommerce.cms.page.domain.PageTemplate}s configured in the system
      */
     public List<PageTemplate> readAllPageTemplates();
     

@@ -295,7 +295,7 @@ public class BasicFieldMetadata extends FieldMetadata {
 
     /**
      * @return the validation configurations for this property keyed by the fully-qualified name of the
-     * {@link PropertyValidator} implementation
+     * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} implementation
      */
     public Map<String, Map<String, String>> getValidationConfigurations() {
         return validationConfigurations;

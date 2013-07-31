@@ -37,11 +37,11 @@ import javax.annotation.Resource;
 
 /**
  * This implementation validates each {@link org.broadleafcommerce.openadmin.dto.Property} from the given {@link org.broadleafcommerce.openadmin.dto.Entity} according to the
- * {@link ValidationConfiguration}s associated with it.
+ * {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}s associated with it.
  * 
  * @author Phillip Verheyden
  * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService}
- * @see {@link ValidationConfiguration}
+ * @see {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}
  */
 @Service("blEntityValidatorService")
 public class EntityValidatorServiceImpl implements EntityValidatorService, ApplicationContextAware {

@@ -56,7 +56,7 @@ public class RelatedProductDTO {
     
     /**
      * Returns the type of relationship that is desired.
-     * @see RelatedProductTypeEnum
+     * @see org.broadleafcommerce.core.catalog.domain.RelatedProductTypeEnum
      *  
      * @return
      */
@@ -67,7 +67,7 @@ public class RelatedProductDTO {
     /**
      * Sets the type of relationship that is desired.
      * 
-     * @see RelatedProductTypeEnum
+     * @see org.broadleafcommerce.core.catalog.domain.RelatedProductTypeEnum
      * @param type
      */
     public void setType(RelatedProductTypeEnum type) {

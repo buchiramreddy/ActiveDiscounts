@@ -119,7 +119,7 @@ public abstract class CartEndpoint extends BaseEndpoint {
      * 
      * You must provide a ProductId OR ProductId with product options. Product options can be posted as form or querystring parameters. 
      * You must pass in the ProductOption attributeName as the key and the 
-     * ProductOptionValue attributeValue as the value.  See {@link CatalogEndpoint}.
+     * ProductOptionValue attributeValue as the value.  See {@link org.broadleafcommerce.core.web.api.endpoint.catalog.CatalogEndpoint}.
      * 
      * @param request
      * @param uriInfo

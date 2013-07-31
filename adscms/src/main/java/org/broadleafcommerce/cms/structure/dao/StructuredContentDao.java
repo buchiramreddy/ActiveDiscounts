@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Responsible for querying and updating {@link StructuredContent} items
+ * Responsible for querying and updating {@link org.broadleafcommerce.cms.structure.domain.StructuredContent} items
  * @author bpolster
  */
 public interface StructuredContentDao {
@@ -55,7 +55,7 @@ public interface StructuredContentDao {
     
     /**
      * Finds all content regardless of the {@link Sandbox} they are a member of
-     * @return the list of {@link StructuredContent}, an empty list of none are found
+     * @return the list of {@link org.broadleafcommerce.cms.structure.domain.StructuredContent}, an empty list of none are found
      */
     public List<StructuredContent> findAllContentItems();
 

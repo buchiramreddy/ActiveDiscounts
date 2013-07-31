@@ -43,7 +43,7 @@ import java.util.Set;
  * members being considered.
  * </p>
  * <p>
- * This code demonstrates using one of the concrete implementations, {@link LateStageMergeBeanPostProcessor}. The
+ * This code demonstrates using one of the concrete implementations, {@link org.broadleafcommerce.common.extensibility.context.merge.LateStageMergeBeanPostProcessor}. The
  * basic usage pattern is to specify the id of the collection you want to merge (collectionRef) and the id
  * of the pre-existing, target collection (targetRef) that should receive the merge collection. The collection
  * can be represented using ListFactoryBean, SetFactoryBean or MapFactoryBean.
@@ -65,8 +65,8 @@ import java.util.Set;
  * }
  * </pre>
  *
- * @see LateStageMergeBeanPostProcessor
- * @see EarlyStageMergeBeanPostProcessor
+ * @see org.broadleafcommerce.common.extensibility.context.merge.LateStageMergeBeanPostProcessor
+ * @see org.broadleafcommerce.common.extensibility.context.merge.EarlyStageMergeBeanPostProcessor
  * @author Jeff Fischer
  */
 public abstract class AbstractMergeBeanPostProcessor implements BeanPostProcessor, ApplicationContextAware {

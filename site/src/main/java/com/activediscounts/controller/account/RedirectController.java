@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  * 
  * The purpose of this class is to support ajax redirects after a successful login. 
  * 
- * @see BroadleafAuthenticationSuccessRedirectStrategy
+ * @see org.broadleafcommerce.common.web.security.BroadleafAuthenticationSuccessRedirectStrategy
  * 
  * @author bpolster
  */

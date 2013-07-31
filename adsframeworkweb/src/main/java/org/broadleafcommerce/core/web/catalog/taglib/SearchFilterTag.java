@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The SearchFilterTag sets up an environment for it's children {@link SearchFilterItemTag}s. If a queryString
+ * The SearchFilterTag sets up an environment for it's children {@link org.broadleafcommerce.core.web.catalog.taglib.SearchFilterItemTag}s. If a queryString
  * is passed in, the tag will render a textbox named queryString populated with the string passed in. It will also
  * render a hidden input containing the same value to aid in deciding whether to do ajax loads while filtering
  * search results or to do a full page refresh for new searches.

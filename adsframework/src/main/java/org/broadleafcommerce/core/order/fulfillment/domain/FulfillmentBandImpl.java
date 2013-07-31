@@ -27,7 +27,7 @@ import java.math.BigDecimal;
 /**
  * 
  * @author Phillip Verheyden
- * @see {@link FulfillmentPriceBandImpl}, {@link FulfillmentWeightBandImpl}
+ * @see {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBandImpl}, {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBandImpl}
  */
 @MappedSuperclass
 public abstract class FulfillmentBandImpl implements FulfillmentBand {

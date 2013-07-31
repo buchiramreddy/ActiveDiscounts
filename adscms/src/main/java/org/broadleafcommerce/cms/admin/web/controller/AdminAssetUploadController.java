@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AdminAssetUploadController handles uploading or selecting assets.
  *     
- * Used with entities like {@link SkuImpl} and {@link CategoryImpl} that have {@link CustomPersistenceHandler} 
+ * Used with entities like {@link SkuImpl} and {@link CategoryImpl} that have {@link org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandler} 
  * configurations that provide support for adding maps of Media objects.
  * 
  * @author Brian Polster (bpolster)

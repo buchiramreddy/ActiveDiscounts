@@ -63,7 +63,7 @@ public class CriteriaTranslatorImpl implements CriteriaTranslator {
      * @param ceilingMarker
      * @param filterMappings
      * @return the root class
-     * @throws NoPossibleResultsException 
+     * @throws org.broadleafcommerce.common.exception.NoPossibleResultsException 
      */
     @SuppressWarnings("unchecked")
     protected Class<Serializable> determineRoot(DynamicEntityDao dynamicEntityDao, Class<Serializable> ceilingMarker, 
@@ -185,7 +185,7 @@ public class CriteriaTranslatorImpl implements CriteriaTranslator {
     }
     
     /**
-     * This method is deprecated in favor of {@link #addRestrictions(String, java.util.List, CriteriaBuilder, Root, java.util.List, java.util.List, CriteriaQuery)}
+     * This method is deprecated in favor of {@link #addRestrictions(String, java.util.List, javax.persistence.criteria.CriteriaBuilder, javax.persistence.criteria.Root, java.util.List, java.util.List, javax.persistence.criteria.CriteriaQuery)}
      * It will be removed in Broadleaf version 3.1.0.
      * 
      * @param ceilingEntity

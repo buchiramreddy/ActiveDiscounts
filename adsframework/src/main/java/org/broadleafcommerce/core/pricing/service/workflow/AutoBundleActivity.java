@@ -108,7 +108,7 @@ public class AutoBundleActivity extends BaseActivity<PricingContext> {
      * Removes all automatic bundles from the order and replaces with DiscreteOrderItems.
      *
      * @param order
-     * @throws PricingException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException 
      */
     private Order removeAutomaticBundles(Order order) throws PricingException {
         List<BundleOrderItem> bundlesToRemove = new ArrayList<BundleOrderItem>();
@@ -171,7 +171,7 @@ public class AutoBundleActivity extends BaseActivity<PricingContext> {
      * @param order
      * @param productBundle
      * @param numApplications
-     * @throws PricingException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException 
      * @throws org.broadleafcommerce.core.order.service.exception.ItemNotFoundException 
      */
     private Order bundleItems(Order order, ProductBundle productBundle, Integer numApplications, List<DiscreteOrderItem> unbundledItems) throws PricingException, RemoveFromCartException {

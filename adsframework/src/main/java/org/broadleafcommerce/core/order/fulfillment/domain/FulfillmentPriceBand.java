@@ -24,12 +24,12 @@ import org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmount
 import java.math.BigDecimal;
 
 /**
- * <p>This entity defines the bands that can be specified for {@link BandedPriceFulfillmentOption}. Bands
+ * <p>This entity defines the bands that can be specified for {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption}. Bands
  * work on the retail price of an {@link Order} and should be calculated as follows:</p>
  * <ol>
  *  <li>The prices of all of the {@link OrderItems} in a {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} (which
  *  is obtained through their relationship with {@link org.broadleafcommerce.core.order.domain.FulfillmentGroupItem} are summed together</li>
- *  <li>The {@link FulfillmentPriceBand} should be looked up by getting the closest band less
+ *  <li>The {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand} should be looked up by getting the closest band less
  *  than the sum of the price</li>
  *  <li>If {@link #getResultAmountType()} returns {@link org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmountType#RATE}, then
  *  the cost for the fulfillment group is whatever is defined in {@link #getResultAmount()}</li>
@@ -39,7 +39,7 @@ import java.math.BigDecimal;
  * </ol>
  * 
  * @author Phillip Verheyden
- * @see {@link BandedPriceFulfillmentOption}
+ * @see {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption}
  */
 public interface FulfillmentPriceBand extends FulfillmentBand {
 
@@ -66,14 +66,14 @@ public interface FulfillmentPriceBand extends FulfillmentBand {
     public void setRetailPriceMinimumAmount(BigDecimal retailPriceMinimumAmount);
 
     /**
-     * Gets the {@link BandedPriceFulfillmentOption} that this band is associated to
+     * Gets the {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} that this band is associated to
      * 
-     * @return the associated {@link BandedPriceFulfillmentOption}
+     * @return the associated {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption}
      */
     public BandedPriceFulfillmentOption getOption();
 
     /**
-     * Sets the {@link BandedPriceFulfillmentOption} to associate with this band
+     * Sets the {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} to associate with this band
      * 
      * @param option
      */

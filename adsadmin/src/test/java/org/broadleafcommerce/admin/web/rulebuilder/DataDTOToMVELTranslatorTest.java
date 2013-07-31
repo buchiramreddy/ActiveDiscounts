@@ -51,7 +51,7 @@ public class DataDTOToMVELTranslatorTest extends TestCase {
 
     /**
      * Tests the creation of an MVEL expression from a DataDTO
-     * @throws MVELTranslationException
+     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
      *
      * Here's an example of a DataWrapper with a single DataDTO
      *
@@ -82,7 +82,7 @@ public class DataDTOToMVELTranslatorTest extends TestCase {
 
     /**
      * Tests the creation of a Customer Qualification MVEL expression from a DataDTO
-     * @throws MVELTranslationException
+     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
      *
      * [{"id":null,
      *  "quantity":null,
@@ -130,7 +130,7 @@ public class DataDTOToMVELTranslatorTest extends TestCase {
 
     /**
      * Tests the creation of an Order Qualification MVEL expression from a DataDTO
-     * @throws MVELTranslationException
+     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
      *
      * [{"id":null,
      *  "quantity":null,
@@ -200,7 +200,7 @@ public class DataDTOToMVELTranslatorTest extends TestCase {
 
     /**
      * Tests the creation of an Item Qualification MVEL expression from a DataDTO
-     * @throws MVELTranslationException
+     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
      *
      * [{"id":100,
      *  "quantity":1,
@@ -274,7 +274,7 @@ public class DataDTOToMVELTranslatorTest extends TestCase {
 
     /**
      * Tests the creation of a Fulfillment Group Qualification MVEL expression from a DataDTO
-     * @throws MVELTranslationException
+     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
      *
      * [{"id":null,
      *  "quantity":null,

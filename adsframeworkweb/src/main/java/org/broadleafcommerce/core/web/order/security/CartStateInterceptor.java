@@ -28,13 +28,13 @@ import javax.annotation.Resource;
 
 /**
  * Interceptor responsible for putting the current cart on the request. Carts are defined in BLC as an {@link Order} with
- * a status of IN_PROCESS. This interceptor should go after {@link CustomerStateInterceptor} since it relies on
- * {@link CustomerState}.
+ * a status of IN_PROCESS. This interceptor should go after {@link org.broadleafcommerce.profile.web.core.security.CustomerStateInterceptor} since it relies on
+ * {@link org.broadleafcommerce.profile.web.core.CustomerState}.
  * 
  * Note that in servlet applications you should be using {@link org.broadleafcommerce.core.web.order.security.CartStateFilter}
  * 
  * @author Phillip Verheyden
- * @see {@link CartState}
+ * @see {@link org.broadleafcommerce.core.web.order.CartState}
  */
 public class CartStateInterceptor implements WebRequestInterceptor {
 

@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 /**
  * 
  * @author pverheyden
- * @deprecated use {@link AdminPresentationMergeOverrides} instead
+ * @deprecated use {@link org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides} instead
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

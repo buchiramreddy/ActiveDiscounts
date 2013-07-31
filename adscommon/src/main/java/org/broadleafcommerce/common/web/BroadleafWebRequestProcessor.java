@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Generic interface that should be used for processing requests from Servlet Filters, Spring interceptors or Portlet
- * filters. Note that the actual type of the request passed in should be something that extends {@link NativeWebRequest}.
+ * filters. Note that the actual type of the request passed in should be something that extends {@link org.springframework.web.context.request.NativeWebRequest}.
  * 
  * Example usage by a Servlet Filter:
  * 
@@ -41,13 +41,13 @@ import javax.servlet.http.HttpServletResponse;
  *   }
  * </pre>
  * 
- * <p>Also note that you should always instantiate the {@link WebRequest} with as much information available. In the above
- * example, this means using both the {@link HttpServletRequest} and {@link HttpServletResponse} when instantiating the
- * {@link ServletWebRequest}</p>
+ * <p>Also note that you should always instantiate the {@link org.springframework.web.context.request.WebRequest} with as much information available. In the above
+ * example, this means using both the {@link javax.servlet.http.HttpServletRequest} and {@link javax.servlet.http.HttpServletResponse} when instantiating the
+ * {@link org.springframework.web.context.request.ServletWebRequest}</p>
  * 
  * @author Phillip Verheyden
- * @see {@link NativeWebRequest}
- * @see {@link ServletWebRequest}
+ * @see {@link org.springframework.web.context.request.NativeWebRequest}
+ * @see {@link org.springframework.web.context.request.ServletWebRequest}
  * @see {@link org.springframework.web.portlet.context.PortletWebRequest}
  * @see {@link org.broadleafcommerce.common.web.BroadleafRequestFilter}
  */

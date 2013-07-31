@@ -34,7 +34,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 /**
- * @deprecated Superceded by functionality given by {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and {@link BandedFulfillmentPricingProvider}
+ * @deprecated Superceded by functionality given by {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
  * @see {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption}, {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption}
  */
 @Deprecated

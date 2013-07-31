@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 /**
  *
  * @author pverheyden
- * @deprecated use {@link AdminPresentationMergeOverrides} instead
+ * @deprecated use {@link org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides} instead
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -34,18 +34,18 @@ import java.lang.annotation.Target;
 public @interface AdminPresentationOverride {
     
     /**
-     * The name of the property whose {@link AdminPresentation} annotation should be overwritten
+     * The name of the property whose {@link org.broadleafcommerce.common.presentation.AdminPresentation} annotation should be overwritten
      * 
      * @return the name of the property that should be overwritten
      */
     String name();
     
     /**
-     * The {@link AdminPresentation} to overwrite the property with. This is a comprehensive override,
+     * The {@link org.broadleafcommerce.common.presentation.AdminPresentation} to overwrite the property with. This is a comprehensive override,
      * meaning whatever was declared on the target property previously will be completely replaced
-     * with what is defined in this {@link AdminPresentation}.
+     * with what is defined in this {@link org.broadleafcommerce.common.presentation.AdminPresentation}.
      * 
-     * @return the {@link AdminPresentation} being mapped to the attribute
+     * @return the {@link org.broadleafcommerce.common.presentation.AdminPresentation} being mapped to the attribute
      */
     AdminPresentation value() default @AdminPresentation();
 

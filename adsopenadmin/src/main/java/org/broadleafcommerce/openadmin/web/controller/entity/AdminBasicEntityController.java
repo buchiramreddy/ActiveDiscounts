@@ -664,9 +664,9 @@ public class AdminBasicEntityController extends AdminAbstractController {
      * @param md
      * @param ppr
      * @return the appropriate view to display for the modal
-     * @see {@link #addCollectionItem(HttpServletRequest, HttpServletResponse, Model, java.util.Map, String, String, org.broadleafcommerce.openadmin.web.form.entity.EntityForm, BindingResult)}
-     * @see {@link #showAddCollectionItem(HttpServletRequest, HttpServletResponse, Model, java.util.Map, String, String, MultiValueMap)}
-     * @throws ServiceException
+     * @see {@link #addCollectionItem(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.springframework.ui.Model, java.util.Map, String, String, org.broadleafcommerce.openadmin.web.form.entity.EntityForm, org.springframework.validation.BindingResult)}
+     * @see {@link #showAddCollectionItem(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.springframework.ui.Model, java.util.Map, String, String, org.springframework.util.MultiValueMap)}
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     protected String buildAddCollectionItemModel(HttpServletRequest request, HttpServletResponse response,
             Model model,
@@ -828,7 +828,7 @@ public class AdminBasicEntityController extends AdminAbstractController {
      * @param ef
      * @param entity
      * @return
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     protected String showViewUpdateCollection(HttpServletRequest request, Model model, Map<String, String> pathVars,
             String id, String collectionField, String collectionItemId, String modalHeaderType, EntityForm entityForm, Entity entity) throws ServiceException {

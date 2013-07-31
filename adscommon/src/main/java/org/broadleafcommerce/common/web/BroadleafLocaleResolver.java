@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface BroadleafLocaleResolver  {
 
     /**
-     * @deprecated Use {@link #resolveLocale(WebRequest)} instead
+     * @deprecated Use {@link #resolveLocale(org.springframework.web.context.request.WebRequest)} instead
      */
     @Deprecated
     public Locale resolveLocale(HttpServletRequest request);

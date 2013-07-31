@@ -36,8 +36,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * Handles admin operations for the {@link StructuredContent} entity. This entity has fields that are 
- * dependent on the value of the {@link StructuredContent#getStructuredContentType()} field, and as such,
+ * Handles admin operations for the {@link org.broadleafcommerce.cms.structure.domain.StructuredContent} entity. This entity has fields that are 
+ * dependent on the value of the {@link org.broadleafcommerce.cms.structure.domain.StructuredContent#getStructuredContentType()} field, and as such,
  * it deviates from the typical {@link AdminAbstractEntityController}.
  * 
  * @author Andre Azzolini (apazzolini)

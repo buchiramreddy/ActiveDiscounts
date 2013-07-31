@@ -27,7 +27,7 @@ import java.util.Map;
  * for a particular FulfillmentOptions
  * 
  * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}, {@link FulfillmentPricingService}
+ * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
  */
 public class FulfillmentEstimationResponse {
 

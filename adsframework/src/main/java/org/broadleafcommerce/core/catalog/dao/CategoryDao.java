@@ -27,8 +27,8 @@ import javax.annotation.Nonnull;
 /**
  * {@code CategoryDao} provides persistence access to {@code Category} instances.
  *
- * @see Category
- * @see Product
+ * @see org.broadleafcommerce.core.catalog.domain.Category
+ * @see org.broadleafcommerce.core.catalog.domain.Product
  * @author Jeff Fischer
  */
 public interface CategoryDao {

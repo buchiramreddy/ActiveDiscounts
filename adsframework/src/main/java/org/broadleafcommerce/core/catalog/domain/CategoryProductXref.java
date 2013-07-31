@@ -26,9 +26,9 @@ import java.io.Serializable;
  * <br>
  * You should implement this class if you want to make significant changes to the
  * relationship between Category and Product.  If you just want to add additional fields
- * then you should extend {@link CategoryProductXrefImpl}.
+ * then you should extend {@link org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl}.
  * 
- *  @see {@link CategoryProductXrefImpl},{@link org.broadleafcommerce.core.catalog.domain.Category}, {@link org.broadleafcommerce.core.catalog.domain.Product}
+ *  @see {@link org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl},{@link org.broadleafcommerce.core.catalog.domain.Category}, {@link org.broadleafcommerce.core.catalog.domain.Product}
  *  @author btaylor
  * 
  */

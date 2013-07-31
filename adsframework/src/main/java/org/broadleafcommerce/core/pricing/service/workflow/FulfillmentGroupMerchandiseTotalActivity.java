@@ -31,7 +31,7 @@ import java.math.BigDecimal;
  * in an Order. This activity should come before any activity dealing with pricing FulfillmentGroups
  * 
  * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#setMerchandiseTotal(Money)}, {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#getMerchandiseTotal()}
+ * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#setMerchandiseTotal(org.broadleafcommerce.common.money.Money)}, {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#getMerchandiseTotal()}
  */
 public class FulfillmentGroupMerchandiseTotalActivity extends BaseActivity<PricingContext> {
 

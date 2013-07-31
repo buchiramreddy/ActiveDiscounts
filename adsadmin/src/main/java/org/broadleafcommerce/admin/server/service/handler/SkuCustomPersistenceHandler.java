@@ -242,8 +242,8 @@ public class SkuCustomPersistenceHandler extends CustomPersistenceHandlerAdapter
     }
 
     /**
-     * Returns a {@link Property} filled out with a delimited list of the <b>values</b> that are passed in. This should be
-     * invoked on a fetch and the returned property should be added to the fetched {@link Entity} dto.
+     * Returns a {@link org.broadleafcommerce.openadmin.dto.Property} filled out with a delimited list of the <b>values</b> that are passed in. This should be
+     * invoked on a fetch and the returned property should be added to the fetched {@link org.broadleafcommerce.openadmin.dto.Entity} dto.
      * 
      * @param values
      * @return
@@ -277,7 +277,7 @@ public class SkuCustomPersistenceHandler extends CustomPersistenceHandlerAdapter
     }
     
     /**
-     * @return a blank {@link Property} corresponding to the CONSOLIDATED_PRODUCT_OPTIONS_FIELD_NAME
+     * @return a blank {@link org.broadleafcommerce.openadmin.dto.Property} corresponding to the CONSOLIDATED_PRODUCT_OPTIONS_FIELD_NAME
      */
     public static Property getBlankConsolidatedOptionProperty() {
         Property optionValueProperty = new Property();
@@ -539,7 +539,7 @@ public class SkuCustomPersistenceHandler extends CustomPersistenceHandlerAdapter
 
     /**
      * This initially removes all of the product option values that are currently related to the Sku and then re-associates
-     * the {@link ProductOptionValue}s
+     * the {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}s
      * @param entity
      * @param adminInstance
      */
@@ -578,7 +578,7 @@ public class SkuCustomPersistenceHandler extends CustomPersistenceHandlerAdapter
     }
 
     /**
-     * Ensures that the given list of {@link ProductOptionValue} IDs is unique for the given {@link Product}
+     * Ensures that the given list of {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue} IDs is unique for the given {@link org.broadleafcommerce.core.catalog.domain.Product}
      * @param product
      * @param productOptionValueIds
      * @param currentSku - for update operations, this is the current Sku that is being updated; should be excluded from

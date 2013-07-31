@@ -36,7 +36,7 @@ public class SearchFilterUtil {
      * filtered out, corresponding to the multiSelect and sliderRange displayTypes on {@link SearchFilterItemTag}.
      * For multiSelect items, the method will remove the product if the property specified in allowedParameters's
      * toString() method returns a String equal to one of the Strings in the corresponding String[] in parameters.
-     * For sliderRange items, the property on the product must be of type {@link Money}. The product will be filtered
+     * For sliderRange items, the property on the product must be of type {@link org.broadleafcommerce.common.money.Money}. The product will be filtered
      * out if it's property is greater than the Money value parsed out of max-(property name) or smaller than the Money
      * value parsed from min-(property name)
      * @param products the list of products to filter

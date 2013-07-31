@@ -27,9 +27,9 @@ import org.broadleafcommerce.common.value.Searchable;
  * <br>
  * You should implement this class if you want to make significant changes to how the
  * class is persisted.  If you just want to add additional fields then you should
- * extend {@link SkuAttributeImpl}.
+ * extend {@link org.broadleafcommerce.core.catalog.domain.SkuAttributeImpl}.
  *
- * @see {@link SkuAttributeImpl}, {@link org.broadleafcommerce.core.catalog.domain.Sku}
+ * @see {@link org.broadleafcommerce.core.catalog.domain.SkuAttributeImpl}, {@link org.broadleafcommerce.core.catalog.domain.Sku}
  * @author btaylor
  *
  */

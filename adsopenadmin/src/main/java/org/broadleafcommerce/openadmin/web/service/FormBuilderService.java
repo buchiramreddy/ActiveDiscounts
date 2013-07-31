@@ -46,7 +46,7 @@ public interface FormBuilderService {
      * @param cmd
      * @param sectionKey
      * @return the ListGrid
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public ListGrid buildMainListGrid(DynamicResultSet drs, ClassMetadata cmd, String sectionKey)
             throws ServiceException;
@@ -62,7 +62,7 @@ public interface FormBuilderService {
      * @param field
      * @param sectionKey
      * @return the ListGrid
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public ListGrid buildCollectionListGrid(String containingEntityId, DynamicResultSet drs, Property field, String sectionKey)
             throws ServiceException;
@@ -84,7 +84,7 @@ public interface FormBuilderService {
      * 
      * @param cmd
      * @return the EntityForm
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * @see {@link #populateEntityForm(org.broadleafcommerce.openadmin.dto.ClassMetadata, org.broadleafcommerce.openadmin.web.form.entity.EntityForm)}
      */
     public EntityForm createEntityForm(ClassMetadata cmd) throws ServiceException;
@@ -96,7 +96,7 @@ public interface FormBuilderService {
      * 
      * @param cmd
      * @param ef
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public void populateEntityForm(ClassMetadata cmd, EntityForm ef) throws ServiceException;
     
@@ -107,7 +107,7 @@ public interface FormBuilderService {
      * @param cmd metadata that the created {@link org.broadleafcommerce.openadmin.web.form.entity.EntityForm} should use to initialize its fields
      * @param entity
      * @return the EntityForm
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * @see {@link #createEntityForm(org.broadleafcommerce.openadmin.dto.ClassMetadata)}
      */
     public EntityForm createEntityForm(ClassMetadata cmd, Entity entity)
@@ -120,7 +120,7 @@ public interface FormBuilderService {
      * @param cmd
      * @param entity
      * @param ef
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * @see {@link #populateEntityForm(org.broadleafcommerce.openadmin.dto.ClassMetadata, org.broadleafcommerce.openadmin.web.form.entity.EntityForm)}
      */
     public void populateEntityForm(ClassMetadata cmd, Entity entity, EntityForm ef) 
@@ -150,7 +150,7 @@ public interface FormBuilderService {
      * @param entity
      * @param collectionRecords
      * @return the EntityForm
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * @see {@link #populateEntityForm(org.broadleafcommerce.openadmin.dto.ClassMetadata, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, org.broadleafcommerce.openadmin.web.form.entity.EntityForm)}
      */
     public EntityForm createEntityForm(ClassMetadata cmd, Entity entity, Map<String, DynamicResultSet> collectionRecords)
@@ -161,7 +161,7 @@ public interface FormBuilderService {
      * from the given Entity as well as all sub-collections of the given Entity that appear in the collectionRecords map.
      * 
      * NOTE: This method is mainly used when coming back from validation. In the case of validation, you cannot re-add a new
-     * {@link org.broadleafcommerce.openadmin.web.form.entity.EntityForm} to the model or else you lose the whole {@link BindingResult} and errors will not properly be 
+     * {@link org.broadleafcommerce.openadmin.web.form.entity.EntityForm} to the model or else you lose the whole {@link org.springframework.validation.BindingResult} and errors will not properly be 
      * displayed. In that scenario, you must use this method rather than the one that does not take in an entityForm as it
      * will attempt to instantiate a new object.
      * 
@@ -170,7 +170,7 @@ public interface FormBuilderService {
      * @param collectionRecords
      * @param entityForm rather than instantiate a new EntityForm, this will use this parameter to fill out
      * @return the EntityForm
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public void populateEntityForm(ClassMetadata cmd, Entity entity, Map<String, DynamicResultSet> collectionRecords, EntityForm entityForm)
             throws ServiceException;
@@ -222,7 +222,7 @@ public interface FormBuilderService {
      * @param adornedList
      * @param parentId
      * @return the EntityForm
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public EntityForm buildAdornedListForm(AdornedTargetCollectionMetadata adornedMd, AdornedTargetList adornedList,
                                            String parentId)
@@ -242,7 +242,7 @@ public interface FormBuilderService {
      * @param parentId
      * @param ef the form DTO to populate
      * @return the original {@link org.broadleafcommerce.openadmin.web.form.entity.EntityForm} passed in but fully populated
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public EntityForm buildAdornedListForm(AdornedTargetCollectionMetadata adornedMd, AdornedTargetList adornedList,
                                            String parentId, EntityForm ef)
@@ -256,7 +256,7 @@ public interface FormBuilderService {
      * @param cmd
      * @param parentId
      * @return the EntityForm
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public EntityForm buildMapForm(MapMetadata mapMd, MapStructure mapStructure, ClassMetadata cmd, String parentId)
             throws ServiceException;
@@ -275,7 +275,7 @@ public interface FormBuilderService {
      * @param parentId
      * @param ef the form DTO to populate
      * @return the original {@link org.broadleafcommerce.openadmin.web.form.entity.EntityForm} passed in but fully populated
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public EntityForm buildMapForm(MapMetadata mapMd, final MapStructure mapStructure, ClassMetadata cmd, String parentId, EntityForm ef)
             throws ServiceException;

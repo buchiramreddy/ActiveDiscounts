@@ -30,7 +30,7 @@ import java.util.Collection;
 public class BLCCollectionUtils {
     
     /**
-     * Delegates to {@link CollectionUtils#collect(java.util.Collection, Transformer)}, but performs the necessary type coercion 
+     * Delegates to {@link org.apache.commons.collections.CollectionUtils#collect(java.util.Collection, org.apache.commons.collections.Transformer)}, but performs the necessary type coercion 
      * to allow the returned collection to be correctly casted based on the TypedTransformer.
      * 
      * @param inputCollection

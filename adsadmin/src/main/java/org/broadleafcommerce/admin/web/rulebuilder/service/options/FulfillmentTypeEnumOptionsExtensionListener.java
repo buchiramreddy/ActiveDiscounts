@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Rule Builder enum options provider for {@link HourOfDayType}
+ * Rule Builder enum options provider for {@link org.broadleafcommerce.common.time.HourOfDayType}
  * 
  * @author Andre Azzolini (apazzolini)
  */

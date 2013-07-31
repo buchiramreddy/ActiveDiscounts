@@ -25,7 +25,7 @@ import org.broadleafcommerce.common.value.ValueAssignable;
  * For high volume sites, you should consider extending the BLC Customer entity instead of
  * relying on custom attributes as the extension mechanism is more performant under load.
  *
- * @see {@link CustomerAttributeImpl}, {@link org.broadleafcommerce.profile.core.domain.Customer}
+ * @see {@link org.broadleafcommerce.profile.core.domain.CustomerAttributeImpl}, {@link org.broadleafcommerce.profile.core.domain.Customer}
  * @author bpolster
  *
  */

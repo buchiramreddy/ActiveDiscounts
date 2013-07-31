@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationContext;
 public interface MergeBeanStatusProvider {
     
     /**
-     * Typically used by the {@link AbstractMergeBeanPostProcessor} class to determine whether or not certain
+     * Typically used by the {@link org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor} class to determine whether or not certain
      * lists should be processed or if they can be safely ignored.
      * 
      * @param bean

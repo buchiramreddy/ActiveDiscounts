@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * Configuration items to be used in conjunction with {@link ValidationConfiguration} and used by an instace of
+ * Configuration items to be used in conjunction with {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} and used by an instace of
  * org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator
  * 
  * @author jfischer

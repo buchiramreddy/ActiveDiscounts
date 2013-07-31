@@ -62,7 +62,7 @@ public interface OrderItemPriceDetail extends Serializable {
     void setOrderItemAdjustments(List<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments);
 
     /**
-     * The quantity of this {@link OrderItemPriceDetail}.
+     * The quantity of this {@link org.broadleafcommerce.core.order.domain.OrderItemPriceDetail}.
      * 
      * @return
      */

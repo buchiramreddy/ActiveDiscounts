@@ -58,7 +58,7 @@ public class BroadleafCartController extends AbstractCartController {
      * @param request
      * @param response
      * @param model
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public String cart(HttpServletRequest request, HttpServletResponse response, Model model) throws PricingException {
         return getCartView();
@@ -75,8 +75,8 @@ public class BroadleafCartController extends AbstractCartController {
      * @param model
      * @param itemRequest
      * @throws java.io.IOException
-     * @throws AddToCartException 
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.AddToCartException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public String add(HttpServletRequest request, HttpServletResponse response, Model model,
             AddToCartItem itemRequest) throws IOException, AddToCartException, PricingException  {
@@ -111,8 +111,8 @@ public class BroadleafCartController extends AbstractCartController {
      * @param model
      * @param itemRequest
      * @throws java.io.IOException
-     * @throws AddToCartException 
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.AddToCartException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public String addWithPriceOverride(HttpServletRequest request, HttpServletResponse response, Model model,
             AddToCartItem itemRequest) throws IOException, AddToCartException, PricingException {
@@ -145,9 +145,9 @@ public class BroadleafCartController extends AbstractCartController {
      * @param model
      * @param itemRequest
      * @throws java.io.IOException
-     * @throws PricingException
-     * @throws UpdateCartException
-     * @throws RemoveFromCartException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.UpdateCartException
+     * @throws org.broadleafcommerce.core.order.service.exception.RemoveFromCartException 
      */
     public String updateQuantity(HttpServletRequest request, HttpServletResponse response, Model model,
             AddToCartItem itemRequest) throws IOException, UpdateCartException, PricingException, RemoveFromCartException {
@@ -179,8 +179,8 @@ public class BroadleafCartController extends AbstractCartController {
      * @param model
      * @param itemRequest
      * @throws java.io.IOException
-     * @throws PricingException
-     * @throws RemoveFromCartException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.RemoveFromCartException 
      */
     public String remove(HttpServletRequest request, HttpServletResponse response, Model model,
             AddToCartItem itemRequest) throws IOException, PricingException, RemoveFromCartException {
@@ -207,7 +207,7 @@ public class BroadleafCartController extends AbstractCartController {
      * @param request
      * @param response
      * @param model
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public String empty(HttpServletRequest request, HttpServletResponse response, Model model) throws PricingException {
         Order cart = CartState.getCart();
@@ -224,9 +224,9 @@ public class BroadleafCartController extends AbstractCartController {
      * @param customerOffer
      * @return the return view
      * @throws java.io.IOException
-     * @throws PricingException
-     * @throws ItemNotFoundException
-     * @throws OfferMaxUseExceededException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.ItemNotFoundException
+     * @throws org.broadleafcommerce.core.offer.service.exception.OfferMaxUseExceededException 
      */
     public String addPromo(HttpServletRequest request, HttpServletResponse response, Model model,
             String customerOffer) throws IOException, PricingException {
@@ -271,9 +271,9 @@ public class BroadleafCartController extends AbstractCartController {
      * @param model
      * @return the return view
      * @throws java.io.IOException
-     * @throws PricingException
-     * @throws ItemNotFoundException
-     * @throws OfferMaxUseExceededException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.ItemNotFoundException
+     * @throws org.broadleafcommerce.core.offer.service.exception.OfferMaxUseExceededException 
      */
     public String removePromo(HttpServletRequest request, HttpServletResponse response, Model model,
             Long offerCodeId) throws IOException, PricingException {

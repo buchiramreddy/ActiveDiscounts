@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
  * Convenient holder class for various objects to be automatically available on thread local without invoking the various
  * services yourself
  * 
- * @see {@link BroadleafRequestProcessor}
+ * @see {@link org.broadleafcommerce.common.web.BroadleafRequestProcessor}
  */
 public class BroadleafRequestContext {
     
@@ -99,8 +99,8 @@ public class BroadleafRequestContext {
     }
 
     /**
-     * Sets the current request on the context. Note that this also invokes {@link #setWebRequest(WebRequest)} by wrapping
-     * <b>request</b> in a {@link ServletWebRequest}.
+     * Sets the current request on the context. Note that this also invokes {@link #setWebRequest(org.springframework.web.context.request.WebRequest)} by wrapping
+     * <b>request</b> in a {@link org.springframework.web.context.request.ServletWebRequest}.
      * 
      * @param request
      */
@@ -131,14 +131,14 @@ public class BroadleafRequestContext {
 
     /**
      * Sets the generic request on the context. This is available to be used in non-Servlet environments (like Portlets).
-     * Note that if <b>webRequest</b> is an instance of {@link ServletWebRequest} then
-     * {@link #setRequest(HttpServletRequest)} will be invoked as well with the native underlying {@link HttpServletRequest}
+     * Note that if <b>webRequest</b> is an instance of {@link org.springframework.web.context.request.ServletWebRequest} then
+     * {@link #setRequest(javax.servlet.http.HttpServletRequest)} will be invoked as well with the native underlying {@link javax.servlet.http.HttpServletRequest}
      * passed as a parameter.
      * <br />
      * <br />
-     * Also, if <b>webRequest</b> is an instance of {@link ServletWebRequest} then an attempt is made to set the response
-     * (note that this could be null if the ServletWebRequest was not instantiated with both the {@link HttpServletRequest}
-     * and {@link HttpServletResponse}
+     * Also, if <b>webRequest</b> is an instance of {@link org.springframework.web.context.request.ServletWebRequest} then an attempt is made to set the response
+     * (note that this could be null if the ServletWebRequest was not instantiated with both the {@link javax.servlet.http.HttpServletRequest}
+     * and {@link javax.servlet.http.HttpServletResponse}
      * @param webRequest
      */
     public void setWebRequest(WebRequest webRequest) {
@@ -153,10 +153,10 @@ public class BroadleafRequestContext {
 
     /**
      * Returns the generic request for use outside of servlets (like in Portlets). This will be automatically set
-     * by invoking {@link #setRequest(HttpServletRequest)}
+     * by invoking {@link #setRequest(javax.servlet.http.HttpServletRequest)}
      * 
      * @return the generic request
-     * @see {@link #setWebRequest(WebRequest)}
+     * @see {@link #setWebRequest(org.springframework.web.context.request.WebRequest)}
      */
     public WebRequest getWebRequest() {
         return webRequest;

@@ -24,7 +24,7 @@ import java.io.IOException;
 
 /**
  * An in memory generated resource. This class also overrides some parent Spring AbstractResource methods to ensure
- * compatibility with the {@link ResourceHttpRequestHandler}.
+ * compatibility with the {@link org.springframework.web.servlet.resource.ResourceHttpRequestHandler}.
  * 
  * @author Andre Azzolini (apazzolini)
  */

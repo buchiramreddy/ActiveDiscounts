@@ -32,7 +32,7 @@ public interface BroadleafThemeResolver {
     
     /**
      * 
-     * @deprecated Use {@link #resolveTheme(WebRequest)} instead
+     * @deprecated Use {@link #resolveTheme(org.springframework.web.context.request.WebRequest)} instead
      */
     @Deprecated
     public Theme resolveTheme(HttpServletRequest request, Site site);

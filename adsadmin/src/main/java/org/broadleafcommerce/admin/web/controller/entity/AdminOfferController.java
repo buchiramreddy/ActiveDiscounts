@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
- * Handles admin operations for the {@link Offer} entity. Certain Offer fields should only render when specific values
+ * Handles admin operations for the {@link org.broadleafcommerce.core.offer.domain.Offer} entity. Certain Offer fields should only render when specific values
  * are set for other fields; we provide the support for that in this controller.
  * 
  * @author Andre Azzolini (apazzolini)

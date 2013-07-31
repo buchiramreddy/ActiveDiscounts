@@ -139,7 +139,7 @@ public abstract class AdminAbstractController extends BroadleafAbstractControlle
      * @param form the criteria form model attribute
      * @param sectionKey the current main section key
      * @return the list grid
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     protected ListGrid getCollectionListGrid(ClassMetadata mainMetadata, Entity entity, Property collectionProperty,
             MultiValueMap<String, String> requestParams, String sectionKey)
@@ -163,7 +163,7 @@ public abstract class AdminAbstractController extends BroadleafAbstractControlle
      * 
      * @param info
      * @return the entity form
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     protected EntityForm getBlankDynamicFieldTemplateForm(DynamicEntityFormInfo info) 
             throws ServiceException {
@@ -198,7 +198,7 @@ public abstract class AdminAbstractController extends BroadleafAbstractControlle
      * @param info
      * @param entityId
      * @return the entity form
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     protected EntityForm getDynamicFieldTemplateForm(DynamicEntityFormInfo info, String entityId) 
             throws ServiceException {
@@ -261,7 +261,7 @@ public abstract class AdminAbstractController extends BroadleafAbstractControlle
      * <br />
      * This would attach criteria such that defaultSku.name was sorted ascending, and manufacturer was sorted descending</p>
      * 
-     * @param requestParams usually a {@link MultiValueMap} that has been bound by a controller to receive all of the
+     * @param requestParams usually a {@link org.springframework.util.MultiValueMap} that has been bound by a controller to receive all of the
      * request parameters that are not explicitly named
      * @return the final array of {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} to pass to the fetch
      * 
@@ -446,7 +446,7 @@ public abstract class AdminAbstractController extends BroadleafAbstractControlle
 
     /**
      * Returns a PersistencePackageRequest for the given sectionClassName. Will also invoke the 
-     * {@link #getSectionCustomCriteria()} and {@link #attachSectionSpecificInfo(PersistencePackageRequest)} to allow
+     * {@link #getSectionCustomCriteria()} and {@link #attachSectionSpecificInfo(org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest)} to allow
      * specialized controllers to manipulate the request for every action in this controller.
      * 
      * @param sectionClassName

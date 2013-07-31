@@ -36,7 +36,7 @@ import java.util.Map;
  * Instead, we've opted to create this interface which allows other components to
  * add rule-processors as needed.
  *
- * @see {@link PageDefaultRuleProcessor}
+ * @see {@link org.broadleafcommerce.cms.page.service.PageDefaultRuleProcessor}
  *
  *
  * @author bpolster.

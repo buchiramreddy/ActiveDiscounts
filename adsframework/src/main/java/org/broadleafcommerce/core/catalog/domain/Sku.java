@@ -37,9 +37,9 @@ import java.util.Map;
  * <br>
  * <br>
  * You should implement this class if you want to make significant changes to how the
- * class is persisted.  If you just want to add additional fields then you should extend {@link SkuImpl}.
+ * class is persisted.  If you just want to add additional fields then you should extend {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}.
  *
- * @see {@link SkuImpl}, {@link Money}
+ * @see {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}, {@link org.broadleafcommerce.common.money.Money}
  * @author btaylor
  *
  */
@@ -62,16 +62,16 @@ public interface Sku extends Serializable {
      * all of their priceAdjustments are null. Otherwise this will be the sum total of those price
      * adjustments
      * 
-     * @see {@link ProductOptionValue}
+     * @see {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}
      */
     public Money getProductOptionValueAdjustments();
     
     /**
      * Returns the Sale Price of the Sku.  The Sale Price is the standard price the vendor sells
-     * this item for.  If {@link SkuPricingConsiderationContext} is set, this uses the DynamicSkuPricingService
+     * this item for.  If {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext} is set, this uses the DynamicSkuPricingService
      * to calculate what this should actually be rather than use the property itself
      * 
-     * @see SkuPricingConsiderationContext, DynamicSkuPricingService
+     * @see org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext, DynamicSkuPricingService
      */
     public Money getSalePrice();
 
@@ -83,11 +83,11 @@ public interface Sku extends Serializable {
     public void setSalePrice(Money salePrice);
 
     /**
-     * Returns the Retail Price of the Sku.  The Retail Price is the MSRP of the sku. If {@link SkuPricingConsiderationContext}
+     * Returns the Retail Price of the Sku.  The Retail Price is the MSRP of the sku. If {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext}
      * is set, this uses the DynamicSkuPricingService to calculate what this should actually be rather than use the property
      * itself
      * 
-     * @see SkuPricingConsiderationContext, DynamicSkuPricingService
+     * @see org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext, DynamicSkuPricingService
      */
     public Money getRetailPrice();
 
@@ -269,7 +269,7 @@ public interface Sku extends Serializable {
 
     /**
      * Denormalized set of key-value pairs to attach to a Sku. If you are looking for setting up
-     * a {@link ProductOption} scenario (like colors, sizes, etc) see {@link getProductOptionValues()}
+     * a {@link org.broadleafcommerce.core.catalog.domain.ProductOption} scenario (like colors, sizes, etc) see {@link getProductOptionValues()}
      * and {@link setProductOptionValues()}
      *
      * @return the attributes for this Sku
@@ -288,7 +288,7 @@ public interface Sku extends Serializable {
      * inventory, price and image information for a "Blue" "Extra-Large" shirt
      * 
      * @return the ProductOptionValues for this Sku
-     * @see {@link ProductOptionValue}, {@link ProductOption}
+     * @see {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}, {@link org.broadleafcommerce.core.catalog.domain.ProductOption}
      */
     public List<ProductOptionValue> getProductOptionValues();
 
@@ -296,7 +296,7 @@ public interface Sku extends Serializable {
      * Sets the ProductOptionValues that should be mapped to this Sku
      * 
      * @param productOptionValues
-     * @see {@link ProductOptionValue}, {@link ProductOption}
+     * @see {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}, {@link org.broadleafcommerce.core.catalog.domain.ProductOption}
      */
     public void setProductOptionValues(List<ProductOptionValue> productOptionValues);
 
@@ -316,7 +316,7 @@ public interface Sku extends Serializable {
      * <br />
      * <br />
      * If you are looking for a way to simply associate a Sku to a Product, the correct way would be to call
-     * {@link #setProduct(Product)} or {@link Product#setSkus(java.util.List< Sku>)} which would then cause this Sku to show up in the list of Skus for
+     * {@link #setProduct(org.broadleafcommerce.core.catalog.domain.Product)} or {@link org.broadleafcommerce.core.catalog.domain.Product#setSkus(java.util.List< org.broadleafcommerce.core.catalog.domain.Sku>)} which would then cause this Sku to show up in the list of Skus for
      * the given Product
      * 
      * @param product
@@ -327,15 +327,15 @@ public interface Sku extends Serializable {
      * This will return the correct Product association that is being used on the Sku. If this Sku is a default Sku
      * for a Product (as in, {@link #getDefaultProduct()} != null) than this will return {@link #getDefaultProduct()}. If this is not
      * a default Sku for a Product, this will return the @ManyToOne Product relationship created by adding this Sku to a Product's
-     * list of Skus, or using {@link setProduct(Product)}.
+     * list of Skus, or using {@link setProduct( org.broadleafcommerce.core.catalog.domain.Product)}.
      * <br />
      * <br />
-     * In some implementations, it might make sense to have both the @OneToOne association set ({@link Product#setDefaultSku(Sku)})
-     * as well as the @ManyToOne association set ({@link #setProduct(Product)}). In this case, This method would only return
+     * In some implementations, it might make sense to have both the @OneToOne association set ({@link org.broadleafcommerce.core.catalog.domain.Product#setDefaultSku(org.broadleafcommerce.core.catalog.domain.Sku)})
+     * as well as the @ManyToOne association set ({@link #setProduct(org.broadleafcommerce.core.catalog.domain.Product)}). In this case, This method would only return
      * the result of {@link #getDefaultProduct()}.  However, the @OneToOne and @ManyToOne association should never actually
      * refer to different Products, and would represent an error state. If you require this, consider subclassing and using
-     * your own @ManyToMany relationship between Product and Sku. If you are trying to model bundles, consider using a {@link ProductBundle}
-     * and subsequent {@link SkuBundleItem}s.
+     * your own @ManyToMany relationship between Product and Sku. If you are trying to model bundles, consider using a {@link org.broadleafcommerce.core.catalog.domain.ProductBundle}
+     * and subsequent {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}s.
      * 
      * @return {@link #getDefaultProduct()} if {@link #getDefaultProduct()} is non-null, the @ManyToOne Product association otherwise. If no
      * relationship is set, returns null
@@ -343,10 +343,10 @@ public interface Sku extends Serializable {
     public Product getProduct();
 
     /**
-     * Associates a Sku to a given Product. This will then show up in the list returned by {@link Product#getSkus()}
+     * Associates a Sku to a given Product. This will then show up in the list returned by {@link org.broadleafcommerce.core.catalog.domain.Product#getSkus()}
      * 
      * @param product - Product to associate this Sku to
-     * @see Product#getSkus()
+     * @see org.broadleafcommerce.core.catalog.domain.Product#getSkus()
      */
     public void setProduct(Product product);
 
@@ -389,7 +389,7 @@ public interface Sku extends Serializable {
      * Gets all the extra fees for this particular Sku. If the fee type is FULFILLMENT, these are stored
      * on {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#getFulfillmentGroupFees()} for an Order
      * 
-     * @return the {@link SkuFee}s for this Sku
+     * @return the {@link org.broadleafcommerce.core.catalog.domain.SkuFee}s for this Sku
      */
     public List<SkuFee> getFees();
 
@@ -401,26 +401,26 @@ public interface Sku extends Serializable {
     public void setFees(List<SkuFee> fees);
 
     /**
-     * Gets the flat rate for fulfilling this {@link Sku} for a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending
+     * Gets the flat rate for fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku} for a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending
      * on the result of {@link org.broadleafcommerce.core.order.domain.FulfillmentOption#getUseFlatRates()}, this flat rate will be used in calculating
-     * the cost of fulfilling this {@link Sku}.
+     * the cost of fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku}.
      * 
-     * @return the flat rates for this {@link Sku}
+     * @return the flat rates for this {@link org.broadleafcommerce.core.catalog.domain.Sku}
      */
     public Map<FulfillmentOption, BigDecimal> getFulfillmentFlatRates();
 
     /**
-     * Sets the flat rates for fulfilling this {@link Sku} for a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending
+     * Sets the flat rates for fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku} for a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending
      * on the result of {@link org.broadleafcommerce.core.order.domain.FulfillmentOption#getUseFlatRates()}, this flat rate will be used in calculating
-     * the cost of fulfilling this {@link Sku}.
+     * the cost of fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku}.
      * 
      * @param fulfillmentFlatRates
      */
     public void setFulfillmentFlatRates(Map<FulfillmentOption, BigDecimal> fulfillmentFlatRates);
 
     /**
-     * Gets the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}s that this {@link Sku} should be excluded from. For instance,
-     * some {@link Sku}s might not be available to be fulfilled next-day
+     * Gets the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}s that this {@link org.broadleafcommerce.core.catalog.domain.Sku} should be excluded from. For instance,
+     * some {@link org.broadleafcommerce.core.catalog.domain.Sku}s might not be available to be fulfilled next-day
      * 
      * @return
      */
@@ -441,7 +441,7 @@ public interface Sku extends Serializable {
 
     /**
      * Sets the type of inventory for this sku
-     * @param inventoryType the {@link InventoryType} for this sku
+     * @param inventoryType the {@link org.broadleafcommerce.core.inventory.service.type.InventoryType} for this sku
      */
     public void setInventoryType(InventoryType inventoryType);
     

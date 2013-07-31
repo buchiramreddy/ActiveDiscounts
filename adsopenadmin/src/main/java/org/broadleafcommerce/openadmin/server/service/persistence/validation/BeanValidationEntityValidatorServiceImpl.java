@@ -30,12 +30,12 @@ import java.util.Set;
 
 /**
  * <p>Implementation of the {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService} that runs entities through JSR-303 validations. The default
- * behavior of this implementation is to use the out-of-the-box Broadleaf validations (through {@link ValidationConfiguration}
+ * behavior of this implementation is to use the out-of-the-box Broadleaf validations (through {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}
  * <i>in addition to</i> any JSR-303 annotations that you have configured on your entity.</p>
  * 
- * <p>In order to use this validator rather than the default, you will need to include an implementation of {@link Validator}
+ * <p>In order to use this validator rather than the default, you will need to include an implementation of {@link javax.validation.Validator}
  * in your Spring root application context (not the servlet). For example, you would modify your applicationContext-admin.xml
- * to inject Spring's default implementation of {@link Validator} (the one used by Spring MVC):</p>
+ * to inject Spring's default implementation of {@link javax.validation.Validator} (the one used by Spring MVC):</p>
  * <code>
  * <pre>
  * &lt;bean class=&quotorg.springframework.validation.beanvalidation.LocalValidatorFactoryBean&quot/&gt;
@@ -54,7 +54,7 @@ import java.util.Set;
  * 
  * @author Phillip Verheyden
  * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorServiceImpl#validate(org.broadleafcommerce.openadmin.dto.Entity, java.io.Serializable, java.util.Map)}
- * @see {@link Validator}
+ * @see {@link javax.validation.Validator}
  * @see <a href="http://static.springsource.org/spring/docs/3.1.3.RELEASE/spring-framework-reference/html/validation.html#validation-beanvalidation">Spring Validation Docs</a>
  */
 public class BeanValidationEntityValidatorServiceImpl extends EntityValidatorServiceImpl {
@@ -64,7 +64,7 @@ public class BeanValidationEntityValidatorServiceImpl extends EntityValidatorSer
     
     /**
      * If true (default behavior) this will invoke the default implementation to perform validations hooked up via
-     * {@link ValidationConfiguration} from {@link AdminPresentation}.
+     * {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} from {@link org.broadleafcommerce.common.presentation.AdminPresentation}.
      */
     protected boolean useDefaultEntityValidations = true;
     

@@ -56,7 +56,7 @@ public interface OrderItem extends Serializable, Cloneable {
     /**
      * The retail price of the item that was added to the {@link org.broadleafcommerce.core.order.domain.Order} at the time that this was added. This is preferable
      * to use as opposed to checking the price of the item that was added from the catalog domain (like in
-     * {@link DiscreteOrderItem}, using {@link DiscreteOrderItem#getSku()}'s retail price) since the price in the catalog
+     * {@link org.broadleafcommerce.core.order.domain.DiscreteOrderItem}, using {@link org.broadleafcommerce.core.order.domain.DiscreteOrderItem#getSku()}'s retail price) since the price in the catalog
      * domain could have changed since the item was added to the {@link org.broadleafcommerce.core.order.domain.Order}.
      * 
      * @return
@@ -78,7 +78,7 @@ public interface OrderItem extends Serializable, Cloneable {
     /**
      * Indicates that the retail price was manually set.  A typical usage might be for a 
      * CSR who has override privileges to control setting the price.   This will automatically be set
-     * by calling {@link #setRetailPrice(Money)}
+     * by calling {@link #setRetailPrice(org.broadleafcommerce.common.money.Money)}
      */
     void setRetailPriceOverride(boolean override);
 
@@ -107,7 +107,7 @@ public interface OrderItem extends Serializable, Cloneable {
      *  To avoid the pricing engine resetting this price, you should also make a call to 
      *  {@link #setSalePriceOverride(true)}
      *      
-     * Typically for {@link DiscreteOrderItem}s, the prices will be set with a call to {@link #updateSaleAndRetailPrices()}
+     * Typically for {@link org.broadleafcommerce.core.order.domain.DiscreteOrderItem}s, the prices will be set with a call to {@link #updateSaleAndRetailPrices()}
      * which will use the Broadleaf dynamic pricing engine or the values directly tied to the SKU.
      * 
      * @param salePrice
@@ -154,8 +154,8 @@ public interface OrderItem extends Serializable, Cloneable {
      * @deprecated
      * Calling this method is the same as calling the following:
      * 
-     * {@link #setRetailPrice(Money)}
-     * {@link #setSalePrice(Money)}
+     * {@link #setRetailPrice(org.broadleafcommerce.common.money.Money)}
+     * {@link #setSalePrice(org.broadleafcommerce.common.money.Money)}
      * {@link #setRetailPriceOverride(true)}
      * {@link #setSalePriceOverride(true)}      
      * {@link #setDiscountingAllowed(false)}          
@@ -169,7 +169,7 @@ public interface OrderItem extends Serializable, Cloneable {
 
 
     /**
-     * The quantity of this {@link OrderItem}.
+     * The quantity of this {@link org.broadleafcommerce.core.order.domain.OrderItem}.
      * 
      * @return
      */

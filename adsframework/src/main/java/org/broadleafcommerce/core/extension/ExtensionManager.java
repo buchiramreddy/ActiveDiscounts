@@ -32,7 +32,7 @@ import java.util.List;
  * Each component that needs an extension should define an interface which is a descendant of ExtensionHandler.
  * The concrete ExtensionManager class will utilize that interface as a parameter (e.g. T below).   
  * 
- * The default extension manager pattern loops through all handlers and examines their {@link ExtensionResultStatusType} 
+ * The default extension manager pattern loops through all handlers and examines their {@link org.broadleafcommerce.core.extension.ExtensionResultStatusType} 
  * to determine whether or not to continue with other handlers.
  * 
  * @author bpolster
@@ -103,7 +103,7 @@ public abstract class ExtensionManager<T extends ExtensionHandler> implements In
     }
     
     /**
-     * Returns whether or not this extension manager continues on {@link ExtensionResultStatusType}.HANDLED.   
+     * Returns whether or not this extension manager continues on {@link org.broadleafcommerce.core.extension.ExtensionResultStatusType}.HANDLED.   
      * 
      * @return
      */
@@ -112,7 +112,7 @@ public abstract class ExtensionManager<T extends ExtensionHandler> implements In
     }
 
     /**
-     * {@link ExtensionManager}s don't really need a priority but they pick up this property due to the 
+     * {@link org.broadleafcommerce.core.extension.ExtensionManager}s don't really need a priority but they pick up this property due to the 
      * fact that we want them to implement the same interface <T> as the handlers they are managing.   
      * 
      * @return

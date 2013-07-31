@@ -57,10 +57,10 @@ public interface EntityValidatorService {
     /**
      * <p>Set the global validators that will be run on every entity that is attempted to be saved in the admin. Global
      * validators are useful to operate on things like field types and other scenarios that could occur with a number of
-     * entities. Rather than being required to define a {@link ValidationConfiguration} on all of those properties, this
+     * entities. Rather than being required to define a {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} on all of those properties, this
      * can more conveniently validate that set of properties.</p>
      * 
-     * <p>An example of a global validator in Broadleaf is the {@link RequiredPropertyValidator} which will ensure that every
+     * <p>An example of a global validator in Broadleaf is the {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.RequiredPropertyValidator} which will ensure that every
      * property that is marked as required will fail validation if a value is unset.</p>
      * @param globalEntityValidators the globalEntityValidators to set
      */

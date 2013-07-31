@@ -60,7 +60,7 @@ public interface URLProcessor {
      *
      * @return true if the processor was able to process the passed in URL.
      * @throws java.io.IOException
-     * @throws ServletException
+     * @throws javax.servlet.ServletException
      */
     boolean processURL(String key) throws IOException, ServletException;
 }

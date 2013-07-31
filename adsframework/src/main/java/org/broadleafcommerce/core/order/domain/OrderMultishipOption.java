@@ -70,7 +70,7 @@ public interface OrderMultishipOption {
     /**
      * Sets the associated OrderItem with this OrderMultishipOption
      * 
-     * @see OrderMultishipOption#getOrderItem()
+     * @see org.broadleafcommerce.core.order.domain.OrderMultishipOption#getOrderItem()
      * 
      * @param orderItem the associated OrderItem
      */

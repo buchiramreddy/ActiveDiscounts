@@ -27,7 +27,7 @@ import java.util.HashMap;
 
 /**
  * <p>Interceptor version of the {@link org.broadleafcommerce.core.web.catalog.DynamicSkuPricingFilter}. If you are using Broadleaf in a Servlet web application
- * then you should instead be using the {@link DefaultDynamicSkuPricingFilter}.</p>
+ * then you should instead be using the {@link org.broadleafcommerce.core.web.catalog.DefaultDynamicSkuPricingFilter}.</p>
  * 
  * <p>This should be configured in your Spring context, but not the root one. So if you are running in a Portlet
  * environment, then you should configure the interceptor in each individual portlet's context.</p>
@@ -51,9 +51,9 @@ public abstract class DynamicSkuPricingInterceptor implements WebRequestIntercep
     }
 
     /**
-     * Override to supply your own considerations to pass to the {@link SkuPricingConsiderationContext}.
+     * Override to supply your own considerations to pass to the {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext}.
      * @param request
-     * @return considerations that the {@link DynamicSkuPricingService} will evaluate when implementing custom pricing
+     * @return considerations that the {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService} will evaluate when implementing custom pricing
      */
     @SuppressWarnings("rawtypes")
     public abstract HashMap getPricingConsiderations(WebRequest request);

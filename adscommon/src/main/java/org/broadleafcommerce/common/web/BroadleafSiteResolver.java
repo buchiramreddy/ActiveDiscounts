@@ -32,7 +32,7 @@ public interface BroadleafSiteResolver  {
 
     /**
      * 
-     * @deprecated Use {@link #resolveSite(WebRequest)} instead
+     * @deprecated Use {@link #resolveSite(org.springframework.web.context.request.WebRequest)} instead
      */
     @Deprecated
     public Site resolveSite(HttpServletRequest request) throws SiteNotFoundException;

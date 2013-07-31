@@ -38,7 +38,7 @@ public interface AdminEntityService {
      * 
      * @param request
      * @return ClassMetadata for the given request
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public ClassMetadata getClassMetadata(PersistencePackageRequest request)
             throws ServiceException;
@@ -48,7 +48,7 @@ public interface AdminEntityService {
      * 
      * @param request
      * @return DynamicResultSet 
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public DynamicResultSet getRecords(PersistencePackageRequest request)
             throws ServiceException;
@@ -61,7 +61,7 @@ public interface AdminEntityService {
      * @param cmd
      * @param isCollectionRequest whether or not this record request was initiated from a collection on a parent entity
      * @return the Entity
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public Entity getRecord(PersistencePackageRequest request, String id, ClassMetadata cmd, boolean isCollectionRequest)
             throws ServiceException;
@@ -72,7 +72,7 @@ public interface AdminEntityService {
      * @param entityForm
      * @param customCriteria
      * @return the persisted Entity
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public Entity addEntity(EntityForm entityForm, String[] customCriteria)
             throws ServiceException;
@@ -83,7 +83,7 @@ public interface AdminEntityService {
      * @param entityForm
      * @param customCriteria
      * @return the persisted Entity
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public Entity updateEntity(EntityForm entityForm, String[] customCriteria)
             throws ServiceException;
@@ -93,7 +93,7 @@ public interface AdminEntityService {
      * 
      * @param entityForm
      * @param customCriteria
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public void removeEntity(EntityForm entityForm, String[] customCriteria)
             throws ServiceException;
@@ -106,7 +106,7 @@ public interface AdminEntityService {
      * @param collectionProperty
      * @param collectionItemId
      * @return the Entity
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public Entity getAdvancedCollectionRecord(ClassMetadata containingClassMetadata, Entity containingEntity,
                                               Property collectionProperty, String collectionItemId)
@@ -123,7 +123,7 @@ public interface AdminEntityService {
      * @param startIndex
      * @param maxIndex
      * @return the DynamicResultSet
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public DynamicResultSet getRecordsForCollection(ClassMetadata containingClassMetadata, Entity containingEntity,
                                                     Property collectionProperty, FilterAndSortCriteria[] fascs, Integer startIndex, Integer maxIndex)
@@ -134,7 +134,7 @@ public interface AdminEntityService {
      * @param ppr
      * @param containingEntity
      * @return all Entity[] for all collections for the specified containingClass
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * 
      * @see #getRecordsForCollection(org.broadleafcommerce.openadmin.dto.ClassMetadata, String, org.broadleafcommerce.openadmin.dto.Property)
      */
@@ -150,7 +150,7 @@ public interface AdminEntityService {
      * @param field
      * @param parentEntity
      * @return the persisted Entity
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * @throws ClassNotFoundException
      */
     public Entity addSubCollectionEntity(EntityForm entityForm, ClassMetadata mainMetadata, Property field,
@@ -166,7 +166,7 @@ public interface AdminEntityService {
      * @param parentEntity
      * @param collectionItemId
      * @return the persisted Entity
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * @throws ClassNotFoundException
      */
     public Entity updateSubCollectionEntity(EntityForm entityForm, ClassMetadata mainMetadata, Property field,
@@ -181,7 +181,7 @@ public interface AdminEntityService {
      * @param parentId
      * @param itemId
      * @param priorKey - only needed for Map type collections
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public void removeSubCollectionEntity(ClassMetadata mainMetadata, Property field, Entity parentEntity, String itemId,
                                           String priorKey)
@@ -201,11 +201,11 @@ public interface AdminEntityService {
     public String getContextSpecificRelationshipId(ClassMetadata cmd, Entity entity, String propertyName);
 
     /**
-     * Returns the name of the property in this ClassMetadata that has field type set to {@link SupportedFieldType#ID}
+     * Returns the name of the property in this ClassMetadata that has field type set to {@link org.broadleafcommerce.common.presentation.client.SupportedFieldType#ID}
      * 
      * @param cmd
      * @return the id property name
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public String getIdProperty(ClassMetadata cmd) throws ServiceException;
 

@@ -29,7 +29,7 @@ import javax.persistence.Id;
 
 
 /**
- * @deprecated Replaced in functionality by {@link SearchRedirectImpl}
+ * @deprecated Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.domain.SearchRedirectImpl}
  */
 @Deprecated
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")

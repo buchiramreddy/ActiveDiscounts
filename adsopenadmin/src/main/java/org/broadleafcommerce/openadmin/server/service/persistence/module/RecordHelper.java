@@ -39,9 +39,9 @@ import java.util.Map;
  * representation. 
  * 
  * @author jfischer
- * @see {@link BasicPersistenceModule}
- * @see {@link MapStructurePersistenceModule}
- * @see {@link AdornedTargetListPersistenceModule}
+ * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule}
+ * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule}
+ * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule}
  */
 public interface RecordHelper extends DataFormatProvider {
 
@@ -67,7 +67,7 @@ public interface RecordHelper extends DataFormatProvider {
     /**
      * <p>Populates a Hibernate entity <b>instance</b> based on the values from <b>entity</b> (the DTO representation of
      * <b>instance</b>) and the metadata from <b>mergedProperties</b>.</p>
-     * <p>While populating <b>instance</b>, validation is also performed using the {@link EntityValidatorService}. If this
+     * <p>While populating <b>instance</b>, validation is also performed using the {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService}. If this
      * validation fails, then the instance is left unchanged and a {@link ValidationExcpetion} is thrown. In the common
      * case, this exception bubbles up to the {@link DynamicRemoteService} which catches the exception and communicates
      * appropriately to the invoker</p>
@@ -76,11 +76,11 @@ public interface RecordHelper extends DataFormatProvider {
      * @param entity
      * @param mergedProperties
      * @param setId
-     * @throws ValidationException if after populating <b>instance</b> via the values in <b>entity</b> then
-     * {@link EntityValidatorService#validate(org.broadleafcommerce.openadmin.dto.Entity, java.io.Serializable, java.util.Map)} returns false
+     * @throws org.broadleafcommerce.openadmin.server.service.ValidationException if after populating <b>instance</b> via the values in <b>entity</b> then
+     * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService#validate(org.broadleafcommerce.openadmin.dto.Entity, java.io.Serializable, java.util.Map)} returns false
      * @return <b>instance</b> populated with the property values from <b>entity</b> according to the metadata specified
      * in <b>mergedProperties</b>
-     * @see {@link EntityValidatorService}
+     * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService}
      */
     public Serializable createPopulatedInstance(Serializable instance, Entity entity, Map<String, FieldMetadata> mergedProperties, Boolean setId) throws ValidationException;
     

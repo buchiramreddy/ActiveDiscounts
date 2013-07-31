@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 /**
  * 
  * @author Jeff Fischer
- * @see {@link BasicPersistenceModule}
+ * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule}
  */
 public interface DataFormatProvider {
 

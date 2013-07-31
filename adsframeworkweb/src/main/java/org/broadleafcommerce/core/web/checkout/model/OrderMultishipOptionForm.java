@@ -26,7 +26,7 @@ import java.util.List;
  * the actual objects to be instantiated -- we handle that at the controller
  * level.
  * 
- * @see OrderMultishipOptionDTO
+ * @see org.broadleafcommerce.core.order.service.call.OrderMultishipOptionDTO
  * 
  * @author Andre Azzolini (apazzolini)
  */

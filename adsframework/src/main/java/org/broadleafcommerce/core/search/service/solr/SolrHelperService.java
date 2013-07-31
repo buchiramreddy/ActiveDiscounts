@@ -35,7 +35,7 @@ public interface SolrHelperService {
      * Swaps the primary and reindex cores.
      * If the reindex core is null, we are operating in single core mode. In this scenario, no swap occurs.
      * 
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public void swapActiveCores() throws ServiceException;
 

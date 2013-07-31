@@ -98,7 +98,7 @@ public interface ProductOption extends Serializable {
 
     /**
      * The label to show to the user when selecting from the available
-     * {@link ProductOptionValue}s. This might be "Color" or "Size"
+     * {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}s. This might be "Color" or "Size"
      * 
      * @return
      */
@@ -106,7 +106,7 @@ public interface ProductOption extends Serializable {
 
     /**
      * Sets the label to show the user when selecting from the available
-     * {@link ProductOptionValue}s
+     * {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}s
      * 
      * @param label
      */
@@ -125,14 +125,14 @@ public interface ProductOption extends Serializable {
     public void setRequired(Boolean required);
     
     /**
-     * Gets the display order of this option in relation to the other {@link ProductOption}s
+     * Gets the display order of this option in relation to the other {@link org.broadleafcommerce.core.catalog.domain.ProductOption}s
      * 
      * @return
      */
     public Integer getDisplayOrder();
 
     /**
-     * Gets the display order of this option in relation to the other {@link ProductOption}s
+     * Gets the display order of this option in relation to the other {@link org.broadleafcommerce.core.catalog.domain.ProductOption}s
      * 
      * @param displayOrder
      */

@@ -42,8 +42,8 @@ import javax.annotation.Resource;
  * 
  * @author Phillip Verheyden
  * @see {@link org.broadleafcommerce.core.web.order.security.CartStateFilter}
- * @see {@link BroadleafWebRequestProcessor}
- * @see {@link ServletWebRequest}
+ * @see {@link org.broadleafcommerce.common.web.BroadleafWebRequestProcessor}
+ * @see {@link org.springframework.web.context.request.ServletWebRequest}
  * @see {@link org.springframework.web.portlet.context.PortletWebRequest}
  */
 @Component("blCartStateRequestProcessor")

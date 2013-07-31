@@ -181,7 +181,7 @@ public class BroadleafLoginController extends BroadleafAbstractController {
      * @param model
      * @param errors
      * @return the return view
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public String processResetPassword(ResetPasswordForm resetPasswordForm, HttpServletRequest request, HttpServletResponse response, Model model, BindingResult errors) throws ServiceException {
         GenericResponse errorResponse = new GenericResponse();

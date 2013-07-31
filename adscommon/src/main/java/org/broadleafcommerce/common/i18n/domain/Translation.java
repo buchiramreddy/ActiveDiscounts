@@ -21,7 +21,7 @@ package org.broadleafcommerce.common.i18n.domain;
  * This domain object represents a translated value for a given property on an entity for a specific locale.
  * 
  * @author Andre Azzolini (apazzolini)
- * @see TranslatedEntity
+ * @see org.broadleafcommerce.common.i18n.domain.TranslatedEntity
  */
 public interface Translation {
     

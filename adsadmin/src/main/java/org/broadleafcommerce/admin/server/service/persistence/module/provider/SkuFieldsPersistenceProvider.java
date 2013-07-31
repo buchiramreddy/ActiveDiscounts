@@ -30,11 +30,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * Persistence provider for populating the display value of all Sku fields to invoke the getter if the entity property
- * itself is null. This is designed to immediately come after the {@link SkuPricingPersistenceProvider} and should not have
+ * itself is null. This is designed to immediately come after the {@link org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider} and should not have
  * to handle any of the Money field types that occur on a Sku
  *
  * @author Phillip Verheyden (phillipuniverse)
- * @see {@link SkuPricingPersistenceProvider}
+ * @see {@link org.broadleafcommerce.admin.server.service.persistence.module.provider.SkuPricingPersistenceProvider}
  */
 @Scope("prototype")
 @Component("blSkuFieldsPersistenceProvider")

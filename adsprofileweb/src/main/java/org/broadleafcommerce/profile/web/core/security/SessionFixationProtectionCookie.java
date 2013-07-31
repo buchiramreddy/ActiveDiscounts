@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Cookie used to protected against session fixation attacks
  * 
- * @see SessionFixationProtectionFilter
+ * @see org.broadleafcommerce.profile.web.core.security.SessionFixationProtectionFilter
  * 
  * @author Andre Azzolini (apazzolini)
  */

@@ -64,7 +64,7 @@ public class MergeFileSystemXMLApplicationContext extends AbstractXmlApplication
      * 
      * @param sourceLocations array of absolute file system paths for the source application context files
      * @param patchLocations array of absolute file system paths for the patch application context files
-     * @throws BeansException
+     * @throws org.springframework.beans.BeansException
      */
     public MergeFileSystemXMLApplicationContext(String[] sourceLocations, String[] patchLocations) throws BeansException {
         this(sourceLocations, patchLocations, null);
@@ -80,7 +80,7 @@ public class MergeFileSystemXMLApplicationContext extends AbstractXmlApplication
      * @param sourceLocations array of absolute file system paths for the source application context files
      * @param patchLocations array of absolute file system paths for the patch application context files
      * @param parent the parent context
-     * @throws BeansException
+     * @throws org.springframework.beans.BeansException
      */
     public MergeFileSystemXMLApplicationContext(String[] sourceLocations, String[] patchLocations, ApplicationContext parent) throws BeansException {
         super(parent);

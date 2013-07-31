@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface BroadleafSandBoxResolver  {
 
     /**
-     * @deprecated use {@link #resolveSandBox(WebRequest, Site)} instead
+     * @deprecated use {@link #resolveSandBox(org.springframework.web.context.request.WebRequest, org.broadleafcommerce.common.site.domain.Site)} instead
      */
     @Deprecated
     public SandBox resolveSandBox(HttpServletRequest request, Site site);

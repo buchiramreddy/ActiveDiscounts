@@ -29,13 +29,13 @@ import java.util.HashMap;
  * {@link org.broadleafcommerce.core.web.catalog.DefaultDynamicSkuPricingFilter} where an implementation of this class
  * should be injected and returned in the getPricing() method.</p>
  * 
- * <p>Rather than implementing this interface directly, consider subclassing the {@link DefaultDynamicSkuPricingServiceImpl}
+ * <p>Rather than implementing this interface directly, consider subclassing the {@link org.broadleafcommerce.core.catalog.service.dynamic.DefaultDynamicSkuPricingServiceImpl}
  * and providing overrides to methods there.</p>
  * 
  * @author jfischer
- * @see {@link DefaultDynamicSkuPricingServiceImpl}
+ * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.DefaultDynamicSkuPricingServiceImpl}
  * @see {@link org.broadleafcommerce.core.web.catalog.DefaultDynamicSkuPricingFilter}
- * @see {@link SkuPricingConsiderationContext}
+ * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext}
  */
 public interface DynamicSkuPricingService {
 

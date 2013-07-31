@@ -31,5 +31,4 @@
 
     <jee:jndi-lookup id="webStorageDS" jndi-name="jdbc/storage"/>
 
-
 </beans>

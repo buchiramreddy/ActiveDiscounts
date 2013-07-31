@@ -85,14 +85,14 @@ public interface ActivityStateManager {
     /**
      * Cause the StateManager to call all registered RollbackHandlers
      *
-     * @throws RollbackFailureException if the rollback fails for some reason
+     * @throws org.broadleafcommerce.core.workflow.state.RollbackFailureException if the rollback fails for some reason
      */
     public void rollbackAllState() throws RollbackFailureException;
 
     /**
      * Cause the StateManager to call all registered RollbackHandlers in the specified region.
      *
-     * @throws RollbackFailureException if the rollback fails for some reason
+     * @throws org.broadleafcommerce.core.workflow.state.RollbackFailureException if the rollback fails for some reason
      */
     public void rollbackRegionState(String region) throws RollbackFailureException;
 

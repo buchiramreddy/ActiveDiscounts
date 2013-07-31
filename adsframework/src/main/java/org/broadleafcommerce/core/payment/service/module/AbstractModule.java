@@ -48,7 +48,7 @@ public abstract class AbstractModule implements PaymentModule {
      *
      * @param paymentContext
      * @return
-     * @throws PaymentException
+     * @throws org.broadleafcommerce.core.payment.service.exception.PaymentException
      */
     @Override
     public PaymentResponseItem reverseAuthorize(PaymentContext paymentContext) throws PaymentException {

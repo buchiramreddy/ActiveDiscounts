@@ -28,10 +28,10 @@ import org.broadleafcommerce.core.workflow.BaseActivity;
 import java.math.BigDecimal;
 
 /**
- * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented in {@link FulfillmentPricingService}.
- * This activity was replaced by {@link FulfillmentGroupPricingActivity}.
+ * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}.
+ * This activity was replaced by {@link org.broadleafcommerce.core.pricing.service.workflow.FulfillmentGroupPricingActivity}.
  * 
- * @see {@link FulfillmentPricingActivity}, {@link FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * @see {@link FulfillmentPricingActivity}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
  */
 @Deprecated
 public class ShippingActivity extends BaseActivity<PricingContext> {

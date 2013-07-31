@@ -32,10 +32,10 @@ import java.util.Map;
  * The sku can be inferred from either the passed in attributes as they are compared to the product's options or
  * the sku can be determined from the product's default sku.
  * 
- * When adding a bundle using this DTO, you MUST have the {@link ProductBundle} included in the productId for it to
+ * When adding a bundle using this DTO, you MUST have the {@link org.broadleafcommerce.core.catalog.domain.ProductBundle} included in the productId for it to
  * properly instantiate the {@link org.broadleafcommerce.core.order.domain.BundleOrderItem}
  * 
- * Important Note:  To protect against misuse, the {@link OrderService}'s addItemToCart method will blank out
+ * Important Note:  To protect against misuse, the {@link org.broadleafcommerce.core.order.service.OrderService}'s addItemToCart method will blank out
  * any values passed in on this DTO for the overrideSalePrice or overrideRetailPrice.
  * 
  * Instead, implementors should call the more explicit addItemWithPriceOverrides.

@@ -19,7 +19,7 @@ package org.broadleafcommerce.core.search.domain;
 import org.broadleafcommerce.core.search.redirect.domain.SearchRedirect;
 
 /**
- * @deprecated Replaced in functionality by {@link SearchRedirect}
+ * @deprecated Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.domain.SearchRedirect}
  */
 @Deprecated
 public interface SearchIntercept {

@@ -44,7 +44,7 @@ public interface PopulateValueRequestValidator {
     /**
      * Validates a population request prior to invoking any {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}s. If no validation could be
      * performed for the given {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest} then return <b>true</b> to let it pass on to a different
-     * {@link PopulateValueRequestValidator} or on to a {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}.
+     * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PopulateValueRequestValidator} or on to a {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}.
      * 
      * @param populateValueRequest the {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest} that should be validated
      * @param instance the Hibernate entity that will attempt to be populated

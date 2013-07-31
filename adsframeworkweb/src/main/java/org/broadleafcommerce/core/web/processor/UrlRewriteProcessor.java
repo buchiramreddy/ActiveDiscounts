@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * A Thymeleaf processor that processes the given url through the StaticAssetService's
- * {@link StaticAssetService#convertAssetPath(String, String, boolean)} method to determine
+ * {@link org.broadleafcommerce.cms.file.service.StaticAssetService#convertAssetPath(String, String, boolean)} method to determine
  * the appropriate URL for the asset to be served from.
  * 
  * @author apazzolini

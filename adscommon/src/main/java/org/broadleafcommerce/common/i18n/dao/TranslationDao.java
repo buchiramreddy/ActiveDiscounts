@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Provides data access for the {@link Translation} entity.
+ * Provides data access for the {@link org.broadleafcommerce.common.i18n.domain.Translation} entity.
  * 
  * @author Andre Azzolini (apazzolini)
  */

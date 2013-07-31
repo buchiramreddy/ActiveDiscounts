@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * {@code ProductDao} provides persistence access to {@code Product} instances
  *
- * @see Product
+ * @see org.broadleafcommerce.core.catalog.domain.Product
  * @author Jeff Fischer
  */
 public interface ProductDao {

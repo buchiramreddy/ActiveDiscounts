@@ -33,10 +33,10 @@ import java.util.Map;
  * <br>
  * <br>
  * You should implement this class if you want to make significant changes to how the
- * Product is persisted.  If you just want to add additional fields then you should extend {@link ProductImpl}.
+ * Product is persisted.  If you just want to add additional fields then you should extend {@link org.broadleafcommerce.core.catalog.domain.ProductImpl}.
  *
  * @author btaylor
- * @see {@link ProductImpl},{@link org.broadleafcommerce.core.catalog.domain.Sku}, {@link Category}
+ * @see {@link org.broadleafcommerce.core.catalog.domain.ProductImpl},{@link org.broadleafcommerce.core.catalog.domain.Sku}, {@link org.broadleafcommerce.core.catalog.domain.Category}
  */
 public interface Product extends Serializable {
 
@@ -187,7 +187,7 @@ public interface Product extends Serializable {
      * <br />
      * <br />
      * Products can also have multiple Skus associated with it that are represented by
-     * {@link ProductOption}s. For instance, a large, blue shirt. For more information on
+     * {@link org.broadleafcommerce.core.catalog.domain.ProductOption}s. For instance, a large, blue shirt. For more information on
      * that relationship see {@link #getAdditionalSkus()}.
      * 
      * @return the default Sku for this Product
@@ -232,8 +232,8 @@ public interface Product extends Serializable {
     /**
      * Gets all the additional Skus associated with this Product. For instance, if this
      * Product represented a T-shirt and you could pick the size of the T-shirt as a
-     * {@link ProductOption} (like "small", "medium", "large") this would return 3 Skus
-     * if you had different inventory or price constraints on each {@link ProductOptionValue}.
+     * {@link org.broadleafcommerce.core.catalog.domain.ProductOption} (like "small", "medium", "large") this would return 3 Skus
+     * if you had different inventory or price constraints on each {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}.
      * <br />
      * <br />
      * This list does not take into account whether any of these additional Skus are active or not, nor
@@ -241,17 +241,17 @@ public interface Product extends Serializable {
      * {@link #getSkus()} and {@link #getAllSkus()}, respectively.
      * 
      * @return the additional Skus for this Product
-     * @see {@link ProductOption}, {@link ProductOptionValue}
+     * @see {@link org.broadleafcommerce.core.catalog.domain.ProductOption}, {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}
      */
     public List<Sku> getAdditionalSkus();
 
     /**
      * Sets the additional Skus associated to this Product. These additional Skus should
-     * come from {@link ProductOptionValue}s and are used in instance where you need to track inventory
+     * come from {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}s and are used in instance where you need to track inventory
      * or change pricing on a per-option value basis.
      *
-     * @param skus - a List of {@link org.broadleafcommerce.core.catalog.domain.Sku}s to associate with this Product, usually based off of {@link ProductOption}s
-     * @see {@link #getAdditionalSkus()}, {@link ProductOption}, {@link ProductOptionValue}
+     * @param skus - a List of {@link org.broadleafcommerce.core.catalog.domain.Sku}s to associate with this Product, usually based off of {@link org.broadleafcommerce.core.catalog.domain.ProductOption}s
+     * @see {@link #getAdditionalSkus()}, {@link org.broadleafcommerce.core.catalog.domain.ProductOption}, {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}
      */
     public void setAdditionalSkus(List<Sku> skus);
 
@@ -295,15 +295,15 @@ public interface Product extends Serializable {
     public Map<String, Media> getAllSkuMedia();
      
     /**
-     * Returns the default {@link Category} this product is associated with.
+     * Returns the default {@link org.broadleafcommerce.core.catalog.domain.Category} this product is associated with.
      *
      */
     public Category getDefaultCategory();
 
     /**
-     * Sets the default {@link Category} to associate this product with.
+     * Sets the default {@link org.broadleafcommerce.core.catalog.domain.Category} to associate this product with.
      *
-     * @param defaultCategory - the default {@link Category} to associate this product with
+     * @param defaultCategory - the default {@link org.broadleafcommerce.core.catalog.domain.Category} to associate this product with
      */
     public void setDefaultCategory(Category defaultCategory);
 
@@ -332,7 +332,7 @@ public interface Product extends Serializable {
     public void setManufacturer(String manufacturer);
     
     /**
-     * Returns the {@link Dimension} for this product
+     * Returns the {@link org.broadleafcommerce.core.catalog.domain.Dimension} for this product
      * <br />
      * <br />
      * <b>Note:</b> this is a convenience method that merely serves as
@@ -344,7 +344,7 @@ public interface Product extends Serializable {
     public Dimension getDimension();
 
     /**
-     * Sets the {@link Dimension} for this product
+     * Sets the {@link org.broadleafcommerce.core.catalog.domain.Dimension} for this product
      * <br />
      * <br />
      * <b>Note:</b> this is a convenience method that merely serves as
@@ -592,15 +592,15 @@ public interface Product extends Serializable {
     public void setPromoMessage(String promoMessage);
 
     /**
-     * The available {@link ProductOption}s for this Product.  For instance, if this
+     * The available {@link org.broadleafcommerce.core.catalog.domain.ProductOption}s for this Product.  For instance, if this
      * Product is a T-Shirt, you might be able to specify a size and color. This would
-     * be modeled by 2 {@link ProductOption}s, each that could have multiple {@link ProductOptionValue}s 
+     * be modeled by 2 {@link org.broadleafcommerce.core.catalog.domain.ProductOption}s, each that could have multiple {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}s 
      * (which could be "small" "medium" "large", "blue", "yellow", "green").  For specific pricing or
      * inventory needs on a per-value basis, multiple Skus can be associated to this Product based
-     * off of the {@link ProductOptionValue}s
+     * off of the {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}s
      * 
-     * @return the {@link ProductOption}s for this Product
-     * @see Product#getAdditionalSkus(), {@link ProductOption}, {@link ProductOptionValue}
+     * @return the {@link org.broadleafcommerce.core.catalog.domain.ProductOption}s for this Product
+     * @see org.broadleafcommerce.core.catalog.domain.Product#getAdditionalSkus(), {@link org.broadleafcommerce.core.catalog.domain.ProductOption}, {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}
      */
     public List<ProductOption> getProductOptions();
 
@@ -615,7 +615,7 @@ public interface Product extends Serializable {
      * A product can have a designated URL.   When set, the ProductHandlerMapping will check for this
      * URL and forward this user to the {@link #getDisplayTemplate()}. 
      * 
-     * Alternatively, most sites will rely on the {@link Product#getGeneratedUrl()} to define the
+     * Alternatively, most sites will rely on the {@link org.broadleafcommerce.core.catalog.domain.Product#getGeneratedUrl()} to define the
      * url for a product page. 
      * 
      * @see org.broadleafcommerce.core.web.catalog.ProductHandlerMapping
@@ -632,14 +632,14 @@ public interface Product extends Serializable {
     
     /**
      * Sets a url-fragment.  By default, the system will attempt to create a unique url-fragment for 
-     * this product by taking the {@link Product.getName()} and removing special characters and replacing
+     * this product by taking the {@link org.broadleafcommerce.core.catalog.domain.Product.getName()} and removing special characters and replacing
      * dashes with spaces.
      */ 
     public String getUrlKey();
 
     /**
      * Sets a url-fragment to be used with this product.  By default, the system will attempt to create a 
-     * unique url-fragment for this product by taking the {@link Product.getName()} and removing special characters and replacing
+     * unique url-fragment for this product by taking the {@link org.broadleafcommerce.core.catalog.domain.Product.getName()} and removing special characters and replacing
      * dashes with spaces.
      */
     public void setUrlKey(String url);
@@ -691,7 +691,7 @@ public interface Product extends Serializable {
     public void setAllParentCategoryXrefs(List<CategoryProductXref> allParentCategories);
 
     /**
-     * Returns all parent {@link Category}(s) this product is associated with.
+     * Returns all parent {@link org.broadleafcommerce.core.catalog.domain.Category}(s) this product is associated with.
      *
      * @deprecated Use getAllParentCategoryXrefs() instead.
      * @return the all parent categories for this product
@@ -700,10 +700,10 @@ public interface Product extends Serializable {
     public List<Category> getAllParentCategories();
 
     /**
-     * Sets all parent {@link Category}s this product is associated with.
+     * Sets all parent {@link org.broadleafcommerce.core.catalog.domain.Category}s this product is associated with.
      *
      * @deprecated Use setAllParentCategoryXrefs() instead.
-     * @param allParentCategories - a List of all parent {@link Category}(s) to associate this product with
+     * @param allParentCategories - a List of all parent {@link org.broadleafcommerce.core.catalog.domain.Category}(s) to associate this product with
      */
     @Deprecated
     public void setAllParentCategories(List<Category> allParentCategories);

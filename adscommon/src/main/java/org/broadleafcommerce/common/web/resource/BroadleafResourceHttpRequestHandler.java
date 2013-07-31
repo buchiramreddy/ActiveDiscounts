@@ -68,7 +68,7 @@ public class BroadleafResourceHttpRequestHandler extends ResourceHttpRequestHand
     }
         
     /**
-     * @return a clone of the locations list that is in {@link ResourceHttpRequestHandler}. Note that we must use
+     * @return a clone of the locations list that is in {@link org.springframework.web.servlet.resource.ResourceHttpRequestHandler}. Note that we must use
      * reflection to access this field as it is marked private.
      */
     @SuppressWarnings("unchecked")

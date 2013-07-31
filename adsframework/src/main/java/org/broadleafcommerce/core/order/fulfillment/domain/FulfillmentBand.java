@@ -27,7 +27,7 @@ import java.math.BigDecimal;
  * Out of the box, Broadleaf provides implementations for banded weight and banded price.
  * 
  * @author Phillip Verheyden
- * @see {@link FulfillmentPriceBand}, {@link FulfillmentWeightBand}
+ * @see {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand}, {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBand}
  */
 public interface FulfillmentBand extends Serializable {
 

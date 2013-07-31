@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @deprecated use {@link BroadleafMergeResourceBundleMessageSource} instead
+ * @deprecated use {@link org.broadleafcommerce.common.util.BroadleafMergeResourceBundleMessageSource} instead
  */
 @Deprecated
 public class BLResourceBundleMessageSource extends ResourceBundleMessageSource implements InitializingBean {

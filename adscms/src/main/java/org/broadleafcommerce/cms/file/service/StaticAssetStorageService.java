@@ -86,7 +86,7 @@ public interface StaticAssetStorageService {
      * 2.  Overriding this method to introduce an alternate approach
      * 
      * @param fullUrl The URL used to represent an asset for which a name on the fileSystem is desired.
-     * @param useSharedPath If false, the system will generate a path using {@link Site} information if available.
+     * @param useSharedPath If false, the system will generate a path using {@link org.broadleafcommerce.common.site.domain.Site} information if available.
      * 
      * @return
      */
@@ -97,7 +97,7 @@ public interface StaticAssetStorageService {
      * as the passed in argument. 
      * 
      * @param staticAsset StaticAsset for which a filename is desired.
-     * @param useSharedPath If false, the system will generate a path using {@link Site} information if available.
+     * @param useSharedPath If false, the system will generate a path using {@link org.broadleafcommerce.common.site.domain.Site} information if available.
      * @return
      */
     String generateStorageFileName(StaticAsset staticAsset, boolean useSharedPath);

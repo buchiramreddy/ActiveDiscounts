@@ -22,8 +22,8 @@ import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.pricing.service.module.ShippingModule;
 
 /**
- * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented in {@link FulfillmentPricingService}
- * @see {@link FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * @see {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
  */
 @Deprecated
 public class ShippingServiceImpl implements ShippingService {

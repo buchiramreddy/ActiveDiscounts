@@ -37,7 +37,7 @@ public interface MergeCartService {
      * @param anonymousCartId the anonymous cart id
      * @param priceOrder whether or not to price the order
      * @return the response containing the cart, any items added to the cart, and any items removed from the cart
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      * @throws org.broadleafcommerce.core.order.service.exception.RemoveFromCartException 
      */
     public MergeCartResponse mergeCart(Customer customer, Order anonymousCart, boolean priceOrder) throws PricingException, RemoveFromCartException;
@@ -52,7 +52,7 @@ public interface MergeCartService {
      * @param customer the customer whose cart is to be merged
      * @param anonymousCartId the anonymous cart id
      * @return the response containing the cart, any items added to the cart, and any items removed from the cart
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      * @throws org.broadleafcommerce.core.order.service.exception.RemoveFromCartException 
      */
     public MergeCartResponse mergeCart(Customer customer, Order anonymousCart) throws PricingException, RemoveFromCartException;
@@ -76,7 +76,7 @@ public interface MergeCartService {
      * 
      * @param customer the customer whose cart is to be reconstructed
      * @return the response containing the cart and any items removed from the cart
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      * @throws org.broadleafcommerce.core.order.service.exception.RemoveFromCartException 
      */
     public ReconstructCartResponse reconstructCart(Customer customer) throws PricingException, RemoveFromCartException;

@@ -18,7 +18,7 @@ package org.broadleafcommerce.common.util;
 
 /**
  * 
- * @deprecated instead, use {@link BroadleafMergeResourceBundleMessageSource}
+ * @deprecated instead, use {@link org.broadleafcommerce.common.util.BroadleafMergeResourceBundleMessageSource}
  */
 @Deprecated
 public class ResourceBundleExtensionPoint {

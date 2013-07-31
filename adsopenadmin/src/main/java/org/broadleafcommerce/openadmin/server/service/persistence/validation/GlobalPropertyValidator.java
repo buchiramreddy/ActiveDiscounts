@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 /**
- * Analagous to {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} except this does not attempt to use any {@link ValidationConfiguration} from an
+ * Analagous to {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} except this does not attempt to use any {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} from an
  * {@link AdminPresentation} annotation. These global validators will execute on every field of every entity that is
  * attempted to be populated by the admin
  *

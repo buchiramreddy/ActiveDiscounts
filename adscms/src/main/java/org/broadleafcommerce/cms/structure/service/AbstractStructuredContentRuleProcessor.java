@@ -103,7 +103,7 @@ public abstract class AbstractStructuredContentRuleProcessor implements Structur
      * List of class names to add to the MVEL ParserContext.
      *
      * @return
-     * @see {@link ParserContext}
+     * @see {@link org.mvel2.ParserContext}
      */
     public Map<String, String> getContextClassNames() {
         return contextClassNames;
@@ -114,7 +114,7 @@ public abstract class AbstractStructuredContentRuleProcessor implements Structur
      * List of class names to add to the MVEL ParserContext.
      *
      * @return
-     * @see {@link ParserContext}
+     * @see {@link org.mvel2.ParserContext}
      */
     public void setContextClassNames(Map<String, String> contextClassNames) {
         this.contextClassNames = contextClassNames;

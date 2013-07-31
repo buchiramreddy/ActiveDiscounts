@@ -73,7 +73,7 @@ public class PageURLProcessor implements URLProcessor {
      * which provides access to the current sandbox, locale, request, and response via a
      * threadlocal context
      *
-     * @see BroadleafRequestContext
+     * @see org.broadleafcommerce.common.web.BroadleafRequestContext
      *
      * @return true if this URLProcessor is able to process the passed in request
      */

@@ -39,7 +39,7 @@ public class EntityFormValidator {
     /**
      * Validates the form DTO against the passed in entity
      * @param form the form DTO
-     * @param entity value obtained after attempting to save via {@link AdminEntityService#updateEntity(org.broadleafcommerce.openadmin.web.form.entity.EntityForm, String)}
+     * @param entity value obtained after attempting to save via {@link org.broadleafcommerce.openadmin.server.service.AdminEntityService#updateEntity(org.broadleafcommerce.openadmin.web.form.entity.EntityForm, String)}
      * @return <b>true</b> if <b>entity</b> does not have any validation errors, <b>false</b> otherwise.
      */
     public boolean validate(EntityForm form, Entity entity, Errors errors) {

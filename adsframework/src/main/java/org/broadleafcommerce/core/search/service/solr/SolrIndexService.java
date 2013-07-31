@@ -29,7 +29,7 @@ public interface SolrIndexService {
      * Rebuilds the current index. 
      * 
      * @throws java.io.IOException 
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public void rebuildIndex() throws ServiceException, IOException;
 

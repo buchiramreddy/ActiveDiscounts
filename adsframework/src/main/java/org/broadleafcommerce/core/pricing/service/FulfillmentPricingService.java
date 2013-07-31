@@ -43,7 +43,7 @@ public interface FulfillmentPricingService {
      * 
      * @param fulfillmentGroup
      * @return the updated </b>fulfillmentGroup</b> with its shippingPrice set
-     * @throws FulfillmentPriceException if <b>fulfillmentGroup</b> does not have a FulfillmentOption associated to it or
+     * @throws org.broadleafcommerce.common.vendor.service.exception.FulfillmentPriceException if <b>fulfillmentGroup</b> does not have a FulfillmentOption associated to it or
      * if there was no processor found to calculate costs for <b>fulfillmentGroup</b>
      * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
      */
@@ -58,7 +58,7 @@ public interface FulfillmentPricingService {
      * @param fulfillmentGroup
      * @param options
      * @return the price estimation for a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} with a candidate {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
-     * @throws FulfillmentPriceException if no processor was found to estimate costs for <b>fulfillmentGroup</b> with the given <b>option</b>
+     * @throws org.broadleafcommerce.common.vendor.service.exception.FulfillmentPriceException if no processor was found to estimate costs for <b>fulfillmentGroup</b> with the given <b>option</b>
      * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
      */
     public FulfillmentEstimationResponse estimateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup, Set<FulfillmentOption> options) throws FulfillmentPriceException;

@@ -36,7 +36,7 @@ public class ProcessorUtils {
     protected static Map<String, Object> cachedBeans = new HashMap<String, Object>();
     
     /**
-     * Note: See the class level comment for {@link ProcessorUtils}
+     * Note: See the class level comment for {@link org.broadleafcommerce.common.web.util.ProcessorUtils}
      * 
      * @param arguments
      * @return the "blJsResources" bean
@@ -53,7 +53,7 @@ public class ProcessorUtils {
     }
     
     /**
-     * Note: See the class level comment for {@link ProcessorUtils}
+     * Note: See the class level comment for {@link org.broadleafcommerce.common.web.util.ProcessorUtils}
      * 
      * @param arguments
      * @return the "blCssResources" bean

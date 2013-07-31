@@ -27,17 +27,17 @@ import org.broadleafcommerce.profile.core.domain.Address;
  * <p>Note: the bean name in XML should be blFulfillmentLocationResolver
  * 
  * @author Phillip Verheyden
- * @see {@link SimpleFulfillmentLocationResolver}
+ * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.SimpleFulfillmentLocationResolver}
  */
 public interface FulfillmentLocationResolver {
 
     /**
-     * This method should give an {@link Address} that a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} will
+     * This method should give an {@link org.broadleafcommerce.profile.core.domain.Address} that a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} will
      * be fulfilled from. Implementations could store this information in the database or integrate
      * with an existing warehouse solution.
      * 
      * @param group
-     * @return the {@link Address} that <b>group</b> should be fulfilled from
+     * @return the {@link org.broadleafcommerce.profile.core.domain.Address} that <b>group</b> should be fulfilled from
      */
     public Address resolveLocationForFulfillmentGroup(FulfillmentGroup group);
 

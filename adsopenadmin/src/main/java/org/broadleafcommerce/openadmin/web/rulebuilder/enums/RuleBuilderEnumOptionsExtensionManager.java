@@ -25,7 +25,7 @@ import javax.annotation.Resource;
 
 
 /**
- * Extension Manager used to aggregate option values for all registered {@link RuleBuilderEnumOptionsExtensionListener}
+ * Extension Manager used to aggregate option values for all registered {@link org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsExtensionListener}
  * 
  * @author Andre Azzolini (apazzolini)
  */

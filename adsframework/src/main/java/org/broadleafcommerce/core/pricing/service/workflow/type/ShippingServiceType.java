@@ -28,8 +28,8 @@ import java.util.Map;
  * An extendible enumeration of shipping service types.
  * 
  * @author jfischer
- * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} and {@link FulfillmentPricingProvider} paradigm
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link FulfillmentPricingProvider}
+ * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider} paradigm
+ * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
  */
 @Deprecated
 public class ShippingServiceType implements Serializable, BroadleafEnumerationType {

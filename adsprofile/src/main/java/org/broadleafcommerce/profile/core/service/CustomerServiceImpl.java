@@ -262,7 +262,7 @@ public class CustomerServiceImpl implements CustomerService {
      * 
      * @param customer
      * @return
-     * @see {@link CustomerServiceImpl#getSalt()}
+     * @see {@link org.broadleafcommerce.profile.core.service.CustomerServiceImpl#getSalt()}
      */
     public String getSalt(Customer customer) {
         return getSalt();

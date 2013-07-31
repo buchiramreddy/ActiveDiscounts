@@ -160,7 +160,7 @@ public interface PromotableOrder extends Serializable {
     boolean canApplyOrderOffer(PromotableCandidateOrderOffer offer);
 
     /**
-     * Returns the {@link BroadleafCurrency} for the current order.
+     * Returns the {@link org.broadleafcommerce.common.currency.domain.BroadleafCurrency} for the current order.
      * @return
      */
     BroadleafCurrency getOrderCurrency();

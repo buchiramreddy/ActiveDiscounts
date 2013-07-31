@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.activediscounts.endpoint.checkout;
+package com.activediscounts.api.endpoint.checkout;
 
 import org.broadleafcommerce.core.web.api.wrapper.OrderWrapper;
 import org.broadleafcommerce.core.web.api.wrapper.PaymentReferenceMapWrapper;

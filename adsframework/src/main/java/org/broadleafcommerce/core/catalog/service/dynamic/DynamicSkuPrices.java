@@ -21,9 +21,9 @@ import org.broadleafcommerce.common.money.Money;
 import java.io.Serializable;
 
 /**
- * DTO to represent pricing overrides returned from invocations to {@link DynamicSkuPricingService}
+ * DTO to represent pricing overrides returned from invocations to {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}
  * @author jfischer
- * @see {@link DynamicSkuPricingService}
+ * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}
  */
 public class DynamicSkuPrices implements Serializable {
 

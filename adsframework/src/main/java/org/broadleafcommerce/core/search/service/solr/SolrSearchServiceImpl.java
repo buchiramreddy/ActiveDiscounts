@@ -296,7 +296,7 @@ public class SolrSearchServiceImpl implements SearchService, DisposableBean {
      * @param facets
      * @param searchCriteria
      * @return the ProductSearchResult of the search
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     protected ProductSearchResult findProducts(String qualifiedSolrQuery, List<SearchFacetDTO> facets,
             ProductSearchCriteria searchCriteria, String defaultSort) throws ServiceException {

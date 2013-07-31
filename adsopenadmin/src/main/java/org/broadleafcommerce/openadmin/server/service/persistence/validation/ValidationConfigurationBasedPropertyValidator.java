@@ -28,9 +28,9 @@ import java.util.Map;
 
 /**
  * Provides a default validate method that uses the validation configuration map to pull out the error key and pre-populate
- * the {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidationResult} based on {@link ConfigurationItem#ERROR_MESSAGE}.
+ * the {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidationResult} based on {@link org.broadleafcommerce.common.presentation.ConfigurationItem#ERROR_MESSAGE}.
  * 
- * This class should be used as your base if you are writing a validator based on a {@link ValidationConfiguration}
+ * This class should be used as your base if you are writing a validator based on a {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}
  *
  * @author Phillip Verheyden (phillipuniverse)
  */
@@ -52,7 +52,7 @@ public abstract class ValidationConfigurationBasedPropertyValidator implements P
     }
     
     /**
-     * Delegate method for {@link ValidationConfiguration}-based processors that don't need to return an error message
+     * Delegate method for {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}-based processors that don't need to return an error message
      */
     public boolean validateInternal(Entity entity,
             Serializable instance,

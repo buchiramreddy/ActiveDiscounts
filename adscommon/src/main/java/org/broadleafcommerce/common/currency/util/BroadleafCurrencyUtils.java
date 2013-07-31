@@ -29,7 +29,7 @@ import java.util.Currency;
  * Utility methods for common currency operations
  * 
  * @author Phillip Verheyden
- * @see {@link BroadleafCurrency}
+ * @see {@link org.broadleafcommerce.common.currency.domain.BroadleafCurrency}
  */
 public class BroadleafCurrencyUtils {
 

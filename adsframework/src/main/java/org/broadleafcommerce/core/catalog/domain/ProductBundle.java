@@ -25,18 +25,18 @@ import java.util.List;
 /**
  * Default implementation for representing a bundle that can be sold
  * individually. Product bundles are composed of multiple
- * {@link SkuBundleItem}. <br>
+ * {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}. <br>
  * <p>
  * Bundle prices are determined 1 of 2 ways, depending on the pricing model:
  * <ol>
- * <li><b>ITEM_SUM</b>: The sum of the prices of its {@link SkuBundleItem}</li>
+ * <li><b>ITEM_SUM</b>: The sum of the prices of its {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}</li>
  * <li><b>BUNDLE</b>: Uses the pricing information on the bundle itself</li>
  * </ol>
  * </p>
  * 
  * @author Phillip Verheyden
  * 
- * @see SkuBundleItem
+ * @see org.broadleafcommerce.core.catalog.domain.SkuBundleItem
  */
 public interface ProductBundle extends Product, Serializable {
 

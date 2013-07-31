@@ -22,8 +22,8 @@ package org.broadleafcommerce.openadmin.web.form.component;
  * are related to.
  * 
  * @author Andre Azzolini (aazzolini)
- * @see {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addRowAction(ListGridAction)}
- * @see {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addToolbarAction(ListGridAction)}
+ * @see {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addRowAction(org.broadleafcommerce.openadmin.web.form.component.ListGridAction)}
+ * @see {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addToolbarAction(org.broadleafcommerce.openadmin.web.form.component.ListGridAction)}
  */
 public class ListGridAction implements Cloneable {
     

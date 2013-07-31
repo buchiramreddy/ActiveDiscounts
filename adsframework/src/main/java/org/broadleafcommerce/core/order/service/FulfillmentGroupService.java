@@ -64,7 +64,7 @@ public interface FulfillmentGroupService {
      * 
      * @param order
      * @return the saved order
-     * @throws PricingException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException 
      */
     public Order matchFulfillmentGroupsToMultishipOptions(Order order, boolean priceOrder) throws PricingException;
 
@@ -77,7 +77,7 @@ public interface FulfillmentGroupService {
      * @param order
      * @param priceOrder
      * @return the saved order
-     * @throws PricingException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException 
      */
     public Order collapseToOneFulfillmentGroup(Order order, boolean priceOrder) throws PricingException;
 

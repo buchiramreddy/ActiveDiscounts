@@ -24,11 +24,11 @@ import org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPric
 import java.io.Serializable;
 
 /**
- * Used in conjunction with the {@link FixedPriceFulfillmentPricingProvider} to allow for a single price
+ * Used in conjunction with the {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider} to allow for a single price
  * for fulfilling an order (e.g. $5 shipping)
  * 
  * @author Phillip Verheyden
- * @see {@link FixedPriceFulfillmentPricingProvider}
+ * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider}
  */
 public interface FixedPriceFulfillmentOption extends FulfillmentOption, Serializable {
     

@@ -38,9 +38,9 @@ import javax.annotation.Nullable;
  * <br>
  * <br>
  * You should implement this class if you want to make significant changes to how the
- * Category is persisted.  If you just want to add additional fields then you should extend {@link CategoryImpl}.
+ * Category is persisted.  If you just want to add additional fields then you should extend {@link org.broadleafcommerce.core.catalog.domain.CategoryImpl}.
  *
- * @see {@link CategoryImpl}
+ * @see {@link org.broadleafcommerce.core.catalog.domain.CategoryImpl}
  * @author btaylor
  * @author Jeff Fischer
  * 
@@ -442,7 +442,7 @@ public interface Category extends Serializable {
     public List<Category> buildFullCategoryHierarchy(List<Category> currentHierarchy);
 
     /**
-     * Gets the attributes for this {@link Category}. In smaller sites, using these attributes might be preferred to
+     * Gets the attributes for this {@link org.broadleafcommerce.core.catalog.domain.Category}. In smaller sites, using these attributes might be preferred to
      * extending the domain object itself.
      * 
      * @return
@@ -453,7 +453,7 @@ public interface Category extends Serializable {
     public void setCategoryAttributesMap(Map<String, CategoryAttribute> categoryAttributes);
     
     /**
-     * Gets the attributes for this {@link Category}. In smaller sites, using these attributes might be preferred to
+     * Gets the attributes for this {@link org.broadleafcommerce.core.catalog.domain.Category}. In smaller sites, using these attributes might be preferred to
      * extending the domain object itself.
      * 
      * @return
@@ -463,7 +463,7 @@ public interface Category extends Serializable {
     public List<CategoryAttribute> getCategoryAttributes();
 
     /**
-     * Sets the attributes for this {@link Category}. In smaller sites, using these attributes might be preferred to
+     * Sets the attributes for this {@link org.broadleafcommerce.core.catalog.domain.Category}. In smaller sites, using these attributes might be preferred to
      * extending the domain object and creating a new table to store custom properties.
      * 
      * @return
@@ -472,7 +472,7 @@ public interface Category extends Serializable {
     public void setCategoryAttributes(List<CategoryAttribute> categoryAttributes);
 
     /**
-     * Convenience method to get a {@link CategoryAttribute} by name
+     * Convenience method to get a {@link org.broadleafcommerce.core.catalog.domain.CategoryAttribute} by name
      * 
      * @param name
      * @return
@@ -482,7 +482,7 @@ public interface Category extends Serializable {
     public CategoryAttribute getCategoryAttributeByName(String name);
 
     /**
-     * Convenience method to return the {@link CategoryAttribute}s for the {@link Category} in an easily-consumable
+     * Convenience method to return the {@link org.broadleafcommerce.core.catalog.domain.CategoryAttribute}s for the {@link org.broadleafcommerce.core.catalog.domain.Category} in an easily-consumable
      * form
      * 
      * @return
@@ -492,13 +492,13 @@ public interface Category extends Serializable {
 
     /**
      * Returns the type of inventory for this category
-     * @return the {@link InventoryType} for this category
+     * @return the {@link org.broadleafcommerce.core.inventory.service.type.InventoryType} for this category
      */
     public InventoryType getInventoryType();
 
     /**
      * Sets the type of inventory for this category
-     * @param inventoryType the {@link InventoryType} for this category
+     * @param inventoryType the {@link org.broadleafcommerce.core.inventory.service.type.InventoryType} for this category
      */
     public void setInventoryType(InventoryType inventoryType);
     
@@ -628,12 +628,12 @@ public interface Category extends Serializable {
     public void setAllProductXrefs(List<CategoryProductXref> allProducts);
 
     /**
-     * Convenience method to retrieve all of this {@link Category}'s {@link org.broadleafcommerce.core.catalog.domain.Product}s filtered by
+     * Convenience method to retrieve all of this {@link org.broadleafcommerce.core.catalog.domain.Category}'s {@link org.broadleafcommerce.core.catalog.domain.Product}s filtered by
      * active. If you want all of the {@link org.broadleafcommerce.core.catalog.domain.Product}s (whether inactive or not) consider using
      * {@link #getAllProducts()}.
      *
      * @deprecated Use getActiveProductXrefs() instead.
-     * @return the list of active {@link org.broadleafcommerce.core.catalog.domain.Product}s for this {@link Category}
+     * @return the list of active {@link org.broadleafcommerce.core.catalog.domain.Product}s for this {@link org.broadleafcommerce.core.catalog.domain.Category}
      * @see {@link org.broadleafcommerce.core.catalog.domain.Product#isActive()}
      */
     @Deprecated

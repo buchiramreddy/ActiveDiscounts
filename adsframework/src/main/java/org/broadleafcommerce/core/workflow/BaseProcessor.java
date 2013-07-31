@@ -212,7 +212,7 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
     }
     
     /**
-     * Returns a filtered set of {@link #getActivities()} that have implemented the {@link ModuleActivity} interface. This
+     * Returns a filtered set of {@link #getActivities()} that have implemented the {@link org.broadleafcommerce.core.workflow.ModuleActivity} interface. This
      * set of module activities is only set once during {@link #afterPropertiesSet()}, so if you invoke
      * {@link #setActivities(java.util.List)} after the bean has been initialized you will need to manually reset the list of module
      * activities as well (which could be achieved by manually invoking {@link #afterPropertiesSet()}).

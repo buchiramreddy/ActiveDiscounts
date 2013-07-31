@@ -56,7 +56,7 @@ public interface LegacyOrderService extends OrderService {
      * @param order
      * @param itemRequest
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public OrderItem addGiftWrapItemToOrder(Order order, GiftWrapOrderItemRequest itemRequest) throws PricingException;
 
@@ -70,7 +70,7 @@ public interface LegacyOrderService extends OrderService {
      * @param order
      * @param itemRequest
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public OrderItem addBundleItemToOrder(Order order, BundleOrderItemRequest itemRequest) throws PricingException;
 
@@ -91,7 +91,7 @@ public interface LegacyOrderService extends OrderService {
      * @param itemRequest
      * @param priceOrder
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public OrderItem addBundleItemToOrder(Order order, BundleOrderItemRequest itemRequest, boolean priceOrder) throws PricingException;
 
@@ -119,8 +119,8 @@ public interface LegacyOrderService extends OrderService {
      *
      * @param order
      * @param item
-     * @throws ItemNotFoundException
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.ItemNotFoundException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public void updateItemQuantity(Order order, OrderItem item) throws ItemNotFoundException, PricingException;
 
@@ -132,8 +132,8 @@ public interface LegacyOrderService extends OrderService {
      * @param order
      * @param item
      * @param priceOrder
-     * @throws ItemNotFoundException
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.ItemNotFoundException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public void updateItemQuantity(Order order, OrderItem item, boolean priceOrder) throws ItemNotFoundException, PricingException;
     
@@ -144,8 +144,8 @@ public interface LegacyOrderService extends OrderService {
      * 
      * @param order
      * @param orderItemRequestDTO
-     * @throws ItemNotFoundException
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.order.service.exception.ItemNotFoundException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     public void updateItemQuantity(Order order, OrderItemRequestDTO orderItemRequestDTO) throws ItemNotFoundException, PricingException;
 
@@ -243,7 +243,7 @@ public interface LegacyOrderService extends OrderService {
      * @param order
      * @param itemRequest
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addDiscreteItemToOrder(Order order, DiscreteOrderItemRequest itemRequest) throws PricingException;
@@ -261,7 +261,7 @@ public interface LegacyOrderService extends OrderService {
      * @param itemRequest
      * @param priceOrder
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addDiscreteItemToOrder(Order order, DiscreteOrderItemRequest itemRequest, boolean priceOrder) throws PricingException;
@@ -274,7 +274,7 @@ public interface LegacyOrderService extends OrderService {
      * @param categoryId
      * @param quantity
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addSkuToOrder(Long orderId, Long skuId, Long productId, Long categoryId, Integer quantity) throws PricingException;
@@ -288,7 +288,7 @@ public interface LegacyOrderService extends OrderService {
      * @param quantity
      * @param orderItemAttributes
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addSkuToOrder(Long orderId, Long skuId, Long productId, Long categoryId, Integer quantity, Map<String, String> orderItemAttributes) throws PricingException;
@@ -302,7 +302,7 @@ public interface LegacyOrderService extends OrderService {
      * @param quantity
      * @param priceOrder
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addSkuToOrder(Long orderId, Long skuId, Long productId, Long categoryId, Integer quantity, boolean priceOrder) throws PricingException;
@@ -317,7 +317,7 @@ public interface LegacyOrderService extends OrderService {
      * @param priceOrder
      * @param orderItemAttributes
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addSkuToOrder(Long orderId, Long skuId, Long productId, Long categoryId, Integer quantity, boolean priceOrder, Map<String, String> orderItemAttributes) throws PricingException;
@@ -327,7 +327,7 @@ public interface LegacyOrderService extends OrderService {
      * @param order
      * @param newOrderItem
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addOrderItemToOrder(Order order, OrderItem newOrderItem) throws PricingException;
@@ -338,7 +338,7 @@ public interface LegacyOrderService extends OrderService {
      * @param newOrderItem
      * @param priceOrder
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addOrderItemToOrder(Order order, OrderItem newOrderItem, boolean priceOrder) throws PricingException;
@@ -349,7 +349,7 @@ public interface LegacyOrderService extends OrderService {
      * @param itemRequest
      * @param skuPricingConsiderations
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addDynamicPriceDiscreteItemToOrder(Order order, DiscreteOrderItemRequest itemRequest, @SuppressWarnings("rawtypes") HashMap skuPricingConsiderations) throws PricingException;
@@ -361,7 +361,7 @@ public interface LegacyOrderService extends OrderService {
      * @param skuPricingConsiderations
      * @param priceOrder
      * @return
-     * @throws PricingException
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException
      */
     @Deprecated
     public OrderItem addDynamicPriceDiscreteItemToOrder(Order order, DiscreteOrderItemRequest itemRequest, @SuppressWarnings("rawtypes") HashMap skuPricingConsiderations, boolean priceOrder) throws PricingException;

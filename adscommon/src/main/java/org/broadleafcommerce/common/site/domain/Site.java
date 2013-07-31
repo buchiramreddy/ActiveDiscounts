@@ -61,7 +61,7 @@ public interface Site extends Serializable {
     public String getSiteIdentifierType();
 
     /**
-     * @deprecated Use {@link #setSiteResolutionType(SiteResolutionType)}
+     * @deprecated Use {@link #setSiteResolutionType(org.broadleafcommerce.common.site.service.type.SiteResolutionType)}
      * Sets the site identifier type.
      * @see #getSiteIdentifierType()
      * @param siteIdentifierType

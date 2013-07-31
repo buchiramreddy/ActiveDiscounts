@@ -27,12 +27,12 @@ import org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmount
 import java.math.BigDecimal;
 
 /**
- * <p>This entity defines the bands that can be specified for {@link BandedWeightFulfillmentOption}. Bands
+ * <p>This entity defines the bands that can be specified for {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedWeightFulfillmentOption}. Bands
  * work on the cumulated weight of an {@link org.broadleafcommerce.core.order.domain.Order} and should be calculated as follows:</p>
  * <ol>
- *  <li>The weight of all of the {@link org.broadleafcommerce.core.order.domain.OrderItem}s (via the relationship to {@link Sku}) in a {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} (which
+ *  <li>The weight of all of the {@link org.broadleafcommerce.core.order.domain.OrderItem}s (via the relationship to {@link org.broadleafcommerce.core.catalog.domain.Sku}) in a {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} (which
  *  is obtained through their relationship with {@link org.broadleafcommerce.core.order.domain.FulfillmentGroupItem} are summed together</li>
- *  <li>The {@link FulfillmentWeightBand} should be looked up by getting the closest band less
+ *  <li>The {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBand} should be looked up by getting the closest band less
  *  than the sum of the weights</li>
  *  <li>If {@link #getResultAmountType()} returns {@link org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmountType#RATE}, then
  *  the cost for the fulfillment group is whatever is defined in {@link #getResultAmount()}</li>

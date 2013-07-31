@@ -23,7 +23,7 @@ import org.springframework.core.io.ResourceLoader;
 
 
 /**
- * <p>Replaces the deprecated {@link org.broadleafcommerce.common.util.BLResourceBundleMessageSource} by using a {@link ReloadableResourceBundleMessageSource}
+ * <p>Replaces the deprecated {@link org.broadleafcommerce.common.util.BLResourceBundleMessageSource} by using a {@link org.springframework.context.support.ReloadableResourceBundleMessageSource}
  * instead. The main advantage of using this is the out-of-the-box ability to merge multiple property files together. There
  * is one important difference: When there is a conflict for a property (declared in multiple files) this implementation
  * assumes that the <i>later</i> one in the list takes precedence. This follows with normal Broadleaf assumptions that bean
@@ -34,12 +34,12 @@ import org.springframework.core.io.ResourceLoader;
  * that codes are always obtained from a merged property list.</p>
  * 
  * <p>The basenames in this implementation are Spring path resources so if you need to refer to a resource on the classpath,
- * these should be prefixed with classpath:. This is slightly different from the {@link ResourceBundleMessageSource}; see
- * {@link ReloadableResourceBundleMessageSource#setBasenames(String...)} for more information.</p>
+ * these should be prefixed with classpath:. This is slightly different from the {@link org.springframework.context.support.ResourceBundleMessageSource}; see
+ * {@link org.springframework.context.support.ReloadableResourceBundleMessageSource#setBasenames(String...)} for more information.</p>
  * 
  * @author Phillip Verheyden
- * @see {@link ReloadableResourceBundleMessageSource}
- * @see {@link ResourceLoader#getResource(String)}
+ * @see {@link org.springframework.context.support.ReloadableResourceBundleMessageSource}
+ * @see {@link org.springframework.core.io.ResourceLoader#getResource(String)}
  * @see {@link #setBasenames(String...)}
  */
 public class BroadleafMergeResourceBundleMessageSource extends ReloadableResourceBundleMessageSource {
@@ -52,7 +52,7 @@ public class BroadleafMergeResourceBundleMessageSource extends ReloadableResourc
      * 
      * @param basenames
      * @param resourceBundleExtensionPoint
-     * @see {@link ReloadableResourceBundleMessageSource#setBasenames(String...)}
+     * @see {@link org.springframework.context.support.ReloadableResourceBundleMessageSource#setBasenames(String...)}
      */
     @Override
     public void setBasenames(String... basenames) {

@@ -23,7 +23,7 @@ import org.springframework.web.context.request.WebRequestInterceptor;
 import javax.annotation.Resource;
 
 /**
- * Interceptor for use with portlets that calls the {@link TranslationRequestProcessor}.
+ * Interceptor for use with portlets that calls the {@link org.broadleafcommerce.common.web.filter.TranslationRequestProcessor}.
  * 
  * @author bpolster
  */

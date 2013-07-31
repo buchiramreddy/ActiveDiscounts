@@ -27,7 +27,7 @@ import java.util.List;
  * {@code CategoryXrefDao} provides persistence access to the relationship
  * between a category and its sub-categories. This includes an ordering field.
  *
- * @see CategoryXref
+ * @see org.broadleafcommerce.core.catalog.domain.CategoryXref
  * @author Jeff Fischer
  */
 public interface CategoryXrefDao {

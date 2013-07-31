@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Responsible for setting the necessary attributes on the {@link TranslationConsiderationContext}.
+ * Responsible for setting the necessary attributes on the {@link org.broadleafcommerce.common.i18n.service.TranslationConsiderationContext}.
  * 
  * @author Andre Azzolini (apazzolini), bpolster
  */

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.activediscounts.endpoint.cart;
+package com.activediscounts.api.endpoint.cart;
 
 import org.broadleafcommerce.core.web.api.wrapper.OrderWrapper;
 import org.springframework.context.annotation.Scope;

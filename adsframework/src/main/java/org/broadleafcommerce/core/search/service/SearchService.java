@@ -36,7 +36,7 @@ public interface SearchService {
      * This method delegates to {@link org.broadleafcommerce.core.search.service.solr.SolrIndexService#rebuildIndex()}. It is here to preserve backwards-compatibility
      * with sites that were originally configured to run Broadleaf with Solr before 2.2.0.
      * 
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      * @throws java.io.IOException
      */
     public void rebuildIndex() throws ServiceException, IOException;
@@ -48,12 +48,12 @@ public interface SearchService {
      * "Routers" category and a "Enterprise Routers" sub-category, asking for products in "Routers", would return
      * products that are in the "Enterprise Routers" category. 
      * 
-     * @see #findExplicitProductsByCategory(Category, org.broadleafcommerce.core.search.domain.ProductSearchCriteria)
+     * @see #findExplicitProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, org.broadleafcommerce.core.search.domain.ProductSearchCriteria)
      * 
      * @param category
      * @param searchCriteria
      * @return the result of the search
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public ProductSearchResult findProductsByCategory(Category category, ProductSearchCriteria searchCriteria)
             throws ServiceException;
@@ -65,12 +65,12 @@ public interface SearchService {
      * "Routers" category and a "Enterprise Routers" sub-category, asking for products in "Routers", would NOT return
      * products that are in the "Enterprise Routers" category. 
      * 
-     * @see #findProductsByCategory(Category, org.broadleafcommerce.core.search.domain.ProductSearchCriteria)
+     * @see #findProductsByCategory(org.broadleafcommerce.core.catalog.domain.Category, org.broadleafcommerce.core.search.domain.ProductSearchCriteria)
      * 
      * @param category
      * @param searchCriteria
      * @return
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public ProductSearchResult findExplicitProductsByCategory(Category category, ProductSearchCriteria searchCriteria)
             throws ServiceException;
@@ -82,7 +82,7 @@ public interface SearchService {
      * @param query
      * @param searchCriteria
      * @return the result of the search
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public ProductSearchResult findProductsByQuery(String query, ProductSearchCriteria searchCriteria)
             throws ServiceException;
@@ -94,7 +94,7 @@ public interface SearchService {
      * @param category
      * @param query
      * @param searchCriteria
-     * @throws ServiceException
+     * @throws org.broadleafcommerce.common.exception.ServiceException
      */
     public ProductSearchResult findProductsByCategoryAndQuery(Category category, String query,
                                                               ProductSearchCriteria searchCriteria) throws ServiceException;

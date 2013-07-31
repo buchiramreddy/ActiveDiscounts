@@ -33,7 +33,7 @@ public interface BroadleafCurrencyResolver {
 
     /**
      * 
-     * @deprecated use {@link #resolveCurrency(WebRequest)} instead
+     * @deprecated use {@link #resolveCurrency(org.springframework.web.context.request.WebRequest)} instead
      */
     @Deprecated
     public BroadleafCurrency resolveCurrency(HttpServletRequest request);

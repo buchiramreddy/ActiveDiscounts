@@ -117,7 +117,7 @@ public class BroadleafCheckoutController extends AbstractCheckoutController {
      * @param response
      * @param model
      * @return a redirect to /checkout
-     * @throws PricingException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException 
      */
     public String convertToSingleship(HttpServletRequest request, HttpServletResponse response, Model model) throws PricingException {
         Order cart = CartState.getCart();
@@ -133,7 +133,7 @@ public class BroadleafCheckoutController extends AbstractCheckoutController {
      * @param errors
      * @param emailAddress
      * @return the return path
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public String saveGlobalOrderDetails(HttpServletRequest request, Model model, 
             OrderInfoForm orderInfoForm, BindingResult result) throws ServiceException {
@@ -175,7 +175,7 @@ public class BroadleafCheckoutController extends AbstractCheckoutController {
      * @param model
      * @param shippingForm
      * @return the return path
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public String saveSingleShip(HttpServletRequest request, HttpServletResponse response, Model model,
             ShippingInfoForm shippingForm, BindingResult result) throws PricingException, ServiceException {
@@ -240,15 +240,15 @@ public class BroadleafCheckoutController extends AbstractCheckoutController {
      * Processes the given options for multiship. Validates that all options are
      * selected before performing any actions.
      * 
-     * @see #showMultiship(HttpServletRequest, HttpServletResponse, Model)
+     * @see #showMultiship(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.springframework.ui.Model)
      * 
      * @param request
      * @param response
      * @param model
      * @param orderMultishipOptionForm
      * @return a redirect to the checkout page
-     * @throws PricingException 
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.core.pricing.service.exception.PricingException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public String saveMultiship(HttpServletRequest request, HttpServletResponse response, Model model,
             OrderMultishipOptionForm orderMultishipOptionForm, BindingResult result) throws PricingException, ServiceException {
@@ -282,7 +282,7 @@ public class BroadleafCheckoutController extends AbstractCheckoutController {
      * @param model
      * @param addressForm
      * @return the return path to the multiship page
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public String saveMultishipAddAddress(HttpServletRequest request, HttpServletResponse response, Model model,
              ShippingInfoForm addressForm, BindingResult result) throws ServiceException {
@@ -346,7 +346,7 @@ public class BroadleafCheckoutController extends AbstractCheckoutController {
      * @param model
      * @param billingForm
      * @return the return path
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public String completeCheckout(HttpServletRequest request, HttpServletResponse response, Model model,
             BillingInfoForm billingForm, BindingResult result) throws CheckoutException, PricingException, ServiceException {
@@ -378,7 +378,7 @@ public class BroadleafCheckoutController extends AbstractCheckoutController {
      * @param model
      * @param billingForm
      * @return the return path
-     * @throws ServiceException 
+     * @throws org.broadleafcommerce.common.exception.ServiceException 
      */
     public String completeSecureCreditCardCheckout(HttpServletRequest request, HttpServletResponse response, Model model,
             BillingInfoForm billingForm, BindingResult result) throws CheckoutException, PricingException, ServiceException {

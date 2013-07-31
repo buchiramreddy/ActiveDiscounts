@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.activediscounts.endpoint.catalog;
+package com.activediscounts.api.endpoint.catalog;
 
 import org.broadleafcommerce.core.web.api.wrapper.CategoriesWrapper;
 import org.broadleafcommerce.core.web.api.wrapper.CategoryAttributeWrapper;
