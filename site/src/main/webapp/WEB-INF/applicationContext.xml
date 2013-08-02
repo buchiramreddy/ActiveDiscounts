@@ -35,11 +35,11 @@
     </bean>
 
     <bean id="webSecureDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/secure"/>
+        <property name="jndiName" value="java:comp/env/jdbc/webSecure"/>
     </bean>
 
     <bean id="webStorageDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/storage"/>
+        <property name="jndiName" value="java:comp/env/jdbc/cmsStorage"/>
     </bean>
 
     <bean id="blMergedPersistenceXmlLocations" class="org.springframework.beans.factory.config.ListFactoryBean">
