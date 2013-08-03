@@ -196,9 +196,21 @@
             <fileSystemApplicationContext path="src/main/webapp/WEB-INF/applicationContext.xml"/>
             <classPathApplicationContext path="bl-fake-applicationContext-ant.xml"/>
             <!--select the dialects and persistence units to export-->
-            <jpaconfiguration persistenceUnit="blPU" dialect="${ant.hibernate.sql.ddl.dialect}" />
-            <jpaconfiguration persistenceUnit="blSecurePU" dialect="${ant.hibernate.sql.ddl.dialect}" />
-            <jpaconfiguration persistenceUnit="blCMSStorage" dialect="${ant.hibernate.sql.ddl.dialect}" />
+            <jpaconfiguration persistenceUnit="blPU" dialect="${ant.hibernate.sql.ddl.dialect}"
+                              url="${ant.blPU.url}"
+                              userName="${ant.blPU.userName}"
+                              password="${ant.blPU.password}"
+                              driverClassName="${ant.blPU.driverClassName}"/>
+            <jpaconfiguration persistenceUnit="blSecurePU" dialect="${ant.hibernate.sql.ddl.dialect}"
+                              url="${ant.blSecurePU.url}"
+                              userName="${ant.blSecurePU.userName}"
+                              password="${ant.blSecurePU.password}"
+                              driverClassName="${ant.blSecurePU.driverClassName}"/>
+            <jpaconfiguration persistenceUnit="blCMSStorage" dialect="${ant.hibernate.sql.ddl.dialect}"
+                              url="${ant.blCMSStorage.url}"
+                              userName="${ant.blCMSStorage.userName}"
+                              password="${ant.blCMSStorage.password}"
+                              driverClassName="${ant.blCMSStorage.driverClassName}"/>
             <!--other required elements-->
             <classpath refid="build.runtime.classpath" />
             <hbm2ddl export="false" update="false" create="true"/>
