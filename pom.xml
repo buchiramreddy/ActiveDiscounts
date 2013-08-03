@@ -1097,6 +1097,14 @@
                 <artifactId>yuicompressor</artifactId>
                 <version>2.4.7</version>
             </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>5.9</version>
+                <type>jar</type>
+                <classifier>jdk15</classifier>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
       
@@ -1112,6 +1120,7 @@
         <module>adsprofileweb</module>
         <module>adscommon</module>
         <module>adscore</module>
+        <module>integration</module>
     </modules>
 
 
