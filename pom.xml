@@ -1120,7 +1120,7 @@
         <module>adsprofileweb</module>
         <module>adscommon</module>
         <module>adscore</module>
-        <module>integration</module>
+        <!--<module>integration</module>-->
     </modules>
 
 
