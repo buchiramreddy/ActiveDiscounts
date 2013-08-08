@@ -17,8 +17,8 @@
         http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
-
-    <bean id="blConfiguration" class="org.broadleafcommerce.common.config.RuntimeEnvironmentPropertiesConfigurer"/>
+    
+    <bean id="blConfiguration" class="org.broadleafcommerce.common.config.RuntimeEnvironmentPropertiesConfigurer" />
 
     <bean id="blMergedDataSources" class="org.springframework.beans.factory.config.MapFactoryBean">
         <property name="sourceMap">
@@ -28,18 +28,6 @@
                 <entry key="jdbc/cmsStorage" value-ref="webStorageDS"/>
             </map>
         </property>
-    </bean>
-
-    <bean id="webDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/web"/>
-    </bean>
-
-    <bean id="webSecureDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/secure"/>
-    </bean>
-
-    <bean id="webStorageDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/storage"/>
     </bean>
 
     <bean id="blMergedPersistenceXmlLocations" class="org.springframework.beans.factory.config.ListFactoryBean">
@@ -138,10 +126,10 @@
     <!-- The second bean registers the dialct to the blWebTemplateEngine -->
     <!-- Note that the same thing could be done for the blEmailTemplateEngine -->
     <!-- 
-    <bean id="myDialect" class="com.activediscounts.common.web.dialect.MyDialect">
+    <bean id="myDialect" class="com.mycompany.common.web.dialect.MyDialect">
         <property name="processors">
           <set>
-            <bean class="com.activediscounts.common.web.processor.MyProcessor" />
+            <bean class="com.mycompany.common.web.processor.MyProcessor" />
           </set>
         </property>     
     </bean> 
