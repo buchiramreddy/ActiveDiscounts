@@ -3,7 +3,7 @@ ActiveDiscounts
 
 First version of the Active Discounts project.
 
-How to Install and Run:
+1.0 How to Install and Run:
 =======================
 
 Pre-Install Steps:
@@ -54,5 +54,65 @@ f. Now, Configure admin from 'Run Configurations' but this time as Tomcat-->loca
 -Druntime.environment=development
 
 h. Change environment by assigning correct value above (runtime.environment) which will take the properties from the respective files.
+
+
+2.0 Runtime Environment Configuration:
+==================================
+
+Class: RuntimeEnvironmentPropertiesConfigurer.java
+
+Property override Order:
+------------------------
+a. Properties defined in the file specified by runtime JVM argument "property-override"
+b. Properties defined in the file specified by runtime JVM argument "property-shared-override"
+
+   eg: -Dproperty-share-override=/Users/SomeUser/SomeProject/secret.properties
+
+c. development.properties from the specific application (either site or admin)
+d. common.properties from the specific application (either site or admin)
+e. development-shared.properties in the core project
+f. common-shared.properties in the core project
+g. Broadleaf defined properties
+
+Configuration:
+--------------
+
+Add 'blConfiguration' in 'applicationContext.xml' and 'applicationContext-admin.xml' like below.
+<bean id="blConfiguration" class="org.broadleafcommerce.common.config.RuntimeEnvironmentPropertiesConfigurer" />
+
+And pass this JVM Parameter for the correct environment.
+eg: -Druntime.environment=production
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+
    
    
