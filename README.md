@@ -34,6 +34,7 @@ f. Go to Run Configuration and select 'site' as Maven Module
 -Ddatabase.driver=com.mysql.jdbc.Driver
 -Ddatabase.url=jdbc:mysql://localhost:3306/ads?useUnicode=true&amp;characterEncoding=utf-8
 -Dhibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+-Druntime.environment=development
 
 g. You will see the tables and data populated in the database 'ads' after you deployed and started tomcat with 'site'
 f. Now, Configure admin from 'Run Configurations' but this time as Tomcat-->local.
@@ -50,5 +51,8 @@ f. Now, Configure admin from 'Run Configurations' but this time as Tomcat-->loca
 -Ddatabase.driver=com.mysql.jdbc.Driver
 -Ddatabase.url=jdbc:mysql://localhost:3306/ads?useUnicode=true&amp;characterEncoding=utf-8
 -Dhibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+-Druntime.environment=development
+
+h. Change environment by assigning correct value above (runtime.environment) which will take the properties from the respective files.
    
    
