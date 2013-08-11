@@ -36,12 +36,12 @@
         <!-- Wishlist modifications live under /account, but we don't need HTTPS -->
         <sec:intercept-url pattern="/account/wishlist/**" access="ROLE_USER" requires-channel="any" />
         
-        <!-- Specify these URLs as requiring HTTPS to encrypt user data  -->
-        <sec:intercept-url pattern="/register*" requires-channel="https" />
+        <!-- Buchi Specify these URLs as requiring HTTPS to encrypt user data  -->
+        <!--<sec:intercept-url pattern="/register*" requires-channel="https" />
         <sec:intercept-url pattern="/login*/**" requires-channel="https" />
         <sec:intercept-url pattern="/account/**" access="ROLE_USER" requires-channel="https" />
         <sec:intercept-url pattern="/checkout/**" requires-channel="https" />
-        <sec:intercept-url pattern="/confirmation/**" requires-channel="https" />
+        <sec:intercept-url pattern="/confirmation/**" requires-channel="https" />-->
         
         <!-- Since the cart page is viewing as a modal, we want to allow it on any page -->
         <sec:intercept-url pattern="/cart/**" requires-channel="any" />

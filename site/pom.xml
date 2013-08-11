@@ -144,6 +144,10 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.broadleafcommerce</groupId>
+            <artifactId>broadleaf-paypal</artifactId>
+        </dependency>
         <!--<dependency>
             <groupId>c3p0</groupId>
             <artifactId>c3p0</artifactId>
