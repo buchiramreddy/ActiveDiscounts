@@ -1,4 +1,4 @@
-<nav>   
+<!--<nav>-->   
     <div th:remove="all">
         <!--
              This template displays the navigation of the site by looking up the category named "Nav"
@@ -6,16 +6,18 @@
         -->
     </div>
     <blc:categories resultVar="navCategories" parentCategory="Primary Nav" maxResults="7" />
+    <div id="navigation">
+        <ul class="top-level">
+            <li th:each="category : ${navCategories}">
+                <a class="home" th:href="@{${category.url}}" th:class="${categoryStat.first}? 'home'" th:text="${category.name}"></a>
+                <ul th:if="${#objects.nullSafe(category,default)}" class="sub-level">
+                    <li th:each="cat : ${category.getChildCategories()}">
+                        <a th:text="${cat.name}" th:href="@{${cat.url}}" />
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
     
-    <ul>
-        <li th:each="category : ${navCategories}">
-            <a class="home" th:href="@{${category.url}}" th:class="${categoryStat.first}? 'home'" th:text="${category.name}"></a>
-            <ul th:if="${#objects.nullSafe(category,default)}" class="sub-menu">
-                <li th:each="cat : ${category.getChildCategories()}">
-                    <a th:text="${cat.name}" th:href="@{${cat.url}}" />
-                </li>
-            </ul>
-        </li>
-    </ul>   
-    
-</nav>
+<!--
+</nav>-->

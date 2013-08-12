@@ -3135,6 +3135,60 @@ and (max-width : 480px) {
 .icon-fullscreen{background-position:-456px -144px;}
 
 /* ---- Sub menu --- */
+/* ----- Test */
+#navigation { font-size:0.75em; width:150px; }
+#navigation ul { margin:0px; padding:0px; }
+#navigation li { list-style: none; }
+
+ul.top-level { background:#666; }
+ul.top-level li {
+    border-bottom: #fff solid;
+    border-top: #fff solid;
+    border-width: 1px;
+}
+
+#navigation a {
+    color: #fff;
+    cursor: pointer;
+    display:block;
+    height:25px;
+    line-height: 25px;
+    text-indent: 10px;
+    text-decoration:none;
+    width:100%;
+}
+
+#navigation a:hover{
+    text-decoration:underline;
+}
+
+#navigation li:hover {
+    background: #f90;
+    position: relative;
+}
+
+ul.sub-level {
+    display: none;
+}
+
+li:hover .sub-level {
+    background: #999;
+    border: #fff solid;
+    border-width: 1px;
+    display: block;
+    position: absolute;
+    left: 150px;
+    top: 0px;
+}
+
+ul.sub-level li {
+    border: none;
+    float:left;
+    width:150px;
+}
+
+
+/* ----- Test */
 
 nav ul li:hover .sub-menu { display: block; }
 
