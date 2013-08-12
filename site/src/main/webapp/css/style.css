@@ -3133,3 +3133,44 @@ and (max-width : 480px) {
 .icon-filter{background-position:-408px -144px;}
 .icon-briefcase{background-position:-432px -144px;}
 .icon-fullscreen{background-position:-456px -144px;}
+
+/* ---- Sub menu --- */
+
+nav ul li:hover .sub-menu { display: block; }
+
+        nav ul li ul.sub-menu {
+        position: absolute;
+        top: 181px;
+          list-style-type: none;
+        background: url(../img/canvas.jpg);
+        z-index: 99999;
+        display: none;
+          width: 253px;
+      }
+
+        nav ul li ul.sub-menu li {
+            display: block;
+            float: none;
+        }
+
+        nav ul li ul.sub-menu li:hover {
+            background-color: #A9C8CB;
+            -webkit-transition: background-color 0.1s ease-in;
+            -moz-transition: background-color 0.1s ease-in;
+            -o-transition: background-color 0.1s ease-in;
+            transition: background-color 0.1s ease-in;
+        }
+
+        nav ul li ul.sub-menu img {
+            z-index: 99999;
+            float: left;
+            width: 200px;
+            height: 200px;
+        }
+
+        nav ul li ul.sub-menu a {
+            font: 12px/35px 'ProximaNovaBold', Helvetica, sans-serif;
+            color: #342020;
+            padding: 10px;
+            background: none;
+        }

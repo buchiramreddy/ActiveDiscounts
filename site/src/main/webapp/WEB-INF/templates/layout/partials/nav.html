@@ -5,11 +5,17 @@
              and building a list of the categories sub-categories.                          
         -->
     </div>
-    <blc:categories resultVar="navCategories" parentCategory="Primary Nav" maxResults="6" />
+    <blc:categories resultVar="navCategories" parentCategory="Primary Nav" maxResults="7" />
     
     <ul>
         <li th:each="category : ${navCategories}">
             <a class="home" th:href="@{${category.url}}" th:class="${categoryStat.first}? 'home'" th:text="${category.name}"></a>
+            <ul th:if="${#objects.nullSafe(category,default)}" class="sub-menu">
+                <li th:each="cat : ${category.getChildCategories()}">
+                    <a th:text="${cat.name}" th:href="@{${cat.url}}" />
+                </li>
+            </ul>
         </li>
-    </ul>
+    </ul>   
+    
 </nav>
