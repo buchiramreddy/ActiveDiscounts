@@ -16,9 +16,17 @@
 
 package org.broadleafcommerce.core.checkout.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.encryption.EncryptionModule;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.time.SystemTime;
+
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
@@ -42,6 +50,7 @@ import org.broadleafcommerce.core.payment.domain.PaymentInfoImpl;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 import org.broadleafcommerce.core.payment.service.SecurePaymentInfoService;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.Country;
@@ -50,80 +59,102 @@ import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.State;
 import org.broadleafcommerce.profile.core.domain.StateImpl;
 import org.broadleafcommerce.profile.core.service.CustomerService;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CheckoutTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blCheckoutService")
-    private CheckoutService checkoutService;
-    
-    @Resource(name="blEncryptionModule")
-    private EncryptionModule encryptionModule;
+  @Resource(name = "blCatalogService")
+  private CatalogService catalogService;
 
-    @Resource(name = "blCustomerService")
-    private CustomerService customerService;
-    
-    @Resource(name = "blOrderService")
-    private OrderService orderService;
+  @Resource(name = "blCheckoutService")
+  private CheckoutService checkoutService;
 
-    @Resource(name = "blCatalogService")
-    private CatalogService catalogService;
-    
-    @Resource(name = "blOrderItemService")
-    private OrderItemService orderItemService;
+  @Resource(name = "blCustomerService")
+  private CustomerService customerService;
 
-    @Resource(name = "blSecurePaymentInfoService")
-    private SecurePaymentInfoService securePaymentInfoService;
+  @Resource(name = "blEncryptionModule")
+  private EncryptionModule encryptionModule;
 
-    @Test(groups = { "checkout" }, dependsOnGroups = { "createCartForCustomer", "testShippingInsert" })
-    @Transactional
-    public void testCheckout() throws Exception {
-        String userName = "customer1";
-        Customer customer = customerService.readCustomerByUsername(userName);
-        Order order = orderService.createNewCartForCustomer(customer);
+  @Resource(name = "blOrderItemService")
+  private OrderItemService orderItemService;
 
-        Address address = buildAddress();
-        FulfillmentGroup group = buildFulfillmentGroup(order, address);
-        addSampleItemToOrder(order, group);
-        order.setTotalShipping(new Money(0D));
-        Map<PaymentInfo, Referenced> map = addPaymentToOrder(order, address);
+  @Resource(name = "blOrderService")
+  private OrderService orderService;
 
-        //execute pricing for this order
-        orderService.save(order, true);
-        CheckoutResponse response = checkoutService.performCheckout(order, map);
-        //The DummyCreditCardModule changed the reference Number - make sure it's represented
-        for(PaymentInfo paymentInfo : response.getInfos().keySet()) {
-            assert(paymentInfo.getReferenceNumber().equals("abc123"));
-            assert(response.getInfos().get(paymentInfo).getReferenceNumber().equals("abc123"));
-        }
+  @Resource(name = "blSecurePaymentInfoService")
+  private SecurePaymentInfoService securePaymentInfoService;
 
-        //confirm that the secure payment info items are not persisted
-        Referenced referenced = null;
-        try {
-            referenced = securePaymentInfoService.findSecurePaymentInfo("abc123", PaymentInfoType.CREDIT_CARD);
-        } catch (Exception e) {
-            //do nothing
-        }
-        try {
-            referenced = securePaymentInfoService.findSecurePaymentInfo("1234", PaymentInfoType.CREDIT_CARD);
-        } catch (Exception e) {
-            //do nothing
-        }
-        assert(referenced == null);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        assert (order.getTotal().greaterThan(order.getSubTotal()));
-        //Removed by Jeff to facilitate merge : assert (order.getTotalTax().equals(order.getSubTotal().add(order.getTotalShipping()).multiply(0.05D)));
-        assert (response.getPaymentResponse().getResponseItems().size() > 0);
-        //assert (order.getTotal().equals(order.getSubTotal().add(order.getTotalTax()).add(order.getTotalShipping())));
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "checkout" },
+    dependsOnGroups = { "createCartForCustomer", "testShippingInsert" }
+  )
+  @Transactional public void testCheckout() throws Exception {
+    String   userName = "customer1";
+    Customer customer = customerService.readCustomerByUsername(userName);
+    Order    order    = orderService.createNewCartForCustomer(customer);
+
+    Address          address = buildAddress();
+    FulfillmentGroup group   = buildFulfillmentGroup(order, address);
+    addSampleItemToOrder(order, group);
+    order.setTotalShipping(new Money(0D));
+
+    Map<PaymentInfo, Referenced> map = addPaymentToOrder(order, address);
+
+    // execute pricing for this order
+    orderService.save(order, true);
+
+    CheckoutResponse response = checkoutService.performCheckout(order, map);
+
+    // The DummyCreditCardModule changed the reference Number - make sure it's represented
+    for (PaymentInfo paymentInfo : response.getInfos().keySet()) {
+      assert (paymentInfo.getReferenceNumber().equals("abc123"));
+      assert (response.getInfos().get(paymentInfo).getReferenceNumber().equals("abc123"));
     }
+
+    // confirm that the secure payment info items are not persisted
+    Referenced referenced = null;
+
+    try {
+      referenced = securePaymentInfoService.findSecurePaymentInfo("abc123", PaymentInfoType.CREDIT_CARD);
+    } catch (Exception e) {
+      // do nothing
+    }
+
+    try {
+      referenced = securePaymentInfoService.findSecurePaymentInfo("1234", PaymentInfoType.CREDIT_CARD);
+    } catch (Exception e) {
+      // do nothing
+    }
+
+    assert (referenced == null);
+
+    assert (order.getTotal().greaterThan(order.getSubTotal()));
+
+    // Removed by Jeff to facilitate merge : assert (order.getTotalTax().equals(order.getSubTotal().add(order.getTotalShipping()).multiply(0.05D)));
+    assert (response.getPaymentResponse().getResponseItems().size() > 0);
+      // assert (order.getTotal().equals(order.getSubTotal().add(order.getTotalTax()).add(order.getTotalShipping())));
+  } // end method testCheckout
+
 
 /*
     @SuppressWarnings("serial")
@@ -146,21 +177,21 @@ public class CheckoutTest extends BaseTest {
         order.setTotalShipping(new Money(0D));
         Map<PaymentInfo, Referenced> map = addPaymentToOrder(order, address);
         CheckoutResponse response = checkoutService.performCheckout(order, map);
-        
+
         assert(offerAuditDao.countUsesByCustomer(customer.getId(), offer.getId()) == 1L);
         assert(offerService.verifyMaxCustomerUsageThreshold(customer, offer) == false);
 
         // Now enter a 2nd order
-        Order order2 = cartService.createNewCartForCustomer(customer);        
+        Order order2 = cartService.createNewCartForCustomer(customer);
         cartService.addOfferCode(order2, code, true);
-        
+
         Address address2 = buildAddress();
         FulfillmentGroup group2 = buildFulfillmentGroup(order2, address2);
         addSampleItemToOrder(order2, group2);
         order2.setTotalShipping(new Money(0D));
         Map<PaymentInfo, Referenced> map2 = addPaymentToOrder(order2, address2);
         CheckoutResponse response2 = checkoutService.performCheckout(order2, map2);
-        
+
         assert(offerAuditDao.countUsesByCustomer(customer.getId(), offer.getId()) == 2L);
         assert(offerService.verifyMaxCustomerUsageThreshold(customer, offer) == true);
 
@@ -170,7 +201,7 @@ public class CheckoutTest extends BaseTest {
         boolean exceptionCaught = false;
         try {
             cartService.addOfferCode(order3, code, true);
-        } catch (OfferMaxUseExceededException e) {            
+        } catch (OfferMaxUseExceededException e) {
             exceptionCaught = true;
         }
 
@@ -207,171 +238,171 @@ public class CheckoutTest extends BaseTest {
         assert(offerAuditDao.countUsesByCustomer(customer2.getId(), offer.getId()) == 1L);
         assert(offerService.verifyMaxCustomerUsageThreshold(customer2, offer) == false);
     }
-    */
+ */
 
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    private Map<PaymentInfo, Referenced> addPaymentToOrder(Order order, Address address) {
-        PaymentInfo payment = new PaymentInfoImpl();
-        payment.setAddress(address);
-        payment.setAmount(new Money(15D + (15D * 0.05D)));
-        payment.setReferenceNumber("1234");
-        payment.setType(PaymentInfoType.CREDIT_CARD);
-        payment.setOrder(order);
+  private Map<PaymentInfo, Referenced> addPaymentToOrder(Order order, Address address) {
+    PaymentInfo payment = new PaymentInfoImpl();
+    payment.setAddress(address);
+    payment.setAmount(new Money(15D + (15D * 0.05D)));
+    payment.setReferenceNumber("1234");
+    payment.setType(PaymentInfoType.CREDIT_CARD);
+    payment.setOrder(order);
 
-        CreditCardPaymentInfo cc = new CreditCardPaymentInfo() {
+    CreditCardPaymentInfo cc = new CreditCardPaymentInfo() {
+      private static final long serialVersionUID = 1L;
+      private String            referenceNumber  = "1234";
 
-            private static final long serialVersionUID = 1L;
-            private String referenceNumber = "1234";
+      @Override public String getCvvCode() {
+        return "123";
+      }
 
-            @Override
-            public String getCvvCode() {
-                return "123";
-            }
+      @Override public Integer getExpirationMonth() {
+        return 11;
+      }
 
-            @Override
-            public Integer getExpirationMonth() {
-                return 11;
-            }
+      @Override public Integer getExpirationYear() {
+        return 2011;
+      }
 
-            @Override
-            public Integer getExpirationYear() {
-                return 2011;
-            }
+      @Override public Long getId() {
+        return null;
+      }
 
-            @Override
-            public Long getId() {
-                return null;
-            }
+      @Override public String getPan() {
+        return "1111111111111111";
+      }
 
-            @Override
-            public String getPan() {
-                return "1111111111111111";
-            }
+      @Override public void setCvvCode(String cvvCode) {
+        // do nothing
+      }
 
-            @Override
-            public void setCvvCode(String cvvCode) {
-                //do nothing
-            }
+      @Override public void setExpirationMonth(Integer expirationMonth) {
+        // do nothing
+      }
 
-            @Override
-            public void setExpirationMonth(Integer expirationMonth) {
-                //do nothing
-            }
+      @Override public void setExpirationYear(Integer expirationYear) {
+        // do nothing
+      }
 
-            @Override
-            public void setExpirationYear(Integer expirationYear) {
-                //do nothing
-            }
+      @Override public void setId(Long id) {
+        // do nothing
+      }
 
-            @Override
-            public void setId(Long id) {
-                //do nothing
-            }
+      @Override public void setPan(String pan) {
+        // do nothing
+      }
 
-            @Override
-            public void setPan(String pan) {
-                //do nothing
-            }
+      @Override public EncryptionModule getEncryptionModule() {
+        return encryptionModule;
+      }
 
-            @Override
-            public EncryptionModule getEncryptionModule() {
-                return encryptionModule;
-            }
+      @Override public String getReferenceNumber() {
+        return referenceNumber;
+      }
 
-            @Override
-            public String getReferenceNumber() {
-                return referenceNumber;
-            }
+      @Override public void setEncryptionModule(EncryptionModule encryptionModule) {
+        // do nothing
+      }
 
-            @Override
-            public void setEncryptionModule(EncryptionModule encryptionModule) {
-                //do nothing
-            }
+      @Override public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+      }
 
-            @Override
-            public void setReferenceNumber(String referenceNumber) {
-                this.referenceNumber = referenceNumber;
-            }
+      @Override public String getNameOnCard() {
+        return "Cardholder Name";
+      }
 
-            @Override
-            public String getNameOnCard() {
-                return "Cardholder Name";
-            }
+      @Override public void setNameOnCard(String nameOnCard) {
+        // do nothing
+      }
 
-            @Override
-            public void setNameOnCard(String nameOnCard) {
-                // do nothing
-            }
+    };
 
-        };
+    order.getPaymentInfos().add(payment);
 
-        order.getPaymentInfos().add(payment);
-        Map<PaymentInfo, Referenced> map = new HashMap<PaymentInfo, Referenced>();
-        map.put(payment, cc);
-        return map;
-    }
+    Map<PaymentInfo, Referenced> map = new HashMap<PaymentInfo, Referenced>();
+    map.put(payment, cc);
 
-    private void addSampleItemToOrder(Order order, FulfillmentGroup group) {
-        DiscreteOrderItem item = new DiscreteOrderItemImpl();
-        item.setOrder(order);
-        item.setQuantity(1);
+    return map;
+  } // end method addPaymentToOrder
 
-        Sku newSku = new SkuImpl();
-        newSku.setName("Under Armor T-Shirt -- Red");
-        newSku.setRetailPrice(new Money(14.99));
-        newSku.setActiveStartDate(SystemTime.asDate());
-        newSku.setDiscountable(false);
-        newSku = catalogService.saveSku(newSku);
-        item.setSku(newSku);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        item = (DiscreteOrderItem) orderItemService.saveOrderItem(item);
+  private void addSampleItemToOrder(Order order, FulfillmentGroup group) {
+    DiscreteOrderItem item = new DiscreteOrderItemImpl();
+    item.setOrder(order);
+    item.setQuantity(1);
 
-        List<OrderItem> items = new ArrayList<OrderItem>();
-        items.add(item);
-        order.setOrderItems(items);
+    Sku newSku = new SkuImpl();
+    newSku.setName("Under Armor T-Shirt -- Red");
+    newSku.setRetailPrice(new Money(14.99));
+    newSku.setActiveStartDate(SystemTime.asDate());
+    newSku.setDiscountable(false);
+    newSku = catalogService.saveSku(newSku);
+    item.setSku(newSku);
 
-        FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
-        fgItem.setFulfillmentGroup(group);
-        fgItem.setOrderItem(item);
-        fgItem.setQuantity(1);
-        //fgItem.setPrice(new Money(0D));
-        group.addFulfillmentGroupItem(fgItem);
-    }
+    item = (DiscreteOrderItem) orderItemService.saveOrderItem(item);
 
-    private FulfillmentGroup buildFulfillmentGroup(Order order, Address address) {
-        FulfillmentGroup group = new FulfillmentGroupImpl();
-        group.setIsShippingPriceTaxable(true);
-        group.setOrder(order);
-        group.setAddress(address);
-        List<FulfillmentGroup> groups = new ArrayList<FulfillmentGroup>();
-        groups.add(group);
-        order.setFulfillmentGroups(groups);
-        Money total = new Money(5D);
-        group.setShippingPrice(total);
-        FixedPriceFulfillmentOption option = new FixedPriceFulfillmentOptionImpl();
-        option.setPrice(new Money(0));
-        option.setFulfillmentType(FulfillmentType.PHYSICAL_SHIP);
-        group.setFulfillmentOption(option);
-        return group;
-    }
+    List<OrderItem> items = new ArrayList<OrderItem>();
+    items.add(item);
+    order.setOrderItems(items);
 
-    private Address buildAddress() {
-        Address address = new AddressImpl();
-        address.setAddressLine1("123 Test Rd");
-        address.setCity("Dallas");
-        address.setFirstName("Jeff");
-        address.setLastName("Fischer");
-        address.setPostalCode("75240");
-        address.setPrimaryPhone("972-978-9067");
-        State state = new StateImpl();
-        state.setAbbreviation("ALL");
-        state.setName("ALL");
-        address.setState(state);
-        Country country = new CountryImpl();
-        country.setAbbreviation("US");
-        country.setName("United States");
-        state.setCountry(country);
-        address.setCountry(country);
-        return address;
-    }
-}
+    FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
+    fgItem.setFulfillmentGroup(group);
+    fgItem.setOrderItem(item);
+    fgItem.setQuantity(1);
+
+    // fgItem.setPrice(new Money(0D));
+    group.addFulfillmentGroupItem(fgItem);
+  } // end method addSampleItemToOrder
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private Address buildAddress() {
+    Address address = new AddressImpl();
+    address.setAddressLine1("123 Test Rd");
+    address.setCity("Dallas");
+    address.setFirstName("Jeff");
+    address.setLastName("Fischer");
+    address.setPostalCode("75240");
+    address.setPrimaryPhone("972-978-9067");
+
+    State state = new StateImpl();
+    state.setAbbreviation("ALL");
+    state.setName("ALL");
+    address.setState(state);
+
+    Country country = new CountryImpl();
+    country.setAbbreviation("US");
+    country.setName("United States");
+    state.setCountry(country);
+    address.setCountry(country);
+
+    return address;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private FulfillmentGroup buildFulfillmentGroup(Order order, Address address) {
+    FulfillmentGroup group = new FulfillmentGroupImpl();
+    group.setIsShippingPriceTaxable(true);
+    group.setOrder(order);
+    group.setAddress(address);
+
+    List<FulfillmentGroup> groups = new ArrayList<FulfillmentGroup>();
+    groups.add(group);
+    order.setFulfillmentGroups(groups);
+
+    Money total = new Money(5D);
+    group.setShippingPrice(total);
+
+    FixedPriceFulfillmentOption option = new FixedPriceFulfillmentOptionImpl();
+    option.setPrice(new Money(0));
+    option.setFulfillmentType(FulfillmentType.PHYSICAL_SHIP);
+    group.setFulfillmentOption(option);
+
+    return group;
+  }
+} // end class CheckoutTest

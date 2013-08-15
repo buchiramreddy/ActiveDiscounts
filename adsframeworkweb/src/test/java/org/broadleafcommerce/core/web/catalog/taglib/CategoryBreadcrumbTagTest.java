@@ -16,67 +16,91 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.easymock.classextension.EasyMock;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+
+import org.broadleafcommerce.core.catalog.domain.Category;
+
+import org.easymock.classextension.EasyMock;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CategoryBreadcrumbTagTest extends BaseTagLibTest {
-    
-    private CategoryBreadCrumbTag categoryBreadcrumbTag;
-    private Category category;
-    private JspWriter writer;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void test_Breadcrumb() throws JspException, IOException {
-        List<Category> categoryList = new ArrayList<Category>();
+  private Category category;
 
-        Category defaultParentCategory = EasyMock.createMock(Category.class);
-        categoryList.add(category);
-        categoryList.add(defaultParentCategory);
+  private CategoryBreadCrumbTag categoryBreadcrumbTag;
+  private JspWriter             writer;
 
-        //pageContext.setAttribute("crumbVar", categoryList);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        categoryBreadcrumbTag.setCategoryId(0L);
-        EasyMock.expect(catalogService.findCategoryById(0L)).andReturn(category);
-        EasyMock.expect(category.getDefaultParentCategory()).andReturn(defaultParentCategory);
-        EasyMock.expect(defaultParentCategory.getDefaultParentCategory()).andReturn(null);
-        EasyMock.expect(pageContext.getRequest()).andReturn(request).anyTimes();
-        EasyMock.expect(pageContext.getOut()).andReturn(writer).anyTimes();
-        EasyMock.expect(request.isSecure()).andReturn(false).anyTimes();
-        EasyMock.expect(request.getServerName()).andReturn("test").anyTimes();
-        EasyMock.expect(request.getLocalPort()).andReturn(80).anyTimes();
-        EasyMock.expect(request.getContextPath()).andReturn("myApp").anyTimes();
-        EasyMock.expect(category.getGeneratedUrl()).andReturn("url").anyTimes();
-        EasyMock.expect(category.getName()).andReturn("name").anyTimes();
-        EasyMock.expect(defaultParentCategory.getGeneratedUrl()).andReturn("url").anyTimes();
-        EasyMock.expect(defaultParentCategory.getName()).andReturn("name").anyTimes();
+  /**
+   * @see  org.broadleafcommerce.core.web.catalog.taglib.BaseTagLibTest#setup()
+   */
+  @Override public void setup() {
+    categoryBreadcrumbTag = new CategoryBreadCrumbTag();
+    category              = EasyMock.createMock(Category.class);
+    writer                = EasyMock.createNiceMock(JspWriter.class);
+  }
 
-        categoryBreadcrumbTag.setCategoryList(categoryList);
-        categoryBreadcrumbTag.setJspContext(pageContext);
-        categoryBreadcrumbTag.setCatalogService(catalogService);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        super.replayAdditionalMockObjects(category, defaultParentCategory);
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  JspException  DOCUMENT ME!
+   * @throws  IOException   DOCUMENT ME!
+   */
+  public void test_Breadcrumb() throws JspException, IOException {
+    List<Category> categoryList = new ArrayList<Category>();
 
-        assert(categoryList.get(1).equals(defaultParentCategory));
-        assert(categoryList.get(0).equals(category));
+    Category defaultParentCategory = EasyMock.createMock(Category.class);
+    categoryList.add(category);
+    categoryList.add(defaultParentCategory);
 
-        categoryBreadcrumbTag.doTag();
+    // pageContext.setAttribute("crumbVar", categoryList);
 
-        assert(categoryList.get(0).equals(defaultParentCategory));
-        assert(categoryList.get(1).equals(category));
+    categoryBreadcrumbTag.setCategoryId(0L);
+    EasyMock.expect(catalogService.findCategoryById(0L)).andReturn(category);
+    EasyMock.expect(category.getDefaultParentCategory()).andReturn(defaultParentCategory);
+    EasyMock.expect(defaultParentCategory.getDefaultParentCategory()).andReturn(null);
+    EasyMock.expect(pageContext.getRequest()).andReturn(request).anyTimes();
+    EasyMock.expect(pageContext.getOut()).andReturn(writer).anyTimes();
+    EasyMock.expect(request.isSecure()).andReturn(false).anyTimes();
+    EasyMock.expect(request.getServerName()).andReturn("test").anyTimes();
+    EasyMock.expect(request.getLocalPort()).andReturn(80).anyTimes();
+    EasyMock.expect(request.getContextPath()).andReturn("myApp").anyTimes();
+    EasyMock.expect(category.getGeneratedUrl()).andReturn("url").anyTimes();
+    EasyMock.expect(category.getName()).andReturn("name").anyTimes();
+    EasyMock.expect(defaultParentCategory.getGeneratedUrl()).andReturn("url").anyTimes();
+    EasyMock.expect(defaultParentCategory.getName()).andReturn("name").anyTimes();
 
-        super.verifyBaseMockObjects(category, defaultParentCategory);
-    }
+    categoryBreadcrumbTag.setCategoryList(categoryList);
+    categoryBreadcrumbTag.setJspContext(pageContext);
+    categoryBreadcrumbTag.setCatalogService(catalogService);
 
-    @Override
-    public void setup() {
-        categoryBreadcrumbTag = new CategoryBreadCrumbTag();
-        category = EasyMock.createMock(Category.class);
-        writer = EasyMock.createNiceMock(JspWriter.class);
-    }
+    super.replayAdditionalMockObjects(category, defaultParentCategory);
 
-}
+    assert (categoryList.get(1).equals(defaultParentCategory));
+    assert (categoryList.get(0).equals(category));
+
+    categoryBreadcrumbTag.doTag();
+
+    assert (categoryList.get(0).equals(defaultParentCategory));
+    assert (categoryList.get(1).equals(category));
+
+    super.verifyBaseMockObjects(category, defaultParentCategory);
+  } // end method test_Breadcrumb
+
+} // end class CategoryBreadcrumbTagTest

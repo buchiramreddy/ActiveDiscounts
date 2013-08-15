@@ -18,18 +18,38 @@ package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class BatchDynamicResultSet implements Serializable {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected DynamicResultSet[] dynamicResultSets;
+  /** DOCUMENT ME! */
+  protected DynamicResultSet[] dynamicResultSets;
 
-    public DynamicResultSet[] getDynamicResultSets() {
-        return dynamicResultSets;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setDynamicResultSets(DynamicResultSet[] dynamicResultSets) {
-        this.dynamicResultSets = dynamicResultSets;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicResultSet[] getDynamicResultSets() {
+    return dynamicResultSets;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  dynamicResultSets  DOCUMENT ME!
+   */
+  public void setDynamicResultSets(DynamicResultSet[] dynamicResultSets) {
+    this.dynamicResultSets = dynamicResultSets;
+  }
+} // end class BatchDynamicResultSet

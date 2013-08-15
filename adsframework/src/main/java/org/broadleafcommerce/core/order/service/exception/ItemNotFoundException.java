@@ -16,24 +16,48 @@
 
 package org.broadleafcommerce.core.order.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ItemNotFoundException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new ItemNotFoundException object.
+   */
+  public ItemNotFoundException() {
+    super();
+  }
 
-    public ItemNotFoundException() {
-        super();
-    }
+  /**
+   * Creates a new ItemNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public ItemNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public ItemNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new ItemNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public ItemNotFoundException(String message) {
+    super(message);
+  }
 
-    public ItemNotFoundException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new ItemNotFoundException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public ItemNotFoundException(Throwable cause) {
+    super(cause);
+  }
 
-    public ItemNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class ItemNotFoundException

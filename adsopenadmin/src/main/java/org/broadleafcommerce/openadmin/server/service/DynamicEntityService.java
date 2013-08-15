@@ -17,35 +17,92 @@
 package org.broadleafcommerce.openadmin.server.service;
 
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
+
 import org.springframework.security.access.annotation.Secured;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface DynamicEntityService {
-    
-    @Secured("PERMISSION_OTHER_DEFAULT")
-    public DynamicResultSet inspect(PersistencePackage persistencePackage) throws ServiceException;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    //@Secured("PERMISSION_OTHER_DEFAULT")
-    //public BatchDynamicResultSet batchInspect(BatchPersistencePackage batchPersistencePackage) throws ServiceException;
-    
-    @Secured("PERMISSION_OTHER_DEFAULT")
-    public DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto) throws ServiceException;
-    
-    @Secured("PERMISSION_OTHER_DEFAULT")
-    public Entity add(PersistencePackage persistencePackage) throws ServiceException;
-    
-    @Secured("PERMISSION_OTHER_DEFAULT")
-    public Entity update(PersistencePackage persistencePackage) throws ServiceException;
-    
-    @Secured("PERMISSION_OTHER_DEFAULT")
-    public void remove(PersistencePackage persistencePackage) throws ServiceException;
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  @Secured("PERMISSION_OTHER_DEFAULT")
+  Entity add(PersistencePackage persistencePackage) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  // @Secured("PERMISSION_OTHER_DEFAULT")
+  // public BatchDynamicResultSet batchInspect(BatchPersistencePackage batchPersistencePackage) throws ServiceException;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   * @param   cto                 DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  @Secured("PERMISSION_OTHER_DEFAULT")
+  DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  @Secured("PERMISSION_OTHER_DEFAULT")
+  DynamicResultSet inspect(PersistencePackage persistencePackage) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  @Secured("PERMISSION_OTHER_DEFAULT")
+  void remove(PersistencePackage persistencePackage) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  @Secured("PERMISSION_OTHER_DEFAULT")
+  Entity update(PersistencePackage persistencePackage) throws ServiceException;
+
+} // end interface DynamicEntityService

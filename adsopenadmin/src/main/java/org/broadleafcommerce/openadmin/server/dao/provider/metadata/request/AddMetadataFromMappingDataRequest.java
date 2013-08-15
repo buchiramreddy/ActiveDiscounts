@@ -16,64 +16,134 @@
 
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
+
 import org.hibernate.mapping.Property;
+
 import org.hibernate.type.Type;
 
-import java.util.List;
 
 /**
  * Contains the requested Hibernate type, metadata and support classes.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class AddMetadataFromMappingDataRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final List<Property> componentProperties;
-    private final SupportedFieldType type;
-    private final SupportedFieldType secondaryType;
-    private final Type requestedEntityType;
-    private final String propertyName;
-    private final MergedPropertyType mergedPropertyType;
-    private final DynamicEntityDao dynamicEntityDao;
+  private final List<Property>     componentProperties;
+  private final DynamicEntityDao   dynamicEntityDao;
+  private final MergedPropertyType mergedPropertyType;
+  private final String             propertyName;
+  private final Type               requestedEntityType;
+  private final SupportedFieldType secondaryType;
+  private final SupportedFieldType type;
 
-    public AddMetadataFromMappingDataRequest(List<Property> componentProperties, SupportedFieldType type, SupportedFieldType secondaryType, Type requestedEntityType, String propertyName, MergedPropertyType mergedPropertyType, DynamicEntityDao dynamicEntityDao) {
-        this.componentProperties = componentProperties;
-        this.type = type;
-        this.secondaryType = secondaryType;
-        this.requestedEntityType = requestedEntityType;
-        this.propertyName = propertyName;
-        this.mergedPropertyType = mergedPropertyType;
-        this.dynamicEntityDao = dynamicEntityDao;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public List<Property> getComponentProperties() {
-        return componentProperties;
-    }
+  /**
+   * Creates a new AddMetadataFromMappingDataRequest object.
+   *
+   * @param  componentProperties  DOCUMENT ME!
+   * @param  type                 DOCUMENT ME!
+   * @param  secondaryType        DOCUMENT ME!
+   * @param  requestedEntityType  DOCUMENT ME!
+   * @param  propertyName         DOCUMENT ME!
+   * @param  mergedPropertyType   DOCUMENT ME!
+   * @param  dynamicEntityDao     DOCUMENT ME!
+   */
+  public AddMetadataFromMappingDataRequest(List<Property> componentProperties, SupportedFieldType type,
+    SupportedFieldType secondaryType, Type requestedEntityType, String propertyName,
+    MergedPropertyType mergedPropertyType, DynamicEntityDao dynamicEntityDao) {
+    this.componentProperties = componentProperties;
+    this.type                = type;
+    this.secondaryType       = secondaryType;
+    this.requestedEntityType = requestedEntityType;
+    this.propertyName        = propertyName;
+    this.mergedPropertyType  = mergedPropertyType;
+    this.dynamicEntityDao    = dynamicEntityDao;
+  }
 
-    public SupportedFieldType getType() {
-        return type;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public SupportedFieldType getSecondaryType() {
-        return secondaryType;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Property> getComponentProperties() {
+    return componentProperties;
+  }
 
-    public Type getRequestedEntityType() {
-        return requestedEntityType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getPropertyName() {
-        return propertyName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityDao getDynamicEntityDao() {
+    return dynamicEntityDao;
+  }
 
-    public MergedPropertyType getMergedPropertyType() {
-        return mergedPropertyType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public DynamicEntityDao getDynamicEntityDao() {
-        return dynamicEntityDao;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public MergedPropertyType getMergedPropertyType() {
+    return mergedPropertyType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyName() {
+    return propertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Type getRequestedEntityType() {
+    return requestedEntityType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getSecondaryType() {
+    return secondaryType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getType() {
+    return type;
+  }
+} // end class AddMetadataFromMappingDataRequest

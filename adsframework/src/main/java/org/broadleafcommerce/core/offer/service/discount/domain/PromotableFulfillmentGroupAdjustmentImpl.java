@@ -16,139 +16,207 @@
 
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.Offer;
-import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class PromotableFulfillmentGroupAdjustmentImpl extends AbstractPromotionRounding implements PromotableFulfillmentGroupAdjustment, OfferHolder {
-    
-    private static final long serialVersionUID = 1L;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.money.Money;
 
-    protected PromotableCandidateFulfillmentGroupOffer promotableCandidateFulfillmentGroupOffer;
-    protected PromotableFulfillmentGroup promotableFulfillmentGroup;
-    protected Money saleAdjustmentValue;
-    protected Money retailAdjustmentValue;
-    protected Money adjustmentValue;
-    protected boolean appliedToSalePrice;
+import org.broadleafcommerce.core.offer.domain.Offer;
+import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
 
-    public PromotableFulfillmentGroupAdjustmentImpl(
-            PromotableCandidateFulfillmentGroupOffer promotableCandidateFulfillmentGroupOffer,
-            PromotableFulfillmentGroup fulfillmentGroup) {
-        this.promotableCandidateFulfillmentGroupOffer = promotableCandidateFulfillmentGroupOffer;
-        this.promotableFulfillmentGroup = fulfillmentGroup;
-        computeAdjustmentValues();
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class PromotableFulfillmentGroupAdjustmentImpl extends AbstractPromotionRounding
+  implements PromotableFulfillmentGroupAdjustment, OfferHolder {
+  private static final long serialVersionUID = 1L;
+
+  /** DOCUMENT ME! */
+  protected PromotableCandidateFulfillmentGroupOffer promotableCandidateFulfillmentGroupOffer;
+
+  /** DOCUMENT ME! */
+  protected PromotableFulfillmentGroup               promotableFulfillmentGroup;
+
+  /** DOCUMENT ME! */
+  protected Money                                    saleAdjustmentValue;
+
+  /** DOCUMENT ME! */
+  protected Money                                    retailAdjustmentValue;
+
+  /** DOCUMENT ME! */
+  protected Money                                    adjustmentValue;
+
+  /** DOCUMENT ME! */
+  protected boolean                                  appliedToSalePrice;
+
+  /**
+   * Creates a new PromotableFulfillmentGroupAdjustmentImpl object.
+   *
+   * @param  promotableCandidateFulfillmentGroupOffer  DOCUMENT ME!
+   * @param  fulfillmentGroup                          DOCUMENT ME!
+   */
+  public PromotableFulfillmentGroupAdjustmentImpl(
+    PromotableCandidateFulfillmentGroupOffer promotableCandidateFulfillmentGroupOffer,
+    PromotableFulfillmentGroup               fulfillmentGroup) {
+    this.promotableCandidateFulfillmentGroupOffer = promotableCandidateFulfillmentGroupOffer;
+    this.promotableFulfillmentGroup               = fulfillmentGroup;
+    computeAdjustmentValues();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.OfferHolder#getOffer()
+   */
+  @Override public Offer getOffer() {
+    return promotableCandidateFulfillmentGroupOffer.getOffer();
+  }
+
+  /*
+   * Calculates the value of the adjustment for both retail and sale prices.
+   * If either adjustment is greater than the item value, it will be set to the
+   * currentItemValue (e.g. no adjustment can cause a negative value).
+   */
+  /**
+   * DOCUMENT ME!
+   */
+  protected void computeAdjustmentValues() {
+    saleAdjustmentValue   = new Money(getCurrency());
+    retailAdjustmentValue = new Money(getCurrency());
+
+    Offer offer = promotableCandidateFulfillmentGroupOffer.getOffer();
+
+    Money currentPriceDetailSalesValue  = promotableFulfillmentGroup.calculatePriceWithAdjustments(true);
+    Money currentPriceDetailRetailValue = promotableFulfillmentGroup.calculatePriceWithAdjustments(false);
+
+    retailAdjustmentValue = PromotableOfferUtility.computeAdjustmentValue(currentPriceDetailRetailValue,
+        offer.getValue(), this, this);
+
+    if (offer.getApplyDiscountToSalePrice() == true) {
+      saleAdjustmentValue = PromotableOfferUtility.computeAdjustmentValue(currentPriceDetailSalesValue,
+          offer.getValue(), this, this);
+    }
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   currentPriceDetailValue  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Money computeAdjustmentValue(Money currentPriceDetailValue) {
+    Offer             offer           = promotableCandidateFulfillmentGroupOffer.getOffer();
+    OfferDiscountType discountType    = offer.getDiscountType();
+    Money             adjustmentValue = new Money(getCurrency());
+
+    if (OfferDiscountType.AMOUNT_OFF.equals(discountType)) {
+      adjustmentValue = new Money(offer.getValue(), getCurrency());
     }
 
-    public Offer getOffer() {
-        return promotableCandidateFulfillmentGroupOffer.getOffer();
+    if (OfferDiscountType.FIX_PRICE.equals(discountType)) {
+      adjustmentValue = currentPriceDetailValue;
     }
 
-    /*
-     * Calculates the value of the adjustment for both retail and sale prices.   
-     * If either adjustment is greater than the item value, it will be set to the
-     * currentItemValue (e.g. no adjustment can cause a negative value). 
-     */
-    protected void computeAdjustmentValues() {
-        saleAdjustmentValue = new Money(getCurrency());
-        retailAdjustmentValue = new Money(getCurrency());
-        Offer offer = promotableCandidateFulfillmentGroupOffer.getOffer();
+    if (OfferDiscountType.PERCENT_OFF.equals(discountType)) {
+      BigDecimal offerValue = currentPriceDetailValue.getAmount().multiply(offer.getValue().divide(
+            new BigDecimal("100"), 5, RoundingMode.HALF_EVEN));
 
-        Money currentPriceDetailSalesValue = promotableFulfillmentGroup.calculatePriceWithAdjustments(true);
-        Money currentPriceDetailRetailValue = promotableFulfillmentGroup.calculatePriceWithAdjustments(false);
+      if (isRoundOfferValues()) {
+        offerValue = offerValue.setScale(roundingScale, roundingMode);
+      }
 
-        retailAdjustmentValue = PromotableOfferUtility.computeAdjustmentValue(currentPriceDetailRetailValue, offer.getValue(), this, this);
-
-        if (offer.getApplyDiscountToSalePrice() == true) {
-            saleAdjustmentValue = PromotableOfferUtility.computeAdjustmentValue(currentPriceDetailSalesValue, offer.getValue(), this, this);
-        }
+      adjustmentValue = new Money(offerValue, getCurrency(), 5);
     }
 
-    protected Money computeAdjustmentValue(Money currentPriceDetailValue) {
-        Offer offer = promotableCandidateFulfillmentGroupOffer.getOffer();
-        OfferDiscountType discountType = offer.getDiscountType();
-        Money adjustmentValue = new Money(getCurrency());
-
-        if (OfferDiscountType.AMOUNT_OFF.equals(discountType)) {
-            adjustmentValue = new Money(offer.getValue(), getCurrency());
-        }
-
-        if (OfferDiscountType.FIX_PRICE.equals(discountType)) {
-            adjustmentValue = currentPriceDetailValue;
-        }
-
-        if (OfferDiscountType.PERCENT_OFF.equals(discountType)) {
-            BigDecimal offerValue = currentPriceDetailValue.getAmount().multiply(offer.getValue().divide(new BigDecimal("100"), 5, RoundingMode.HALF_EVEN));
-
-            if (isRoundOfferValues()) {
-                offerValue = offerValue.setScale(roundingScale, roundingMode);
-            }
-            adjustmentValue = new Money(offerValue, getCurrency(), 5);
-        }
-
-        if (currentPriceDetailValue.lessThan(adjustmentValue)) {
-            adjustmentValue = currentPriceDetailValue;
-        }
-        return adjustmentValue;
-    }
-    
-    @Override
-    public PromotableFulfillmentGroup getPromotableFulfillmentGroup() {
-        return promotableFulfillmentGroup;
+    if (currentPriceDetailValue.lessThan(adjustmentValue)) {
+      adjustmentValue = currentPriceDetailValue;
     }
 
-    @Override
-    public PromotableCandidateFulfillmentGroupOffer getPromotableCandidateFulfillmentGroupOffer() {
-        return promotableCandidateFulfillmentGroupOffer;
-    }
+    return adjustmentValue;
+  } // end method computeAdjustmentValue
 
-    @Override
-    public Money getAdjustmentValue() {
-        return adjustmentValue;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#getPromotableFulfillmentGroup()
+   */
+  @Override public PromotableFulfillmentGroup getPromotableFulfillmentGroup() {
+    return promotableFulfillmentGroup;
+  }
 
-    public BroadleafCurrency getCurrency() {
-        return promotableFulfillmentGroup.getFulfillmentGroup().getOrder().getCurrency();
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#getPromotableCandidateFulfillmentGroupOffer()
+   */
+  @Override public PromotableCandidateFulfillmentGroupOffer getPromotableCandidateFulfillmentGroupOffer() {
+    return promotableCandidateFulfillmentGroupOffer;
+  }
 
-    @Override
-    public boolean isCombinable() {
-        Boolean combinable = getOffer().isCombinableWithOtherOffers();
-        return (combinable != null && combinable);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#getAdjustmentValue()
+   */
+  @Override public Money getAdjustmentValue() {
+    return adjustmentValue;
+  }
 
-    @Override
-    public boolean isTotalitarian() {
-        Boolean totalitarian = getOffer().isTotalitarianOffer();
-        return (totalitarian != null && totalitarian.booleanValue());
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.OfferHolder#getCurrency()
+   */
+  @Override public BroadleafCurrency getCurrency() {
+    return promotableFulfillmentGroup.getFulfillmentGroup().getOrder().getCurrency();
+  }
 
-    @Override
-    public Money getSaleAdjustmentValue() {
-        return saleAdjustmentValue;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#isCombinable()
+   */
+  @Override public boolean isCombinable() {
+    Boolean combinable = getOffer().isCombinableWithOtherOffers();
 
-    @Override
-    public Money getRetailAdjustmentValue() {
-        return retailAdjustmentValue;
-    }
+    return ((combinable != null) && combinable);
+  }
 
-    @Override
-    public boolean isAppliedToSalePrice() {
-        return appliedToSalePrice;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#isTotalitarian()
+   */
+  @Override public boolean isTotalitarian() {
+    Boolean totalitarian = getOffer().isTotalitarianOffer();
 
-    @Override
-    public void finalizeAdjustment(boolean useSalePrice) {
-        appliedToSalePrice = useSalePrice;
-        if (useSalePrice) {
-            adjustmentValue = saleAdjustmentValue;
-        } else {
-            adjustmentValue = retailAdjustmentValue;
-        }
-    }
+    return ((totalitarian != null) && totalitarian.booleanValue());
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#getSaleAdjustmentValue()
+   */
+  @Override public Money getSaleAdjustmentValue() {
+    return saleAdjustmentValue;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#getRetailAdjustmentValue()
+   */
+  @Override public Money getRetailAdjustmentValue() {
+    return retailAdjustmentValue;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#isAppliedToSalePrice()
+   */
+  @Override public boolean isAppliedToSalePrice() {
+    return appliedToSalePrice;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotableFulfillmentGroupAdjustment#finalizeAdjustment(boolean)
+   */
+  @Override public void finalizeAdjustment(boolean useSalePrice) {
+    appliedToSalePrice = useSalePrice;
+
+    if (useSalePrice) {
+      adjustmentValue = saleAdjustmentValue;
+    } else {
+      adjustmentValue = retailAdjustmentValue;
+    }
+  }
+
+} // end class PromotableFulfillmentGroupAdjustmentImpl

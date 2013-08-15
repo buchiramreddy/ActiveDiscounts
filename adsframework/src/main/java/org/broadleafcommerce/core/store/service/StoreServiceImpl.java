@@ -16,55 +16,82 @@
 
 package org.broadleafcommerce.core.store.service;
 
-import org.broadleafcommerce.core.store.dao.StoreDao;
-import org.broadleafcommerce.core.store.domain.Store;
-import org.broadleafcommerce.core.store.domain.ZipCode;
-import org.broadleafcommerce.profile.core.domain.Address;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.core.store.dao.StoreDao;
+import org.broadleafcommerce.core.store.domain.Store;
+import org.broadleafcommerce.core.store.domain.ZipCode;
+
+import org.broadleafcommerce.profile.core.domain.Address;
+
+import org.springframework.stereotype.Service;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blStoreService")
 public class StoreServiceImpl implements StoreService {
+  // private final static int MAXIMUM_DISTANCE = Integer.valueOf(25);
+  @Resource(name = "blStoreDao")
+  private StoreDao       storeDao;
+  @Resource(name = "blZipCodeService")
+  private ZipCodeService zipCodeService;
 
-    // private final static int MAXIMUM_DISTANCE = Integer.valueOf(25);
-    @Resource(name = "blStoreDao")
-    private StoreDao storeDao;
-    @Resource(name = "blZipCodeService")
-    private ZipCodeService zipCodeService;
+  /**
+   * @see  org.broadleafcommerce.core.store.service.StoreService#readStoreByStoreCode(java.lang.String)
+   */
+  @Override public Store readStoreByStoreCode(String storeCode) {
+    return storeDao.readStoreByStoreCode(storeCode);
+  }
 
-    public Store readStoreByStoreCode(String storeCode) {
-        return storeDao.readStoreByStoreCode(storeCode);
+  /**
+   * @see  org.broadleafcommerce.core.store.service.StoreService#readAllStores()
+   */
+  @Override public List<Store> readAllStores() {
+    return storeDao.readAllStores();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.store.service.StoreService#findStoresByAddress(org.broadleafcommerce.profile.core.domain.Address,
+   *       double)
+   */
+  @Override public Map<Store, Double> findStoresByAddress(Address searchAddress, double distance) {
+    Map<Store, Double> matchingStores = new HashMap<Store, Double>();
+
+    for (Store store : readAllStores()) {
+      Double storeDistance = findStoreDistance(store, Integer.parseInt(searchAddress.getPostalCode()));
+
+      if ((storeDistance != null) && (storeDistance <= distance)) {
+        matchingStores.put(store, storeDistance);
+      }
     }
 
-    public List<Store> readAllStores() {
-        return storeDao.readAllStores();
+    return matchingStores;
+  }
+
+  private Double findStoreDistance(Store store, Integer zip) {
+    ZipCode zipCode = zipCodeService.findZipCodeByZipCode(zip);
+
+    if (zipCode == null) {
+      return null;
     }
 
-    public Map<Store, Double> findStoresByAddress(Address searchAddress, double distance) {
-        Map<Store, Double> matchingStores = new HashMap<Store, Double>();
-        for (Store store : readAllStores()) {
-            Double storeDistance = findStoreDistance(store, Integer.parseInt(searchAddress.getPostalCode()));
-            if (storeDistance != null && storeDistance <= distance) {
-                matchingStores.put(store, storeDistance);
-            }
-        }
+    // A constant used to convert from degrees to radians.
+    double degreesToRadians = 57.3;
+    double storeDistance    = 3959
+      * Math.acos((Math.sin(zipCode.getZipLatitude() / degreesToRadians)
+          * Math.sin(store.getLatitude() / degreesToRadians))
+        + (Math.cos(zipCode.getZipLatitude() / degreesToRadians) * Math.cos(store.getLatitude() / degreesToRadians)
+          * Math.cos((store.getLongitude() / degreesToRadians) - (zipCode.getZipLongitude() / degreesToRadians))));
 
-        return matchingStores;
-    }
-
-    private Double findStoreDistance(Store store, Integer zip) {
-        ZipCode zipCode = zipCodeService.findZipCodeByZipCode(zip);
-        if (zipCode == null) {
-            return null;
-        }
-        // A constant used to convert from degrees to radians.
-        double degreesToRadians = 57.3;
-        double storeDistance = 3959 * Math.acos((Math.sin(zipCode.getZipLatitude() / degreesToRadians) * Math.sin(store.getLatitude() / degreesToRadians))
-                + (Math.cos(zipCode.getZipLatitude() / degreesToRadians) * Math.cos(store.getLatitude() / degreesToRadians) * Math.cos((store.getLongitude() / degreesToRadians) - (zipCode.getZipLongitude() / degreesToRadians))));
-        return storeDistance;
-    }
-}
+    return storeDistance;
+  }
+} // end class StoreServiceImpl

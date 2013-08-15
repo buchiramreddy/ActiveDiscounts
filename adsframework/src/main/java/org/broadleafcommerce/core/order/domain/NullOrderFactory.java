@@ -18,12 +18,17 @@ package org.broadleafcommerce.core.order.domain;
 
 /**
  * <p>Generates a shared, static instance of NullOrderImpl.</p>
- * 
- * @see NullOrderImpl
- * @author apazzolini
+ *
+ * @see      NullOrderImpl
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 public interface NullOrderFactory {
-    
-    public Order getNullOrder();
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Order getNullOrder();
+
 }

@@ -16,59 +16,75 @@
 
 package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
 
+import java.util.HashMap;
+import java.util.Set;
+
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.vendor.service.exception.FulfillmentPriceException;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption;
 
-import java.util.HashMap;
-import java.util.Set;
 
 /**
- * Processor used in conjunction with {@link org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption}. Simply takes the
- * flat rate defined on the option and sets that to the total shipping price of the {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption}
+ * Processor used in conjunction with
+ * {@link org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption}. Simply takes the flat rate
+ * defined on the option and sets that to the total shipping price of the
+ * {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption}
+ * @version  $Revision$, $Date$
  */
 public class FixedPriceFulfillmentPricingProvider implements FulfillmentPricingProvider {
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup,
+   *       org.broadleafcommerce.core.order.domain.FulfillmentOption)
+   */
+  @Override public boolean canCalculateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup,
+    FulfillmentOption option) {
+    return (option instanceof FixedPriceFulfillmentOption);
+  }
 
-    @Override
-    public boolean canCalculateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup, FulfillmentOption option) {
-        return (option instanceof FixedPriceFulfillmentOption);
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider#calculateCostForFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override public FulfillmentGroup calculateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup)
+    throws FulfillmentPriceException {
+    if (canCalculateCostForFulfillmentGroup(fulfillmentGroup, fulfillmentGroup.getFulfillmentOption())) {
+      Money price = ((FixedPriceFulfillmentOption) fulfillmentGroup.getFulfillmentOption()).getPrice();
+      fulfillmentGroup.setRetailShippingPrice(price);
+      fulfillmentGroup.setSaleShippingPrice(price);
+      fulfillmentGroup.setShippingPrice(price);
+
+      return fulfillmentGroup;
     }
 
-    @Override
-    public FulfillmentGroup calculateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup) throws FulfillmentPriceException {
-        if (canCalculateCostForFulfillmentGroup(fulfillmentGroup, fulfillmentGroup.getFulfillmentOption())) {
-            Money price = ((FixedPriceFulfillmentOption)fulfillmentGroup.getFulfillmentOption()).getPrice();
-            fulfillmentGroup.setRetailShippingPrice(price);
-            fulfillmentGroup.setSaleShippingPrice(price);
-            fulfillmentGroup.setShippingPrice(price);
-            return fulfillmentGroup;
-        }
+    throw new IllegalArgumentException("Cannot estimate shipping cost for the fulfillment option: "
+      + fulfillmentGroup.getFulfillmentOption().getClass().getName());
+  }
 
-        throw new IllegalArgumentException("Cannot estimate shipping cost for the fulfillment option: "
-                + fulfillmentGroup.getFulfillmentOption().getClass().getName());
-    }
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider#estimateCostForFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup,
+   *       java.util.Set)
+   */
+  @Override public FulfillmentEstimationResponse estimateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup,
+    Set<FulfillmentOption> options) throws FulfillmentPriceException {
+    FulfillmentEstimationResponse     response       = new FulfillmentEstimationResponse();
+    HashMap<FulfillmentOption, Money> shippingPrices = new HashMap<FulfillmentOption, Money>();
+    response.setFulfillmentOptionPrices(shippingPrices);
 
-    @Override
-    public FulfillmentEstimationResponse estimateCostForFulfillmentGroup(FulfillmentGroup fulfillmentGroup, Set<FulfillmentOption> options) throws FulfillmentPriceException {
-
-        FulfillmentEstimationResponse response = new FulfillmentEstimationResponse();
-        HashMap<FulfillmentOption, Money> shippingPrices = new HashMap<FulfillmentOption, Money>();
-        response.setFulfillmentOptionPrices(shippingPrices);
-
-        for (FulfillmentOption option : options) {
-            if (canCalculateCostForFulfillmentGroup(fulfillmentGroup, option)) {
-                Money price = ((FixedPriceFulfillmentOption)fulfillmentGroup.getFulfillmentOption()).getPrice();
-                shippingPrices.put(option, price);
-                return response;
-            }
-        }
+    for (FulfillmentOption option : options) {
+      if (canCalculateCostForFulfillmentGroup(fulfillmentGroup, option)) {
+        Money price = ((FixedPriceFulfillmentOption) fulfillmentGroup.getFulfillmentOption()).getPrice();
+        shippingPrices.put(option, price);
 
         return response;
+      }
     }
 
-}
+    return response;
+  }
+
+} // end class FixedPriceFulfillmentPricingProvider

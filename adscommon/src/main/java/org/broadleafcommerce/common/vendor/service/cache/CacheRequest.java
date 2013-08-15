@@ -18,12 +18,21 @@ package org.broadleafcommerce.common.vendor.service.cache;
 
 import java.util.List;
 
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface CacheRequest {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<CacheItemRequest> getCacheItemRequests();
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CacheItemRequest> getCacheItemRequests();
+
 }

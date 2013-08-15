@@ -16,46 +16,58 @@
 
 package org.broadleafcommerce.core.web.interceptor;
 
-import org.broadleafcommerce.common.web.resource.BroadleafResourceHttpRequestHandler;
-import org.springframework.web.servlet.mvc.WebContentInterceptor;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.broadleafcommerce.common.web.resource.BroadleafResourceHttpRequestHandler;
+
+import org.springframework.web.servlet.mvc.WebContentInterceptor;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
+
+
 /**
- * This class is used to control the cache seconds. The default Spring WebContentInterceptor will apply the cacheSeconds 
- * and associated variables to everything that goes through Spring MVC. We only want to apply the configured cache settings
- * to requests that go through controllers. For static resources, we will let Spring use its defaults.
- * 
- * Additionally, for requests for files that are known bundles, we will cache for a full 10 years, as we are generating
- * unique filenames that will make this acceptable.
- * 
- * @author Andre Azzolini (apazzolini)
+ * This class is used to control the cache seconds. The default Spring WebContentInterceptor will apply the cacheSeconds
+ * and associated variables to everything that goes through Spring MVC. We only want to apply the configured cache
+ * settings to requests that go through controllers. For static resources, we will let Spring use its defaults.
+ *
+ * <p>Additionally, for requests for files that are known bundles, we will cache for a full 10 years, as we are
+ * generating unique filenames that will make this acceptable.</p>
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class NonResourceWebContentInterceptor extends WebContentInterceptor {
-    
-    protected static final int TEN_YEARS_SECONDS = 60 * 60 * 24 * 365 * 10;
-    
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) 
-            throws ServletException {
-        if (BroadleafResourceHttpRequestHandler.class.isAssignableFrom(handler.getClass())) {
-            // Bundle resources are cached for ten years
-            BroadleafResourceHttpRequestHandler h = (BroadleafResourceHttpRequestHandler) handler;
-            if (h.isBundleRequest(request)) {
-                applyCacheSeconds(response, TEN_YEARS_SECONDS);
-            }
-            return true;
-        } else if (ResourceHttpRequestHandler.class.isAssignableFrom(handler.getClass())) {
-            // Non-bundle resources will not specify cache parameters - we will rely on the server responding
-            // with a 304 if the resource hasn't been modified.
-            return true;
-        } else {
-            // Non-resources (meaning requests that go to controllers) will apply the configured caching parameters.
-            return super.preHandle(request, response, handler);
-        }
-    }
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-}
+  /** DOCUMENT ME! */
+  protected static final int TEN_YEARS_SECONDS = 60 * 60 * 24 * 365 * 10;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.mvc.WebContentInterceptor#preHandle(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,
+   *       java.lang.Object)
+   */
+  @Override public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    throws ServletException {
+    if (BroadleafResourceHttpRequestHandler.class.isAssignableFrom(handler.getClass())) {
+      // Bundle resources are cached for ten years
+      BroadleafResourceHttpRequestHandler h = (BroadleafResourceHttpRequestHandler) handler;
+
+      if (h.isBundleRequest(request)) {
+        applyCacheSeconds(response, TEN_YEARS_SECONDS);
+      }
+
+      return true;
+    } else if (ResourceHttpRequestHandler.class.isAssignableFrom(handler.getClass())) {
+      // Non-bundle resources will not specify cache parameters - we will rely on the server responding
+      // with a 304 if the resource hasn't been modified.
+      return true;
+    } else {
+      // Non-resources (meaning requests that go to controllers) will apply the configured caching parameters.
+      return super.preHandle(request, response, handler);
+    }
+  }
+
+} // end class NonResourceWebContentInterceptor

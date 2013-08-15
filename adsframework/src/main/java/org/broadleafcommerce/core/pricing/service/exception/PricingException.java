@@ -16,24 +16,48 @@
 
 package org.broadleafcommerce.core.pricing.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PricingException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new PricingException object.
+   */
+  public PricingException() {
+    super();
+  }
 
-    public PricingException() {
-        super();
-    }
+  /**
+   * Creates a new PricingException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public PricingException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public PricingException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new PricingException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public PricingException(String message) {
+    super(message);
+  }
 
-    public PricingException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new PricingException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public PricingException(Throwable cause) {
+    super(cause);
+  }
 
-    public PricingException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class PricingException

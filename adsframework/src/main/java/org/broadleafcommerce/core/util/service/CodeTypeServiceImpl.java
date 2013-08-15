@@ -16,38 +16,74 @@
 
 package org.broadleafcommerce.core.util.service;
 
-import org.broadleafcommerce.core.util.dao.CodeTypeDao;
-import org.broadleafcommerce.core.util.domain.CodeType;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.List;
 
-@Service("blCodeTypeService")
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.core.util.dao.CodeTypeDao;
+import org.broadleafcommerce.core.util.domain.CodeType;
+
+import org.springframework.stereotype.Service;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Deprecated
+@Service("blCodeTypeService")
 public class CodeTypeServiceImpl implements CodeTypeService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blCodeTypeDao")
-    protected CodeTypeDao codeTypeDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCodeTypeDao")
+  protected CodeTypeDao codeTypeDao;
 
-    public void deleteCodeType(CodeType codeTypeId) {
-        codeTypeDao.delete(codeTypeId);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<CodeType> findAllCodeTypes() {
-        return codeTypeDao.readAllCodeTypes();
-    }
+  /**
+   * @see  org.broadleafcommerce.core.util.service.CodeTypeService#deleteCodeType(org.broadleafcommerce.core.util.domain.CodeType)
+   */
+  @Override public void deleteCodeType(CodeType codeTypeId) {
+    codeTypeDao.delete(codeTypeId);
+  }
 
-    public CodeType lookupCodeTypeById(Long codeTypeId) {
-        return codeTypeDao.readCodeTypeById(codeTypeId);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<CodeType> lookupCodeTypeByKey(String key) {
-        return codeTypeDao.readCodeTypeByKey(key);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.util.service.CodeTypeService#findAllCodeTypes()
+   */
+  @Override public List<CodeType> findAllCodeTypes() {
+    return codeTypeDao.readAllCodeTypes();
+  }
 
-    public CodeType save(CodeType codeType) {
-        return codeTypeDao.save(codeType);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.util.service.CodeTypeService#lookupCodeTypeById(java.lang.Long)
+   */
+  @Override public CodeType lookupCodeTypeById(Long codeTypeId) {
+    return codeTypeDao.readCodeTypeById(codeTypeId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.util.service.CodeTypeService#lookupCodeTypeByKey(java.lang.String)
+   */
+  @Override public List<CodeType> lookupCodeTypeByKey(String key) {
+    return codeTypeDao.readCodeTypeByKey(key);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.util.service.CodeTypeService#save(org.broadleafcommerce.core.util.domain.CodeType)
+   */
+  @Override public CodeType save(CodeType codeType) {
+    return codeTypeDao.save(codeType);
+  }
+
+} // end class CodeTypeServiceImpl

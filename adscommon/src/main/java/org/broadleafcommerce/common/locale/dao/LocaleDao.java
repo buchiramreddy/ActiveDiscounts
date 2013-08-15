@@ -16,33 +16,56 @@
 
 package org.broadleafcommerce.common.locale.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.locale.domain.Locale;
 
-import java.util.List;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface LocaleDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return The locale for the passed in code
-     */
-    public Locale findLocaleByCode(String localeCode);
+  /**
+   * Returns all supported BLC locales.
+   *
+   * @return  all supported BLC locales.
+   */
+  List<Locale> findAllLocales();
 
-    /**
-     * Returns the page template with the passed in id.
-     *
-     * @return The default locale
-     */
-    public Locale findDefaultLocale();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns all supported BLC locales.
-     * @return
-     */
-    public List<Locale> findAllLocales();
-    
-    public Locale save(Locale locale);
+  /**
+   * Returns the page template with the passed in id.
+   *
+   * @return  The default locale
+   */
+  Locale findDefaultLocale();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The locale for the passed in code.
+   *
+   * @param   localeCode  DOCUMENT ME!
+   *
+   * @return  The locale for the passed in code.
+   */
+  Locale findLocaleByCode(String localeCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   locale  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Locale save(Locale locale);
+
+} // end interface LocaleDao

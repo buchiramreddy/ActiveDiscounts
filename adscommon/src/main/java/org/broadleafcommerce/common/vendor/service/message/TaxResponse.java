@@ -18,18 +18,66 @@ package org.broadleafcommerce.common.vendor.service.message;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface TaxResponse extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean isErrorDetected();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getErrorCode();
 
-    public void setErrorDetected(boolean isErrorDetected);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getErrorCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getErrorText();
 
-    public void setErrorCode(String errorCode);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getErrorText();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isErrorDetected();
 
-    public void setErrorText(String errorText);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  errorCode  DOCUMENT ME!
+   */
+  void setErrorCode(String errorCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isErrorDetected  DOCUMENT ME!
+   */
+  void setErrorDetected(boolean isErrorDetected);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  errorText  DOCUMENT ME!
+   */
+  void setErrorText(String errorText);
+
+} // end interface TaxResponse

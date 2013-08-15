@@ -18,23 +18,32 @@ package org.broadleafcommerce.cms.admin.server.handler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.RequestDTOImpl;
+
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 8/23/11
- * Time: 1:56 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 8/23/11 Time: 1:56 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class RequestDTOCustomPersistenceHandler extends TimeDTOCustomPersistenceHandler {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(RequestDTOCustomPersistenceHandler.class);
+  private static final Log LOG = LogFactory.getLog(RequestDTOCustomPersistenceHandler.class);
 
-    @Override
-    public Boolean canHandleInspect(PersistencePackage persistencePackage) {
-        String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
-        return RequestDTOImpl.class.getName().equals(ceilingEntityFullyQualifiedClassname);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.admin.server.handler.TimeDTOCustomPersistenceHandler#canHandleInspect(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleInspect(PersistencePackage persistencePackage) {
+    String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
+
+    return RequestDTOImpl.class.getName().equals(ceilingEntityFullyQualifiedClassname);
+  }
 }

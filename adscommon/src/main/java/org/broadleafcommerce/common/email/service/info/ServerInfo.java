@@ -18,92 +18,153 @@ package org.broadleafcommerce.common.email.service.info;
 
 import java.io.Serializable;
 
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class ServerInfo implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String serverName;
-    private Integer serverPort;
-    private Integer securePort;
-    private String appName;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getSecureHost() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(serverName);
-        if (!securePort.equals("443")) {
-            sb.append(":");
-            sb.append(securePort);
-        }
-        return sb.toString();
+  private String  appName;
+  private Integer securePort;
+
+  private String  serverName;
+  private Integer serverPort;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * The appName.
+   *
+   * @return  the appName
+   */
+  public String getAppName() {
+    return appName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getHost() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(serverName);
+
+    if (!serverPort.equals("80")) {
+      sb.append(":");
+      sb.append(serverPort);
     }
 
-    public String getHost() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(serverName);
-        if (!serverPort.equals("80")) {
-            sb.append(":");
-            sb.append(serverPort);
-        }
-        return sb.toString();
+    return sb.toString();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSecureHost() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(serverName);
+
+    if (!securePort.equals("443")) {
+      sb.append(":");
+      sb.append(securePort);
     }
 
-    /**
-     * @return the serverName
-     */
-    public String getServerName() {
-        return serverName;
-    }
+    return sb.toString();
+  }
 
-    /**
-     * @param serverName the serverName to set
-     */
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the serverPort
-     */
-    public Integer getServerPort() {
-        return serverPort;
-    }
+  /**
+   * The securePort.
+   *
+   * @return  the securePort
+   */
+  public Integer getSecurePort() {
+    return securePort;
+  }
 
-    /**
-     * @param serverPort the serverPort to set
-     */
-    public void setServerPort(Integer serverPort) {
-        this.serverPort = serverPort;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the securePort
-     */
-    public Integer getSecurePort() {
-        return securePort;
-    }
+  /**
+   * The serverName.
+   *
+   * @return  the serverName
+   */
+  public String getServerName() {
+    return serverName;
+  }
 
-    /**
-     * @param securePort the securePort to set
-     */
-    public void setSecurePort(Integer securePort) {
-        this.securePort = securePort;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the appName
-     */
-    public String getAppName() {
-        return appName;
-    }
+  /**
+   * The serverPort.
+   *
+   * @return  the serverPort
+   */
+  public Integer getServerPort() {
+    return serverPort;
+  }
 
-    /**
-     * @param appName the appName to set
-     */
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  appName  the appName to set
+   */
+  public void setAppName(String appName) {
+    this.appName = appName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  securePort  the securePort to set
+   */
+  public void setSecurePort(Integer securePort) {
+    this.securePort = securePort;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  serverName  the serverName to set
+   */
+  public void setServerName(String serverName) {
+    this.serverName = serverName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  serverPort  the serverPort to set
+   */
+  public void setServerPort(Integer serverPort) {
+    this.serverPort = serverPort;
+  }
+} // end class ServerInfo

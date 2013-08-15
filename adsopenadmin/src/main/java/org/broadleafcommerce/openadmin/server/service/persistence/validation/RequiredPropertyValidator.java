@@ -16,41 +16,55 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
+import java.io.Serializable;
+
+import java.util.Map;
+
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.Map;
+import org.springframework.stereotype.Component;
 
 
 /**
- * Ensures that every property that is required from {@link org.broadleafcommerce.openadmin.dto.BasicFieldMetadata#getRequired()} has a non-empty value being
- * set.
+ * Ensures that every property that is required from
+ * {@link org.broadleafcommerce.openadmin.dto.BasicFieldMetadata#getRequired()} has a non-empty value being set.
  *
- * @author Phillip Verheyden (phillipuniverse)
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 @Component("blRequiredPropertyValidator")
 public class RequiredPropertyValidator implements GlobalPropertyValidator {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static String ERROR_MESSAGE = "requiredValidationFailure";
-    
-    @Override
-    public PropertyValidationResult validate(Entity entity,
-                            Serializable instance,
-                            Map<String, FieldMetadata> entityFieldMetadata,
-                            BasicFieldMetadata propertyMetadata,
-                            String propertyName,
-                            String value) {
-        boolean required = BooleanUtils.isTrue(propertyMetadata.getRequired());
-        if (propertyMetadata.getRequiredOverride() != null) {
-            required = propertyMetadata.getRequiredOverride();
-        }
-        boolean valid = !(required && StringUtils.isEmpty(value));
-        return new PropertyValidationResult(valid, ERROR_MESSAGE);
+  /** DOCUMENT ME! */
+  public static String ERROR_MESSAGE = "requiredValidationFailure";
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.validation.GlobalPropertyValidator#validate(org.broadleafcommerce.openadmin.dto.Entity,
+   *       java.io.Serializable, java.util.Map, org.broadleafcommerce.openadmin.dto.BasicFieldMetadata,
+   *       java.lang.String, java.lang.String)
+   */
+  @Override public PropertyValidationResult validate(Entity entity,
+    Serializable instance, Map<String, FieldMetadata> entityFieldMetadata,
+    BasicFieldMetadata propertyMetadata,
+    String propertyName,
+    String value) {
+    boolean required = BooleanUtils.isTrue(propertyMetadata.getRequired());
+
+    if (propertyMetadata.getRequiredOverride() != null) {
+      required = propertyMetadata.getRequiredOverride();
     }
 
-}
+    boolean valid = !(required && StringUtils.isEmpty(value));
+
+    return new PropertyValidationResult(valid, ERROR_MESSAGE);
+  }
+
+} // end class RequiredPropertyValidator

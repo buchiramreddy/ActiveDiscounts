@@ -18,8 +18,21 @@ package org.broadleafcommerce.common.email.service.message;
 
 import java.util.HashMap;
 
-public interface EmailServiceProducer {
 
-    public void send(@SuppressWarnings("rawtypes") final HashMap props);
-    
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface EmailServiceProducer {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  props  DOCUMENT ME!
+   */
+  void send(@SuppressWarnings("rawtypes") final HashMap props);
+
 }

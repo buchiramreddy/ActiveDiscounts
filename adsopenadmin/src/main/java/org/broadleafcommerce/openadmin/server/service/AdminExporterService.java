@@ -16,18 +16,30 @@
 
 package org.broadleafcommerce.openadmin.server.service;
 
-import org.broadleafcommerce.openadmin.dto.AdminExporterDTO;
-import org.springframework.security.access.annotation.Secured;
-
 import java.util.List;
 
+import org.broadleafcommerce.openadmin.dto.AdminExporterDTO;
+
+import org.springframework.security.access.annotation.Secured;
+
+
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public interface AdminExporterService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Secured("PERMISSION_OTHER_DEFAULT")
-    public List<AdminExporterDTO> getExporters(String type);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @Secured("PERMISSION_OTHER_DEFAULT")
+  List<AdminExporterDTO> getExporters(String type);
 
 }

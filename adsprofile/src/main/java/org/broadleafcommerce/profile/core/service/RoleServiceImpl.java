@@ -16,20 +16,36 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.dao.RoleDao;
-import org.broadleafcommerce.profile.core.domain.CustomerRole;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.profile.core.dao.RoleDao;
+import org.broadleafcommerce.profile.core.domain.CustomerRole;
+
+import org.springframework.stereotype.Service;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blRoleService")
 public class RoleServiceImpl implements RoleService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blRoleDao")
-    protected RoleDao roleDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blRoleDao")
+  protected RoleDao roleDao;
 
-    public List<CustomerRole> findCustomerRolesByCustomerId(Long customerId) {
-        return roleDao.readCustomerRolesByCustomerId(customerId);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.RoleService#findCustomerRolesByCustomerId(java.lang.Long)
+   */
+  @Override public List<CustomerRole> findCustomerRolesByCustomerId(Long customerId) {
+    return roleDao.readCustomerRolesByCustomerId(customerId);
+  }
 }

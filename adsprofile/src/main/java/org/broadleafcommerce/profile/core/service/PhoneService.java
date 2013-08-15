@@ -18,11 +18,42 @@ package org.broadleafcommerce.profile.core.service;
 
 import org.broadleafcommerce.profile.core.domain.Phone;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PhoneService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Phone savePhone(Phone phone);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone create();
 
-    public Phone readPhoneById(Long phoneId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Phone create();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   phoneId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone readPhoneById(Long phoneId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   phone  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone savePhone(Phone phone);
+} // end interface PhoneService

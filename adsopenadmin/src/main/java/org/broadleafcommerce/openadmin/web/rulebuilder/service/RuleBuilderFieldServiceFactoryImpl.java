@@ -16,47 +16,63 @@
 
 package org.broadleafcommerce.openadmin.web.rulebuilder.service;
 
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+
 /**
- * Factory class that returns the appropriate RuleBuilderFieldService
- * given the service name. The services are injected into the factory defined in applicationContext-servlet-open-admin.xml
- * @see RuleBuilderFieldService
+ * Factory class that returns the appropriate RuleBuilderFieldService given the service name. The services are injected
+ * into the factory defined in applicationContext-servlet-open-admin.xml
  *
- * @author Elbert Bautista (elbertbautista)
+ * @see      RuleBuilderFieldService
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 @Service("blRuleBuilderFieldServiceFactory")
 public class RuleBuilderFieldServiceFactoryImpl implements RuleBuilderFieldServiceFactory {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blRuleBuilderFieldServices")
-    protected List<RuleBuilderFieldService> fieldServices;
+  /** DOCUMENT ME! */
+  @Resource(name = "blRuleBuilderFieldServices")
+  protected List<RuleBuilderFieldService> fieldServices;
 
-    @Override
-    public RuleBuilderFieldService createInstance(String name) {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        for (RuleBuilderFieldService service : fieldServices) {
-            if (service.getName().equals(name)){
-                try {
-                    return service.clone();
-                } catch (CloneNotSupportedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory#createInstance(java.lang.String)
+   */
+  @Override public RuleBuilderFieldService createInstance(String name) {
+    for (RuleBuilderFieldService service : fieldServices) {
+      if (service.getName().equals(name)) {
+        try {
+          return service.clone();
+        } catch (CloneNotSupportedException e) {
+          throw new RuntimeException(e);
         }
-
-        return null;
+      }
     }
 
-    @Override
-    public List<RuleBuilderFieldService> getFieldServices() {
-        return fieldServices;
-    }
+    return null;
+  }
 
-    @Override
-    public void setFieldServices(List<RuleBuilderFieldService> fieldServices) {
-        this.fieldServices = fieldServices;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory#getFieldServices()
+   */
+  @Override public List<RuleBuilderFieldService> getFieldServices() {
+    return fieldServices;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory#setFieldServices(java.util.List)
+   */
+  @Override public void setFieldServices(List<RuleBuilderFieldService> fieldServices) {
+    this.fieldServices = fieldServices;
+  }
+} // end class RuleBuilderFieldServiceFactoryImpl

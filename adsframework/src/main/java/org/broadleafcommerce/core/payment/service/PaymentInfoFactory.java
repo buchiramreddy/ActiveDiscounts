@@ -19,8 +19,21 @@ package org.broadleafcommerce.core.payment.service;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 
-public interface PaymentInfoFactory {
 
-    public PaymentInfo constructPaymentInfo(Order order);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface PaymentInfoFactory {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfo constructPaymentInfo(Order order);
 
 }

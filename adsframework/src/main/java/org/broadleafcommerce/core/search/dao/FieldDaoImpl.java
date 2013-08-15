@@ -16,70 +16,88 @@
 
 package org.broadleafcommerce.core.search.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.core.search.domain.Field;
-import org.broadleafcommerce.core.search.domain.FieldEntity;
-import org.broadleafcommerce.core.search.domain.FieldImpl;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.List;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.core.search.domain.Field;
+import org.broadleafcommerce.core.search.domain.FieldEntity;
+import org.broadleafcommerce.core.search.domain.FieldImpl;
+
+import org.hibernate.ejb.QueryHints;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blFieldDao")
 public class FieldDaoImpl implements FieldDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
-    
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
-    
-    @Override
-    public Field readFieldByAbbreviation(String abbreviation) {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Field> criteria = builder.createQuery(Field.class);
-        
-        Root<FieldImpl> root = criteria.from(FieldImpl.class);
-        
-        criteria.select(root);
-        criteria.where(
-            builder.equal(root.get("abbreviation").as(String.class), abbreviation)
-        );
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-        TypedQuery<Field> query = em.createQuery(criteria);
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        query.setHint(QueryHints.HINT_CACHE_REGION, "query.Catalog");
-        
-        return query.getSingleResult();
-    }
-    
-    @Override
-    public List<Field> readAllProductFields() {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Field> criteria = builder.createQuery(Field.class);
-        
-        Root<FieldImpl> root = criteria.from(FieldImpl.class);
-        
-        criteria.select(root);
-        criteria.where(
-            builder.equal(root.get("entityType").as(String.class), FieldEntity.PRODUCT.getType())
-        );
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.FieldDao#readFieldByAbbreviation(java.lang.String)
+   */
+  @Override public Field readFieldByAbbreviation(String abbreviation) {
+    CriteriaBuilder      builder  = em.getCriteriaBuilder();
+    CriteriaQuery<Field> criteria = builder.createQuery(Field.class);
 
-        TypedQuery<Field> query = em.createQuery(criteria);
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        query.setHint(QueryHints.HINT_CACHE_REGION, "query.Catalog");
+    Root<FieldImpl> root = criteria.from(FieldImpl.class);
 
-        return query.getResultList();
-    }
+    criteria.select(root);
+    criteria.where(
+      builder.equal(root.get("abbreviation").as(String.class), abbreviation));
 
-    public Field save(Field field) {
-        return em.merge(field);
-    }
-}
+    TypedQuery<Field> query = em.createQuery(criteria);
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+    query.setHint(QueryHints.HINT_CACHE_REGION, "query.Catalog");
+
+    return query.getSingleResult();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.FieldDao#readAllProductFields()
+   */
+  @Override public List<Field> readAllProductFields() {
+    CriteriaBuilder      builder  = em.getCriteriaBuilder();
+    CriteriaQuery<Field> criteria = builder.createQuery(Field.class);
+
+    Root<FieldImpl> root = criteria.from(FieldImpl.class);
+
+    criteria.select(root);
+    criteria.where(
+      builder.equal(root.get("entityType").as(String.class), FieldEntity.PRODUCT.getType()));
+
+    TypedQuery<Field> query = em.createQuery(criteria);
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+    query.setHint(QueryHints.HINT_CACHE_REGION, "query.Catalog");
+
+    return query.getResultList();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.FieldDao#save(org.broadleafcommerce.core.search.domain.Field)
+   */
+  @Override public Field save(Field field) {
+    return em.merge(field);
+  }
+} // end class FieldDaoImpl

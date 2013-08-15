@@ -18,71 +18,118 @@ package org.broadleafcommerce.core.offer.service.discount;
 
 import org.broadleafcommerce.common.money.BankersRounding;
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class FulfillmentGroupOfferPotential {
-    
-    protected Offer offer;
-    protected Money totalSavings = new Money(BankersRounding.zeroAmount());
-    protected int priority;
-    
-    public Offer getOffer() {
-        return offer;
-    }
-    
-    public void setOffer(Offer offer) {
-        this.offer = offer;
-    }
-    
-    public Money getTotalSavings() {
-        return totalSavings;
-    }
-    
-    public void setTotalSavings(Money totalSavings) {
-        this.totalSavings = totalSavings;
+  /** DOCUMENT ME! */
+  protected Offer offer;
+
+  /** DOCUMENT ME! */
+  protected Money totalSavings = new Money(BankersRounding.zeroAmount());
+
+  /** DOCUMENT ME! */
+  protected int   priority;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Offer getOffer() {
+    return offer;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  public void setOffer(Offer offer) {
+    this.offer = offer;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Money getTotalSavings() {
+    return totalSavings;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  totalSavings  DOCUMENT ME!
+   */
+  public void setTotalSavings(Money totalSavings) {
+    this.totalSavings = totalSavings;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getPriority() {
+    return priority;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priority  DOCUMENT ME!
+   */
+  public void setPriority(int priority) {
+    this.priority = priority;
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((offer == null) ? 0 : offer.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    public int getPriority() {
-        return priority;
+    if (obj == null) {
+      return false;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((offer == null) ? 0 : offer.hashCode());
-        return result;
+    FulfillmentGroupOfferPotential other = (FulfillmentGroupOfferPotential) obj;
+
+    if (offer == null) {
+      if (other.offer != null) {
+        return false;
+      }
+    } else if (!offer.equals(other.offer)) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        FulfillmentGroupOfferPotential other = (FulfillmentGroupOfferPotential) obj;
-        if (offer == null) {
-            if (other.offer != null) {
-                return false;
-            }
-        } else if (!offer.equals(other.offer)) {
-            return false;
-        }
-        return true;
-    }
+    return true;
+  } // end method equals
 
-}
+} // end class FulfillmentGroupOfferPotential

@@ -18,18 +18,24 @@ package org.broadleafcommerce.openadmin.web.controller;
 
 import org.broadleafcommerce.openadmin.web.form.TranslationForm;
 
+
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public interface AdminTranslationControllerExtensionListener {
-    
-    /**
-     * Applies any necessary transformations to the given form. For example, some entity fields might need to be 
-     * mapped in a different way.
-     * 
-     * @param form
-     * @return whether or not a transformation was applied
-     */
-    public boolean applyTransformation(TranslationForm form);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Applies any necessary transformations to the given form. For example, some entity fields might need to be mapped in
+   * a different way.
+   *
+   * @param   form  DOCUMENT ME!
+   *
+   * @return  whether or not a transformation was applied
+   */
+  boolean applyTransformation(TranslationForm form);
 
 }

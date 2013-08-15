@@ -16,26 +16,35 @@
 
 package org.broadleafcommerce.core.order.service.workflow;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PriceOrderIfNecessaryActivity extends BaseActivity<CartOperationContext> {
-    
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    @Override
-    public CartOperationContext execute(CartOperationContext context) throws Exception {
-        CartOperationRequest request = context.getSeedData();
-        Order order = request.getOrder();
-        
-        order = orderService.save(order, request.isPriceOrder());
-        request.setOrder(order);
-        
-        return context;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.order.service.workflow.CartOperationContext)
+   */
+  @Override public CartOperationContext execute(CartOperationContext context) throws Exception {
+    CartOperationRequest request = context.getSeedData();
+    Order                order   = request.getOrder();
+
+    order = orderService.save(order, request.isPriceOrder());
+    request.setOrder(order);
+
+    return context;
+  }
 
 }

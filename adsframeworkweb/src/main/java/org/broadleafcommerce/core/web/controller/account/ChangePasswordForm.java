@@ -19,36 +19,88 @@ package org.broadleafcommerce.core.web.controller.account;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ChangePasswordForm implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String currentPassword;
-    private String newPassword;
-    private String newPasswordConfirm;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getCurrentPassword() {
-        return currentPassword;
-    }
+  private String currentPassword;
+  private String newPassword;
+  private String newPasswordConfirm;
 
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getNewPassword() {
-        return newPassword;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCurrentPassword() {
+    return currentPassword;
+  }
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getNewPasswordConfirm() {
-        return newPasswordConfirm;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getNewPassword() {
+    return newPassword;
+  }
 
-    public void setNewPasswordConfirm(String newPasswordConfirm) {
-        this.newPasswordConfirm = newPasswordConfirm;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getNewPasswordConfirm() {
+    return newPasswordConfirm;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currentPassword  DOCUMENT ME!
+   */
+  public void setCurrentPassword(String currentPassword) {
+    this.currentPassword = currentPassword;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  newPassword  DOCUMENT ME!
+   */
+  public void setNewPassword(String newPassword) {
+    this.newPassword = newPassword;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  newPasswordConfirm  DOCUMENT ME!
+   */
+  public void setNewPasswordConfirm(String newPasswordConfirm) {
+    this.newPasswordConfirm = newPasswordConfirm;
+  }
+
+} // end class ChangePasswordForm

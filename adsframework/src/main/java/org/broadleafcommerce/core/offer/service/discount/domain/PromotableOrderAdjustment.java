@@ -16,38 +16,52 @@
 
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.Offer;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.offer.domain.Offer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PromotableOrderAdjustment extends Serializable {
+  /**
+   * Returns the associated promotableOrder.
+   *
+   * @return  the associated promotableOrder.
+   */
+  PromotableOrder getPromotableOrder();
 
-    /**
-     * Returns the associated promotableOrder
-     * @return
-     */
-    public PromotableOrder getPromotableOrder();
+  /**
+   * Returns the associated promotableCandidateOrderOffer.
+   *
+   * @return  the associated promotableCandidateOrderOffer.
+   */
+  Offer getOffer();
 
-    /**
-     * Returns the associated promotableCandidateOrderOffer
-     * @return
-     */
-    public Offer getOffer();
+  /**
+   * Returns the value of this adjustment.
+   *
+   * @return  the value of this adjustment.
+   */
+  Money getAdjustmentValue();
 
-    /**
-     * Returns the value of this adjustment
-     * @return
-     */
-    public Money getAdjustmentValue();
+  /**
+   * Returns true if this adjustment represents a combinable offer.
+   *
+   * @return  true if this adjustment represents a combinable offer.
+   */
+  boolean isCombinable();
 
-    /**
-     * Returns true if this adjustment represents a combinable offer.
-     */
-    boolean isCombinable();
-
-    /**
-     * Returns true if this adjustment represents a totalitarian offer.
-     */
-    boolean isTotalitarian();
-}
+  /**
+   * Returns true if this adjustment represents a totalitarian offer.
+   *
+   * @return  true if this adjustment represents a totalitarian offer.
+   */
+  boolean isTotalitarian();
+} // end interface PromotableOrderAdjustment

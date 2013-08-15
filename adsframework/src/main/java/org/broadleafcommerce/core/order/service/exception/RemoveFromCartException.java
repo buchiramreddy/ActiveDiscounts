@@ -16,24 +16,48 @@
 
 package org.broadleafcommerce.core.order.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class RemoveFromCartException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new RemoveFromCartException object.
+   */
+  public RemoveFromCartException() {
+    super();
+  }
 
-    public RemoveFromCartException() {
-        super();
-    }
+  /**
+   * Creates a new RemoveFromCartException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public RemoveFromCartException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public RemoveFromCartException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new RemoveFromCartException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public RemoveFromCartException(String message) {
+    super(message);
+  }
 
-    public RemoveFromCartException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new RemoveFromCartException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public RemoveFromCartException(Throwable cause) {
+    super(cause);
+  }
 
-    public RemoveFromCartException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class RemoveFromCartException

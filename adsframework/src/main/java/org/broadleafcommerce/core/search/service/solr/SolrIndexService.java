@@ -16,21 +16,24 @@
 
 package org.broadleafcommerce.core.search.service.solr;
 
-import org.broadleafcommerce.common.exception.ServiceException;
-
 import java.io.IOException;
 
+import org.broadleafcommerce.common.exception.ServiceException;
+
+
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public interface SolrIndexService {
-
-    /**
-     * Rebuilds the current index. 
-     * 
-     * @throws java.io.IOException 
-     * @throws org.broadleafcommerce.common.exception.ServiceException
-     */
-    public void rebuildIndex() throws ServiceException, IOException;
+  /**
+   * Rebuilds the current index.
+   *
+   * @throws  java.io.IOException
+   * @throws  org.broadleafcommerce.common.exception.ServiceException
+   */
+  void rebuildIndex() throws ServiceException, IOException;
 
 }

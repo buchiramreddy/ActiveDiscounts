@@ -16,68 +16,134 @@
 
 package org.broadleafcommerce.core.order.domain;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundle;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 
-import java.util.List;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface BundleOrderItem extends OrderItem, OrderItemContainer, SkuAccessor {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<DiscreteOrderItem> getDiscreteOrderItems();
 
-    List<DiscreteOrderItem> getDiscreteOrderItems();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discreteOrderItems  DOCUMENT ME!
+   */
+  void setDiscreteOrderItems(List<DiscreteOrderItem> discreteOrderItems);
 
-    void setDiscreteOrderItems(List<DiscreteOrderItem> discreteOrderItems);
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderItem#getTaxablePrice()
+   */
+  @Override Money getTaxablePrice();
 
-    Money getTaxablePrice();
-    
-    public List<BundleOrderItemFeePrice> getBundleOrderItemFeePrices();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<BundleOrderItemFeePrice> getBundleOrderItemFeePrices();
 
-    public void setBundleOrderItemFeePrices(List<BundleOrderItemFeePrice> bundleOrderItemFeePrices);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bundleOrderItemFeePrices  DOCUMENT ME!
+   */
+  void setBundleOrderItemFeePrices(List<BundleOrderItemFeePrice> bundleOrderItemFeePrices);
 
-    public boolean hasAdjustedItems();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean hasAdjustedItems();
 
-    public Money getBaseRetailPrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getBaseRetailPrice();
 
-    public void setBaseRetailPrice(Money baseRetailPrice);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  baseRetailPrice  DOCUMENT ME!
+   */
+  void setBaseRetailPrice(Money baseRetailPrice);
 
-    public Money getBaseSalePrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getBaseSalePrice();
 
-    public void setBaseSalePrice(Money baseSalePrice);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  baseSalePrice  DOCUMENT ME!
+   */
+  void setBaseSalePrice(Money baseSalePrice);
 
-    /**
-     * For BundleOrderItem created from a ProductBundle, this will represent the default sku of
-     * the product bundle.
-     *
-     * This can be null for implementations that programatically create product bundles.
-     *
-     * @return
-     */
-    Sku getSku();
+  /**
+   * For BundleOrderItem created from a ProductBundle, this will represent the default sku of the product bundle.
+   *
+   * <p>This can be null for implementations that programatically create product bundles.</p>
+   *
+   * @return  for BundleOrderItem created from a ProductBundle, this will represent the default sku of the product
+   *          bundle.
+   */
+  @Override Sku getSku();
 
-    void setSku(Sku sku);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sku  DOCUMENT ME!
+   */
+  void setSku(Sku sku);
 
-    /**
-     * Returns the associated ProductBundle or null if not applicable.
-     *
-     * If null, then this ProductBundle was manually created.
-     *
-     * @return
-     */
-    ProductBundle getProductBundle();
+  /**
+   * Returns the associated ProductBundle or null if not applicable.
+   *
+   * <p>If null, then this ProductBundle was manually created.</p>
+   *
+   * @return  the associated ProductBundle or null if not applicable.
+   */
+  ProductBundle getProductBundle();
 
-    /**
-     * Sets the ProductBundle associated with this BundleOrderItem.
-     *
-     * @param bundle
-     */
-    void setProductBundle(ProductBundle bundle);
+  /**
+   * Sets the ProductBundle associated with this BundleOrderItem.
+   *
+   * @param  bundle  DOCUMENT ME!
+   */
+  void setProductBundle(ProductBundle bundle);
 
-    /**
-     * Same as getProductBundle.
-     */
-    Product getProduct();
+  /**
+   * Same as getProductBundle.
+   *
+   * @return  same as getProductBundle.
+   */
+  Product getProduct();
 
-    public boolean shouldSumItems();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean shouldSumItems();
+} // end interface BundleOrderItem

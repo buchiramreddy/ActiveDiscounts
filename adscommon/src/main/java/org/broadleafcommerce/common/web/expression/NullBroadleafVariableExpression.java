@@ -17,15 +17,19 @@
 package org.broadleafcommerce.common.web.expression;
 
 /**
- * A null implementation of {@link org.broadleafcommerce.common.web.expression.BroadleafVariableExpression} 
- * 
- * @author Andre Azzolini (apazzolini)
+ * A null implementation of {@link org.broadleafcommerce.common.web.expression.BroadleafVariableExpression}.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class NullBroadleafVariableExpression implements BroadleafVariableExpression {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getName() {
-        return null;
-    }
-    
+  /**
+   * @see  org.broadleafcommerce.common.web.expression.BroadleafVariableExpression#getName()
+   */
+  @Override public String getName() {
+    return null;
+  }
+
 }

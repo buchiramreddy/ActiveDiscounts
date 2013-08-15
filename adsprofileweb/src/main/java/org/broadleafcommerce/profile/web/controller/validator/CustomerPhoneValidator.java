@@ -16,87 +16,114 @@
 
 package org.broadleafcommerce.profile.web.controller.validator;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.profile.core.domain.CustomerPhone;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.service.CustomerPhoneService;
+
 import org.springframework.stereotype.Component;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import javax.annotation.Resource;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Component("blCustomerPhoneValidator")
 public class CustomerPhoneValidator implements Validator {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blCustomerPhoneService")
-    private final CustomerPhoneService customerPhoneService;
+  @Resource(name = "blCustomerPhoneService")
+  private final CustomerPhoneService customerPhoneService;
 
-    public CustomerPhoneValidator(){
-        this.customerPhoneService = null;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
-    public boolean supports(Class clazz) {
-        return clazz.equals(Phone.class);
-    }
+  /**
+   * Creates a new CustomerPhoneValidator object.
+   */
+  public CustomerPhoneValidator() {
+    this.customerPhoneService = null;
+  }
 
-    public void validate(Object obj, Errors errors) {
-        //use regular phone
-        CustomerPhone cPhone = (CustomerPhone) obj;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if (!errors.hasErrors()) {
-            //check for duplicate phone number
-            List<CustomerPhone> phones = customerPhoneService.readAllCustomerPhonesByCustomerId(cPhone.getCustomer().getId());
+  /**
+   * @see  org.springframework.validation.Validator#supports(java.lang.Class)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public boolean supports(Class clazz) {
+    return clazz.equals(Phone.class);
+  }
 
-            String phoneNum = cPhone.getPhone().getPhoneNumber();
-            String phoneName = cPhone.getPhoneName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-            Long phoneId = cPhone.getPhone().getId();
-            Long customerPhoneId = cPhone.getId();
+  /**
+   * @see  org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
+   */
+  @Override public void validate(Object obj, Errors errors) {
+    // use regular phone
+    CustomerPhone cPhone = (CustomerPhone) obj;
 
-            boolean foundPhoneIdForUpdate = false;
-            boolean foundCustomerPhoneIdForUpdate = false;
+    if (!errors.hasErrors()) {
+      // check for duplicate phone number
+      List<CustomerPhone> phones = customerPhoneService.readAllCustomerPhonesByCustomerId(cPhone.getCustomer().getId());
 
-            for (CustomerPhone existingPhone : phones) {
-                //validate that the phoneId passed for an editPhone scenario exists for this user
-                if(phoneId != null && !foundPhoneIdForUpdate){
-                    if(existingPhone.getPhone().getId().equals(phoneId)){
-                        foundPhoneIdForUpdate = true;
-                    }
-                }
+      String phoneNum  = cPhone.getPhone().getPhoneNumber();
+      String phoneName = cPhone.getPhoneName();
 
-                //validate that the customerPhoneId passed for an editPhone scenario exists for this user
-                if(customerPhoneId != null && !foundCustomerPhoneIdForUpdate){
-                    if(existingPhone.getId().equals(customerPhoneId)){
-                        foundCustomerPhoneIdForUpdate = true;
-                    }
-                }
+      Long phoneId         = cPhone.getPhone().getId();
+      Long customerPhoneId = cPhone.getId();
 
-                if(existingPhone.getId().equals(cPhone.getId())){
-                    continue;
-                }
+      boolean foundPhoneIdForUpdate         = false;
+      boolean foundCustomerPhoneIdForUpdate = false;
 
-                if(phoneNum.equals(existingPhone.getPhone().getPhoneNumber())){
-                    errors.pushNestedPath("phone");
-                    errors.rejectValue("phoneNumber", "phoneNumber.duplicate", null);
-                    errors.popNestedPath();
-                }
-
-                if(phoneName.equalsIgnoreCase(existingPhone.getPhoneName())){
-                    errors.rejectValue("phoneName", "phoneName.duplicate", null);
-                }
-            }
-
-            if(phoneId != null && !foundPhoneIdForUpdate){
-                errors.pushNestedPath("phone");
-                errors.rejectValue("id", "phone.invalid_id", null);
-                errors.popNestedPath();
-            }
-
-            if(customerPhoneId != null && !foundCustomerPhoneIdForUpdate){
-                errors.rejectValue("id", "phone.invalid_id", null);
-            }
+      for (CustomerPhone existingPhone : phones) {
+        // validate that the phoneId passed for an editPhone scenario exists for this user
+        if ((phoneId != null) && !foundPhoneIdForUpdate) {
+          if (existingPhone.getPhone().getId().equals(phoneId)) {
+            foundPhoneIdForUpdate = true;
+          }
         }
-    }
-}
+
+        // validate that the customerPhoneId passed for an editPhone scenario exists for this user
+        if ((customerPhoneId != null) && !foundCustomerPhoneIdForUpdate) {
+          if (existingPhone.getId().equals(customerPhoneId)) {
+            foundCustomerPhoneIdForUpdate = true;
+          }
+        }
+
+        if (existingPhone.getId().equals(cPhone.getId())) {
+          continue;
+        }
+
+        if (phoneNum.equals(existingPhone.getPhone().getPhoneNumber())) {
+          errors.pushNestedPath("phone");
+          errors.rejectValue("phoneNumber", "phoneNumber.duplicate", null);
+          errors.popNestedPath();
+        }
+
+        if (phoneName.equalsIgnoreCase(existingPhone.getPhoneName())) {
+          errors.rejectValue("phoneName", "phoneName.duplicate", null);
+        }
+      } // end for
+
+      if ((phoneId != null) && !foundPhoneIdForUpdate) {
+        errors.pushNestedPath("phone");
+        errors.rejectValue("id", "phone.invalid_id", null);
+        errors.popNestedPath();
+      }
+
+      if ((customerPhoneId != null) && !foundCustomerPhoneIdForUpdate) {
+        errors.rejectValue("id", "phone.invalid_id", null);
+      }
+    } // end if
+  } // end method validate
+} // end class CustomerPhoneValidator

@@ -21,13 +21,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD,ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Hydrated {
-    String factoryMethod();
+  String factoryMethod();
 }

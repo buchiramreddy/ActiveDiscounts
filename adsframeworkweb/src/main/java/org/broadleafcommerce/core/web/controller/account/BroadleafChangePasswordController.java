@@ -16,61 +16,131 @@
 
 package org.broadleafcommerce.core.web.controller.account;
 
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.security.util.PasswordChange;
 import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
+
 import org.broadleafcommerce.core.web.controller.account.validator.ChangePasswordValidator;
+
 import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.web.core.CustomerState;
+
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * This controller handles password changes for a customer's account
+ * This controller handles password changes for a customer's account.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class BroadleafChangePasswordController extends BroadleafAbstractController {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Resource(name = "blCustomerService")
-    protected CustomerService customerService;
-    @Resource(name = "blChangePasswordValidator")
-    protected ChangePasswordValidator changePasswordValidator;
+  /** DOCUMENT ME! */
+  protected static String changePasswordView     = "account/changePassword";
 
-    protected String passwordChangedMessage = "Password successfully changed";
-    
-    protected static String changePasswordView = "account/changePassword";
-    protected static String changePasswordRedirect = "redirect:/account/password";
+  /** DOCUMENT ME! */
+  protected static String changePasswordRedirect = "redirect:/account/password";
 
-    public String viewChangePassword(HttpServletRequest request, Model model) {
-        return getChangePasswordView();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blChangePasswordValidator")
+  protected ChangePasswordValidator changePasswordValidator;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  protected CustomerService customerService;
+
+  /** DOCUMENT ME! */
+  protected String passwordChangedMessage = "Password successfully changed";
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getChangePasswordRedirect() {
+    return changePasswordRedirect;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getChangePasswordView() {
+    return changePasswordView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPasswordChangedMessage() {
+    return passwordChangedMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request             DOCUMENT ME!
+   * @param   model               DOCUMENT ME!
+   * @param   form                DOCUMENT ME!
+   * @param   result              DOCUMENT ME!
+   * @param   redirectAttributes  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  public String processChangePassword(HttpServletRequest request, Model model, ChangePasswordForm form,
+    BindingResult result, RedirectAttributes redirectAttributes) throws ServiceException {
+    PasswordChange passwordChange = new PasswordChange(CustomerState.getCustomer().getUsername());
+    passwordChange.setCurrentPassword(form.getCurrentPassword());
+    passwordChange.setNewPassword(form.getNewPassword());
+    passwordChange.setNewPasswordConfirm(form.getNewPasswordConfirm());
+    changePasswordValidator.validate(passwordChange, result);
+
+    if (result.hasErrors()) {
+      return getChangePasswordView();
     }
 
-    public String processChangePassword(HttpServletRequest request, Model model, ChangePasswordForm form, BindingResult result, RedirectAttributes redirectAttributes) throws ServiceException {
-        PasswordChange passwordChange = new PasswordChange(CustomerState.getCustomer().getUsername());
-        passwordChange.setCurrentPassword(form.getCurrentPassword());
-        passwordChange.setNewPassword(form.getNewPassword());
-        passwordChange.setNewPasswordConfirm(form.getNewPasswordConfirm());
-        changePasswordValidator.validate(passwordChange, result);
-        if (result.hasErrors()) {
-            return getChangePasswordView();
-        }
-        customerService.changePassword(passwordChange);
-        return getChangePasswordRedirect();
-    }
+    customerService.changePassword(passwordChange);
 
-    public String getChangePasswordView() {
-        return changePasswordView;
-    }
-    
-    public String getChangePasswordRedirect() {
-        return changePasswordRedirect;
-    }
-    
-    public String getPasswordChangedMessage() {
-        return passwordChangedMessage;
-    }
-    
-}
+    return getChangePasswordRedirect();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   * @param   model    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String viewChangePassword(HttpServletRequest request, Model model) {
+    return getChangePasswordView();
+  }
+
+} // end class BroadleafChangePasswordController

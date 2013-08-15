@@ -16,42 +16,58 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.Weight;
-
 import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.catalog.domain.Weight;
+
+
 /**
- * This is a JAXB wrapper around Weight
- * <p/>
- * User: Kelly Tisdell
- * Date: 4/10/12
+ * This is a JAXB wrapper around Weight.
+ *
+ * <p>User: Kelly Tisdell Date: 4/10/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "weight")
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class WeightWrapper implements APIWrapper<Weight>{
+@XmlRootElement(name = "weight")
+public class WeightWrapper implements APIWrapper<Weight> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected BigDecimal weight;
+  /** DOCUMENT ME! */
+  @XmlElement protected String unitOfMeasure;
 
-    @XmlElement
-    protected String unitOfMeasure;
+  /** DOCUMENT ME! */
+  @XmlElement protected BigDecimal weight;
 
-    @Override
-    public void wrapDetails(Weight model, HttpServletRequest request) {
-        this.weight = model.getWeight();
-        if (model.getWeightUnitOfMeasure() != null) {
-            this.unitOfMeasure = model.getWeightUnitOfMeasure().getType();
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.Weight,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(Weight model, HttpServletRequest request) {
+    this.weight = model.getWeight();
+
+    if (model.getWeightUnitOfMeasure() != null) {
+      this.unitOfMeasure = model.getWeightUnitOfMeasure().getType();
     }
+  }
 
-    @Override
-    public void wrapSummary(Weight model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.Weight,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(Weight model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class WeightWrapper

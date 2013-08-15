@@ -16,67 +16,99 @@
 
 package org.broadleafcommerce.core.web.processor;
 
-import org.apache.commons.lang3.StringUtils;
-import org.broadleafcommerce.core.catalog.domain.ProductOption;
-import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
-import org.springframework.stereotype.Component;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor;
-import org.thymeleaf.standard.expression.StandardExpressionProcessor;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.broadleafcommerce.core.catalog.domain.ProductOption;
+import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
+
+import org.springframework.stereotype.Component;
+
+import org.thymeleaf.Arguments;
+
+import org.thymeleaf.dom.Element;
+
+import org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor;
+
+import org.thymeleaf.standard.expression.StandardExpressionProcessor;
+
+
 /**
- * @author Priyesh Patel
+ * DOCUMENT ME!
+ *
+ * @author   Priyesh Patel
+ * @version  $Revision$, $Date$
  */
 @Component("blProductOptionDisplayProcessor")
 public class ProductOptionDisplayProcessor extends AbstractLocalVariableDefinitionElementProcessor {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the name of this processor to be used in Thymeleaf template
-     */
-    public ProductOptionDisplayProcessor() {
-        super("product_option_display");
-    }
+  /**
+   * Sets the name of this processor to be used in Thymeleaf template.
+   */
+  public ProductOptionDisplayProcessor() {
+    super("product_option_display");
+  }
 
-    @Override
-    public int getPrecedence() {
-        return 100;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    protected void initServices(Arguments arguments) {
+  /**
+   * @see  org.thymeleaf.processor.AbstractProcessor#getPrecedence()
+   */
+  @Override public int getPrecedence() {
+    return 100;
+  }
 
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    }
+  /**
+   * @see  org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor#getNewLocalVariables(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element)
+   */
+  @Override protected Map<String, Object> getNewLocalVariables(Arguments arguments, Element element) {
+    initServices(arguments);
 
-    @Override
-    protected Map<String, Object> getNewLocalVariables(Arguments arguments, Element element) {
-        initServices(arguments);
-        HashMap<String, String> productOptionDisplayValues = new HashMap<String, String>();
-        Map<String, Object> newVars = new HashMap<String, Object>();
-        if (StandardExpressionProcessor.processExpression(arguments,
-                element.getAttributeValue("orderItem")) instanceof DiscreteOrderItem) {
+    HashMap<String, String> productOptionDisplayValues = new HashMap<String, String>();
+    Map<String, Object>     newVars                    = new HashMap<String, Object>();
 
-            DiscreteOrderItem orderItem = (DiscreteOrderItem) StandardExpressionProcessor.processExpression(arguments,
-                    element.getAttributeValue("orderItem"));
+    if (StandardExpressionProcessor.processExpression(arguments,
+            element.getAttributeValue("orderItem")) instanceof DiscreteOrderItem) {
+      DiscreteOrderItem orderItem = (DiscreteOrderItem) StandardExpressionProcessor.processExpression(arguments,
+          element.getAttributeValue("orderItem"));
 
-            for (String i : orderItem.getOrderItemAttributes().keySet()) {
-                for (ProductOption option : orderItem.getProduct().getProductOptions()) {
-                    if (option.getAttributeName().equals(i) && !StringUtils.isEmpty(orderItem.getOrderItemAttributes().get(i).toString())) {
-                        productOptionDisplayValues.put(option.getLabel(), orderItem.getOrderItemAttributes().get(i).toString());
-                    }
-                }
-            }
+      for (String i : orderItem.getOrderItemAttributes().keySet()) {
+        for (ProductOption option : orderItem.getProduct().getProductOptions()) {
+          if (option.getAttributeName().equals(i)
+                && !StringUtils.isEmpty(orderItem.getOrderItemAttributes().get(i).toString())) {
+            productOptionDisplayValues.put(option.getLabel(), orderItem.getOrderItemAttributes().get(i).toString());
+          }
         }
-        newVars.put("productOptionDisplayValues", productOptionDisplayValues);
-
-        return newVars;
+      }
     }
 
-    @Override
-    protected boolean removeHostElement(Arguments arguments, Element element) {
-        return false;
-    }
-}
+    newVars.put("productOptionDisplayValues", productOptionDisplayValues);
+
+    return newVars;
+  } // end method getNewLocalVariables
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  arguments  DOCUMENT ME!
+   */
+  protected void initServices(Arguments arguments) { }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor#removeHostElement(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element)
+   */
+  @Override protected boolean removeHostElement(Arguments arguments, Element element) {
+    return false;
+  }
+} // end class ProductOptionDisplayProcessor

@@ -16,33 +16,40 @@
 
 package com.activediscounts.controller.account;
 
-import org.broadleafcommerce.common.web.controller.BroadleafRedirectController;
-import org.broadleafcommerce.common.web.security.BroadleafAuthenticationSuccessRedirectStrategy;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.broadleafcommerce.common.web.controller.BroadleafRedirectController;
+
+import org.springframework.stereotype.Controller;
+
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
 /**
- * The controller expects a session attribute to be set called BLC_REDIRECT_URL and 
- * that it is being called from an Ajax redirect process.
- * 
- * It would be unexpected for an implementor to modify this class or the corresponding view
- * blcRedirect.html.  
- * 
- * The purpose of this class is to support ajax redirects after a successful login. 
- * 
- * @see org.broadleafcommerce.common.web.security.BroadleafAuthenticationSuccessRedirectStrategy
- * 
- * @author bpolster
+ * The controller expects a session attribute to be set called BLC_REDIRECT_URL and that it is being called from an Ajax
+ * redirect process.
+ *
+ * <p>It would be unexpected for an implementor to modify this class or the corresponding view blcRedirect.html.</p>
+ *
+ * <p>The purpose of this class is to support ajax redirects after a successful login.</p>
+ *
+ * @see      org.broadleafcommerce.common.web.security.BroadleafAuthenticationSuccessRedirectStrategy
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
-@Controller
-public class RedirectController extends BroadleafRedirectController {
-    
-    @RequestMapping("/redirect")
-    public String redirect(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return super.redirect(request, response, model);
-    }
+@Controller public class RedirectController extends BroadleafRedirectController {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.controller.BroadleafRedirectController#redirect(javax.servlet.http.HttpServletRequest,
+   *       javax.servlet.http.HttpServletResponse, org.springframework.ui.Model)
+   */
+  @Override
+  @RequestMapping("/redirect")
+  public String redirect(HttpServletRequest request, HttpServletResponse response, Model model) {
+    return super.redirect(request, response, model);
+  }
 }

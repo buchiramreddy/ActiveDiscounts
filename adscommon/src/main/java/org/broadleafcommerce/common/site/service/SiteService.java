@@ -16,46 +16,68 @@
 
 package org.broadleafcommerce.common.site.service;
 
-import org.broadleafcommerce.common.site.dao.SiteDaoImpl;
-import org.broadleafcommerce.common.site.domain.Site;
-
 import java.util.List;
 
+import org.broadleafcommerce.common.site.domain.Site;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SiteService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Find a site by its id.
-     * @param id
-     * @return
-     */
-    public Site retrieveSiteById(Long id);
+  /**
+   * A List of all sites in the system.
+   *
+   * @return  a List of all sites in the system
+   */
+  List<Site> findAllActiveSites();
 
-    /**
-     * Find a site by its domain
-     * @param id
-     * @return
-     */
-    public Site retrieveSiteByDomainName(String domain);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Save updates to a site.
-     * @param id
-     * @return
-     */
-    public Site save(Site site);
+  /**
+   * Returns the default site.
+   *
+   * @see     {@link org.broadleafcommerce.common.site.dao.SiteDaoImpl}
+   *
+   * @return  the default site.
+   */
+  Site retrieveDefaultSite();
 
-    /**
-     * Returns the default site.  
-     * 
-     * @see {@link org.broadleafcommerce.common.site.dao.SiteDaoImpl}
-     * 
-     * @param id
-     * @return
-     */
-    public Site retrieveDefaultSite();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return a List of all sites in the system
-     */
-    public List<Site> findAllActiveSites();
-}
+  /**
+   * Find a site by its domain.
+   *
+   * @param   domain  id
+   *
+   * @return  find a site by its domain.
+   */
+  Site retrieveSiteByDomainName(String domain);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Find a site by its id.
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  find a site by its id.
+   */
+  Site retrieveSiteById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Save updates to a site.
+   *
+   * @param   site  id
+   *
+   * @return  save updates to a site.
+   */
+  Site save(Site site);
+} // end interface SiteService

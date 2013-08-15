@@ -18,12 +18,33 @@ package org.broadleafcommerce.openadmin.server.security.dao;
 
 import org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityToken;
 
+
 /**
- * 
- * @author bpolster
+ * DOCUMENT ME!
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface ForgotPasswordSecurityTokenDao {
-    public ForgotPasswordSecurityToken readToken(String token);
-    public ForgotPasswordSecurityToken saveToken(ForgotPasswordSecurityToken token);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   token  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ForgotPasswordSecurityToken readToken(String token);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   token  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ForgotPasswordSecurityToken saveToken(ForgotPasswordSecurityToken token);
 }

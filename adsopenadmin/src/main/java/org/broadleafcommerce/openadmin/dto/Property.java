@@ -20,121 +20,285 @@ import java.io.Serializable;
 
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class Property implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
-    
-    protected String name;
-    protected String value;
-    protected String displayValue;
-    protected FieldMetadata metadata = new BasicFieldMetadata();
-    protected boolean isAdvancedCollection = false;
-    protected Boolean isDirty = false;
-    protected String unHtmlEncodedValue;
-    protected String rawValue;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public String getValue() {
-        return value;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+  /** DOCUMENT ME! */
+  protected String        displayValue;
 
-    public FieldMetadata getMetadata() {
-        return metadata;
-    }
+  /** DOCUMENT ME! */
+  protected boolean       isAdvancedCollection = false;
 
-    public void setMetadata(FieldMetadata metadata) {
-        this.metadata = metadata;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean       isDirty  = false;
 
-    public String getDisplayValue() {
-        return displayValue;
-    }
+  /** DOCUMENT ME! */
+  protected FieldMetadata metadata = new BasicFieldMetadata();
 
-    public void setDisplayValue(String displayValue) {
-        this.displayValue = displayValue;
+  /** DOCUMENT ME! */
+  protected String name;
+
+  /** DOCUMENT ME! */
+  protected String rawValue;
+
+  /** DOCUMENT ME! */
+  protected String unHtmlEncodedValue;
+
+  /** DOCUMENT ME! */
+  protected String value;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    public Boolean getIsDirty() {
-        return isDirty;
+    if (obj == null) {
+      return false;
     }
 
-    public void setIsDirty(Boolean isDirty) {
-        this.isDirty = isDirty;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getUnHtmlEncodedValue() {
-        return unHtmlEncodedValue;
+    Property other = (Property) obj;
+
+    if ((metadata == null) || (metadata instanceof CollectionMetadata)
+          || (((BasicFieldMetadata) metadata).getMergedPropertyType() == null)) {
+      if ((other.metadata != null) && (other.metadata instanceof BasicFieldMetadata)
+            && (((BasicFieldMetadata) other.metadata).getMergedPropertyType() != null)) {
+        return false;
+      }
+    } else if ((metadata instanceof BasicFieldMetadata) && (other.metadata instanceof BasicFieldMetadata)
+          && !((BasicFieldMetadata) metadata).getMergedPropertyType().equals(
+            ((BasicFieldMetadata) other.metadata).getMergedPropertyType())) {
+      return false;
     }
 
-    public void setUnHtmlEncodedValue(String unHtmlEncodedValue) {
-        this.unHtmlEncodedValue = unHtmlEncodedValue;
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
     }
 
-    public String getRawValue() {
-        return rawValue;
-    }
+    return true;
+  } // end method equals
 
-    public void setRawValue(String rawValue) {
-        this.rawValue = rawValue;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isAdvancedCollection() {
-        return isAdvancedCollection;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDisplayValue() {
+    return displayValue;
+  }
 
-    public void setAdvancedCollection(boolean advancedCollection) {
-        isAdvancedCollection = advancedCollection;
-    }
-    
-    @Override
-    public String toString() {
-        return getName() + ": " + getValue();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((metadata == null || metadata instanceof CollectionMetadata || ((BasicFieldMetadata) metadata).getMergedPropertyType() == null) ? 0 : ((BasicFieldMetadata) metadata).getMergedPropertyType().hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getIsDirty() {
+    return isDirty;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Property other = (Property) obj;
-        if (metadata == null || metadata instanceof CollectionMetadata || ((BasicFieldMetadata) metadata).getMergedPropertyType() == null) {
-            if (other.metadata != null && other.metadata instanceof BasicFieldMetadata && ((BasicFieldMetadata) other.metadata).getMergedPropertyType() != null)
-                return false;
-        } else if (metadata instanceof BasicFieldMetadata && other.metadata instanceof BasicFieldMetadata && !((BasicFieldMetadata) metadata).getMergedPropertyType().equals(((BasicFieldMetadata) other.metadata).getMergedPropertyType()))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldMetadata getMetadata() {
+    return metadata;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRawValue() {
+    return rawValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUnHtmlEncodedValue() {
+    return unHtmlEncodedValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValue() {
+    return value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result)
+      + (((metadata == null) || (metadata instanceof CollectionMetadata)
+          || (((BasicFieldMetadata) metadata).getMergedPropertyType() == null))
+        ? 0 : ((BasicFieldMetadata) metadata).getMergedPropertyType().hashCode());
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isAdvancedCollection() {
+    return isAdvancedCollection;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  advancedCollection  DOCUMENT ME!
+   */
+  public void setAdvancedCollection(boolean advancedCollection) {
+    isAdvancedCollection = advancedCollection;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayValue  DOCUMENT ME!
+   */
+  public void setDisplayValue(String displayValue) {
+    this.displayValue = displayValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isDirty  DOCUMENT ME!
+   */
+  public void setIsDirty(Boolean isDirty) {
+    this.isDirty = isDirty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  metadata  DOCUMENT ME!
+   */
+  public void setMetadata(FieldMetadata metadata) {
+    this.metadata = metadata;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  rawValue  DOCUMENT ME!
+   */
+  public void setRawValue(String rawValue) {
+    this.rawValue = rawValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  unHtmlEncodedValue  DOCUMENT ME!
+   */
+  public void setUnHtmlEncodedValue(String unHtmlEncodedValue) {
+    this.unHtmlEncodedValue = unHtmlEncodedValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#toString()
+   */
+  @Override public String toString() {
+    return getName() + ": " + getValue();
+  }
+
+} // end class Property

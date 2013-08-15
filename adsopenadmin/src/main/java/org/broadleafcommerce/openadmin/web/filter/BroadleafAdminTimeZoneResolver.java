@@ -16,23 +16,30 @@
 
 package org.broadleafcommerce.openadmin.web.filter;
 
-import org.broadleafcommerce.common.web.BroadleafTimeZoneResolverImpl;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.WebRequest;
-
 import java.util.TimeZone;
+
+import org.broadleafcommerce.common.web.BroadleafTimeZoneResolverImpl;
+
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.context.request.WebRequest;
 
 
 /**
- * 
- * @author Phillip Verheyden (phillipuniverse)
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 @Component("blAdminTimeZoneResolver")
 public class BroadleafAdminTimeZoneResolver extends BroadleafTimeZoneResolverImpl {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public TimeZone resolveTimeZone(WebRequest request) {
-        //TODO: eventually this should support a using a timezone from the currently logged in Admin user preferences
-        return super.resolveTimeZone(request);
-    }
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafTimeZoneResolverImpl#resolveTimeZone(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public TimeZone resolveTimeZone(WebRequest request) {
+    // TODO: eventually this should support a using a timezone from the currently logged in Admin user preferences
+    return super.resolveTimeZone(request);
+  }
 }

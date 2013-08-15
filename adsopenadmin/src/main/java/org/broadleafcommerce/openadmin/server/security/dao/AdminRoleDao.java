@@ -16,18 +16,55 @@
 
 package org.broadleafcommerce.openadmin.server.security.dao;
 
-import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
-
 import java.util.List;
 
+import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AdminRoleDao {
-    public List<AdminRole> readAllAdminRoles();
-    public AdminRole readAdminRoleById(Long id);
-    public AdminRole saveAdminRole(AdminRole role);
-    public void deleteAdminRole(AdminRole role);
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  role  DOCUMENT ME!
+   */
+  void deleteAdminRole(AdminRole role);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminRole readAdminRoleById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminRole> readAllAdminRoles();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   role  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminRole saveAdminRole(AdminRole role);
+} // end interface AdminRoleDao

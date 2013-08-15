@@ -17,21 +17,54 @@ package org.broadleafcommerce.core.search.domain;
 
 import java.io.Serializable;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface RequiredFacet extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SearchFacet getRequiredFacet();
 
-    SearchFacet getRequiredFacet();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  requiredFacet  DOCUMENT ME!
+   */
+  void setRequiredFacet(SearchFacet requiredFacet);
 
-    void setRequiredFacet(SearchFacet requiredFacet);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SearchFacet getSearchFacet();
 
-    SearchFacet getSearchFacet();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  searchFacet  DOCUMENT ME!
+   */
+  void setSearchFacet(SearchFacet searchFacet);
 
-    void setSearchFacet(SearchFacet searchFacet);
-
-}
+} // end interface RequiredFacet

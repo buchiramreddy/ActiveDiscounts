@@ -16,25 +16,35 @@
 
 package org.broadleafcommerce.openadmin.web.compatibility;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.filter.OncePerRequestFilter;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blJSCompatibilityRequestFilter")
 public class JSCompatibilityRequestFilter extends OncePerRequestFilter {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain
-            filterChain) throws ServletException, IOException {
-        filterChain.doFilter(new JSCompatibilityRequestWrapper(request), response);
-    }
+  /**
+   * @see  org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,
+   *       javax.servlet.FilterChain)
+   */
+  @Override protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+    FilterChain filterChain) throws ServletException, IOException {
+    filterChain.doFilter(new JSCompatibilityRequestWrapper(request), response);
+  }
 
 }

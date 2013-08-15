@@ -18,39 +18,166 @@ package org.broadleafcommerce.core.store.domain;
 
 import java.io.Serializable;
 
-public interface Store extends Serializable{
 
-    public String getId();
-    public void setId(String id);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface Store extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getId();
 
-    public String getName();
-    public void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(String id);
 
-    public String getAddress1();
-    public void setAddress1(String address1);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public String getAddress2();
-    public void setAddress2(String address2);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
 
-    public String getCity();
-    public void setCity(String city);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAddress1();
 
-    public String getZip();
-    public void setZip(String zip);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address1  DOCUMENT ME!
+   */
+  void setAddress1(String address1);
 
-    public String getCountry();
-    public void setCountry(String country);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAddress2();
 
-    public String getPhone();
-    public void setPhone(String phone);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address2  DOCUMENT ME!
+   */
+  void setAddress2(String address2);
 
-    public Double getLongitude();
-    public void setLongitude(Double longitude);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCity();
 
-    public Double getLatitude();
-    public void setLatitude(Double latitude);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  city  DOCUMENT ME!
+   */
+  void setCity(String city);
 
-    public void setState(String state);
-    public String getState();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getZip();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  zip  DOCUMENT ME!
+   */
+  void setZip(String zip);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCountry();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  country  DOCUMENT ME!
+   */
+  void setCountry(String country);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPhone();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  void setPhone(String phone);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Double getLongitude();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  longitude  DOCUMENT ME!
+   */
+  void setLongitude(Double longitude);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Double getLatitude();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  latitude  DOCUMENT ME!
+   */
+  void setLatitude(Double latitude);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  state  DOCUMENT ME!
+   */
+  void setState(String state);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getState();
+
+} // end interface Store

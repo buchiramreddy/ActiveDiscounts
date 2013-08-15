@@ -20,73 +20,180 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FilterAndSortCriteria {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public static final String SORT_PROPERTY_PARAMETER = "sortProperty";
-    public static final String SORT_DIRECTION_PARAMETER = "sortDirection";
-    public static final String START_INDEX_PARAMETER = "startIndex";
-    public static final String MAX_INDEX_PARAMETER = "maxIndex";
+  /** DOCUMENT ME! */
+  public static final String SORT_PROPERTY_PARAMETER  = "sortProperty";
 
-    protected String propertyId;
-    protected List<String> filterValues = new ArrayList<String>();
+  /** DOCUMENT ME! */
+  public static final String SORT_DIRECTION_PARAMETER = "sortDirection";
 
-    protected SortDirection sortDirection;
+  /** DOCUMENT ME! */
+  public static final String START_INDEX_PARAMETER = "startIndex";
 
-    public FilterAndSortCriteria(String propertyId) {
-        this.propertyId = propertyId;
-    }
-    
-    public FilterAndSortCriteria(String propertyId, String filterValue) {
-        this.propertyId = propertyId;
-        setFilterValue(filterValue);
-    }
-    
-    public FilterAndSortCriteria(String propertyId, List<String> filterValues) {
-        this.propertyId = propertyId;
-        setFilterValues(filterValues);
-    }
+  /** DOCUMENT ME! */
+  public static final String MAX_INDEX_PARAMETER = "maxIndex";
 
-    public String getPropertyId() {
-        return propertyId;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
-    }
+  /** DOCUMENT ME! */
+  protected List<String> filterValues = new ArrayList<String>();
 
-    public void clearFilterValues() {
-        filterValues.clear();
-    }
+  /** DOCUMENT ME! */
+  protected String propertyId;
 
-    public void setFilterValue(String value) {
-        clearFilterValues();
-        filterValues.add(value);
-    }
+  /** DOCUMENT ME! */
+  protected SortDirection sortDirection;
 
-    public List<String> getFilterValues() {
-        return filterValues;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public void setFilterValues(List<String> filterValues) {
-        this.filterValues = filterValues;
-    }
+  /**
+   * Creates a new FilterAndSortCriteria object.
+   *
+   * @param  propertyId  DOCUMENT ME!
+   */
+  public FilterAndSortCriteria(String propertyId) {
+    this.propertyId = propertyId;
+  }
 
-    public Boolean getSortAscending() {
-        return (sortDirection == null) ? null : SortDirection.ASCENDING.equals(sortDirection);
-    }
+  /**
+   * Creates a new FilterAndSortCriteria object.
+   *
+   * @param  propertyId   DOCUMENT ME!
+   * @param  filterValue  DOCUMENT ME!
+   */
+  public FilterAndSortCriteria(String propertyId, String filterValue) {
+    this.propertyId = propertyId;
+    setFilterValue(filterValue);
+  }
 
-    public void setSortAscending(Boolean sortAscending) {
-        this.sortDirection = (sortAscending) ? SortDirection.ASCENDING : SortDirection.DESCENDING;
-    }
+  /**
+   * Creates a new FilterAndSortCriteria object.
+   *
+   * @param  propertyId    DOCUMENT ME!
+   * @param  filterValues  DOCUMENT ME!
+   */
+  public FilterAndSortCriteria(String propertyId, List<String> filterValues) {
+    this.propertyId = propertyId;
+    setFilterValues(filterValues);
+  }
 
-    public SortDirection getSortDirection() {
-        return sortDirection;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setSortDirection(SortDirection sortDirection) {
-        this.sortDirection = sortDirection;
-    }
+  /**
+   * DOCUMENT ME!
+   */
+  public void clearFilterValues() {
+    filterValues.clear();
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getFilterValues() {
+    return filterValues;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyId() {
+    return propertyId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getSortAscending() {
+    return (sortDirection == null) ? null : SortDirection.ASCENDING.equals(sortDirection);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SortDirection getSortDirection() {
+    return sortDirection;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  public void setFilterValue(String value) {
+    clearFilterValues();
+    filterValues.add(value);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  filterValues  DOCUMENT ME!
+   */
+  public void setFilterValues(List<String> filterValues) {
+    this.filterValues = filterValues;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  propertyId  DOCUMENT ME!
+   */
+  public void setPropertyId(String propertyId) {
+    this.propertyId = propertyId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sortAscending  DOCUMENT ME!
+   */
+  public void setSortAscending(Boolean sortAscending) {
+    this.sortDirection = (sortAscending) ? SortDirection.ASCENDING : SortDirection.DESCENDING;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sortDirection  DOCUMENT ME!
+   */
+  public void setSortDirection(SortDirection sortDirection) {
+    this.sortDirection = sortDirection;
+  }
+
+} // end class FilterAndSortCriteria

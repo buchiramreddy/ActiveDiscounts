@@ -16,19 +16,29 @@
 
 package org.broadleafcommerce.core.store.service;
 
-import org.broadleafcommerce.core.store.dao.ZipCodeDao;
-import org.broadleafcommerce.core.store.domain.ZipCode;
-import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.core.store.dao.ZipCodeDao;
+import org.broadleafcommerce.core.store.domain.ZipCode;
+
+import org.springframework.stereotype.Service;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blZipCodeService")
 public class ZipCodeServiceImpl implements ZipCodeService {
+  @Resource(name = "blZipCodeDao")
+  private ZipCodeDao zipCodeDao;
 
-    @Resource(name="blZipCodeDao")
-    private ZipCodeDao zipCodeDao;
-
-    public ZipCode findZipCodeByZipCode(Integer zipCode) {
-        return zipCodeDao.findZipCodeByZipCode(zipCode);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.store.service.ZipCodeService#findZipCodeByZipCode(java.lang.Integer)
+   */
+  @Override public ZipCode findZipCodeByZipCode(Integer zipCode) {
+    return zipCodeDao.findZipCodeByZipCode(zipCode);
+  }
 }

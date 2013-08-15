@@ -20,28 +20,42 @@ import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerAddress;
 import org.broadleafcommerce.profile.core.domain.CustomerAddressImpl;
+
 import org.testng.annotations.DataProvider;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CustomerAddressDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "setupCustomerAddress")
-    public static Object[][] createCustomerAddress() {
-        CustomerAddress ca1 = new CustomerAddressImpl();
-        Address address1 = new AddressImpl();
-        address1.setAddressLine1("1234 Merit Drive");
-        address1.setCity("Bozeman");
-        address1.setPostalCode("75251");
-        ca1.setAddress(address1);
-        ca1.setAddressName("address4");
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupCustomerAddress")
+  public static Object[][] createCustomerAddress() {
+    CustomerAddress ca1      = new CustomerAddressImpl();
+    Address         address1 = new AddressImpl();
+    address1.setAddressLine1("1234 Merit Drive");
+    address1.setCity("Bozeman");
+    address1.setPostalCode("75251");
+    ca1.setAddress(address1);
+    ca1.setAddressName("address4");
 
-        CustomerAddress ca2 = new CustomerAddressImpl();
-        Address address2 = new AddressImpl();
-        address2.setAddressLine1("12 Testing Drive");
-        address2.setCity("Portland");
-        address2.setPostalCode("75251");
-        ca2.setAddress(address2);
-        ca2.setAddressName("address5");
+    CustomerAddress ca2      = new CustomerAddressImpl();
+    Address         address2 = new AddressImpl();
+    address2.setAddressLine1("12 Testing Drive");
+    address2.setCity("Portland");
+    address2.setPostalCode("75251");
+    ca2.setAddress(address2);
+    ca2.setAddressName("address5");
 
-        return new Object[][] { new Object[] { ca1 }, new Object[] { ca2 } };
-    }
-}
+    return new Object[][] { new Object[] { ca1 }, new Object[] { ca2 } };
+  }
+} // end class CustomerAddressDataProvider

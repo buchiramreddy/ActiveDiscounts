@@ -16,104 +16,181 @@
 
 package org.broadleafcommerce.core.offer.service.discount;
 
+import java.io.Serializable;
+
+import java.util.Set;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateItemOffer;
 
-import java.io.Serializable;
-import java.util.Set;
 
 /**
- * Records the usage of this item as qualifier or target of
- * the promotion.   The discount amount will be 0 if this
- * item was only used as a qualifier.
- * 
- * @author jfischer
+ * Records the usage of this item as qualifier or target of the promotion. The discount amount will be 0 if this item
+ * was only used as a qualifier.
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-public class PromotionDiscount implements Serializable{ 
-    private static final long serialVersionUID = 1L;
-    
-    private PromotableCandidateItemOffer candidateItemOffer;
-    private Offer promotion;
-    private Set<OfferItemCriteria> itemCriteria;
-    private int quantity;
-    private int finalizedQuantity;
+public class PromotionDiscount implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    
-    public Offer getPromotion() {
-        return promotion;
-    }
-    
-    public void setPromotion(Offer promotion) {
-        this.promotion = promotion;
-    }
-    
-    public Set<OfferItemCriteria> getItemCriteria() {
-        return itemCriteria;
-    }
-    
-    public void setItemCriteria(Set<OfferItemCriteria> itemCriteria) {
-        this.itemCriteria = itemCriteria;
+  private PromotableCandidateItemOffer candidateItemOffer;
+  private Offer                        promotion;
+  private Set<OfferItemCriteria>       itemCriteria;
+  private int                          quantity;
+  private int                          finalizedQuantity;
+
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Offer getPromotion() {
+    return promotion;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  promotion  DOCUMENT ME!
+   */
+  public void setPromotion(Offer promotion) {
+    this.promotion = promotion;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Set<OfferItemCriteria> getItemCriteria() {
+    return itemCriteria;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  itemCriteria  DOCUMENT ME!
+   */
+  public void setItemCriteria(Set<OfferItemCriteria> itemCriteria) {
+    this.itemCriteria = itemCriteria;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getQuantity() {
+    return quantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getFinalizedQuantity() {
+    return finalizedQuantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  finalizedQuantity  DOCUMENT ME!
+   */
+  public void setFinalizedQuantity(int finalizedQuantity) {
+    this.finalizedQuantity = finalizedQuantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  public void incrementQuantity(int quantity) {
+    this.quantity = this.quantity + quantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PromotableCandidateItemOffer getCandidateItemOffer() {
+    return candidateItemOffer;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  candidateItemOffer  DOCUMENT ME!
+   */
+  public void setCandidateItemOffer(PromotableCandidateItemOffer candidateItemOffer) {
+    this.candidateItemOffer = candidateItemOffer;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   splitQty  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PromotionDiscount split(int splitQty) {
+    PromotionDiscount returnDiscount = copy();
+    int               originalQty    = finalizedQuantity;
+
+    setFinalizedQuantity(splitQty);
+    setQuantity(splitQty);
+
+    int newDiscountQty = originalQty - splitQty;
+
+    if (newDiscountQty == 0) {
+      return null;
+    } else {
+      returnDiscount.setQuantity(newDiscountQty);
+      returnDiscount.setFinalizedQuantity(newDiscountQty);
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-    
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    return returnDiscount;
+  }
 
-    public int getFinalizedQuantity() {
-        return finalizedQuantity;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PromotionDiscount copy() {
+    PromotionDiscount pd = new PromotionDiscount();
+    pd.setItemCriteria(itemCriteria);
+    pd.setPromotion(promotion);
+    pd.setQuantity(quantity);
+    pd.setFinalizedQuantity(finalizedQuantity);
+    pd.setCandidateItemOffer(candidateItemOffer);
 
-    public void setFinalizedQuantity(int finalizedQuantity) {
-        this.finalizedQuantity = finalizedQuantity;
-    }
-    
-    public void incrementQuantity(int quantity) {
-        this.quantity = this.quantity + quantity;
-    }
-    
-    public PromotableCandidateItemOffer getCandidateItemOffer() {
-        return candidateItemOffer;
-    }
+    return pd;
+  }
 
-    public void setCandidateItemOffer(PromotableCandidateItemOffer candidateItemOffer) {
-        this.candidateItemOffer = candidateItemOffer;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  qty  DOCUMENT ME!
+   */
+  public void resetQty(int qty) {
+    quantity          = qty;
+    finalizedQuantity = qty;
+  }
 
-    public PromotionDiscount split(int splitQty) {
-        PromotionDiscount returnDiscount = copy();
-        int originalQty = finalizedQuantity;
-
-        setFinalizedQuantity(splitQty);
-        setQuantity(splitQty);
-
-        int newDiscountQty = originalQty - splitQty;
-        if (newDiscountQty == 0) {
-            return null;
-        } else {
-            returnDiscount.setQuantity(newDiscountQty);
-            returnDiscount.setFinalizedQuantity(newDiscountQty);
-        }
-        return returnDiscount;
-    }
-
-    public PromotionDiscount copy() {
-        PromotionDiscount pd = new PromotionDiscount();
-        pd.setItemCriteria(itemCriteria);
-        pd.setPromotion(promotion);
-        pd.setQuantity(quantity);
-        pd.setFinalizedQuantity(finalizedQuantity);
-        pd.setCandidateItemOffer(candidateItemOffer);
-        return pd;
-    }
-    
-    public void resetQty(int qty) {
-        quantity = qty;
-        finalizedQuantity = qty;
-    }
-    
-}
+} // end class PromotionDiscount

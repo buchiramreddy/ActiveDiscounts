@@ -18,91 +18,167 @@ package org.broadleafcommerce.openadmin.dto;
 
 import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class SimpleValueMapStructure extends MapStructure {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    
-    private String valuePropertyName;
-    private String valuePropertyFriendlyName;
-    
-    public SimpleValueMapStructure() {
-        super();
-    }
-    
-    /**
-     * @param keyClassName
-     * @param keyPropertyName
-     * @param keyPropertyFriendlyName
-     * @param valueClassName
-     * @param mapProperty
-     */
-    public SimpleValueMapStructure(String keyClassName, String keyPropertyName, String keyPropertyFriendlyName, String valueClassName, String valuePropertyName, String valuePropertyFriendlyName, String mapProperty) {
-        super(keyClassName, keyPropertyName, keyPropertyFriendlyName, valueClassName, mapProperty, false);
-        this.valuePropertyFriendlyName = valuePropertyFriendlyName;
-        this.valuePropertyName = valuePropertyName;
+  private static final long serialVersionUID = 1L;
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String valuePropertyFriendlyName;
+
+  private String valuePropertyName;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new SimpleValueMapStructure object.
+   */
+  public SimpleValueMapStructure() {
+    super();
+  }
+
+  /**
+   *
+   * Creates a new SimpleValueMapStructure object.
+   *
+   * @param  keyClassName               DOCUMENT ME!
+   * @param  keyPropertyName            DOCUMENT ME!
+   * @param  keyPropertyFriendlyName    DOCUMENT ME!
+   * @param  valueClassName             DOCUMENT ME!
+   * @param  valuePropertyName          DOCUMENT ME!
+   * @param  valuePropertyFriendlyName  DOCUMENT ME!
+   * @param  mapProperty                DOCUMENT ME!
+   */
+  public SimpleValueMapStructure(String keyClassName, String keyPropertyName, String keyPropertyFriendlyName,
+    String valueClassName, String valuePropertyName, String valuePropertyFriendlyName, String mapProperty) {
+    super(keyClassName, keyPropertyName, keyPropertyFriendlyName, valueClassName, mapProperty, false);
+    this.valuePropertyFriendlyName = valuePropertyFriendlyName;
+    this.valuePropertyName         = valuePropertyName;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.MapStructure#accept(org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor)
+   */
+  @Override public void accept(PersistencePerspectiveItemVisitor visitor) {
+    visitor.visit(this);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.MapStructure#clonePersistencePerspectiveItem()
+   */
+  @Override public PersistencePerspectiveItem clonePersistencePerspectiveItem() {
+    SimpleValueMapStructure mapStructure = new SimpleValueMapStructure();
+    mapStructure.setKeyClassName(getKeyClassName());
+    mapStructure.setKeyPropertyName(getKeyPropertyName());
+    mapStructure.setValuePropertyFriendlyName(getKeyPropertyFriendlyName());
+    mapStructure.setValueClassName(getValueClassName());
+    mapStructure.setMapProperty(getMapProperty());
+    mapStructure.setDeleteValueEntity(getDeleteValueEntity());
+    mapStructure.valuePropertyName         = valuePropertyName;
+    mapStructure.valuePropertyFriendlyName = valuePropertyFriendlyName;
+
+    return mapStructure;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.MapStructure#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    public String getValuePropertyName() {
-        return valuePropertyName;
-    }
-    
-    public void setValuePropertyName(String valuePropertyName) {
-        this.valuePropertyName = valuePropertyName;
-    }
-    
-    public String getValuePropertyFriendlyName() {
-        return valuePropertyFriendlyName;
-    }
-    
-    public void setValuePropertyFriendlyName(String valuePropertyFriendlyName) {
-        this.valuePropertyFriendlyName = valuePropertyFriendlyName;
-    }
-    
-    public void accept(PersistencePerspectiveItemVisitor visitor) {
-        visitor.visit(this);
+    if (!(o instanceof SimpleValueMapStructure)) {
+      return false;
     }
 
-    @Override
-    public PersistencePerspectiveItem clonePersistencePerspectiveItem() {
-        SimpleValueMapStructure mapStructure = new SimpleValueMapStructure();
-        mapStructure.setKeyClassName(getKeyClassName());
-        mapStructure.setKeyPropertyName(getKeyPropertyName());
-        mapStructure.setValuePropertyFriendlyName(getKeyPropertyFriendlyName());
-        mapStructure.setValueClassName(getValueClassName());
-        mapStructure.setMapProperty(getMapProperty());
-        mapStructure.setDeleteValueEntity(getDeleteValueEntity());
-        mapStructure.valuePropertyName = valuePropertyName;
-        mapStructure.valuePropertyFriendlyName = valuePropertyFriendlyName;
-
-        return mapStructure;
+    if (!super.equals(o)) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SimpleValueMapStructure)) return false;
-        if (!super.equals(o)) return false;
+    SimpleValueMapStructure that = (SimpleValueMapStructure) o;
 
-        SimpleValueMapStructure that = (SimpleValueMapStructure) o;
-
-        if (valuePropertyFriendlyName != null ? !valuePropertyFriendlyName.equals(that.valuePropertyFriendlyName) : that.valuePropertyFriendlyName != null)
-            return false;
-        if (valuePropertyName != null ? !valuePropertyName.equals(that.valuePropertyName) : that.valuePropertyName != null)
-            return false;
-
-        return true;
+    if ((valuePropertyFriendlyName != null) ? (!valuePropertyFriendlyName.equals(that.valuePropertyFriendlyName))
+                                            : (that.valuePropertyFriendlyName != null)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (valuePropertyName != null ? valuePropertyName.hashCode() : 0);
-        result = 31 * result + (valuePropertyFriendlyName != null ? valuePropertyFriendlyName.hashCode() : 0);
-        return result;
+    if ((valuePropertyName != null) ? (!valuePropertyName.equals(that.valuePropertyName))
+                                    : (that.valuePropertyName != null)) {
+      return false;
     }
-}
+
+    return true;
+  } // end method equals
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValuePropertyFriendlyName() {
+    return valuePropertyFriendlyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValuePropertyName() {
+    return valuePropertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.MapStructure#hashCode()
+   */
+  @Override public int hashCode() {
+    int result = super.hashCode();
+    result = (31 * result) + ((valuePropertyName != null) ? valuePropertyName.hashCode() : 0);
+    result = (31 * result) + ((valuePropertyFriendlyName != null) ? valuePropertyFriendlyName.hashCode() : 0);
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  valuePropertyFriendlyName  DOCUMENT ME!
+   */
+  public void setValuePropertyFriendlyName(String valuePropertyFriendlyName) {
+    this.valuePropertyFriendlyName = valuePropertyFriendlyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  valuePropertyName  DOCUMENT ME!
+   */
+  public void setValuePropertyName(String valuePropertyName) {
+    this.valuePropertyName = valuePropertyName;
+  }
+} // end class SimpleValueMapStructure

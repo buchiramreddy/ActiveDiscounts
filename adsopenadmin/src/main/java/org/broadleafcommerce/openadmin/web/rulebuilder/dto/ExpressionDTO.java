@@ -18,60 +18,142 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import java.io.Serializable;
 
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class ExpressionDTO extends DataDTO implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected String name;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String operator;
+  /** DOCUMENT ME! */
+  protected String end;
 
-    protected String value;
+  /** DOCUMENT ME! */
+  protected String name;
 
-    protected String start;
+  /** DOCUMENT ME! */
+  protected String operator;
 
-    protected String end;
+  /** DOCUMENT ME! */
+  protected String start;
 
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  protected String value;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getOperator() {
-        return operator;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEnd() {
+    return end;
+  }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getValue() {
-        return value;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getStart() {
-        return start;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOperator() {
+    return operator;
+  }
 
-    public void setStart(String start) {
-        this.start = start;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getEnd() {
-        return end;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getStart() {
+    return start;
+  }
 
-    public void setEnd(String end) {
-        this.end = end;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValue() {
+    return value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  end  DOCUMENT ME!
+   */
+  public void setEnd(String end) {
+    this.end = end;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  operator  DOCUMENT ME!
+   */
+  public void setOperator(String operator) {
+    this.operator = operator;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  start  DOCUMENT ME!
+   */
+  public void setStart(String start) {
+    this.start = start;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
+} // end class ExpressionDTO

@@ -16,44 +16,61 @@
 
 package org.broadleafcommerce.core.web.order.security;
 
-import org.broadleafcommerce.core.web.order.CartState;
-import org.broadleafcommerce.profile.web.core.CustomerState;
-import org.broadleafcommerce.profile.web.core.security.CustomerStateInterceptor;
+import javax.annotation.Resource;
+
 import org.springframework.ui.ModelMap;
+
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.WebRequestInterceptor;
 
-import javax.annotation.Resource;
-
 
 /**
- * Interceptor responsible for putting the current cart on the request. Carts are defined in BLC as an {@link Order} with
- * a status of IN_PROCESS. This interceptor should go after {@link org.broadleafcommerce.profile.web.core.security.CustomerStateInterceptor} since it relies on
+ * Interceptor responsible for putting the current cart on the request. Carts are defined in BLC as an {@link Order}
+ * with a status of IN_PROCESS. This interceptor should go after
+ * {@link org.broadleafcommerce.profile.web.core.security.CustomerStateInterceptor} since it relies on
  * {@link org.broadleafcommerce.profile.web.core.CustomerState}.
- * 
- * Note that in servlet applications you should be using {@link org.broadleafcommerce.core.web.order.security.CartStateFilter}
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.web.order.CartState}
+ *
+ * <p>Note that in servlet applications you should be using
+ * {@link org.broadleafcommerce.core.web.order.security.CartStateFilter}</p>
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.core.web.order.CartState}
+ * @version  $Revision$, $Date$
  */
 public class CartStateInterceptor implements WebRequestInterceptor {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blCartStateRequestProcessor")
-    protected CartStateRequestProcessor cartStateProcessor;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCartStateRequestProcessor")
+  protected CartStateRequestProcessor cartStateProcessor;
 
-    @Override
-    public void preHandle(WebRequest request) throws Exception {
-        cartStateProcessor.process(request);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void postHandle(WebRequest request, ModelMap model) throws Exception {
-        // unimplemented
-    }
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#afterCompletion(org.springframework.web.context.request.WebRequest,
+   *       java.lang.Exception)
+   */
+  @Override public void afterCompletion(WebRequest request, Exception ex) throws Exception {
+    // unimplemented
+  }
 
-    @Override
-    public void afterCompletion(WebRequest request, Exception ex) throws Exception {
-        // unimplemented
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#postHandle(org.springframework.web.context.request.WebRequest,
+   *       org.springframework.ui.ModelMap)
+   */
+  @Override public void postHandle(WebRequest request, ModelMap model) throws Exception {
+    // unimplemented
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#preHandle(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public void preHandle(WebRequest request) throws Exception {
+    cartStateProcessor.process(request);
+  }
+
+} // end class CartStateInterceptor

@@ -16,40 +16,51 @@
 
 package org.broadleafcommerce.core.pricing.service.workflow;
 
+import java.math.BigDecimal;
+
 import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import java.math.BigDecimal;
 
 /**
- * Called during the pricing workflow to set the merchandise total for each FulfillmentGroup
- * in an Order. This activity should come before any activity dealing with pricing FulfillmentGroups
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#setMerchandiseTotal(org.broadleafcommerce.common.money.Money)}, {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#getMerchandiseTotal()}
+ * Called during the pricing workflow to set the merchandise total for each FulfillmentGroup in an Order. This activity
+ * should come before any activity dealing with pricing FulfillmentGroups
+ *
+ * @author   Phillip Verheyden
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#setMerchandiseTotal(org.broadleafcommerce.common.money.Money)},
+ *           {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#getMerchandiseTotal()}
+ * @version  $Revision$, $Date$
  */
 public class FulfillmentGroupMerchandiseTotalActivity extends BaseActivity<PricingContext> {
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.pricing.service.workflow.PricingContext)
+   */
+  @Override public PricingContext execute(PricingContext context) throws Exception {
+    Order order = context.getSeedData();
 
-    @Override
-    public PricingContext execute(PricingContext context) throws Exception {
-        Order order = context.getSeedData();
+    for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
+      Money merchandiseTotal = BroadleafCurrencyUtils.getMoney(BigDecimal.ZERO,
+          fulfillmentGroup.getOrder().getCurrency());
 
-        for(FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
-            Money merchandiseTotal = BroadleafCurrencyUtils.getMoney(BigDecimal.ZERO, fulfillmentGroup.getOrder().getCurrency());
-            for(FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
-                OrderItem item = fulfillmentGroupItem.getOrderItem();
-                merchandiseTotal = merchandiseTotal.add(item.getTotalPrice());
-            }
-            fulfillmentGroup.setMerchandiseTotal(merchandiseTotal);
-        }
-        context.setSeedData(order);
+      for (FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
+        OrderItem item = fulfillmentGroupItem.getOrderItem();
+        merchandiseTotal = merchandiseTotal.add(item.getTotalPrice());
+      }
 
-        return context;
+      fulfillmentGroup.setMerchandiseTotal(merchandiseTotal);
     }
 
-}
+    context.setSeedData(order);
+
+    return context;
+  }
+
+} // end class FulfillmentGroupMerchandiseTotalActivity

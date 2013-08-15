@@ -20,46 +20,100 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class TransactionUtils {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public static TransactionStatus createTransaction(String name, int propagationBehavior, PlatformTransactionManager transactionManager) {
-        return createTransaction(name, propagationBehavior, transactionManager, false);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name                 DOCUMENT ME!
+   * @param   propagationBehavior  DOCUMENT ME!
+   * @param   transactionManager   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static TransactionStatus createTransaction(String name, int propagationBehavior,
+    PlatformTransactionManager transactionManager) {
+    return createTransaction(name, propagationBehavior, transactionManager, false);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   propagationBehavior  DOCUMENT ME!
+   * @param   transactionManager   DOCUMENT ME!
+   * @param   isReadOnly           DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static TransactionStatus createTransaction(int propagationBehavior,
+    PlatformTransactionManager transactionManager, boolean isReadOnly) {
+    DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+    def.setReadOnly(isReadOnly);
+    def.setPropagationBehavior(propagationBehavior);
+
+    return transactionManager.getTransaction(def);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name                 DOCUMENT ME!
+   * @param   propagationBehavior  DOCUMENT ME!
+   * @param   transactionManager   DOCUMENT ME!
+   * @param   isReadOnly           DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static TransactionStatus createTransaction(String name, int propagationBehavior,
+    PlatformTransactionManager transactionManager, boolean isReadOnly) {
+    DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+    def.setName(name);
+    def.setReadOnly(isReadOnly);
+    def.setPropagationBehavior(propagationBehavior);
+
+    return transactionManager.getTransaction(def);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  status              DOCUMENT ME!
+   * @param  transactionManager  DOCUMENT ME!
+   * @param  isError             DOCUMENT ME!
+   */
+  public static void finalizeTransaction(TransactionStatus status, PlatformTransactionManager transactionManager,
+    boolean isError) {
+    boolean isActive = false;
+
+    try {
+      if (!status.isRollbackOnly()) {
+        isActive = true;
+      }
+    } catch (Exception e) {
+      // do nothing
     }
 
-    public static TransactionStatus createTransaction(String name, int propagationBehavior, PlatformTransactionManager transactionManager, boolean isReadOnly) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setName(name);
-        def.setReadOnly(isReadOnly);
-        def.setPropagationBehavior(propagationBehavior);
-        return transactionManager.getTransaction(def);
+    if (isActive) {
+      if (isError) {
+        transactionManager.rollback(status);
+      } else {
+        transactionManager.commit(status);
+      }
     }
+  }
 
-    public static TransactionStatus createTransaction(int propagationBehavior, PlatformTransactionManager transactionManager, boolean isReadOnly) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setReadOnly(isReadOnly);
-        def.setPropagationBehavior(propagationBehavior);
-        return transactionManager.getTransaction(def);
-    }
-
-    public static void finalizeTransaction(TransactionStatus status, PlatformTransactionManager transactionManager, boolean isError) {
-        boolean isActive = false;
-        try {
-            if (!status.isRollbackOnly()) {
-                isActive = true;
-            }
-        } catch (Exception e) {
-            //do nothing
-        }
-        if (isActive) {
-            if (isError) {
-                transactionManager.rollback(status);
-            } else {
-                transactionManager.commit(status);
-            }
-        }
-    }
-
-}
+} // end class TransactionUtils

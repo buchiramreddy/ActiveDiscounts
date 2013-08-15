@@ -16,14 +16,32 @@
 
 package org.broadleafcommerce.common.util;
 
-import org.broadleafcommerce.common.time.SystemTime;
-
 import java.util.Date;
 
-public class DateUtil {
+import org.broadleafcommerce.common.time.SystemTime;
 
-    public static boolean isActive(Date startDate, Date endDate, boolean includeTime) {
-        Long date = SystemTime.asMillis(includeTime);
-        return !(startDate == null || startDate.getTime() > date || (endDate != null && endDate.getTime() < date));
-    }
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class DateUtil {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   startDate    DOCUMENT ME!
+   * @param   endDate      DOCUMENT ME!
+   * @param   includeTime  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static boolean isActive(Date startDate, Date endDate, boolean includeTime) {
+    Long date = SystemTime.asMillis(includeTime);
+
+    return !((startDate == null) || (startDate.getTime() > date) || ((endDate != null) && (endDate.getTime() < date)));
+  }
 }

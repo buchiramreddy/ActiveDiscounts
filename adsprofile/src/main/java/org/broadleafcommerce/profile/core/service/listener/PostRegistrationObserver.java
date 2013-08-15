@@ -18,7 +18,20 @@ package org.broadleafcommerce.profile.core.service.listener;
 
 import org.broadleafcommerce.profile.core.domain.Customer;
 
-public interface PostRegistrationObserver {
 
-    public void processRegistrationEvent(Customer customer);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface PostRegistrationObserver {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  void processRegistrationEvent(Customer customer);
 }

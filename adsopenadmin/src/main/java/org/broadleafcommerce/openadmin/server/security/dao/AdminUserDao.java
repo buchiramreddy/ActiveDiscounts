@@ -16,20 +16,77 @@
 
 package org.broadleafcommerce.openadmin.server.security.dao;
 
-import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
-
 import java.util.List;
 
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AdminUserDao {
-    List<AdminUser> readAllAdminUsers();
-    AdminUser readAdminUserById(Long id);
-    AdminUser readAdminUserByUserName(String userName);
-    AdminUser saveAdminUser(AdminUser user);
-    void deleteAdminUser(AdminUser user);
-    List<AdminUser> readAdminUserByEmail(String emailAddress);
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  user  DOCUMENT ME!
+   */
+  void deleteAdminUser(AdminUser user);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailAddress  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminUser> readAdminUserByEmail(String emailAddress);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminUser readAdminUserById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   userName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminUser readAdminUserByUserName(String userName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminUser> readAllAdminUsers();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   user  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminUser saveAdminUser(AdminUser user);
+} // end interface AdminUserDao

@@ -17,19 +17,37 @@
 package org.broadleafcommerce.core.web.checkout.validator;
 
 import org.springframework.stereotype.Component;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Component("blUSShippingInfoFormValidator")
 public class USShippingInfoFormValidator extends ShippingInfoFormValidator {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings("rawtypes")
-    public boolean supports(Class clazz) {
-        return clazz.equals(USShippingInfoFormValidator.class);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator#supports(java.lang.Class)
+   */
+  @Override
+  @SuppressWarnings("rawtypes")
+  public boolean supports(Class clazz) {
+    return clazz.equals(USShippingInfoFormValidator.class);
+  }
 
-    public void validate(Object obj, Errors errors) {
-        super.validate(obj, errors);
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address.state", "state.required");
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.checkout.validator.ShippingInfoFormValidator#validate(java.lang.Object, org.springframework.validation.Errors)
+   */
+  @Override public void validate(Object obj, Errors errors) {
+    super.validate(obj, errors);
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address.state", "state.required");
+  }
 }

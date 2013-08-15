@@ -20,40 +20,68 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 /**
- * <p>
- * This is a JAXB wrapper that
- * encapsulates the mapping between a PaymentInfoWrapper and a ReferencedWrapper
+ * <p>This is a JAXB wrapper that encapsulates the mapping between a PaymentInfoWrapper and a ReferencedWrapper</p>
  *
- * This is just a container, and will not be wrapped or unwrapped from a BLC entity
+ * <p>This is just a container, and will not be wrapped or unwrapped from a BLC entity
+ * </p>User: Elbert Bautista Date: 4/26/12
  *
- * <p/>
- * User: Elbert Bautista
- * Date: 4/26/12
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "paymentReferenceMap")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "paymentReferenceMap")
 public class PaymentReferenceMapWrapper extends BaseWrapper {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected PaymentInfoWrapper paymentInfo;
+  /** DOCUMENT ME! */
+  @XmlElement protected PaymentInfoWrapper paymentInfo;
 
-    @XmlElement
-    protected ReferencedWrapper referenced;
+  /** DOCUMENT ME! */
+  @XmlElement protected ReferencedWrapper referenced;
 
-    public PaymentInfoWrapper getPaymentInfoWrapper() {
-        return paymentInfo;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setPaymentInfoWrapper(PaymentInfoWrapper paymentInfo) {
-        this.paymentInfo = paymentInfo;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PaymentInfoWrapper getPaymentInfoWrapper() {
+    return paymentInfo;
+  }
 
-    public ReferencedWrapper getReferencedWrapper() {
-        return referenced;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setReferencedWrapper(ReferencedWrapper referenced) {
-        this.referenced = referenced;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ReferencedWrapper getReferencedWrapper() {
+    return referenced;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfo  DOCUMENT ME!
+   */
+  public void setPaymentInfoWrapper(PaymentInfoWrapper paymentInfo) {
+    this.paymentInfo = paymentInfo;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  referenced  DOCUMENT ME!
+   */
+  public void setReferencedWrapper(ReferencedWrapper referenced) {
+    this.referenced = referenced;
+  }
+} // end class PaymentReferenceMapWrapper

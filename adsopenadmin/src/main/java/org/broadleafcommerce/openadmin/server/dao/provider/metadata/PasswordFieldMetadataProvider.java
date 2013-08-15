@@ -16,7 +16,11 @@
 
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest;
@@ -26,72 +30,116 @@ import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.Late
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.FieldProviderResponse;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.context.annotation.Scope;
+
+import org.springframework.stereotype.Component;
 
 
 /**
  * Adds a new 'passwordConfirm' field to the metadata as well as ensures that the field type for the password field is
- * actually a password
+ * actually a password.
  *
- * @author Phillip Verheyden (phillipuniverse)
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 @Component("blPasswordFieldMetadataProvider")
 @Scope("prototype")
 public class PasswordFieldMetadataProvider extends AbstractFieldMetadataProvider implements FieldMetadataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int getOrder() {
-        return FieldMetadataProvider.BASIC;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider#addMetadata(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse addMetadata(AddMetadataRequest addMetadataRequest,
+    Map<String, FieldMetadata> metadata) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
 
-    @Override
-    public FieldProviderResponse addMetadataFromFieldType(AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
-        if (addMetadataFromFieldTypeRequest.getPresentationAttribute() instanceof BasicFieldMetadata && 
-                SupportedFieldType.PASSWORD.equals(((BasicFieldMetadata) addMetadataFromFieldTypeRequest.getPresentationAttribute()).getExplicitFieldType())) {
-            //build the metadata for the password field
-            addMetadataFromFieldTypeRequest.getDynamicEntityDao().getDefaultFieldMetadataProvider().addMetadataFromFieldType(addMetadataFromFieldTypeRequest, metadata);
-            ((BasicFieldMetadata)addMetadataFromFieldTypeRequest.getPresentationAttribute()).setFieldType(SupportedFieldType.PASSWORD);
-            
-            //clone the password field and add in a custom one
-            BasicFieldMetadata confirmMd = (BasicFieldMetadata) addMetadataFromFieldTypeRequest.getPresentationAttribute().cloneFieldMetadata();
-            confirmMd.setFieldName("passwordConfirm");
-            confirmMd.setFriendlyName("AdminUserImpl_Admin_Password_Confirm");
-            confirmMd.setExplicitFieldType(SupportedFieldType.PASSWORD_CONFIRM);
-            confirmMd.setValidationConfigurations(new HashMap<String, Map<String,String>>());
-            metadata.put("passwordConfirm", confirmMd);
-            return FieldProviderResponse.HANDLED;
-        } else {
-            return FieldProviderResponse.NOT_HANDLED;
-        }
-    }
-    
-    @Override
-    public FieldProviderResponse addMetadata(AddMetadataRequest addMetadataRequest, Map<String, FieldMetadata> metadata) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public FieldProviderResponse lateStageAddMetadata(LateStageAddMetadataRequest addMetadataRequest, Map<String, FieldMetadata> metadata) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider#addMetadataFromFieldType(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse addMetadataFromFieldType(
+    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
+    if ((addMetadataFromFieldTypeRequest.getPresentationAttribute() instanceof BasicFieldMetadata)
+          && SupportedFieldType.PASSWORD.equals(
+            ((BasicFieldMetadata) addMetadataFromFieldTypeRequest.getPresentationAttribute()).getExplicitFieldType())) {
+      // build the metadata for the password field
+      addMetadataFromFieldTypeRequest.getDynamicEntityDao().getDefaultFieldMetadataProvider().addMetadataFromFieldType(
+        addMetadataFromFieldTypeRequest, metadata);
+      ((BasicFieldMetadata) addMetadataFromFieldTypeRequest.getPresentationAttribute()).setFieldType(
+        SupportedFieldType.PASSWORD);
 
-    @Override
-    public FieldProviderResponse overrideViaAnnotation(OverrideViaAnnotationRequest overrideViaAnnotationRequest, Map<String, FieldMetadata> metadata) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+      // clone the password field and add in a custom one
+      BasicFieldMetadata confirmMd = (BasicFieldMetadata) addMetadataFromFieldTypeRequest.getPresentationAttribute()
+        .cloneFieldMetadata();
+      confirmMd.setFieldName("passwordConfirm");
+      confirmMd.setFriendlyName("AdminUserImpl_Admin_Password_Confirm");
+      confirmMd.setExplicitFieldType(SupportedFieldType.PASSWORD_CONFIRM);
+      confirmMd.setValidationConfigurations(new HashMap<String, Map<String, String>>());
+      metadata.put("passwordConfirm", confirmMd);
 
-    @Override
-    public FieldProviderResponse overrideViaXml(OverrideViaXmlRequest overrideViaXmlRequest, Map<String, FieldMetadata> metadata) {
-        return FieldProviderResponse.NOT_HANDLED;
+      return FieldProviderResponse.HANDLED;
+    } else {
+      return FieldProviderResponse.NOT_HANDLED;
     }
+  }
 
-    @Override
-    public FieldProviderResponse addMetadataFromMappingData(AddMetadataFromMappingDataRequest addMetadataFromMappingDataRequest, FieldMetadata metadata) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider#addMetadataFromMappingData(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromMappingDataRequest,
+   *       org.broadleafcommerce.openadmin.dto.FieldMetadata)
+   */
+  @Override public FieldProviderResponse addMetadataFromMappingData(
+    AddMetadataFromMappingDataRequest addMetadataFromMappingDataRequest, FieldMetadata metadata) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.core.Ordered#getOrder()
+   */
+  @Override public int getOrder() {
+    return FieldMetadataProvider.BASIC;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider#lateStageAddMetadata(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.LateStageAddMetadataRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse lateStageAddMetadata(LateStageAddMetadataRequest addMetadataRequest,
+    Map<String, FieldMetadata> metadata) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider#overrideViaAnnotation(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse overrideViaAnnotation(
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest, Map<String, FieldMetadata> metadata) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider#overrideViaXml(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse overrideViaXml(OverrideViaXmlRequest overrideViaXmlRequest,
+    Map<String, FieldMetadata> metadata) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+
+} // end class PasswordFieldMetadataProvider

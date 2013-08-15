@@ -16,24 +16,51 @@
 
 package org.broadleafcommerce.core.catalog.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.catalog.domain.ProductOption;
 import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
 
-import java.util.List;
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
  *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public interface ProductOptionDao {
-    
-    public List<ProductOption> readAllProductOptions();
-    
-    public ProductOption readProductOptionById(Long id);
-    
-    public ProductOption saveProductOption(ProductOption option);
-    
-    public ProductOptionValue readProductOptionValueById(Long id);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ProductOption> readAllProductOptions();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ProductOption readProductOptionById(Long id);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   option  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ProductOption saveProductOption(ProductOption option);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ProductOptionValue readProductOptionValueById(Long id);
+
+} // end interface ProductOptionDao

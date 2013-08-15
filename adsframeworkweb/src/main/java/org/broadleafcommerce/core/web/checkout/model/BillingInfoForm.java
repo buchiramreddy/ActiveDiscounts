@@ -16,117 +16,251 @@
 
 package org.broadleafcommerce.core.web.checkout.model;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 
-import java.io.Serializable;
 
 /**
  * A form to model adding a payment to the order.
- * 
- * This form is primarily to support the Broadleaf Demo application.
- * 
- * Typically, clients will utilize 3rd party payment integrations as the final 
- * checkout step.    See documentation specific to the integration(s) you are using 
- * (e.g. PayPal, Braintree, Cybersource).
- * 
- * This form could be used for simple payment methods where only a paymentMethod and 
- * amount is required.
- * 
- * For example, a custom implementation might have a payment method of "points" or "payAtPickup" which 
- * don't require a complex Payment integration.
  *
- * @author Elbert Bautista (elbertbautista)
- * @author Brian Polster (bpolster)
+ * <p>This form is primarily to support the Broadleaf Demo application.</p>
+ *
+ * <p>Typically, clients will utilize 3rd party payment integrations as the final checkout step. See documentation
+ * specific to the integration(s) you are using (e.g. PayPal, Braintree, Cybersource).</p>
+ *
+ * <p>This form could be used for simple payment methods where only a paymentMethod and amount is required.</p>
+ *
+ * <p>For example, a custom implementation might have a payment method of "points" or "payAtPickup" which don't require
+ * a complex Payment integration.</p>
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @author   Brian Polster (bpolster)
+ * @version  $Revision$, $Date$
  */
 public class BillingInfoForm implements Serializable {
-    
-    private static final long serialVersionUID = 7408792703984771616L;
-    
-    private Address address = new AddressImpl();
-    private String paymentMethod;
-    private String creditCardName;
-    private String creditCardNumber;
-    private String creditCardCvvCode;
-    private String creditCardExpMonth;
-    private String creditCardExpYear;
-    private String selectedCreditCardType;
-    private boolean useShippingAddress;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public BillingInfoForm() {
-        address.setPhonePrimary(new PhoneImpl());
-    }
+  private static final long serialVersionUID = 7408792703984771616L;
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
+  private Address address                = new AddressImpl();
+  private String  creditCardCvvCode;
+  private String  creditCardExpMonth;
+  private String  creditCardExpYear;
+  private String  creditCardName;
+  private String  creditCardNumber;
+  private String  paymentMethod;
+  private String  selectedCreditCardType;
+  private boolean useShippingAddress;
 
-    public Address getAddress() {
-        return address;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+  /**
+   * Creates a new BillingInfoForm object.
+   */
+  public BillingInfoForm() {
+    address.setPhonePrimary(new PhoneImpl());
+  }
 
-    public String getCreditCardName() {
-        return creditCardName;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setCreditCardName(String creditCardName) {
-        this.creditCardName = creditCardName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Address getAddress() {
+    return address;
+  }
 
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCreditCardCvvCode() {
+    return creditCardCvvCode;
+  }
 
-    public String getCreditCardCvvCode() {
-        return creditCardCvvCode;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCreditCardCvvCode(String creditCardCvvCode) {
-        this.creditCardCvvCode = creditCardCvvCode;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCreditCardExpMonth() {
+    return creditCardExpMonth;
+  }
 
-    public String getCreditCardExpMonth() {
-        return creditCardExpMonth;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCreditCardExpMonth(String creditCardExpMonth) {
-        this.creditCardExpMonth = creditCardExpMonth;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCreditCardExpYear() {
+    return creditCardExpYear;
+  }
 
-    public String getCreditCardExpYear() {
-        return creditCardExpYear;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCreditCardExpYear(String creditCardExpYear) {
-        this.creditCardExpYear = creditCardExpYear;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCreditCardName() {
+    return creditCardName;
+  }
 
-    public String getSelectedCreditCardType() {
-        return selectedCreditCardType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSelectedCreditCardType(String selectedCreditCardType) {
-        this.selectedCreditCardType = selectedCreditCardType;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCreditCardNumber() {
+    return creditCardNumber;
+  }
 
-    public boolean isUseShippingAddress() {
-        return useShippingAddress;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setUseShippingAddress(boolean useShippingAddress) {
-        this.useShippingAddress = useShippingAddress;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPaymentMethod() {
+    return paymentMethod;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSelectedCreditCardType() {
+    return selectedCreditCardType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isUseShippingAddress() {
+    return useShippingAddress;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  creditCardCvvCode  DOCUMENT ME!
+   */
+  public void setCreditCardCvvCode(String creditCardCvvCode) {
+    this.creditCardCvvCode = creditCardCvvCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  creditCardExpMonth  DOCUMENT ME!
+   */
+  public void setCreditCardExpMonth(String creditCardExpMonth) {
+    this.creditCardExpMonth = creditCardExpMonth;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  creditCardExpYear  DOCUMENT ME!
+   */
+  public void setCreditCardExpYear(String creditCardExpYear) {
+    this.creditCardExpYear = creditCardExpYear;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  creditCardName  DOCUMENT ME!
+   */
+  public void setCreditCardName(String creditCardName) {
+    this.creditCardName = creditCardName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  creditCardNumber  DOCUMENT ME!
+   */
+  public void setCreditCardNumber(String creditCardNumber) {
+    this.creditCardNumber = creditCardNumber;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentMethod  DOCUMENT ME!
+   */
+  public void setPaymentMethod(String paymentMethod) {
+    this.paymentMethod = paymentMethod;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  selectedCreditCardType  DOCUMENT ME!
+   */
+  public void setSelectedCreditCardType(String selectedCreditCardType) {
+    this.selectedCreditCardType = selectedCreditCardType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  useShippingAddress  DOCUMENT ME!
+   */
+  public void setUseShippingAddress(boolean useShippingAddress) {
+    this.useShippingAddress = useShippingAddress;
+  }
+} // end class BillingInfoForm

@@ -17,47 +17,153 @@
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PromotableItemFactory {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order                           DOCUMENT ME!
+   * @param   includeOrderAndItemAdjustments  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableOrder createPromotableOrder(Order order, boolean includeOrderAndItemAdjustments);
 
-    PromotableOrder createPromotableOrder(Order order, boolean includeOrderAndItemAdjustments);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableOrder  DOCUMENT ME!
+   * @param   offer            DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableCandidateOrderOffer createPromotableCandidateOrderOffer(PromotableOrder promotableOrder, Offer offer);
 
-    PromotableCandidateOrderOffer createPromotableCandidateOrderOffer(PromotableOrder promotableOrder, Offer offer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableOrder   DOCUMENT ME!
+   * @param   offer             DOCUMENT ME!
+   * @param   potentialSavings  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableCandidateOrderOffer createPromotableCandidateOrderOffer(PromotableOrder promotableOrder,
+    Offer offer, Money potentialSavings);
 
-    PromotableCandidateOrderOffer createPromotableCandidateOrderOffer(PromotableOrder promotableOrder,
-                                                                      Offer offer, Money potentialSavings);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableCandidateOrderOffer  DOCUMENT ME!
+   * @param   order                          DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableOrderAdjustment createPromotableOrderAdjustment(
+    PromotableCandidateOrderOffer promotableCandidateOrderOffer,
+    PromotableOrder               order);
 
-    PromotableOrderAdjustment createPromotableOrderAdjustment(
-            PromotableCandidateOrderOffer promotableCandidateOrderOffer,
-            PromotableOrder order);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableCandidateOrderOffer  DOCUMENT ME!
+   * @param   order                          DOCUMENT ME!
+   * @param   value                          DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableOrderAdjustment createPromotableOrderAdjustment(
+    PromotableCandidateOrderOffer promotableCandidateOrderOffer,
+    PromotableOrder order, Money value);
 
-    PromotableOrderAdjustment createPromotableOrderAdjustment(
-            PromotableCandidateOrderOffer promotableCandidateOrderOffer,
-            PromotableOrder order, Money value);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItem           DOCUMENT ME!
+   * @param   order               DOCUMENT ME!
+   * @param   includeAdjustments  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableOrderItem createPromotableOrderItem(OrderItem orderItem, PromotableOrder order,
+    boolean includeAdjustments);
 
-    PromotableOrderItem createPromotableOrderItem(OrderItem orderItem, PromotableOrder order,
-                                                  boolean includeAdjustments);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableOrderItem  DOCUMENT ME!
+   * @param   quantity             DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableOrderItemPriceDetail createPromotableOrderItemPriceDetail(PromotableOrderItem promotableOrderItem,
+    int quantity);
 
-    PromotableOrderItemPriceDetail createPromotableOrderItemPriceDetail(PromotableOrderItem promotableOrderItem,
-                                                                        int quantity);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableOrder  DOCUMENT ME!
+   * @param   offer            DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableCandidateItemOffer createPromotableCandidateItemOffer(PromotableOrder promotableOrder, Offer offer);
 
-    PromotableCandidateItemOffer createPromotableCandidateItemOffer(PromotableOrder promotableOrder, Offer offer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableCandidateItemOffer    DOCUMENT ME!
+   * @param   promotableOrderItemPriceDetail  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableOrderItemPriceDetailAdjustment createPromotableOrderItemPriceDetailAdjustment(
+    PromotableCandidateItemOffer   promotableCandidateItemOffer,
+    PromotableOrderItemPriceDetail promotableOrderItemPriceDetail);
 
-    PromotableOrderItemPriceDetailAdjustment createPromotableOrderItemPriceDetailAdjustment(
-            PromotableCandidateItemOffer promotableCandidateItemOffer,
-            PromotableOrderItemPriceDetail promotableOrderItemPriceDetail);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentGroup  DOCUMENT ME!
+   * @param   order             DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableFulfillmentGroup createPromotableFulfillmentGroup(FulfillmentGroup fulfillmentGroup, PromotableOrder order);
 
-    PromotableFulfillmentGroup createPromotableFulfillmentGroup(FulfillmentGroup fulfillmentGroup, PromotableOrder order);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentGroup  DOCUMENT ME!
+   * @param   offer             DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableCandidateFulfillmentGroupOffer createPromotableCandidateFulfillmentGroupOffer(
+    PromotableFulfillmentGroup fulfillmentGroup,
+    Offer                      offer);
 
-    PromotableCandidateFulfillmentGroupOffer createPromotableCandidateFulfillmentGroupOffer(
-            PromotableFulfillmentGroup fulfillmentGroup,
-            Offer offer);
-    
-    PromotableFulfillmentGroupAdjustment createPromotableFulfillmentGroupAdjustment(
-            PromotableCandidateFulfillmentGroupOffer promotableCandidateFulfillmentGroupOffer,
-            PromotableFulfillmentGroup fulfillmentGroup);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   promotableCandidateFulfillmentGroupOffer  DOCUMENT ME!
+   * @param   fulfillmentGroup                          DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableFulfillmentGroupAdjustment createPromotableFulfillmentGroupAdjustment(
+    PromotableCandidateFulfillmentGroupOffer promotableCandidateFulfillmentGroupOffer,
+    PromotableFulfillmentGroup               fulfillmentGroup);
+} // end interface PromotableItemFactory

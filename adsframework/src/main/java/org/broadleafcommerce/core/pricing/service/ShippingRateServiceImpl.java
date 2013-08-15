@@ -16,40 +16,55 @@
 
 package org.broadleafcommerce.core.pricing.service;
 
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption;
-import org.broadleafcommerce.core.pricing.dao.ShippingRateDao;
-import org.broadleafcommerce.core.pricing.domain.ShippingRate;
-import org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.core.pricing.dao.ShippingRateDao;
+import org.broadleafcommerce.core.pricing.domain.ShippingRate;
+
+import org.springframework.stereotype.Service;
+
+
 /**
- * @deprecated Superceded in functionality by {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Superceded in functionality by
+ *              {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and
+ *              {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
+ * @see         {@link org.broadleafcommerce.core.order.domain.FulfillmentOption},
+ *              {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Service("blShippingRateService")
 @Deprecated
+@Service("blShippingRateService")
 public class ShippingRateServiceImpl implements ShippingRateService {
-    
-    @Resource(name="blShippingRatesDao")
-    protected ShippingRateDao shippingRateDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blShippingRatesDao")
+  protected ShippingRateDao shippingRateDao;
 
-    @Override
-    public ShippingRate readShippingRateByFeeTypesUnityQty(String feeType, String feeSubType, BigDecimal unitQuantity) {
-        return shippingRateDao.readShippingRateByFeeTypesUnityQty(feeType, feeSubType, unitQuantity);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.ShippingRateService#readShippingRateByFeeTypesUnityQty(java.lang.String,
+   *       java.lang.String, java.math.BigDecimal)
+   */
+  @Override public ShippingRate readShippingRateByFeeTypesUnityQty(String feeType, String feeSubType,
+    BigDecimal unitQuantity) {
+    return shippingRateDao.readShippingRateByFeeTypesUnityQty(feeType, feeSubType, unitQuantity);
+  }
 
-    @Override
-    public ShippingRate readShippingRateById(Long id) {
-        return shippingRateDao.readShippingRateById(id);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.ShippingRateService#readShippingRateById(java.lang.Long)
+   */
+  @Override public ShippingRate readShippingRateById(Long id) {
+    return shippingRateDao.readShippingRateById(id);
+  }
 
-    @Override
-    public ShippingRate save(ShippingRate shippingRate) {
-        return shippingRateDao.save(shippingRate);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.ShippingRateService#save(org.broadleafcommerce.core.pricing.domain.ShippingRate)
+   */
+  @Override public ShippingRate save(ShippingRate shippingRate) {
+    return shippingRateDao.save(shippingRate);
+  }
 
-}
+} // end class ShippingRateServiceImpl

@@ -17,8 +17,13 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum CustomFieldSearchableTypes {
-    NOT_SPECIFIED,YES,NO
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  NOT_SPECIFIED, YES, NO
 }

@@ -18,152 +18,156 @@ package org.broadleafcommerce.core.search.domain;
 
 import java.util.List;
 
+
 /**
- * A SearchFacet is an object that represents a particular facet that can be used to guide faceted 
- * searching on a results page.
- * 
- * @author Andre Azzolini (apazzolini)
+ * A SearchFacet is an object that represents a particular facet that can be used to guide faceted searching on a
+ * results page.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public interface SearchFacet {
+  /**
+   * Returns the internal id.
+   *
+   * @return  the internal id
+   */
+  Long getId();
 
-    /**
-     * Returns the internal id
-     * 
-     * @return the internal id
-     */
-    public Long getId();
+  /**
+   * Sets the internal id.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    /**
-     * Sets the internal id
-     * 
-     * @param id
-     */
-    public void setId(Long id);
+  /**
+   * Returns the field associated with this facet.
+   *
+   * @return  the fieldName
+   */
+  Field getField();
 
-    /**
-     * Returns the field associated with this facet. 
-     * 
-     * @return the fieldName
-     */
-    public Field getField();
+  /**
+   * Sets the field associated with this facet.
+   *
+   * @see    #getFieldName()
+   *
+   * @param  field  DOCUMENT ME!
+   */
+  void setField(Field field);
 
-    /**
-     * Sets the field associated with this facet.
-     * 
-     * @see #getFieldName()
-     * @param fieldName
-     */
-    public void setField(Field field);
+  /**
+   * Gets the label of this SearchFacet. This is the label that will be used for the user-friendly display name of this
+   * facet
+   *
+   * @return  the label
+   */
+  String getLabel();
 
-    /**
-     * Gets the label of this SearchFacet. This is the label that will be used for the user-friendly
-     * display name of this facet
-     * 
-     * @return the label
-     */
-    public String getLabel();
+  /**
+   * Sets the label.
+   *
+   * @see    #getLabel()
+   *
+   * @param  label  DOCUMENT ME!
+   */
+  void setLabel(String label);
 
-    /**
-     * Sets the label
-     * 
-     * @see #getLabel()
-     * @param label
-     */
-    public void setLabel(String label);
+  /**
+   * Gets a boolean that specifies whether or not this SearchFacet should be displayed on search result pages in
+   * addition to category pages.
+   *
+   * @return  whether or not to display on search result pages
+   */
+  Boolean getShowOnSearch();
 
-    /**
-     * Gets a boolean that specifies whether or not this SearchFacet should be displayed on search
-     * result pages in addition to category pages
-     * 
-     * @return whether or not to display on search result pages
-     */
-    public Boolean getShowOnSearch();
+  /**
+   * Sets showOnSearch.
+   *
+   * @see    #getShowOnSearch()
+   *
+   * @param  showOnSearch  DOCUMENT ME!
+   */
+  void setShowOnSearch(Boolean showOnSearch);
 
-    /**
-     * Sets showOnSearch
-     * 
-     * @see #getShowOnSearch()
-     * @param showOnSearch
-     */
-    public void setShowOnSearch(Boolean showOnSearch);
+  /**
+   * Gets the display priority of this SearchFacet on search result pages.
+   *
+   * @return  the priority
+   */
+  Integer getSearchDisplayPriority();
 
-    /**
-     * Gets the display priority of this SearchFacet on search result pages
-     * 
-     * @return the priority
-     */
-    public Integer getSearchDisplayPriority();
+  /**
+   * Sets the display priority on search result pages.
+   *
+   * @param  searchDisplayPriority  DOCUMENT ME!
+   */
+  void setSearchDisplayPriority(Integer searchDisplayPriority);
 
-    /**
-     * Sets the display priority on search result pages
-     * 
-     * @param searchDisplayPriority
-     */
-    public void setSearchDisplayPriority(Integer searchDisplayPriority);
-    
-    /**
-     * Sets whether or not you can multiselect values for this Facet.
-     * 
-     * @param canMultiselect
-     */
-    public void setCanMultiselect(Boolean canMultiselect);
+  /**
+   * Sets whether or not you can multiselect values for this Facet.
+   *
+   * @param  canMultiselect  DOCUMENT ME!
+   */
+  void setCanMultiselect(Boolean canMultiselect);
 
-    /**
-     * Gets whether or not you can multiselect values for this Facet
-     * 
-     * @return the multiselect flag
-     */
-    public Boolean getCanMultiselect();
+  /**
+   * Gets whether or not you can multiselect values for this Facet.
+   *
+   * @return  the multiselect flag
+   */
+  Boolean getCanMultiselect();
 
-    /**
-     * Gets the applicable ranges for this search facet, if any are specified. For example, the 
-     * SearchFacet that interacts with "Manufacturers" might not have any ranges defined (as it
-     * would depend on the manufacturers that are in the result list), but a facet on "Price"
-     * might have predefined ranges (such as 0-5, 5-10, 10-20).
-     * 
-     * @return the associated search facet ranges, if any
-     */
-    public List<SearchFacetRange> getSearchFacetRanges();
-    
-    /**
-     * Sets the SearchFacetRanges
-     * 
-     * <b>Note: This method will set ALL search facet ranges</b>
-     * 
-     * @see #getSearchFacetRanges()
-     * @param searchFacetRanges
-     */
-    public void setSearchFacetRanges(List<SearchFacetRange> searchFacetRanges);
+  /**
+   * Gets the applicable ranges for this search facet, if any are specified. For example, the SearchFacet that interacts
+   * with "Manufacturers" might not have any ranges defined (as it would depend on the manufacturers that are in the
+   * result list), but a facet on "Price" might have predefined ranges (such as 0-5, 5-10, 10-20).
+   *
+   * @return  the associated search facet ranges, if any
+   */
+  List<SearchFacetRange> getSearchFacetRanges();
 
-    /**
-     * @see #getRequiresAllDependentFacets()
-     * 
-     * @return a list of SearchFacets that must have an active value set for this SearchFacet to be applicable.
-     */
-    public List<RequiredFacet> getRequiredFacets();
+  /**
+   * Sets the SearchFacetRanges. <b>Note: This method will set ALL search facet ranges</b>
+   *
+   * @see    #getSearchFacetRanges()
+   *
+   * @param  searchFacetRanges  DOCUMENT ME!
+   */
+  void setSearchFacetRanges(List<SearchFacetRange> searchFacetRanges);
 
-    /**
-     * Sets the list of facets which this facet depends on.
-     * 
-     * @param dependentFacets
-     */
-    public void setRequiredFacets(List<RequiredFacet> requiredFacets);
+  /**
+   * A list of SearchFacets that must have an active value set for this SearchFacet to be applicable.
+   *
+   * @see     #getRequiresAllDependentFacets()
+   *
+   * @return  a list of SearchFacets that must have an active value set for this SearchFacet to be applicable.
+   */
+  List<RequiredFacet> getRequiredFacets();
 
-    /**
-     * This boolean controls whether or not this particular facet requires one of the dependent facets to be active, or if
-     * it requires all of the dependent facets to be active.
-     * 
-     * @see #getRequiredFacets()
-     * 
-     * @return whether the dependent facet list should be AND'ed together
-     */
-    public Boolean getRequiresAllDependentFacets();
-    
-    /**
-     * Sets whether or not all dependent facets must be active, or if only one is necessary
-     * 
-     * @param requiresAllDependentFacets
-     */
-    public void setRequiresAllDependentFacets(Boolean requiresAllDependentFacets);
+  /**
+   * Sets the list of facets which this facet depends on.
+   *
+   * @param  requiredFacets  dependentFacets
+   */
+  void setRequiredFacets(List<RequiredFacet> requiredFacets);
 
-}
+  /**
+   * This boolean controls whether or not this particular facet requires one of the dependent facets to be active, or if
+   * it requires all of the dependent facets to be active.
+   *
+   * @see     #getRequiredFacets()
+   *
+   * @return  whether the dependent facet list should be AND'ed together
+   */
+  Boolean getRequiresAllDependentFacets();
+
+  /**
+   * Sets whether or not all dependent facets must be active, or if only one is necessary.
+   *
+   * @param  requiresAllDependentFacets  DOCUMENT ME!
+   */
+  void setRequiresAllDependentFacets(Boolean requiresAllDependentFacets);
+
+} // end interface SearchFacet

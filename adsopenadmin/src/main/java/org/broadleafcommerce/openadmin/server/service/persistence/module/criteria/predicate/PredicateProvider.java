@@ -16,20 +16,39 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate;
 
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import java.util.List;
+
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface PredicateProvider<T, Y> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    Predicate buildPredicate(CriteriaBuilder builder, FieldPathBuilder fieldPathBuilder, From root, String ceilingEntity,
-                             String fullPropertyName, Path<T> explicitPath, List<Y> directValues);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   builder           DOCUMENT ME!
+   * @param   fieldPathBuilder  DOCUMENT ME!
+   * @param   root              DOCUMENT ME!
+   * @param   ceilingEntity     DOCUMENT ME!
+   * @param   fullPropertyName  DOCUMENT ME!
+   * @param   explicitPath      DOCUMENT ME!
+   * @param   directValues      DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Predicate buildPredicate(CriteriaBuilder builder, FieldPathBuilder fieldPathBuilder, From root, String ceilingEntity,
+    String fullPropertyName, Path<T> explicitPath, List<Y> directValues);
 
 }

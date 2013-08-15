@@ -16,11 +16,6 @@
 
 package org.broadleafcommerce.profile.core.domain;
 
-import org.broadleafcommerce.common.time.domain.TemporalTimestampListener;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -32,105 +27,190 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.time.domain.TemporalTimestampListener;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Entity
 @EntityListeners(value = { TemporalTimestampListener.class })
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CUSTOMER_ROLE")
 public class CustomerRoleImpl implements CustomerRole {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "CustomerRoleId")
-    @GenericGenerator(
-        name="CustomerRoleId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CustomerRoleImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.profile.core.domain.CustomerRoleImpl")
-        }
-    )
-    @Column(name = "CUSTOMER_ROLE_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @ManyToOne(targetEntity = CustomerImpl.class, optional = false)
-    @JoinColumn(name = "CUSTOMER_ID")
-    @Index(name="CUSTROLE_CUSTOMER_INDEX", columnNames={"CUSTOMER_ID"})
-    protected Customer customer;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CUSTROLE_CUSTOMER_INDEX",
+    columnNames = { "CUSTOMER_ID" }
+  )
+  @JoinColumn(name = "CUSTOMER_ID")
+  @ManyToOne(
+    targetEntity = CustomerImpl.class,
+    optional     = false
+  )
+  protected Customer customer;
 
-    @ManyToOne(targetEntity = RoleImpl.class, optional = false)
-    @JoinColumn(name = "ROLE_ID")
-    @Index(name="CUSTROLE_ROLE_INDEX", columnNames={"ROLE_ID"})
-    protected Role role;
+  /** DOCUMENT ME! */
+  @Column(name = "CUSTOMER_ROLE_ID")
+  @GeneratedValue(generator = "CustomerRoleId")
+  @GenericGenerator(
+    name       = "CustomerRoleId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CustomerRoleImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.profile.core.domain.CustomerRoleImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CUSTROLE_ROLE_INDEX",
+    columnNames = { "ROLE_ID" }
+  )
+  @JoinColumn(name = "ROLE_ID")
+  @ManyToOne(
+    targetEntity = RoleImpl.class,
+    optional     = false
+  )
+  protected Role role;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public Customer getCustomer() {
-        return customer;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    CustomerRoleImpl other = (CustomerRoleImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public Role getRole() {
-        return role;
+    if (customer == null) {
+      if (other.customer != null) {
+        return false;
+      }
+    } else if (!customer.equals(other.customer)) {
+      return false;
     }
 
-    @Override
-    public void setRole(Role role) {
-        this.role = role;
+    if (role == null) {
+      if (other.role != null) {
+        return false;
+      }
+    } else if (!role.equals(other.role)) {
+      return false;
     }
 
-    @Override
-    public String getRoleName() {
-        return role.getRoleName();
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((customer == null) ? 0 : customer.hashCode());
-        result = prime * result + ((role == null) ? 0 : role.hashCode());
-        return result;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CustomerRoleImpl other = (CustomerRoleImpl) obj;
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerRole#getCustomer()
+   */
+  @Override public Customer getCustomer() {
+    return customer;
+  }
 
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (customer == null) {
-            if (other.customer != null)
-                return false;
-        } else if (!customer.equals(other.customer))
-            return false;
-        if (role == null) {
-            if (other.role != null)
-                return false;
-        } else if (!role.equals(other.role))
-            return false;
-        return true;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerRole#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerRole#getRole()
+   */
+  @Override public Role getRole() {
+    return role;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerRole#getRoleName()
+   */
+  @Override public String getRoleName() {
+    return role.getRoleName();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((customer == null) ? 0 : customer.hashCode());
+    result = (prime * result) + ((role == null) ? 0 : role.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerRole#setCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerRole#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerRole#setRole(org.broadleafcommerce.profile.core.domain.Role)
+   */
+  @Override public void setRole(Role role) {
+    this.role = role;
+  }
+} // end class CustomerRoleImpl

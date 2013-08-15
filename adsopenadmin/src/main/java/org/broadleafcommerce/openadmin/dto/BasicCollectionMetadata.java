@@ -17,57 +17,110 @@
 package org.broadleafcommerce.openadmin.dto;
 
 import org.broadleafcommerce.common.presentation.client.AddMethodType;
+
 import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class BasicCollectionMetadata extends CollectionMetadata {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private AddMethodType addMethodType;
+  private AddMethodType addMethodType;
 
-    public AddMethodType getAddMethodType() {
-        return addMethodType;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.FieldMetadata#accept(org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor)
+   */
+  @Override public void accept(MetadataVisitor visitor) {
+    visitor.visit(this);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.FieldMetadata#cloneFieldMetadata()
+   */
+  @Override public FieldMetadata cloneFieldMetadata() {
+    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
+
+    return populate(basicCollectionMetadata);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.CollectionMetadata#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    public void setAddMethodType(AddMethodType addMethodType) {
-        this.addMethodType = addMethodType;
+    if (!(o instanceof BasicCollectionMetadata)) {
+      return false;
     }
 
-    @Override
-    public void accept(MetadataVisitor visitor) {
-        visitor.visit(this);
+    if (!super.equals(o)) {
+      return false;
     }
 
-    @Override
-    protected FieldMetadata populate(FieldMetadata metadata) {
-        ((BasicCollectionMetadata) metadata).addMethodType = addMethodType;
-        return super.populate(metadata);
+    BasicCollectionMetadata that = (BasicCollectionMetadata) o;
+
+    if (addMethodType != that.addMethodType) {
+      return false;
     }
 
-    @Override
-    public FieldMetadata cloneFieldMetadata() {
-        BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-        return populate(basicCollectionMetadata);
-    }
+    return true;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BasicCollectionMetadata)) return false;
-        if (!super.equals(o)) return false;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        BasicCollectionMetadata that = (BasicCollectionMetadata) o;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public AddMethodType getAddMethodType() {
+    return addMethodType;
+  }
 
-        if (addMethodType != that.addMethodType) return false;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return true;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.CollectionMetadata#hashCode()
+   */
+  @Override public int hashCode() {
+    int result = super.hashCode();
+    result = (31 * result) + ((addMethodType != null) ? addMethodType.hashCode() : 0);
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (addMethodType != null ? addMethodType.hashCode() : 0);
-        return result;
-    }
-}
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addMethodType  DOCUMENT ME!
+   */
+  public void setAddMethodType(AddMethodType addMethodType) {
+    this.addMethodType = addMethodType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.CollectionMetadata#populate(org.broadleafcommerce.openadmin.dto.FieldMetadata)
+   */
+  @Override protected FieldMetadata populate(FieldMetadata metadata) {
+    ((BasicCollectionMetadata) metadata).addMethodType = addMethodType;
+
+    return super.populate(metadata);
+  }
+} // end class BasicCollectionMetadata

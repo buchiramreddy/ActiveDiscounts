@@ -19,18 +19,73 @@ package org.broadleafcommerce.core.workflow;
 import java.util.List;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface Processor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean supports(Activity<? extends ProcessContext> activity);
-    
-    public ProcessContext doActivities() throws WorkflowException;
-    
-    public ProcessContext doActivities(Object seedData) throws WorkflowException;
-    
-    public void setActivities(List<Activity<ProcessContext>> activities);
-    
-    public void setDefaultErrorHandler(ErrorHandler defaultErrorHandler);
-    
-    public void setProcessContextFactory(ProcessContextFactory processContextFactory);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  WorkflowException  DOCUMENT ME!
+   */
+  ProcessContext doActivities() throws WorkflowException;
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   seedData  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  WorkflowException  DOCUMENT ME!
+   */
+  ProcessContext doActivities(Object seedData) throws WorkflowException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  activities  DOCUMENT ME!
+   */
+  void setActivities(List<Activity<ProcessContext>> activities);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  defaultErrorHandler  DOCUMENT ME!
+   */
+  void setDefaultErrorHandler(ErrorHandler defaultErrorHandler);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  processContextFactory  DOCUMENT ME!
+   */
+  void setProcessContextFactory(ProcessContextFactory processContextFactory);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   activity  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean supports(Activity<? extends ProcessContext> activity);
+
+} // end interface Processor

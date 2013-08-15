@@ -16,51 +16,108 @@
 
 package org.broadleafcommerce.common.security;
 
+import java.util.Collection;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.Collection;
 
 /**
- * This is an extension of Spring's User class to provide additional data to the UserDetails interface.  This should be used by derivitave
- * authentication providers to return an instance of UserDetails when authenticating against a system other than the Broadleaf tables (e.g. LDAP)
- * <p/>
- * User: Kelly Tisdell
- * Date: 6/19/12
+ * This is an extension of Spring's User class to provide additional data to the UserDetails interface. This should be
+ * used by derivitave authentication providers to return an instance of UserDetails when authenticating against a system
+ * other than the Broadleaf tables (e.g. LDAP)
+ *
+ * <p>User: Kelly Tisdell Date: 6/19/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class BroadleafExternalAuthenticationUserDetails extends User {
-    
-    private String firstName;
-    
-    private String lastName;
-    
-    private String email;
-    
-    public BroadleafExternalAuthenticationUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getFirstName() {
-        return firstName;
-    }
+  private String email;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  private String firstName;
 
-    public String getLastName() {
-        return lastName;
-    }
+  private String lastName;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public String getEmail() {
-        return email;
-    }
+  /**
+   * Creates a new BroadleafExternalAuthenticationUserDetails object.
+   *
+   * @param  username     DOCUMENT ME!
+   * @param  password     DOCUMENT ME!
+   * @param  authorities  DOCUMENT ME!
+   */
+  public BroadleafExternalAuthenticationUserDetails(String username, String password,
+    Collection<? extends GrantedAuthority> authorities) {
+    super(username, password, authorities);
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEmail() {
+    return email;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFirstName() {
+    return firstName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getLastName() {
+    return lastName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  email  DOCUMENT ME!
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  firstName  DOCUMENT ME!
+   */
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  lastName  DOCUMENT ME!
+   */
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+} // end class BroadleafExternalAuthenticationUserDetails

@@ -18,7 +18,21 @@ package org.broadleafcommerce.cms.admin.web.service;
 
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 
-public interface AssetFormBuilderService {
 
-    public void addImageThumbnailField(ListGrid listGrid, String urlField);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface AssetFormBuilderService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  listGrid  DOCUMENT ME!
+   * @param  urlField  DOCUMENT ME!
+   */
+  void addImageThumbnailField(ListGrid listGrid, String urlField);
 }

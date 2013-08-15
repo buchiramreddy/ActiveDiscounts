@@ -16,50 +16,64 @@
 
 package org.broadleafcommerce.core.pricing.service.workflow;
 
+import java.math.BigDecimal;
+
 import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.pricing.service.FulfillmentPricingService;
 import org.broadleafcommerce.core.pricing.service.ShippingService;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import java.math.BigDecimal;
 
 /**
- * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}.
- * This activity was replaced by {@link org.broadleafcommerce.core.pricing.service.workflow.FulfillmentGroupPricingActivity}.
- * 
- * @see {@link FulfillmentPricingActivity}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented
+ *              in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}. This activity was
+ *              replaced by {@link org.broadleafcommerce.core.pricing.service.workflow.FulfillmentGroupPricingActivity}.
+ * @see         {@link FulfillmentPricingActivity},
+ *              {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService},
+ *              {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public class ShippingActivity extends BaseActivity<PricingContext> {
+@Deprecated public class ShippingActivity extends BaseActivity<PricingContext> {
+  private ShippingService shippingService;
 
-    private ShippingService shippingService;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  shippingService  DOCUMENT ME!
+   */
+  public void setShippingService(ShippingService shippingService) {
+    this.shippingService = shippingService;
+  }
 
-    public void setShippingService(ShippingService shippingService) {
-        this.shippingService = shippingService;
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.pricing.service.workflow.PricingContext)
+   */
+  @Override public PricingContext execute(PricingContext context) throws Exception {
+    Order order = context.getSeedData();
+
+    /*
+     * 1. Get FGs from Order
+     * 2. take each FG and call shipping module with the shipping svc
+     * 3. add FG back to order
+     */
+
+    Money totalShipping = BroadleafCurrencyUtils.getMoney(BigDecimal.ZERO, order.getCurrency());
+
+    for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
+      fulfillmentGroup = shippingService.calculateShippingForFulfillmentGroup(fulfillmentGroup);
+      totalShipping    = totalShipping.add(fulfillmentGroup.getShippingPrice());
     }
 
-    @Override
-    public PricingContext execute(PricingContext context) throws Exception {
-        Order order = context.getSeedData();
+    order.setTotalShipping(totalShipping);
+    context.setSeedData(order);
 
-        /*
-         * 1. Get FGs from Order
-         * 2. take each FG and call shipping module with the shipping svc
-         * 3. add FG back to order
-         */
+    return context;
+  }
 
-        Money totalShipping = BroadleafCurrencyUtils.getMoney(BigDecimal.ZERO, order.getCurrency());
-        for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
-            fulfillmentGroup = shippingService.calculateShippingForFulfillmentGroup(fulfillmentGroup);
-            totalShipping = totalShipping.add(fulfillmentGroup.getShippingPrice());
-        }
-        order.setTotalShipping(totalShipping);
-        context.setSeedData(order);
-        return context;
-    }
-
-}
+} // end class ShippingActivity

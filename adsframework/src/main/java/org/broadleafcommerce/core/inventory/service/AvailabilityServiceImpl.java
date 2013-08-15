@@ -16,94 +16,121 @@
 
 package org.broadleafcommerce.core.inventory.service;
 
-import org.broadleafcommerce.core.inventory.dao.AvailabilityDao;
-import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.core.inventory.dao.AvailabilityDao;
+import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
+
+import org.springframework.stereotype.Service;
+
+
 /**
- * 
- * @deprecated This is no longer required and is instead implemented as a third-party inventory module
+ * DOCUMENT ME!
  *
+ * @deprecated  This is no longer required and is instead implemented as a third-party inventory module
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
 @Deprecated
 @Service("blAvailabilityService")
 public class AvailabilityServiceImpl implements AvailabilityService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blAvailabilityDao")
-    protected AvailabilityDao availabilityDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blAvailabilityDao")
+  protected AvailabilityDao availabilityDao;
 
-    /**
-     * Returns the availability status for this passed in skuId.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    @Override
-    public SkuAvailability lookupSKUAvailability(Long skuId, boolean realTime) {
-        List<Long> skuIds = new ArrayList<Long>();
-        skuIds.add(skuId);
-        List<SkuAvailability> skuAvailbilityList =  availabilityDao.readSKUAvailability(skuIds, realTime);
-        if (skuAvailbilityList != null && skuAvailbilityList.size() >=1) {
-            return skuAvailbilityList.get(0);
-        }
-        return null;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the availability status for this passed in skuId. Implementations may choose to cache the status based upon
+   * the passed in realTime indicator.
+   *
+   * @param   skuId     DOCUMENT ME!
+   * @param   realTime  DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  @Override public SkuAvailability lookupSKUAvailability(Long skuId, boolean realTime) {
+    List<Long> skuIds = new ArrayList<Long>();
+    skuIds.add(skuId);
+
+    List<SkuAvailability> skuAvailbilityList = availabilityDao.readSKUAvailability(skuIds, realTime);
+
+    if ((skuAvailbilityList != null) && (skuAvailbilityList.size() >= 1)) {
+      return skuAvailbilityList.get(0);
     }
 
-    /**
-     * Returns the availability status for a specific skuId and location.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param locationId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    @Override
-    public SkuAvailability lookupSKUAvailabilityForLocation(Long skuId, Long locationId, boolean realTime) {
-        List<Long> skuIds = new ArrayList<Long>();
-        skuIds.add(skuId);
-        List<SkuAvailability> skuAvailbilityList =  availabilityDao.readSKUAvailabilityForLocation(skuIds, locationId, realTime);
-        if (skuAvailbilityList != null && skuAvailbilityList.size() >=1) {
-            return skuAvailbilityList.get(0);
-        }
-        return null;
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the availability status for this passed in skuId. Implementations may choose to cache the status based upon
+   * the passed in realTime indicator.
+   *
+   * @param   skuIds    DOCUMENT ME!
+   * @param   realTime  DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  @Override public List<SkuAvailability> lookupSKUAvailability(List<Long> skuIds, boolean realTime) {
+    return availabilityDao.readSKUAvailability(skuIds, realTime);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the availability status for a specific skuId and location. Implementations may choose to cache the status
+   * based upon the passed in realTime indicator.
+   *
+   * @param   skuId       DOCUMENT ME!
+   * @param   locationId  DOCUMENT ME!
+   * @param   realTime    DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  @Override public SkuAvailability lookupSKUAvailabilityForLocation(Long skuId, Long locationId, boolean realTime) {
+    List<Long> skuIds = new ArrayList<Long>();
+    skuIds.add(skuId);
+
+    List<SkuAvailability> skuAvailbilityList = availabilityDao.readSKUAvailabilityForLocation(skuIds, locationId,
+        realTime);
+
+    if ((skuAvailbilityList != null) && (skuAvailbilityList.size() >= 1)) {
+      return skuAvailbilityList.get(0);
     }
 
-    /**
-     * Returns the availability status for this passed in skuId.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    @Override
-    public List<SkuAvailability> lookupSKUAvailability(List<Long> skuIds, boolean realTime) {
-        return availabilityDao.readSKUAvailability(skuIds, realTime);
-    }
+    return null;
+  }
 
-    /**
-     * Returns the availability status for a specific skuId and location.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param locationId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    @Override
-    public List<SkuAvailability> lookupSKUAvailabilityForLocation(List<Long> skuIds, Long locationId, boolean realTime) {
-        return availabilityDao.readSKUAvailabilityForLocation(skuIds, locationId, realTime);
-    }
-    
-    @Override
-    public void save(SkuAvailability skuAvailability) {
-        availabilityDao.save(skuAvailability);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the availability status for a specific skuId and location. Implementations may choose to cache the status
+   * based upon the passed in realTime indicator.
+   *
+   * @param   skuIds      DOCUMENT ME!
+   * @param   locationId  DOCUMENT ME!
+   * @param   realTime    DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  @Override public List<SkuAvailability> lookupSKUAvailabilityForLocation(List<Long> skuIds, Long locationId,
+    boolean realTime) {
+    return availabilityDao.readSKUAvailabilityForLocation(skuIds, locationId, realTime);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.inventory.service.AvailabilityService#save(org.broadleafcommerce.core.inventory.domain.SkuAvailability)
+   */
+  @Override public void save(SkuAvailability skuAvailability) {
+    availabilityDao.save(skuAvailability);
+  }
+} // end class AvailabilityServiceImpl

@@ -16,24 +16,87 @@
 
 package org.broadleafcommerce.cms.url.domain;
 
-import org.broadleafcommerce.cms.url.type.URLRedirectType;
-
 import java.io.Serializable;
 
-public interface URLHandler extends  Serializable{
+import org.broadleafcommerce.cms.url.type.URLRedirectType;
 
-    public abstract Long getId();
 
-    public abstract void setId(Long id);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface URLHandler extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public abstract String getIncomingURL();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public abstract void setIncomingURL(String incomingURL);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract String getNewURL();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getIncomingURL();
 
-    public abstract void setNewURL(String newURL);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-     public abstract URLRedirectType getUrlRedirectType();
-     public void setUrlRedirectType(URLRedirectType redirectType);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getNewURL();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  URLRedirectType getUrlRedirectType();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  incomingURL  DOCUMENT ME!
+   */
+  void setIncomingURL(String incomingURL);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  newURL  DOCUMENT ME!
+   */
+  void setNewURL(String newURL);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  redirectType  DOCUMENT ME!
+   */
+  void setUrlRedirectType(URLRedirectType redirectType);
+} // end interface URLHandler

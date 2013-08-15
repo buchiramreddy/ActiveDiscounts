@@ -18,38 +18,81 @@ package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 
+
 /**
  * Contains the requested entity, metadata and support classes.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class OverrideViaAnnotationRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final Class<?> requestedEntity;
-    private final Boolean parentExcluded;
-    private final DynamicEntityDao dynamicEntityDao;
-    private final String prefix;
+  private final DynamicEntityDao dynamicEntityDao;
+  private final Boolean          parentExcluded;
+  private final String           prefix;
 
-    public OverrideViaAnnotationRequest(Class<?> requestedEntity, Boolean parentExcluded, DynamicEntityDao dynamicEntityDao, String prefix) {
-        this.requestedEntity = requestedEntity;
-        this.parentExcluded = parentExcluded;
-        this.dynamicEntityDao = dynamicEntityDao;
-        this.prefix = prefix;
-    }
+  private final Class<?> requestedEntity;
 
-    public Class<?> getRequestedEntity() {
-        return requestedEntity;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public Boolean getParentExcluded() {
-        return parentExcluded;
-    }
+  /**
+   * Creates a new OverrideViaAnnotationRequest object.
+   *
+   * @param  requestedEntity   DOCUMENT ME!
+   * @param  parentExcluded    DOCUMENT ME!
+   * @param  dynamicEntityDao  DOCUMENT ME!
+   * @param  prefix            DOCUMENT ME!
+   */
+  public OverrideViaAnnotationRequest(Class<?> requestedEntity, Boolean parentExcluded,
+    DynamicEntityDao dynamicEntityDao, String prefix) {
+    this.requestedEntity  = requestedEntity;
+    this.parentExcluded   = parentExcluded;
+    this.dynamicEntityDao = dynamicEntityDao;
+    this.prefix           = prefix;
+  }
 
-    public DynamicEntityDao getDynamicEntityDao() {
-        return dynamicEntityDao;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getPrefix() {
-        return prefix;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityDao getDynamicEntityDao() {
+    return dynamicEntityDao;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getParentExcluded() {
+    return parentExcluded;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPrefix() {
+    return prefix;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Class<?> getRequestedEntity() {
+    return requestedEntity;
+  }
+} // end class OverrideViaAnnotationRequest

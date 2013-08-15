@@ -16,30 +16,58 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.dao.CountryDao;
-import org.broadleafcommerce.profile.core.domain.Country;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.profile.core.dao.CountryDao;
+import org.broadleafcommerce.profile.core.domain.Country;
+
+import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blCountryService")
 public class CountryServiceImpl implements CountryService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blCountryDao")
-    protected CountryDao countryDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCountryDao")
+  protected CountryDao countryDao;
 
-    public List<Country> findCountries() {
-        return countryDao.findCountries();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Country findCountryByAbbreviation(String abbreviation) {
-        return countryDao.findCountryByAbbreviation(abbreviation);
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CountryService#findCountries()
+   */
+  @Override public List<Country> findCountries() {
+    return countryDao.findCountries();
+  }
 
-    @Transactional("blTransactionManager")
-    public Country save(Country country) {
-        return countryDao.save(country);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CountryService#findCountryByAbbreviation(java.lang.String)
+   */
+  @Override public Country findCountryByAbbreviation(String abbreviation) {
+    return countryDao.findCountryByAbbreviation(abbreviation);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CountryService#save(org.broadleafcommerce.profile.core.domain.Country)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Country save(Country country) {
+    return countryDao.save(country);
+  }
+} // end class CountryServiceImpl

@@ -16,35 +16,115 @@
 
 package org.broadleafcommerce.cms.page.domain;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.openadmin.audit.AdminAuditable;
 
-import java.io.Serializable;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface PageField extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PageField cloneEntity();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFieldKey();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminAuditable getAuditable();
 
-    public void setFieldKey(String fieldKey);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Page getPage();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFieldKey();
 
-    public void setPage(Page page);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getValue();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setValue(String value);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public PageField cloneEntity();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Page getPage();
 
-    public AdminAuditable getAuditable();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAuditable(AdminAuditable auditable);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getValue();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(AdminAuditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldKey  DOCUMENT ME!
+   */
+  void setFieldKey(String fieldKey);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  page  DOCUMENT ME!
+   */
+  void setPage(Page page);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  void setValue(String value);
+
+} // end interface PageField

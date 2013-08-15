@@ -16,34 +16,71 @@
 
 package org.broadleafcommerce.core.order.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ProductOptionValidationException extends RuntimeException {
+  private static final long serialVersionUID = 1L;
+  private String            errorCode;
 
-    private static final long serialVersionUID = 1L;
-    private String errorCode;
-    public ProductOptionValidationException() {
-        super();
-    }
+  /**
+   * Creates a new ProductOptionValidationException object.
+   */
+  public ProductOptionValidationException() {
+    super();
+  }
 
-    public ProductOptionValidationException(String message, String errorCode, Throwable cause) {
-        super(message, cause);
-        this.setErrorCode(errorCode);
-    }
+  /**
+   * Creates a new ProductOptionValidationException object.
+   *
+   * @param  message    DOCUMENT ME!
+   * @param  errorCode  DOCUMENT ME!
+   * @param  cause      DOCUMENT ME!
+   */
+  public ProductOptionValidationException(String message, String errorCode, Throwable cause) {
+    super(message, cause);
+    this.setErrorCode(errorCode);
+  }
 
-    public ProductOptionValidationException(String message, String errorCode) {
-        super(message);
-        this.setErrorCode(errorCode);
-    }
+  /**
+   * Creates a new ProductOptionValidationException object.
+   *
+   * @param  message    DOCUMENT ME!
+   * @param  errorCode  DOCUMENT ME!
+   */
+  public ProductOptionValidationException(String message, String errorCode) {
+    super(message);
+    this.setErrorCode(errorCode);
+  }
 
-    public ProductOptionValidationException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new ProductOptionValidationException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public ProductOptionValidationException(Throwable cause) {
+    super(cause);
+  }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getErrorCode() {
+    return errorCode;
+  }
 
-    protected void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  errorCode  DOCUMENT ME!
+   */
+  protected void setErrorCode(String errorCode) {
+    this.errorCode = errorCode;
+  }
 
-}
+} // end class ProductOptionValidationException

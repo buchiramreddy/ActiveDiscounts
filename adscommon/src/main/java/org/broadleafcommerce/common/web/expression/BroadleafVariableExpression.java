@@ -17,14 +17,21 @@
 package org.broadleafcommerce.common.web.expression;
 
 /**
- * Classes that implement this interface will be exposed to the Thymeleaf expression evaluation context.
- * If an implementing class defines its name as "theme" and has a method called attr(String name), that method
- * could then be invoked by ${#theme.attr('someName')}.
- * 
- * @author Andre Azzolini (apazzolini)
+ * Classes that implement this interface will be exposed to the Thymeleaf expression evaluation context. If an
+ * implementing class defines its name as "theme" and has a method called attr(String name), that method could then be
+ * invoked by ${#theme.attr('someName')}.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafVariableExpression {
-    
-    public String getName();
-    
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
+
 }

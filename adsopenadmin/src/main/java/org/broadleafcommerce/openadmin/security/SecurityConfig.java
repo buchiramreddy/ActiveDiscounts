@@ -16,54 +16,113 @@
 
 package org.broadleafcommerce.openadmin.security;
 
-import org.broadleafcommerce.openadmin.server.security.remote.EntityOperationType;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.openadmin.server.security.remote.EntityOperationType;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class SecurityConfig {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private String ceilingEntityFullyQualifiedName;
-    private List<EntityOperationType> requiredTypes;
-    private List<String> permissions = new ArrayList<String>();
-    private List<String> roles = new ArrayList<String>();
-    
-    public String getCeilingEntityFullyQualifiedName() {
-        return ceilingEntityFullyQualifiedName;
-    }
-    
-    public void setCeilingEntityFullyQualifiedName(
-            String ceilingEntityFullyQualifiedName) {
-        this.ceilingEntityFullyQualifiedName = ceilingEntityFullyQualifiedName;
-    }
-    
-    public List<EntityOperationType> getRequiredTypes() {
-        return requiredTypes;
-    }
-    
-    public void setRequiredTypes(List<EntityOperationType> requiredTypes) {
-        this.requiredTypes = requiredTypes;
-    }
-    
-    public List<String> getPermissions() {
-        return permissions;
-    }
-    
-    public void setPermissions(List<String> permissions) {
-        this.permissions = permissions;
-    }
+  private String                    ceilingEntityFullyQualifiedName;
+  private List<String>              permissions   = new ArrayList<String>();
+  private List<EntityOperationType> requiredTypes;
+  private List<String>              roles         = new ArrayList<String>();
 
-    public List<String> getRoles() {
-        return roles;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCeilingEntityFullyQualifiedName() {
+    return ceilingEntityFullyQualifiedName;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getPermissions() {
+    return permissions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<EntityOperationType> getRequiredTypes() {
+    return requiredTypes;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getRoles() {
+    return roles;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ceilingEntityFullyQualifiedName  DOCUMENT ME!
+   */
+  public void setCeilingEntityFullyQualifiedName(
+    String ceilingEntityFullyQualifiedName) {
+    this.ceilingEntityFullyQualifiedName = ceilingEntityFullyQualifiedName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  permissions  DOCUMENT ME!
+   */
+  public void setPermissions(List<String> permissions) {
+    this.permissions = permissions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  requiredTypes  DOCUMENT ME!
+   */
+  public void setRequiredTypes(List<EntityOperationType> requiredTypes) {
+    this.requiredTypes = requiredTypes;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  roles  DOCUMENT ME!
+   */
+  public void setRoles(List<String> roles) {
+    this.roles = roles;
+  }
+
+} // end class SecurityConfig

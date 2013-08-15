@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.payment.service;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.payment.dao.SecurePaymentInfoDao;
 import org.broadleafcommerce.core.payment.domain.BankAccountPaymentInfo;
 import org.broadleafcommerce.core.payment.domain.CreditCardPaymentInfo;
@@ -23,89 +25,141 @@ import org.broadleafcommerce.core.payment.domain.GiftCardPaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
 import org.broadleafcommerce.core.workflow.WorkflowException;
+
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 
 /**
- * Acquisition of Primary Account Number (PAN) and other sensitive information
- * is retrieved through a service separate from the order. This conceptual
- * separation facilitates the physical separation of this sensitive data from
- * the order. As a result, implementors may host sensitive user account
- * information in a datastore separate from the datastore housing the order.
- * This measure goes towards achieving a PCI compliant architecture.
- * @author jfischer
+ * Acquisition of Primary Account Number (PAN) and other sensitive information is retrieved through a service separate
+ * from the order. This conceptual separation facilitates the physical separation of this sensitive data from the order.
+ * As a result, implementors may host sensitive user account information in a datastore separate from the datastore
+ * housing the order. This measure goes towards achieving a PCI compliant architecture.
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Service("blSecurePaymentInfoService")
 public class SecurePaymentInfoServiceImpl implements SecurePaymentInfoService {
+  /** DOCUMENT ME! */
+  @Resource(name = "blSecurePaymentInfoDao")
+  protected SecurePaymentInfoDao securePaymentInfoDao;
 
-    @Resource(name = "blSecurePaymentInfoDao")
-    protected SecurePaymentInfoDao securePaymentInfoDao;
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.SecurePaymentInfoService#save(org.broadleafcommerce.core.payment.domain.Referenced)
+   */
+  @Override public Referenced save(Referenced securePaymentInfo) {
+    return securePaymentInfoDao.save(securePaymentInfo);
+  }
 
-    public Referenced save(Referenced securePaymentInfo) {
-        return securePaymentInfoDao.save(securePaymentInfo);
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.SecurePaymentInfoService#create(org.broadleafcommerce.core.payment.service.type.PaymentInfoType)
+   */
+  @Override public Referenced create(PaymentInfoType paymentInfoType) {
+    if (paymentInfoType.equals(PaymentInfoType.CREDIT_CARD)) {
+      CreditCardPaymentInfo ccinfo = securePaymentInfoDao.createCreditCardPaymentInfo();
+
+      return ccinfo;
+    } else if (paymentInfoType.equals(PaymentInfoType.BANK_ACCOUNT)) {
+      BankAccountPaymentInfo bankinfo = securePaymentInfoDao.createBankAccountPaymentInfo();
+
+      return bankinfo;
+    } else if (paymentInfoType.equals(PaymentInfoType.GIFT_CARD)) {
+      GiftCardPaymentInfo gcinfo = securePaymentInfoDao.createGiftCardPaymentInfo();
+
+      return gcinfo;
     }
 
-    public Referenced create(PaymentInfoType paymentInfoType) {
-        if (paymentInfoType.equals(PaymentInfoType.CREDIT_CARD)) {
-            CreditCardPaymentInfo ccinfo = securePaymentInfoDao.createCreditCardPaymentInfo();
-            return ccinfo;
-        } else if (paymentInfoType.equals(PaymentInfoType.BANK_ACCOUNT)) {
-            BankAccountPaymentInfo bankinfo = securePaymentInfoDao.createBankAccountPaymentInfo();
-            return bankinfo;
-        } else if (paymentInfoType.equals(PaymentInfoType.GIFT_CARD)) {
-            GiftCardPaymentInfo gcinfo = securePaymentInfoDao.createGiftCardPaymentInfo();
-            return gcinfo;
-        }
+    return null;
+  }
 
-        return null;
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.SecurePaymentInfoService#findSecurePaymentInfo(java.lang.String, org.broadleafcommerce.core.payment.service.type.PaymentInfoType)
+   */
+  @Override public Referenced findSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType)
+    throws WorkflowException {
+    if (paymentInfoType == PaymentInfoType.CREDIT_CARD) {
+      CreditCardPaymentInfo ccinfo = findCreditCardInfo(referenceNumber);
+
+      if (ccinfo == null) {
+        throw new WorkflowException(
+          "No credit card info associated with credit card payment type with reference number: " + referenceNumber);
+      }
+
+      return ccinfo;
+    } else if (paymentInfoType == PaymentInfoType.BANK_ACCOUNT) {
+      BankAccountPaymentInfo bankinfo = findBankAccountInfo(referenceNumber);
+
+      if (bankinfo == null) {
+        throw new WorkflowException(
+          "No bank account info associated with bank account payment type with reference number: " + referenceNumber);
+      }
+
+      return bankinfo;
+    } else if (paymentInfoType == PaymentInfoType.GIFT_CARD) {
+      GiftCardPaymentInfo gcinfo = findGiftCardInfo(referenceNumber);
+
+      if (gcinfo == null) {
+        throw new WorkflowException(
+          "No bank account info associated with gift card payment type with reference number: " + referenceNumber);
+      }
+
+      return gcinfo;
+    } // end if-else
+
+    return null;
+  } // end method findSecurePaymentInfo
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.SecurePaymentInfoService#findAndRemoveSecurePaymentInfo(java.lang.String,
+   *       org.broadleafcommerce.core.payment.service.type.PaymentInfoType)
+   */
+  @Override public void findAndRemoveSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType)
+    throws WorkflowException {
+    Referenced referenced = findSecurePaymentInfo(referenceNumber, paymentInfoType);
+
+    if (referenced != null) {
+      remove(referenced);
     }
 
-    public Referenced findSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType) throws WorkflowException {
-        if (paymentInfoType == PaymentInfoType.CREDIT_CARD) {
-            CreditCardPaymentInfo ccinfo = findCreditCardInfo(referenceNumber);
-            if (ccinfo == null) {
-                throw new WorkflowException("No credit card info associated with credit card payment type with reference number: " + referenceNumber);
-            }
-            return ccinfo;
-        } else if (paymentInfoType == PaymentInfoType.BANK_ACCOUNT) {
-            BankAccountPaymentInfo bankinfo = findBankAccountInfo(referenceNumber);
-            if (bankinfo == null) {
-                throw new WorkflowException("No bank account info associated with bank account payment type with reference number: " + referenceNumber);
-            }
-            return bankinfo;
-        } else if (paymentInfoType == PaymentInfoType.GIFT_CARD) {
-            GiftCardPaymentInfo gcinfo = findGiftCardInfo(referenceNumber);
-            if (gcinfo == null) {
-                throw new WorkflowException("No bank account info associated with gift card payment type with reference number: " + referenceNumber);
-            }
-            return gcinfo;
-        }
+  }
 
-        return null;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.SecurePaymentInfoService#remove(org.broadleafcommerce.core.payment.domain.Referenced)
+   */
+  @Override public void remove(Referenced securePaymentInfo) {
+    securePaymentInfoDao.delete(securePaymentInfo);
+  }
 
-    public void findAndRemoveSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType) throws WorkflowException {
-        Referenced referenced = findSecurePaymentInfo(referenceNumber, paymentInfoType);
-        if (referenced != null) {
-            remove(referenced);
-        }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected BankAccountPaymentInfo findBankAccountInfo(String referenceNumber) {
+    return securePaymentInfoDao.findBankAccountInfo(referenceNumber);
+  }
 
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected CreditCardPaymentInfo findCreditCardInfo(String referenceNumber) {
+    return securePaymentInfoDao.findCreditCardInfo(referenceNumber);
+  }
 
-    public void remove(Referenced securePaymentInfo) {
-        securePaymentInfoDao.delete(securePaymentInfo);
-    }
-
-    protected BankAccountPaymentInfo findBankAccountInfo(String referenceNumber) {
-        return securePaymentInfoDao.findBankAccountInfo(referenceNumber);
-    }
-
-    protected CreditCardPaymentInfo findCreditCardInfo(String referenceNumber) {
-        return securePaymentInfoDao.findCreditCardInfo(referenceNumber);
-    }
-
-    protected GiftCardPaymentInfo findGiftCardInfo(String referenceNumber) {
-        return securePaymentInfoDao.findGiftCardInfo(referenceNumber);
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected GiftCardPaymentInfo findGiftCardInfo(String referenceNumber) {
+    return securePaymentInfoDao.findGiftCardInfo(referenceNumber);
+  }
+} // end class SecurePaymentInfoServiceImpl

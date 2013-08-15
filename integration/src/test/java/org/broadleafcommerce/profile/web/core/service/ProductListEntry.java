@@ -16,21 +16,82 @@
 
 package org.broadleafcommerce.profile.web.core.service;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ProductListEntry {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getDisplayOrder();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getProductId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setProductId(Long productId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getProductListId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getProductId();
 
-    public void setProductListId(Long productListId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Integer getDisplayOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getProductListId();
 
-    public void setDisplayOrder(Integer displayOrder);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayOrder  DOCUMENT ME!
+   */
+  void setDisplayOrder(Integer displayOrder);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  productId  DOCUMENT ME!
+   */
+  void setProductId(Long productId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  productListId  DOCUMENT ME!
+   */
+  void setProductListId(Long productListId);
+} // end interface ProductListEntry

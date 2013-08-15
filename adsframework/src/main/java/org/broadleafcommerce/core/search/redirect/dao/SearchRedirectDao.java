@@ -21,10 +21,18 @@ import org.broadleafcommerce.core.search.redirect.domain.SearchRedirect;
 
 /**
  * Created by ppatel.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface SearchRedirectDao {
-
-
-    public SearchRedirect findSearchRedirectBySearchTerm(String uri);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   uri  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SearchRedirect findSearchRedirectBySearchTerm(String uri);
 
 }

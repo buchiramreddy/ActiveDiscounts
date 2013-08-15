@@ -17,35 +17,52 @@
 package org.broadleafcommerce.profile.core.dao;
 
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.profile.core.domain.CustomerForgotPasswordSecurityToken;
-import org.springframework.stereotype.Repository;
-
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.profile.core.domain.CustomerForgotPasswordSecurityToken;
+
+import org.springframework.stereotype.Repository;
+
+
 /**
- * 
- * @author bpolster
+ * DOCUMENT ME!
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 @Repository("blCustomerForgotPasswordSecurityTokenDao")
 public class CustomerForgotPasswordSecurityTokenDaoImpl implements CustomerForgotPasswordSecurityTokenDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Override
-    public CustomerForgotPasswordSecurityToken readToken(String token) {
-        return (CustomerForgotPasswordSecurityToken) em.find(entityConfiguration.lookupEntityClass("org.broadleafcommerce.profile.core.domain.CustomerForgotPasswordSecurityToken"), token);        
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public CustomerForgotPasswordSecurityToken saveToken(CustomerForgotPasswordSecurityToken token) {
-        return em.merge(token);
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerForgotPasswordSecurityTokenDao#readToken(java.lang.String)
+   */
+  @Override public CustomerForgotPasswordSecurityToken readToken(String token) {
+    return (CustomerForgotPasswordSecurityToken) em.find(entityConfiguration.lookupEntityClass(
+          "org.broadleafcommerce.profile.core.domain.CustomerForgotPasswordSecurityToken"), token);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerForgotPasswordSecurityTokenDao#saveToken(org.broadleafcommerce.profile.core.domain.CustomerForgotPasswordSecurityToken)
+   */
+  @Override public CustomerForgotPasswordSecurityToken saveToken(CustomerForgotPasswordSecurityToken token) {
+    return em.merge(token);
+  }
+} // end class CustomerForgotPasswordSecurityTokenDaoImpl

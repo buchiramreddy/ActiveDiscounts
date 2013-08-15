@@ -17,12 +17,18 @@
 package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class SpaceDelimitedNodeValueMerge extends NodeValueMerge {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getDelimiter() {
-        return " ";
-    }
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.NodeValueMerge#getDelimiter()
+   */
+  @Override public String getDelimiter() {
+    return " ";
+  }
 }

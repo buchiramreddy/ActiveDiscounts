@@ -17,12 +17,21 @@
 package org.broadleafcommerce.common.cache.engine;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface HydratedAnnotationManager {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public HydrationDescriptor getHydrationDescriptor(Object entity);
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entity  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  HydrationDescriptor getHydrationDescriptor(Object entity);
+
 }

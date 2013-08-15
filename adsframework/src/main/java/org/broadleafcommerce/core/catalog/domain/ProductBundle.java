@@ -15,168 +15,171 @@
  */
 package org.broadleafcommerce.core.catalog.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.catalog.service.type.ProductBundlePricingModelType;
-
 import java.io.Serializable;
+
 import java.math.BigDecimal;
+
 import java.util.List;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.catalog.service.type.ProductBundlePricingModelType;
+
+
 /**
- * Default implementation for representing a bundle that can be sold
- * individually. Product bundles are composed of multiple
- * {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}. <br>
- * <p>
- * Bundle prices are determined 1 of 2 ways, depending on the pricing model:
+ * Default implementation for representing a bundle that can be sold individually. Product bundles are composed of
+ * multiple {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}.<br>
+ *
+ * <p>Bundle prices are determined 1 of 2 ways, depending on the pricing model:</p>
+ *
  * <ol>
- * <li><b>ITEM_SUM</b>: The sum of the prices of its {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}</li>
- * <li><b>BUNDLE</b>: Uses the pricing information on the bundle itself</li>
+ *   <li><b>ITEM_SUM</b>: The sum of the prices of its {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}
+ *   </li>
+ *   <li><b>BUNDLE</b>: Uses the pricing information on the bundle itself</li>
  * </ol>
- * </p>
- * 
- * @author Phillip Verheyden
- * 
- * @see org.broadleafcommerce.core.catalog.domain.SkuBundleItem
+ *
+ * @author   Phillip Verheyden
+ * @see      org.broadleafcommerce.core.catalog.domain.SkuBundleItem
+ * @version  $Revision$, $Date$
  */
 public interface ProductBundle extends Product, Serializable {
+  /**
+   * The pricing model for this bundle.
+   *
+   * <p>ITEM_SUM indicates that the bundle is priced by the sum of the contained items. BUNDLE indicates that the bundle
+   * is priced by the price on the bundle itself.</p>
+   *
+   * @return  The pricing model for this bundle.
+   *
+   *          <p>ITEM_SUM indicates that the bundle is priced by the sum of the contained items. BUNDLE indicates that
+   *          the bundle is priced by the price on the bundle itself.</p>
+   */
+  ProductBundlePricingModelType getPricingModel();
 
-    /**
-     * @return The pricing model for this bundle
-     *
-     * ITEM_SUM indicates that the bundle is priced by the sum of the contained items.
-     * BUNDLE indicates that the bundle is priced by the price on the bundle itself.
-     */
-    public ProductBundlePricingModelType getPricingModel();
-    
-    /**
-     * 
-     * @param pricingModel
-     *            <b>ITEM_SUM</b> if the retailPrice and salePrice of this
-     *            bundle should be the composition of its items, <b>BUNDLE</b>
-     *            if this retailPrice and salePrice should come from the default
-     *            Sku
-     */
-    public void setPricingModel(ProductBundlePricingModelType pricingModel);
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  pricingModel  <b>ITEM_SUM</b> if the retailPrice and salePrice of this bundle should be the composition of
+   *                       its items, <b>BUNDLE</b> if this retailPrice and salePrice should come from the default Sku
+   */
+  void setPricingModel(ProductBundlePricingModelType pricingModel);
 
-    /**
-     * @return the sum of the retail prices of the bundle items
-     */
-    public Money getBundleItemsRetailPrice();
+  /**
+   * The sum of the retail prices of the bundle items.
+   *
+   * @return  the sum of the retail prices of the bundle items
+   */
+  Money getBundleItemsRetailPrice();
 
-    /**
-     * @return the sum of the sale prices of the bundle items
-     */
-    public Money getBundleItemsSalePrice();
+  /**
+   * The sum of the sale prices of the bundle items.
+   *
+   * @return  the sum of the sale prices of the bundle items
+   */
+  Money getBundleItemsSalePrice();
 
-    /**
-     * Gets whether or not this should be bundled together if the individual
-     * Products are added to the cart. For instance, if this Bundle is composed
-     * of Item1 and Item2, and the user adds Item1 and Item2 to the cart
-     * separately, if this is true then these items will be bundled into a
-     * single BundleOrderItem instead of unique items in the cart
-     * 
-     * <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
-     * 
-     * @return <b>true</b> if the items in this bundle should be automatically
-     *         bundled together when added to the cart separately, <b>false</b>
-     *         otherwise
-     */
-    public Boolean getAutoBundle();
+  /**
+   * Gets whether or not this should be bundled together if the individual Products are added to the cart. For instance,
+   * if this Bundle is composed of Item1 and Item2, and the user adds Item1 and Item2 to the cart separately, if this is
+   * true then these items will be bundled into a single BundleOrderItem instead of unique items in the cart <b>NOTE:
+   * THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
+   *
+   * @return  <b>true</b> if the items in this bundle should be automatically bundled together when added to the cart
+   *          separately, <b>false</b> otherwise
+   */
+  Boolean getAutoBundle();
 
-    /**
-     * Sets whether or not this should be bundled together if the individual
-     * Products are added to the cart. For instance, if this Bundle is composed
-     * of Item1 and Item2, and the user adds Item1 and Item2 to the cart
-     * separately, if this is true then these items will be bundled into a
-     * single BundleOrderItem instead of unique items in the cart
-     * 
-     * <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
-     * 
-     * @param autoBundle
-     *            Whether or not the items in the bundle should be auto-bundled
-     *            if added to the cart separately
-     */
-    public void setAutoBundle(Boolean autoBundle);
+  /**
+   * Sets whether or not this should be bundled together if the individual Products are added to the cart. For instance,
+   * if this Bundle is composed of Item1 and Item2, and the user adds Item1 and Item2 to the cart separately, if this is
+   * true then these items will be bundled into a single BundleOrderItem instead of unique items in the cart <b>NOTE:
+   * THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
+   *
+   * @param  autoBundle  Whether or not the items in the bundle should be auto-bundled if added to the cart separately
+   */
+  void setAutoBundle(Boolean autoBundle);
 
-    /**
-     * Gets whether or not the items in this bundle should be considered for
-     * promotions using the promotion engine <br />
-     * <br />
-     * Note: this is only applicable when the pricing model is the sum of the
-     * bundle items
-     * 
-     * <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
-     * 
-     * @return <b>true</b> if the items should be included in the promotion
-     *         engine, <b>false</b> otherwise
-     */
-    public Boolean getItemsPromotable();
+  /**
+   * Gets whether or not the items in this bundle should be considered for promotions using the promotion engine<br />
+   * <br />
+   * Note: this is only applicable when the pricing model is the sum of the bundle items <b>NOTE: THIS IS NOT YET
+   * SUPPORTED BY BROADLEAF</b>
+   *
+   * @return  <b>true</b> if the items should be included in the promotion engine, <b>false</b> otherwise
+   */
+  Boolean getItemsPromotable();
 
-    /**
-     * Sets whether or not the items in this bundle should be considered for
-     * promotions using the promotion engine
-     * 
-     * <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
-     * 
-     * @param itemsPromotable
-     *            Whether or not the items in the bundle should be considered
-     *            for promotions
-     */
-    public void setItemsPromotable(Boolean itemsPromotable);
+  /**
+   * Sets whether or not the items in this bundle should be considered for promotions using the promotion engine. <b>
+   * NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
+   *
+   * @param  itemsPromotable  Whether or not the items in the bundle should be considered for promotions
+   */
+  void setItemsPromotable(Boolean itemsPromotable);
 
-    /**
-     * Gets whether or not the bundle itself should be promotable. <br>
-     * <b>Note:</b> this should only be used if the pricing model for the bundle
-     * uses the pricing on the bundle itself and not on the sum of its bundle
-     * items
-     * 
-     * <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
-     * 
-     * @return <b>true</b> if the bundle itself should be available for
-     *         promotion, <b>false</b> otherwise
-     */
-    public Boolean getBundlePromotable();
+  /**
+   * Gets whether or not the bundle itself should be promotable.<br>
+   * <b>Note:</b> this should only be used if the pricing model for the bundle uses the pricing on the bundle itself and
+   * not on the sum of its bundle items <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
+   *
+   * @return  <b>true</b> if the bundle itself should be available for promotion, <b>false</b> otherwise
+   */
+  Boolean getBundlePromotable();
 
-    /**
-     * Gets whether or not the bundle itself should be promotable. <br>
-     * <b>Note:</b> this should only be used if the pricing model for the bundle
-     * uses the pricing on the bundle itself and not on the sum of its bundle
-     * items
-     * 
-     * <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
-     *
-     * @param bundlePromotable
-     *            Whether or not the bundle itself should be available for
-     *            promotion
-     */
-    public void setBundlePromotable(Boolean bundlePromotable);
+  /**
+   * Gets whether or not the bundle itself should be promotable.<br>
+   * <b>Note:</b> this should only be used if the pricing model for the bundle uses the pricing on the bundle itself and
+   * not on the sum of its bundle items <b>NOTE: THIS IS NOT YET SUPPORTED BY BROADLEAF</b>
+   *
+   * @param  bundlePromotable  Whether or not the bundle itself should be available for promotion
+   */
+  void setBundlePromotable(Boolean bundlePromotable);
 
-    public List<SkuBundleItem> getSkuBundleItems();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<SkuBundleItem> getSkuBundleItems();
 
-    public void setSkuBundleItems(List<SkuBundleItem> bundleItems);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bundleItems  DOCUMENT ME!
+   */
+  void setSkuBundleItems(List<SkuBundleItem> bundleItems);
 
-    /**
-     * Used to determine the order for automatic bundling.
-     * @return
-     */
-    public Integer getPriority();
+  /**
+   * Used to determine the order for automatic bundling.
+   *
+   * @return  used to determine the order for automatic bundling.
+   */
+  Integer getPriority();
 
-    public void setPriority(Integer priority);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priority  DOCUMENT ME!
+   */
+  void setPriority(Integer priority);
 
-    /**
-     * Calculates the potential savings by summing up the retail prices of the
-     * contained items and comparing to the actual bundle prices.
-     *
-     * Used to determine the order for automatic bundling in case items might
-     * qualify for multiple bundles.
-     *
-     * @return
-     */
-    public BigDecimal getPotentialSavings();
+  /**
+   * Calculates the potential savings by summing up the retail prices of the contained items and comparing to the actual
+   * bundle prices.
+   *
+   * <p>Used to determine the order for automatic bundling in case items might qualify for multiple bundles.</p>
+   *
+   * @return  calculates the potential savings by summing up the retail prices of the contained items and comparing to
+   *          the actual bundle prices.
+   */
+  BigDecimal getPotentialSavings();
 
-    /**
-     * @return whether or not the product bundle is on sale
-     */
-    public boolean isOnSale();
+  /**
+   * Whether or not the product bundle is on sale.
+   *
+   * @return  whether or not the product bundle is on sale
+   */
+  boolean isOnSale();
 
-}
+} // end interface ProductBundle

@@ -16,73 +16,155 @@
 
 package org.broadleafcommerce.common.vendor.service.monitor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.broadleafcommerce.common.vendor.service.monitor.handler.LogStatusHandler;
-import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+
+import org.broadleafcommerce.common.vendor.service.monitor.handler.LogStatusHandler;
+import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ServiceMonitor {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(ServiceMonitor.class);
+  private static final Log LOG = LogFactory.getLog(ServiceMonitor.class);
 
-    protected Map<ServiceStatusDetectable, StatusHandler> serviceHandlers = new HashMap<ServiceStatusDetectable, StatusHandler>();
-    protected StatusHandler defaultHandler = new LogStatusHandler();
-    protected Map<ServiceStatusDetectable, ServiceStatusType> statusMap = new HashMap<ServiceStatusDetectable, ServiceStatusType>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public synchronized void init() {
-        for (ServiceStatusDetectable statusDetectable : serviceHandlers.keySet()) {
-            checkService(statusDetectable);
-        }
+  /** DOCUMENT ME! */
+  protected StatusHandler defaultHandler = new LogStatusHandler();
+
+  /** DOCUMENT ME! */
+  protected Map<ServiceStatusDetectable, StatusHandler>     serviceHandlers =
+    new HashMap<ServiceStatusDetectable, StatusHandler>();
+
+  /** DOCUMENT ME! */
+  protected Map<ServiceStatusDetectable, ServiceStatusType> statusMap =
+    new HashMap<ServiceStatusDetectable, ServiceStatusType>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  statusDetectable  DOCUMENT ME!
+   */
+  public void checkService(ServiceStatusDetectable statusDetectable) {
+    ServiceStatusType type = statusDetectable.getServiceStatus();
+
+    if (!statusMap.containsKey(statusDetectable)) {
+      statusMap.put(statusDetectable, type);
+
+      if (type.equals(ServiceStatusType.DOWN)) {
+        handleStatusChange(statusDetectable, type);
+      }
     }
 
-    public Object checkServiceAOP(ProceedingJoinPoint call) throws Throwable {
-        try {
-            checkService((ServiceStatusDetectable) call.getThis());
-        } catch (Throwable e) {
-            LOG.error("Could not check service status", e);
-        }
-        return call.proceed();
+    if (!statusMap.get(statusDetectable).equals(type)) {
+      handleStatusChange(statusDetectable, type);
+      statusMap.put(statusDetectable, type);
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   call  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  Throwable  DOCUMENT ME!
+   */
+  public Object checkServiceAOP(ProceedingJoinPoint call) throws Throwable {
+    try {
+      checkService((ServiceStatusDetectable) call.getThis());
+    } catch (Throwable e) {
+      LOG.error("Could not check service status", e);
     }
 
-    public void checkService(ServiceStatusDetectable statusDetectable) {
-        ServiceStatusType type = statusDetectable.getServiceStatus();
-        if (!statusMap.containsKey(statusDetectable)) {
-            statusMap.put(statusDetectable, type);
-            if (type.equals(ServiceStatusType.DOWN)) {
-                handleStatusChange(statusDetectable, type);
-            }
-        }
-        if (!statusMap.get(statusDetectable).equals(type)) {
-            handleStatusChange(statusDetectable, type);
-            statusMap.put(statusDetectable, type);
-        }
-    }
+    return call.proceed();
+  }
 
-    protected void handleStatusChange(ServiceStatusDetectable serviceStatus, ServiceStatusType serviceStatusType) {
-        if (serviceHandlers.containsKey(serviceStatus)) {
-            serviceHandlers.get(serviceStatus).handleStatus(serviceStatus.getServiceName(), serviceStatusType);
-        } else {
-            defaultHandler.handleStatus(serviceStatus.getServiceName(), serviceStatusType);
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Map<ServiceStatusDetectable, StatusHandler> getServiceHandlers() {
-        return serviceHandlers;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public StatusHandler getDefaultHandler() {
+    return defaultHandler;
+  }
 
-    public void setServiceHandlers(Map<ServiceStatusDetectable, StatusHandler> serviceHandlers) {
-        this.serviceHandlers = serviceHandlers;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public StatusHandler getDefaultHandler() {
-        return defaultHandler;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<ServiceStatusDetectable, StatusHandler> getServiceHandlers() {
+    return serviceHandlers;
+  }
 
-    public void setDefaultHandler(StatusHandler defaultHandler) {
-        this.defaultHandler = defaultHandler;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  public synchronized void init() {
+    for (ServiceStatusDetectable statusDetectable : serviceHandlers.keySet()) {
+      checkService(statusDetectable);
     }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  defaultHandler  DOCUMENT ME!
+   */
+  public void setDefaultHandler(StatusHandler defaultHandler) {
+    this.defaultHandler = defaultHandler;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  serviceHandlers  DOCUMENT ME!
+   */
+  public void setServiceHandlers(Map<ServiceStatusDetectable, StatusHandler> serviceHandlers) {
+    this.serviceHandlers = serviceHandlers;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  serviceStatus      DOCUMENT ME!
+   * @param  serviceStatusType  DOCUMENT ME!
+   */
+  protected void handleStatusChange(ServiceStatusDetectable serviceStatus, ServiceStatusType serviceStatusType) {
+    if (serviceHandlers.containsKey(serviceStatus)) {
+      serviceHandlers.get(serviceStatus).handleStatus(serviceStatus.getServiceName(), serviceStatusType);
+    } else {
+      defaultHandler.handleStatus(serviceStatus.getServiceName(), serviceStatusType);
+    }
+  }
+} // end class ServiceMonitor

@@ -19,67 +19,145 @@ package org.broadleafcommerce.openadmin.server.security.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
+ * DOCUMENT ME!
  *
- * @author bpolster
- *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class AdminModuleDTO implements AdminModule {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected Long id;
-    protected String name;
-    protected String moduleKey;
-    protected String icon;
-    protected List<AdminSection> sections = new ArrayList<AdminSection>();
-    protected Integer displayOrder;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  protected Integer displayOrder;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  protected String  icon;
 
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  protected Long               id;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  /** DOCUMENT ME! */
+  protected String             moduleKey;
 
-    public String getModuleKey() {
-        return moduleKey;
-    }
+  /** DOCUMENT ME! */
+  protected String             name;
 
-    public void setModuleKey(String moduleKey) {
-        this.moduleKey = moduleKey;
-    }
+  /** DOCUMENT ME! */
+  protected List<AdminSection> sections = new ArrayList<AdminSection>();
 
-    public String getIcon() {
-        return icon;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getDisplayOrder()
+   */
+  @Override public Integer getDisplayOrder() {
+    return displayOrder;
+  }
 
-    public List<AdminSection> getSections() {
-        return sections;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSections(List<AdminSection> sections) {
-        this.sections = sections;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getIcon()
+   */
+  @Override public String getIcon() {
+    return icon;
+  }
 
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getModuleKey()
+   */
+  @Override public String getModuleKey() {
+    return moduleKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getSections()
+   */
+  @Override public List<AdminSection> getSections() {
+    return sections;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setDisplayOrder(java.lang.Integer)
+   */
+  @Override public void setDisplayOrder(Integer displayOrder) {
+    this.displayOrder = displayOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setIcon(java.lang.String)
+   */
+  @Override public void setIcon(String icon) {
+    this.icon = icon;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setModuleKey(java.lang.String)
+   */
+  @Override public void setModuleKey(String moduleKey) {
+    this.moduleKey = moduleKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setSections(java.util.List)
+   */
+  @Override public void setSections(List<AdminSection> sections) {
+    this.sections = sections;
+  }
+} // end class AdminModuleDTO

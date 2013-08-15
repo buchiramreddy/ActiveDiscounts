@@ -19,46 +19,96 @@ package org.broadleafcommerce.core.search.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class SearchFacetDTO {
-    
-    protected SearchFacet facet;
-    protected boolean showQuantity;
-    protected List<SearchFacetResultDTO> facetValues = new ArrayList<SearchFacetResultDTO>();
-    protected boolean active;
-    
-    public SearchFacet getFacet() {
-        return facet;
-    }
-    
-    public void setFacet(SearchFacet facet) {
-        this.facet = facet;
-    }
-    
-    public boolean isShowQuantity() {
-        return showQuantity;
-    }
-    
-    public void setShowQuantity(boolean showQuantity) {
-        this.showQuantity = showQuantity;
-    }
-    
-    public List<SearchFacetResultDTO> getFacetValues() {
-        return facetValues;
-    }
-    
-    public void setFacetValues(List<SearchFacetResultDTO> facetValues) {
-        this.facetValues = facetValues;
-    }
+  /** DOCUMENT ME! */
+  protected SearchFacet                facet;
 
-    public boolean isActive() {
-        return active;
-    }
+  /** DOCUMENT ME! */
+  protected boolean                    showQuantity;
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-    
-}
+  /** DOCUMENT ME! */
+  protected List<SearchFacetResultDTO> facetValues = new ArrayList<SearchFacetResultDTO>();
+
+  /** DOCUMENT ME! */
+  protected boolean                    active;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SearchFacet getFacet() {
+    return facet;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  facet  DOCUMENT ME!
+   */
+  public void setFacet(SearchFacet facet) {
+    this.facet = facet;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isShowQuantity() {
+    return showQuantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  showQuantity  DOCUMENT ME!
+   */
+  public void setShowQuantity(boolean showQuantity) {
+    this.showQuantity = showQuantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<SearchFacetResultDTO> getFacetValues() {
+    return facetValues;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  facetValues  DOCUMENT ME!
+   */
+  public void setFacetValues(List<SearchFacetResultDTO> facetValues) {
+    this.facetValues = facetValues;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isActive() {
+    return active;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  active  DOCUMENT ME!
+   */
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+} // end class SearchFacetDTO

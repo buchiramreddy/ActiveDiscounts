@@ -18,32 +18,59 @@ package org.broadleafcommerce.common.jmx;
 
 import org.springframework.beans.factory.FactoryBean;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class ExplicitNameFactoryBean implements FactoryBean {
-    
-    private final String name;
-    private final String suffix;
-    
-    public ExplicitNameFactoryBean(String name, String suffix) {
-        this.name = name;
-        this.suffix = suffix;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Object getObject() throws Exception {
-        return name + "-" + suffix;
-    }
+  private final String name;
+  private final String suffix;
 
-    @SuppressWarnings("unchecked")
-    public Class getObjectType() {
-        return String.class;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public boolean isSingleton() {
-        return false;
-    }
+  /**
+   * Creates a new ExplicitNameFactoryBean object.
+   *
+   * @param  name    DOCUMENT ME!
+   * @param  suffix  DOCUMENT ME!
+   */
+  public ExplicitNameFactoryBean(String name, String suffix) {
+    this.name   = name;
+    this.suffix = suffix;
+  }
 
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.beans.factory.FactoryBean#getObject()
+   */
+  @Override public Object getObject() throws Exception {
+    return name + "-" + suffix;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.beans.factory.FactoryBean#getObjectType()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public Class getObjectType() {
+    return String.class;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.beans.factory.FactoryBean#isSingleton()
+   */
+  @Override public boolean isSingleton() {
+    return false;
+  }
+
+} // end class ExplicitNameFactoryBean

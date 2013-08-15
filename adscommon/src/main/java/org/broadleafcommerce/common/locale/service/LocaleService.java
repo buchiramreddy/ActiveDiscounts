@@ -16,36 +16,56 @@
 
 package org.broadleafcommerce.common.locale.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.locale.domain.Locale;
 
-import java.util.List;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface LocaleService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the locale for the passed in code
-     */
-    public Locale findLocaleByCode(String localeCode);
+  /**
+   * A list of all known locales.
+   *
+   * @return  a list of all known locales
+   */
+  List<Locale> findAllLocales();
 
-    /**
-     * @return the default locale
-     */
-    public Locale findDefaultLocale();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return a list of all known locales
-     */
-    public List<Locale> findAllLocales();
-    
-    /**
-     * Persists the given locale
-     * 
-     * @param locale
-     * @return the persisted locale
-     */
-    public Locale save(Locale locale);
-    
-}
+  /**
+   * The default locale.
+   *
+   * @return  the default locale
+   */
+  Locale findDefaultLocale();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The locale for the passed in code.
+   *
+   * @param   localeCode  DOCUMENT ME!
+   *
+   * @return  the locale for the passed in code
+   */
+  Locale findLocaleByCode(String localeCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Persists the given locale.
+   *
+   * @param   locale  DOCUMENT ME!
+   *
+   * @return  the persisted locale
+   */
+  Locale save(Locale locale);
+
+} // end interface LocaleService

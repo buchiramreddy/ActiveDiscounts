@@ -16,41 +16,61 @@
 
 package org.broadleafcommerce.common.web;
 
+import javax.annotation.Resource;
+
 import org.springframework.ui.ModelMap;
+
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.WebRequestInterceptor;
-
-import javax.annotation.Resource;
 
 
 /**
  * <p>Interceptor responsible for setting up the BroadleafRequestContext for the life of the request. This interceptor
- * should be the very first one in the list, as other interceptors might also use {@link org.broadleafcommerce.common.web.BroadleafRequestContext}.</p>
- * 
- * <p>Note that in Servlet applications you should be using the {@link org.broadleafcommerce.common.web.BroadleafRequestFilter}.</p>
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.common.web.BroadleafRequestProcessor}
- * @see {@link org.broadleafcommerce.common.web.BroadleafRequestContext}
+ * should be the very first one in the list, as other interceptors might also use
+ * {@link org.broadleafcommerce.common.web.BroadleafRequestContext}.</p>
+ *
+ * <p>Note that in Servlet applications you should be using the
+ * {@link org.broadleafcommerce.common.web.BroadleafRequestFilter}.</p>
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.common.web.BroadleafRequestProcessor}
+ * @see      {@link org.broadleafcommerce.common.web.BroadleafRequestContext}
+ * @version  $Revision$, $Date$
  */
 public class BroadleafRequestInterceptor implements WebRequestInterceptor {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blRequestProcessor")
-    protected BroadleafRequestProcessor requestProcessor;
+  /** DOCUMENT ME! */
+  @Resource(name = "blRequestProcessor")
+  protected BroadleafRequestProcessor requestProcessor;
 
-    @Override
-    public void preHandle(WebRequest request) throws Exception {
-        requestProcessor.process(request);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void postHandle(WebRequest request, ModelMap model) throws Exception {
-        // unimplemented
-    }
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#afterCompletion(org.springframework.web.context.request.WebRequest,
+   *       java.lang.Exception)
+   */
+  @Override public void afterCompletion(WebRequest request, Exception ex) throws Exception {
+    // unimplemented
+  }
 
-    @Override
-    public void afterCompletion(WebRequest request, Exception ex) throws Exception {
-        // unimplemented
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#postHandle(org.springframework.web.context.request.WebRequest,
+   *       org.springframework.ui.ModelMap)
+   */
+  @Override public void postHandle(WebRequest request, ModelMap model) throws Exception {
+    // unimplemented
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#preHandle(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public void preHandle(WebRequest request) throws Exception {
+    requestProcessor.process(request);
+  }
+
+} // end class BroadleafRequestInterceptor

@@ -16,31 +16,54 @@
 
 package org.broadleafcommerce.cms.common;
 
-import org.broadleafcommerce.cms.file.service.StaticAssetService;
-
 
 /**
- * Exception thrown by the {@link org.broadleafcommerce.cms.file.service.StaticAssetService} indicating that the asset requested does not exist.
- * 
- * @author Andre Azzolini (apazzolini)
+ * Exception thrown by the {@link org.broadleafcommerce.cms.file.service.StaticAssetService} indicating that the asset
+ * requested does not exist.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class AssetNotFoundException extends RuntimeException {
-    private static final long serialVersionUID = -6349160176427682630L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public AssetNotFoundException() {
-        //do nothing
-    }
+  private static final long serialVersionUID = -6349160176427682630L;
 
-    public AssetNotFoundException(Throwable cause) {
-        super(cause);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public AssetNotFoundException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new AssetNotFoundException object.
+   */
+  public AssetNotFoundException() {
+    // do nothing
+  }
 
-    public AssetNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new AssetNotFoundException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public AssetNotFoundException(Throwable cause) {
+    super(cause);
+  }
 
-}
+  /**
+   * Creates a new AssetNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public AssetNotFoundException(String message) {
+    super(message);
+  }
+
+  /**
+   * Creates a new AssetNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public AssetNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+} // end class AssetNotFoundException

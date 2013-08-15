@@ -16,49 +16,168 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence;
 
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-import org.broadleafcommerce.common.sandbox.domain.SandBoxType;
-import org.broadleafcommerce.common.site.domain.Site;
-import org.broadleafcommerce.openadmin.server.domain.SandBoxItem;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
-
 import java.util.Calendar;
 import java.util.List;
 
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+import org.broadleafcommerce.common.sandbox.domain.SandBoxType;
+import org.broadleafcommerce.common.site.domain.Site;
+
+import org.broadleafcommerce.openadmin.server.domain.SandBoxItem;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SandBoxService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public SandBox retrieveSandboxById(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   site         DOCUMENT ME!
+   * @param   sandBoxName  DOCUMENT ME!
+   * @param   sandBoxType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  SandBox createSandBox(Site site, String sandBoxName, SandBoxType sandBoxType) throws Exception;
 
-    /**
-     * Returns the sandbox currently associated with the passed in userId.
-     * If one is not associated, it uses (or creates) a default user sandbox with the
-     * name:   user:username.
-     *
-     * @param adminUser
-     * @return
-     */
-    public SandBox retrieveUserSandBox(Site site, AdminUser adminUser);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void promoteAllSandBoxItems(SandBox sandBox, String comment);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBox  DOCUMENT ME!
+   * @param  comment  DOCUMENT ME!
+   */
+  void promoteAllSandBoxItems(SandBox sandBox, String comment);
 
-    public void promoteSelectedItems(SandBox sandBox, String comment, List<SandBoxItem> sandBoxItems);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void schedulePromotionForSandBox(SandBox sandBox, Calendar calendar);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBox       DOCUMENT ME!
+   * @param  comment       DOCUMENT ME!
+   * @param  sandBoxItems  DOCUMENT ME!
+   */
+  void promoteSelectedItems(SandBox sandBox, String comment, List<SandBoxItem> sandBoxItems);
 
-    public void schedulePromotionForSandBoxItems(List<SandBoxItem> sandBoxItems, Calendar calendar);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void revertAllSandBoxItems(SandBox originalSandBox, SandBox sandBox);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  originalSandBox  DOCUMENT ME!
+   * @param  sandBox          DOCUMENT ME!
+   * @param  comment          DOCUMENT ME!
+   */
+  void rejectAllSandBoxItems(SandBox originalSandBox, SandBox sandBox, String comment);
 
-    public void revertSelectedSandBoxItems(SandBox sandBox, List<SandBoxItem> sandBoxItems);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void rejectAllSandBoxItems(SandBox originalSandBox, SandBox sandBox, String comment);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBox       DOCUMENT ME!
+   * @param  comment       DOCUMENT ME!
+   * @param  sandBoxItems  DOCUMENT ME!
+   */
+  void rejectSelectedSandBoxItems(SandBox sandBox, String comment, List<SandBoxItem> sandBoxItems);
 
-    public void rejectSelectedSandBoxItems(SandBox sandBox, String comment, List<SandBoxItem> sandBoxItems);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBox retrieveApprovalSandBox(SandBox sandBox);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sandBox  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox retrieveApprovalSandBox(SandBox sandBox);
 
-    public SandBox createSandBox(Site site, String sandBoxName, SandBoxType sandBoxType) throws Exception;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBox retrieveSandBox(Site site, String sandBoxName, SandBoxType sandBoxType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   site         DOCUMENT ME!
+   * @param   sandBoxName  DOCUMENT ME!
+   * @param   sandBoxType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox retrieveSandBox(Site site, String sandBoxName, SandBoxType sandBoxType);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox retrieveSandboxById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the sandbox currently associated with the passed in userId. If one is not associated, it uses (or creates)
+   * a default user sandbox with the name: user:username.
+   *
+   * @param   site       DOCUMENT ME!
+   * @param   adminUser  DOCUMENT ME!
+   *
+   * @return  the sandbox currently associated with the passed in userId.
+   */
+  SandBox retrieveUserSandBox(Site site, AdminUser adminUser);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  originalSandBox  DOCUMENT ME!
+   * @param  sandBox          DOCUMENT ME!
+   */
+  void revertAllSandBoxItems(SandBox originalSandBox, SandBox sandBox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBox       DOCUMENT ME!
+   * @param  sandBoxItems  DOCUMENT ME!
+   */
+  void revertSelectedSandBoxItems(SandBox sandBox, List<SandBoxItem> sandBoxItems);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBox   DOCUMENT ME!
+   * @param  calendar  DOCUMENT ME!
+   */
+  void schedulePromotionForSandBox(SandBox sandBox, Calendar calendar);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxItems  DOCUMENT ME!
+   * @param  calendar      DOCUMENT ME!
+   */
+  void schedulePromotionForSandBoxItems(List<SandBoxItem> sandBoxItems, Calendar calendar);
+
+} // end interface SandBoxService

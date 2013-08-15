@@ -21,36 +21,66 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 /**
- * <p>
- * This is a JAXB wrapper to encapsulate a Map<String, Object>
- * <p/>
- * User: Elbert Bautista
- * Date: 4/26/12
+ * <p>This is a JAXB wrapper to encapsulate a Map<String, Object>
+ * </p>User: Elbert Bautista Date: 4/26/12
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "element")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "element")
 public class MapElementWrapper {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected String key;
+  /** DOCUMENT ME! */
+  @XmlElement protected String key;
 
-    @XmlElement
-    protected String value;
+  /** DOCUMENT ME! */
+  @XmlElement protected String value;
 
-    public String getKey() {
-        return key;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getKey() {
+    return key;
+  }
 
-    public String getValue() {
-        return value;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValue() {
+    return value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key  DOCUMENT ME!
+   */
+  public void setKey(String key) {
+    this.key = key;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
+} // end class MapElementWrapper

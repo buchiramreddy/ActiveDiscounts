@@ -16,12 +16,6 @@
 
 package org.broadleafcommerce.profile.core.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,137 +26,224 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name="BLC_CUSTOMER_ATTRIBUTE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
+@Table(name = "BLC_CUSTOMER_ATTRIBUTE")
 public class CustomerAttributeImpl implements CustomerAttribute {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 1L;
+  /** The Constant serialVersionUID. */
+  private static final long serialVersionUID = 1L;
 
-    /** The id. */
-    @Id
-    @GeneratedValue(generator= "CustomerAttributeId")
-    @GenericGenerator(
-        name="CustomerAttributeId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CustomerAttributeImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.profile.core.domain.CustomerAttributeImpl")
-        }
-    )
-    @Column(name = "CUSTOMER_ATTR_ID")
-    protected Long id;
-    
-    /** The name. */
-    @Column(name = "NAME", nullable=false)
-    protected String name;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /** The value. */
-    @Column(name = "VALUE")
-    @AdminPresentation(friendlyName = "CustomerAttributeImpl_Attribute_Value", order=2, group = "ProductAttributeImpl_Description", prominent=true)
-    protected String value;
-  
-    /** The customer. */
-    @ManyToOne(targetEntity = CustomerImpl.class, optional=false)
-    @JoinColumn(name = "CUSTOMER_ID")
-    protected Customer customer;
+  /** The customer. */
+  @JoinColumn(name = "CUSTOMER_ID")
+  @ManyToOne(
+    targetEntity = CustomerImpl.class,
+    optional     = false
+  )
+  protected Customer customer;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** The id. */
+  @Column(name = "CUSTOMER_ATTR_ID")
+  @GeneratedValue(generator = "CustomerAttributeId")
+  @GenericGenerator(
+    name       = "CustomerAttributeId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CustomerAttributeImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.profile.core.domain.CustomerAttributeImpl"
+      )
+    }
+  )
+  @Id protected Long id;
+
+  /** The name. */
+  @Column(
+    name     = "NAME",
+    nullable = false
+  )
+  protected String name;
+
+  /** The value. */
+  @AdminPresentation(
+    friendlyName = "CustomerAttributeImpl_Attribute_Value",
+    order        = 2,
+    group        = "ProductAttributeImpl_Description",
+    prominent    = true
+  )
+  @Column(name = "VALUE")
+  protected String value;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public String getValue() {
-        return value;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setValue(String value) {
-        this.value = value;
+    CustomerAttributeImpl other = (CustomerAttributeImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public String getName() {
-        return name;
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
+    if (customer == null) {
+      if (other.customer != null) {
+        return false;
+      }
+    } else if (!customer.equals(other.customer)) {
+      return false;
     }
 
-    @Override
-    public String toString() {
-        return value;
+    if (value == null) {
+      if (other.value != null) {
+        return false;
+      }
+    } else if (!value.equals(other.value)) {
+      return false;
     }
 
-    @Override
-    public Customer getCustomer() {
-        return customer;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((customer == null) ? 0 : customer.hashCode());
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerAttribute#getCustomer()
+   */
+  @Override public Customer getCustomer() {
+    return customer;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        CustomerAttributeImpl other = (CustomerAttributeImpl) obj;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerAttribute#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        if (customer == null) {
-            if (other.customer != null) {
-                return false;
-            }
-        } else if (!customer.equals(other.customer)) {
-            return false;
-        }
-        if (value == null) {
-            if (other.value != null) {
-                return false;
-            }
-        } else if (!value.equals(other.value)) {
-            return false;
-        }
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#getValue()
+   */
+  @Override public String getValue() {
+    return value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+    result = (prime * result) + ((customer == null) ? 0 : customer.hashCode());
+    result = (prime * result) + ((value == null) ? 0 : value.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerAttribute#setCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.CustomerAttribute#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#setValue(java.lang.String)
+   */
+  @Override public void setValue(String value) {
+    this.value = value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#toString()
+   */
+  @Override public String toString() {
+    return value;
+  }
+
+} // end class CustomerAttributeImpl

@@ -18,44 +18,95 @@ package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 
+
 /**
  * Contains the requested field, metadata and support classes.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class LateStageAddMetadataRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final String fieldName;
-    private final Class<?> parentClass;
-    private final Class<?> targetClass;
-    private final DynamicEntityDao dynamicEntityDao;
-    private final String prefix;
+  private final DynamicEntityDao dynamicEntityDao;
 
-    public LateStageAddMetadataRequest(String fieldName, Class<?> parentClass, Class<?> targetClass, DynamicEntityDao dynamicEntityDao, String prefix) {
-        this.fieldName = fieldName;
-        this.parentClass = parentClass;
-        this.targetClass = targetClass;
-        this.dynamicEntityDao = dynamicEntityDao;
-        this.prefix = prefix;
-    }
+  private final String   fieldName;
+  private final Class<?> parentClass;
+  private final String   prefix;
+  private final Class<?> targetClass;
 
-    public String getFieldName() {
-        return fieldName;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public Class<?> getParentClass() {
-        return parentClass;
-    }
+  /**
+   * Creates a new LateStageAddMetadataRequest object.
+   *
+   * @param  fieldName         DOCUMENT ME!
+   * @param  parentClass       DOCUMENT ME!
+   * @param  targetClass       DOCUMENT ME!
+   * @param  dynamicEntityDao  DOCUMENT ME!
+   * @param  prefix            DOCUMENT ME!
+   */
+  public LateStageAddMetadataRequest(String fieldName, Class<?> parentClass, Class<?> targetClass,
+    DynamicEntityDao dynamicEntityDao, String prefix) {
+    this.fieldName        = fieldName;
+    this.parentClass      = parentClass;
+    this.targetClass      = targetClass;
+    this.dynamicEntityDao = dynamicEntityDao;
+    this.prefix           = prefix;
+  }
 
-    public Class<?> getTargetClass() {
-        return targetClass;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public DynamicEntityDao getDynamicEntityDao() {
-        return dynamicEntityDao;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityDao getDynamicEntityDao() {
+    return dynamicEntityDao;
+  }
 
-    public String getPrefix() {
-        return prefix;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFieldName() {
+    return fieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Class<?> getParentClass() {
+    return parentClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPrefix() {
+    return prefix;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Class<?> getTargetClass() {
+    return targetClass;
+  }
+} // end class LateStageAddMetadataRequest

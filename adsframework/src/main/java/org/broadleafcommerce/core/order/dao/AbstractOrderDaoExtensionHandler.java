@@ -16,25 +16,37 @@
 
 package org.broadleafcommerce.core.order.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.extension.AbstractExtensionHandler;
 import org.broadleafcommerce.core.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.profile.core.domain.Customer;
 
-import java.util.List;
+import org.broadleafcommerce.profile.core.domain.Customer;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 public class AbstractOrderDaoExtensionHandler extends AbstractExtensionHandler implements OrderDaoExtensionHandler {
-    
-    public ExtensionResultStatusType attachAdditionalDataToNewCart(Customer customer, Order cart) {
-        return ExtensionResultStatusType.NOT_HANDLED;
-    }
-    
-    public ExtensionResultStatusType applyAdditionalOrderLookupFilter(Customer customer, String name, List<Order> orders) {
-        return ExtensionResultStatusType.NOT_HANDLED;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDaoExtensionHandler#attachAdditionalDataToNewCart(org.broadleafcommerce.profile.core.domain.Customer,
+   *       org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public ExtensionResultStatusType attachAdditionalDataToNewCart(Customer customer, Order cart) {
+    return ExtensionResultStatusType.NOT_HANDLED;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDaoExtensionHandler#applyAdditionalOrderLookupFilter(org.broadleafcommerce.profile.core.domain.Customer,
+   *       java.lang.String, java.util.List)
+   */
+  @Override public ExtensionResultStatusType applyAdditionalOrderLookupFilter(Customer customer, String name,
+    List<Order> orders) {
+    return ExtensionResultStatusType.NOT_HANDLED;
+  }
 
 }

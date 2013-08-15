@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.order.service.workflow.add;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundle;
@@ -32,76 +34,89 @@ import org.broadleafcommerce.core.order.service.workflow.CartOperationContext;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AddOrderItemActivity extends BaseActivity<CartOperationContext> {
-    
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
-    
-    @Resource(name = "blOrderItemService")
-    protected OrderItemService orderItemService;
-    
-    @Resource(name = "blCatalogService")
-    protected CatalogService catalogService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    @Override
-    public CartOperationContext execute(CartOperationContext context) throws Exception {
-        CartOperationRequest request = context.getSeedData();
-        OrderItemRequestDTO orderItemRequestDTO = request.getItemRequest();
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderItemService")
+  protected OrderItemService orderItemService;
 
-        // Order and sku have been verified in a previous activity -- the values 
-        // in the request can be trusted
-        Order order = request.getOrder();
-        Sku sku = catalogService.findSkuById(orderItemRequestDTO.getSkuId());
-        
-        Product product = null;
-        if (orderItemRequestDTO.getProductId() != null) {
-            product = catalogService.findProductById(orderItemRequestDTO.getProductId());
-        }
-        
-        Category category = null;
-        if (orderItemRequestDTO.getCategoryId() != null) {
-            category = catalogService.findCategoryById(orderItemRequestDTO.getCategoryId());
-        } 
+  /** DOCUMENT ME! */
+  @Resource(name = "blCatalogService")
+  protected CatalogService catalogService;
 
-        if (category == null && product != null) {
-            category = product.getDefaultCategory();
-        }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.order.service.workflow.CartOperationContext)
+   */
+  @Override public CartOperationContext execute(CartOperationContext context) throws Exception {
+    CartOperationRequest request             = context.getSeedData();
+    OrderItemRequestDTO  orderItemRequestDTO = request.getItemRequest();
 
-        OrderItem item;
-        if (product == null || !(product instanceof ProductBundle)) {
-            DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
-            itemRequest.setCategory(category);
-            itemRequest.setProduct(product);
-            itemRequest.setSku(sku);
-            itemRequest.setQuantity(orderItemRequestDTO.getQuantity());
-            itemRequest.setItemAttributes(orderItemRequestDTO.getItemAttributes());
-            itemRequest.setOrder(order);
-            itemRequest.setSalePriceOverride(orderItemRequestDTO.getOverrideSalePrice());
-            itemRequest.setRetailPriceOverride(orderItemRequestDTO.getOverrideRetailPrice());
-            item = orderItemService.createDiscreteOrderItem(itemRequest);
-        } else {
-            ProductBundleOrderItemRequest bundleItemRequest = new ProductBundleOrderItemRequest();
-            bundleItemRequest.setCategory(category);
-            bundleItemRequest.setProductBundle((ProductBundle) product);
-            bundleItemRequest.setSku(sku);
-            bundleItemRequest.setQuantity(orderItemRequestDTO.getQuantity());
-            bundleItemRequest.setItemAttributes(orderItemRequestDTO.getItemAttributes());
-            bundleItemRequest.setName(product.getName());
-            bundleItemRequest.setOrder(order);
-            bundleItemRequest.setSalePriceOverride(orderItemRequestDTO.getOverrideSalePrice());
-            bundleItemRequest.setRetailPriceOverride(orderItemRequestDTO.getOverrideRetailPrice());
-            item = orderItemService.createBundleOrderItem(bundleItemRequest);
-        }
-        
-        item = orderItemService.saveOrderItem(item);
-        order.getOrderItems().add(item);
-        order = orderService.save(order, false);
-        
-        request.setOrder(order);
-        request.setAddedOrderItem(item);
-        return context;
+    // Order and sku have been verified in a previous activity -- the values
+    // in the request can be trusted
+    Order order = request.getOrder();
+    Sku   sku   = catalogService.findSkuById(orderItemRequestDTO.getSkuId());
+
+    Product product = null;
+
+    if (orderItemRequestDTO.getProductId() != null) {
+      product = catalogService.findProductById(orderItemRequestDTO.getProductId());
     }
 
-}
+    Category category = null;
+
+    if (orderItemRequestDTO.getCategoryId() != null) {
+      category = catalogService.findCategoryById(orderItemRequestDTO.getCategoryId());
+    }
+
+    if ((category == null) && (product != null)) {
+      category = product.getDefaultCategory();
+    }
+
+    OrderItem item;
+
+    if ((product == null) || !(product instanceof ProductBundle)) {
+      DiscreteOrderItemRequest itemRequest = new DiscreteOrderItemRequest();
+      itemRequest.setCategory(category);
+      itemRequest.setProduct(product);
+      itemRequest.setSku(sku);
+      itemRequest.setQuantity(orderItemRequestDTO.getQuantity());
+      itemRequest.setItemAttributes(orderItemRequestDTO.getItemAttributes());
+      itemRequest.setOrder(order);
+      itemRequest.setSalePriceOverride(orderItemRequestDTO.getOverrideSalePrice());
+      itemRequest.setRetailPriceOverride(orderItemRequestDTO.getOverrideRetailPrice());
+      item = orderItemService.createDiscreteOrderItem(itemRequest);
+    } else {
+      ProductBundleOrderItemRequest bundleItemRequest = new ProductBundleOrderItemRequest();
+      bundleItemRequest.setCategory(category);
+      bundleItemRequest.setProductBundle((ProductBundle) product);
+      bundleItemRequest.setSku(sku);
+      bundleItemRequest.setQuantity(orderItemRequestDTO.getQuantity());
+      bundleItemRequest.setItemAttributes(orderItemRequestDTO.getItemAttributes());
+      bundleItemRequest.setName(product.getName());
+      bundleItemRequest.setOrder(order);
+      bundleItemRequest.setSalePriceOverride(orderItemRequestDTO.getOverrideSalePrice());
+      bundleItemRequest.setRetailPriceOverride(orderItemRequestDTO.getOverrideRetailPrice());
+      item = orderItemService.createBundleOrderItem(bundleItemRequest);
+    }
+
+    item = orderItemService.saveOrderItem(item);
+    order.getOrderItems().add(item);
+    order = orderService.save(order, false);
+
+    request.setOrder(order);
+    request.setAddedOrderItem(item);
+
+    return context;
+  } // end method execute
+
+} // end class AddOrderItemActivity

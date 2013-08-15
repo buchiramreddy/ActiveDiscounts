@@ -16,11 +16,6 @@
 
 package org.broadleafcommerce.cms.field.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,90 +26,155 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blCMSElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_FLD_ENUM_ITEM")
-@Cache(usage= CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blCMSElements")
 public class FieldEnumerationItemImpl implements FieldEnumerationItem {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "FieldEnumerationItemId")
-    @GenericGenerator(
-        name="FieldEnumerationItemId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FieldEnumerationItemImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.field.domain.FieldEnumerationItemImpl")
-        }
-    )
-    @Column(name = "FLD_ENUM_ITEM_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column (name = "NAME")
-    protected String name;
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "FLD_ENUM_ID")
+  @ManyToOne(targetEntity = FieldEnumerationImpl.class)
+  protected FieldEnumeration fieldEnumeration;
 
-    @Column (name = "FRIENDLY_NAME")
-    protected String friendlyName;
+  /** DOCUMENT ME! */
+  @Column(name = "FLD_ORDER")
+  protected int fieldOrder;
 
-    @Column(name="FLD_ORDER")
-    protected int fieldOrder;
+  /** DOCUMENT ME! */
+  @Column(name = "FRIENDLY_NAME")
+  protected String friendlyName;
 
-    @ManyToOne(targetEntity = FieldEnumerationImpl.class)
-    @JoinColumn(name = "FLD_ENUM_ID")
-    protected FieldEnumeration fieldEnumeration;
-
-    @Override
-    public FieldEnumeration getFieldEnumeration() {
-        return fieldEnumeration;
+  /** DOCUMENT ME! */
+  @Column(name = "FLD_ENUM_ITEM_ID")
+  @GeneratedValue(generator = "FieldEnumerationItemId")
+  @GenericGenerator(
+    name       = "FieldEnumerationItemId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "FieldEnumerationItemImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.field.domain.FieldEnumerationItemImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setFieldEnumeration(FieldEnumeration fieldEnumeration) {
-        this.fieldEnumeration = fieldEnumeration;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "NAME")
+  protected String name;
 
-    @Override
-    public int getFieldOrder() {
-        return fieldOrder;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setFieldOrder(int fieldOrder) {
-        this.fieldOrder = fieldOrder;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#getFieldEnumeration()
+   */
+  @Override public FieldEnumeration getFieldEnumeration() {
+    return fieldEnumeration;
+  }
 
-    @Override
-    public String getFriendlyName() {
-        return friendlyName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#getFieldOrder()
+   */
+  @Override public int getFieldOrder() {
+    return fieldOrder;
+  }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#getFriendlyName()
+   */
+  @Override public String getFriendlyName() {
+    return friendlyName;
+  }
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#setFieldEnumeration(org.broadleafcommerce.cms.field.domain.FieldEnumeration)
+   */
+  @Override public void setFieldEnumeration(FieldEnumeration fieldEnumeration) {
+    this.fieldEnumeration = fieldEnumeration;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#setFieldOrder(int)
+   */
+  @Override public void setFieldOrder(int fieldOrder) {
+    this.fieldOrder = fieldOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#setFriendlyName(java.lang.String)
+   */
+  @Override public void setFriendlyName(String friendlyName) {
+    this.friendlyName = friendlyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumerationItem#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+} // end class FieldEnumerationItemImpl

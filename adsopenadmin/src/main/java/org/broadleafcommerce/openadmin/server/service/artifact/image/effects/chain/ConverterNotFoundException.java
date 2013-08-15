@@ -16,22 +16,48 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ConverterNotFoundException extends Exception {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public ConverterNotFoundException() {
-        super();
-    }
+  /**
+   * Creates a new ConverterNotFoundException object.
+   */
+  public ConverterNotFoundException() {
+    super();
+  }
 
-    public ConverterNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new ConverterNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public ConverterNotFoundException(String message) {
+    super(message);
+  }
 
-    public ConverterNotFoundException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new ConverterNotFoundException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public ConverterNotFoundException(Throwable cause) {
+    super(cause);
+  }
 
-    public ConverterNotFoundException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new ConverterNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public ConverterNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-}
+} // end class ConverterNotFoundException

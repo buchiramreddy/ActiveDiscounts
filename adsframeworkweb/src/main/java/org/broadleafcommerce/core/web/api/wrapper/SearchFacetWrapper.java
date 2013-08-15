@@ -16,68 +16,82 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.search.domain.SearchFacetDTO;
-import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.search.domain.SearchFacetDTO;
+import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
+
+
 /**
- * This wrapper provides information about the search facets available 
- * for use with a search.
- * 
- * Search facets are typically returned from a catalog search as part of the result. 
- * You can use facets to narrow a search.
- * 
- * @author Kelly Tisdell
+ * This wrapper provides information about the search facets available for use with a search.
  *
+ * <p>Search facets are typically returned from a catalog search as part of the result. You can use facets to narrow a
+ * search.</p>
+ *
+ * @author   Kelly Tisdell
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "searchFacet")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "searchFacet")
 public class SearchFacetWrapper extends BaseWrapper implements APIWrapper<SearchFacetDTO> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /*
-     * Name of the field. (e.g. you might have a field name 
-     * like "price" or "description")
-     */
-    @XmlElement
-    protected String fieldName;
+  /*
+   * Indicates if this facet is active in the current search.
+   */
+  /** DOCUMENT ME! */
+  @XmlElement protected Boolean active = Boolean.FALSE;
 
-    /*
-     * Indicates if this facet is active in the current search.
-     */
-    @XmlElement
-    protected Boolean active = Boolean.FALSE;
+  /*
+   * Name of the field. (e.g. you might have a field name
+   * like "price" or "description")
+   */
+  /** DOCUMENT ME! */
+  @XmlElement protected String fieldName;
 
-    /*
-     * List of values that are appropriate for this facet.
-     */
-    @XmlElement
-    protected List<SearchFacetValueWrapper> values;
+  /*
+   * List of values that are appropriate for this facet.
+   */
+  /** DOCUMENT ME! */
+  @XmlElement protected List<SearchFacetValueWrapper> values;
 
-    @Override
-    public void wrapDetails(SearchFacetDTO model, HttpServletRequest request) {
-        this.fieldName = model.getFacet().getField().getAbbreviation();
-        this.active = model.isActive();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if (model.getFacetValues() != null) {
-            this.values = new ArrayList<SearchFacetValueWrapper>();
-            for (SearchFacetResultDTO result : model.getFacetValues()) {
-                SearchFacetValueWrapper wrapper = (SearchFacetValueWrapper) context.getBean(SearchFacetValueWrapper.class.getName());
-                wrapper.wrapSummary(result, request);
-                this.values.add(wrapper);
-            }
-        }
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.search.domain.SearchFacetDTO,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(SearchFacetDTO model, HttpServletRequest request) {
+    this.fieldName = model.getFacet().getField().getAbbreviation();
+    this.active    = model.isActive();
+
+    if (model.getFacetValues() != null) {
+      this.values = new ArrayList<SearchFacetValueWrapper>();
+
+      for (SearchFacetResultDTO result : model.getFacetValues()) {
+        SearchFacetValueWrapper wrapper = (SearchFacetValueWrapper) context.getBean(SearchFacetValueWrapper.class
+            .getName());
+        wrapper.wrapSummary(result, request);
+        this.values.add(wrapper);
+      }
     }
+  }
 
-    @Override
-    public void wrapSummary(SearchFacetDTO model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.search.domain.SearchFacetDTO,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(SearchFacetDTO model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class SearchFacetWrapper

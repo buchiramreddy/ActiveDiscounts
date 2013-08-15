@@ -17,10 +17,14 @@
 package org.broadleafcommerce.openadmin.web.rulebuilder;
 
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public enum BLCFieldType {
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
 
-    NONE, TEXT, SELECT, RANGE
+  NONE, TEXT, SELECT, RANGE
 
 }

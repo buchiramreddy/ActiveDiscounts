@@ -16,20 +16,77 @@
 
 package org.broadleafcommerce.core.rating.domain;
 
-import org.broadleafcommerce.core.rating.service.type.RatingType;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.rating.service.type.RatingType;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface RatingSummary {
-    Long getId();
-    RatingType getRatingType();
-    String getItemId();
-    Integer getNumberOfRatings();
-    Integer getNumberOfReviews();
-    Double getAverageRating();
-    void resetAverageRating();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    List<ReviewDetail> getReviews();
-    List<RatingDetail> getRatings();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RatingType getRatingType();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getItemId();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getNumberOfRatings();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getNumberOfReviews();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Double getAverageRating();
+
+  /**
+   * DOCUMENT ME!
+   */
+  void resetAverageRating();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ReviewDetail> getReviews();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<RatingDetail> getRatings();
+
+} // end interface RatingSummary

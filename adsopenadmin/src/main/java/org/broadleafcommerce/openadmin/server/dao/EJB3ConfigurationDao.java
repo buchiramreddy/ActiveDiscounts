@@ -18,13 +18,21 @@ package org.broadleafcommerce.openadmin.server.dao;
 
 import org.hibernate.ejb.Ejb3Configuration;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface EJB3ConfigurationDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public abstract Ejb3Configuration getConfiguration();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Ejb3Configuration getConfiguration();
 
 }

@@ -17,39 +17,85 @@
 package org.broadleafcommerce.core.workflow.state;
 
 /**
- * Handles the identification of the outermost workflow and the current thread so that the StateManager can
- * operate on the appropriate RollbackHandlers.
+ * Handles the identification of the outermost workflow and the current thread so that the StateManager can operate on
+ * the appropriate RollbackHandlers.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class RollbackStateLocal {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final ThreadLocal<RollbackStateLocal> THREAD_LOCAL = new ThreadLocal<RollbackStateLocal>();
+  private static final ThreadLocal<RollbackStateLocal> THREAD_LOCAL = new ThreadLocal<RollbackStateLocal>();
 
-    public static RollbackStateLocal getRollbackStateLocal() {
-        return THREAD_LOCAL.get();
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public static void setRollbackStateLocal(RollbackStateLocal rollbackStateLocal) {
-        THREAD_LOCAL.set(rollbackStateLocal);
-    }
+  private String threadId;
+  private String workflowId;
 
-    private String threadId;
-    private String workflowId;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getThreadId() {
-        return threadId;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static RollbackStateLocal getRollbackStateLocal() {
+    return THREAD_LOCAL.get();
+  }
 
-    public void setThreadId(String threadId) {
-        this.threadId = threadId;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getWorkflowId() {
-        return workflowId;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  rollbackStateLocal  DOCUMENT ME!
+   */
+  public static void setRollbackStateLocal(RollbackStateLocal rollbackStateLocal) {
+    THREAD_LOCAL.set(rollbackStateLocal);
+  }
 
-    public void setWorkflowId(String workflowId) {
-        this.workflowId = workflowId;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getThreadId() {
+    return threadId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getWorkflowId() {
+    return workflowId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  threadId  DOCUMENT ME!
+   */
+  public void setThreadId(String threadId) {
+    this.threadId = threadId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  workflowId  DOCUMENT ME!
+   */
+  public void setWorkflowId(String workflowId) {
+    this.workflowId = workflowId;
+  }
+} // end class RollbackStateLocal

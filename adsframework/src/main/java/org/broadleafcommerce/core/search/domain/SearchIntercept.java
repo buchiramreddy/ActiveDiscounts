@@ -16,20 +16,40 @@
 
 package org.broadleafcommerce.core.search.domain;
 
-import org.broadleafcommerce.core.search.redirect.domain.SearchRedirect;
-
 /**
- * @deprecated Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.domain.SearchRedirect}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.domain.SearchRedirect}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface SearchIntercept {
+@Deprecated public interface SearchIntercept {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTerm();
 
-    public abstract String getTerm();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  term  DOCUMENT ME!
+   */
+  void setTerm(String term);
 
-    public abstract void setTerm(String term);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getRedirect();
 
-    public abstract String getRedirect();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  redirect  DOCUMENT ME!
+   */
+  void setRedirect(String redirect);
 
-    public abstract void setRedirect(String redirect);
-
-}
+} // end interface SearchIntercept

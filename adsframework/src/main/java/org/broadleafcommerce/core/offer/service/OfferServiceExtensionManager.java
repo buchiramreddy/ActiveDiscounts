@@ -17,16 +17,25 @@
 package org.broadleafcommerce.core.offer.service;
 
 import org.broadleafcommerce.core.extension.ExtensionManager;
+
 import org.springframework.stereotype.Service;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 @Service("blOfferServiceExtensionManager")
 public class OfferServiceExtensionManager extends ExtensionManager<OfferServiceExtensionHandler> {
-    public OfferServiceExtensionManager() {
-        super(OfferServiceExtensionHandler.class);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new OfferServiceExtensionManager object.
+   */
+  public OfferServiceExtensionManager() {
+    super(OfferServiceExtensionHandler.class);
+  }
 
 }

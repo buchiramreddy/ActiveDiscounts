@@ -19,28 +19,61 @@ package org.broadleafcommerce.core.offer.service.exception;
 import org.broadleafcommerce.core.checkout.service.exception.CheckoutException;
 import org.broadleafcommerce.core.checkout.service.workflow.CheckoutSeed;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OfferMaxUseExceededException extends CheckoutException {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new OfferMaxUseExceededException object.
+   */
+  public OfferMaxUseExceededException() {
+    super();
+  }
 
-    public OfferMaxUseExceededException() {
-        super();
-    }
-    
-    public OfferMaxUseExceededException(String message) {
-        super(message, null);
-    }
+  /**
+   * Creates a new OfferMaxUseExceededException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public OfferMaxUseExceededException(String message) {
+    super(message, null);
+  }
 
-    public OfferMaxUseExceededException(String message, Throwable cause, CheckoutSeed seed) {
-        super(message, cause, seed);
-    }
+  /**
+   * Creates a new OfferMaxUseExceededException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   * @param  seed     DOCUMENT ME!
+   */
+  public OfferMaxUseExceededException(String message, Throwable cause, CheckoutSeed seed) {
+    super(message, cause, seed);
+  }
 
-    public OfferMaxUseExceededException(String message, CheckoutSeed seed) {
-        super(message, seed);
-    }
+  /**
+   * Creates a new OfferMaxUseExceededException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  seed     DOCUMENT ME!
+   */
+  public OfferMaxUseExceededException(String message, CheckoutSeed seed) {
+    super(message, seed);
+  }
 
-    public OfferMaxUseExceededException(Throwable cause, CheckoutSeed seed) {
-        super(cause, seed);
-    }
+  /**
+   * Creates a new OfferMaxUseExceededException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   * @param  seed   DOCUMENT ME!
+   */
+  public OfferMaxUseExceededException(Throwable cause, CheckoutSeed seed) {
+    super(cause, seed);
+  }
 
-}
+} // end class OfferMaxUseExceededException

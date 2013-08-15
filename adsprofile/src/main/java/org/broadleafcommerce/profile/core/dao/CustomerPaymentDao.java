@@ -16,22 +16,78 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.profile.core.domain.CustomerPayment;
-
 import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.CustomerPayment;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerPaymentDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment create();
 
-    public CustomerPayment save(CustomerPayment customerPayment);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerPayment readCustomerPaymentById(Long customerPaymentId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPaymentId  DOCUMENT ME!
+   */
+  void deleteCustomerPaymentById(Long customerPaymentId);
 
-    public CustomerPayment readCustomerPaymentByToken(String token);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void deleteCustomerPaymentById(Long customerPaymentId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPaymentId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment readCustomerPaymentById(Long customerPaymentId);
 
-    public CustomerPayment create();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   token  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment readCustomerPaymentByToken(String token);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPayment  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment save(CustomerPayment customerPayment);
+
+} // end interface CustomerPaymentDao

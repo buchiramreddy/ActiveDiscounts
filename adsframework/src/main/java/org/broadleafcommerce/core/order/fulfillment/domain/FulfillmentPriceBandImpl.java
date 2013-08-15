@@ -16,10 +16,7 @@
 
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,68 +27,102 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_FULFILLMENT_PRICE_BAND")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
 public class FulfillmentPriceBandImpl extends FulfillmentBandImpl implements FulfillmentPriceBand {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    
-    @Id
-    @GeneratedValue(generator= "FulfillmentPriceBandId")
-    @GenericGenerator(
-        name="FulfillmentPriceBandId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FulfillmentPriceBandImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBandImpl")
-        }
-    )
-    @Column(name = "FULFILLMENT_PRICE_BAND_ID")
-    protected Long id;
-
-    @Column(name="RETAIL_PRICE_MINIMUM_AMOUNT", precision=19, scale=5, nullable = false)
-    protected BigDecimal retailPriceMinimumAmount;
-    
-    @ManyToOne(targetEntity=BandedPriceFulfillmentOptionImpl.class)
-    @JoinColumn(name="FULFILLMENT_OPTION_ID")
-    protected BandedPriceFulfillmentOption option;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "FULFILLMENT_PRICE_BAND_ID")
+  @GeneratedValue(generator = "FulfillmentPriceBandId")
+  @GenericGenerator(
+    name       = "FulfillmentPriceBandId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "FulfillmentPriceBandImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBandImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    @Override
-    public BigDecimal getRetailPriceMinimumAmount() {
-        return retailPriceMinimumAmount;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name      = "RETAIL_PRICE_MINIMUM_AMOUNT",
+    precision = 19,
+    scale     = 5,
+    nullable  = false
+  )
+  protected BigDecimal retailPriceMinimumAmount;
 
-    @Override
-    public void setRetailPriceMinimumAmount(BigDecimal retailPriceMinimumAmount) {
-        this.retailPriceMinimumAmount = retailPriceMinimumAmount;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "FULFILLMENT_OPTION_ID")
+  @ManyToOne(targetEntity = BandedPriceFulfillmentOptionImpl.class)
+  protected BandedPriceFulfillmentOption option;
 
-    @Override
-    public BandedPriceFulfillmentOption getOption() {
-        return option;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentBand#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setOption(BandedPriceFulfillmentOption option) {
-        this.option = option;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentBand#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand#getRetailPriceMinimumAmount()
+   */
+  @Override public BigDecimal getRetailPriceMinimumAmount() {
+    return retailPriceMinimumAmount;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand#setRetailPriceMinimumAmount(java.math.BigDecimal)
+   */
+  @Override public void setRetailPriceMinimumAmount(BigDecimal retailPriceMinimumAmount) {
+    this.retailPriceMinimumAmount = retailPriceMinimumAmount;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand#getOption()
+   */
+  @Override public BandedPriceFulfillmentOption getOption() {
+    return option;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand#setOption(org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption)
+   */
+  @Override public void setOption(BandedPriceFulfillmentOption option) {
+    this.option = option;
+  }
+
+} // end class FulfillmentPriceBandImpl

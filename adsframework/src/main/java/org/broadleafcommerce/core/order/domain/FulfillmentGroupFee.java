@@ -16,74 +16,131 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.money.Money;
-
 import java.io.Serializable;
+
 import java.util.List;
 
+import org.broadleafcommerce.common.money.Money;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface FulfillmentGroupFee extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroup getFulfillmentGroup();
 
-    public FulfillmentGroup getFulfillmentGroup();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
 
-    public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getAmount();
 
-    public Money getAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(Money amount);
 
-    public void setAmount(Money amount);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
 
-    public void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getReportingCode();
 
-    public String getReportingCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  reportingCode  DOCUMENT ME!
+   */
+  void setReportingCode(String reportingCode);
 
-    public void setReportingCode(String reportingCode);
-    
-    /**
-     * Returns whether or not this fee is taxable. If this flag is not set, it returns true by default
-     * 
-     * @return the taxable flag. If null, returns true
-     */
-    public Boolean isTaxable();
+  /**
+   * Returns whether or not this fee is taxable. If this flag is not set, it returns true by default
+   *
+   * @return  the taxable flag. If null, returns true
+   */
+  Boolean isTaxable();
 
-    /**
-     * Sets whether or not this fee is taxable
-     * 
-     * @param taxable
-     */
-    public void setTaxable(Boolean taxable);
-    
-    /**
-     * Gets a list of TaxDetail objects, which are taxes that apply directly to this fee.
-     * 
-     * @return a list of taxes that apply to this fee
-     */
-    public List<TaxDetail> getTaxes();
+  /**
+   * Sets whether or not this fee is taxable.
+   *
+   * @param  taxable  DOCUMENT ME!
+   */
+  void setTaxable(Boolean taxable);
 
-    /**
-     * Sets the list of TaxDetail objects, which are taxes that apply directly to this fee.
-     * 
-     * @param taxes the list of taxes on this fee
-     */
-    public void setTaxes(List<TaxDetail> taxes);
-    
-    /**
-     * Gets the total tax for this fee, which is the sum of all taxes for this fee.
-     * This total is calculated in the TotalActivity stage of the pricing workflow.
-     *
-     * @return the total tax for this fee
-     */
-    public Money getTotalTax();
+  /**
+   * Gets a list of TaxDetail objects, which are taxes that apply directly to this fee.
+   *
+   * @return  a list of taxes that apply to this fee
+   */
+  List<TaxDetail> getTaxes();
 
-    /**
-     * Sets the total tax for this fee, which is the sum of all taxes for this fee.
-     * This total should only be set during the TotalActivity stage of the pricing workflow.
-     *
-     * @param totalTax the total tax for this fee
-     */
-    public void setTotalTax(Money totalTax);
-}
+  /**
+   * Sets the list of TaxDetail objects, which are taxes that apply directly to this fee.
+   *
+   * @param  taxes  the list of taxes on this fee
+   */
+  void setTaxes(List<TaxDetail> taxes);
+
+  /**
+   * Gets the total tax for this fee, which is the sum of all taxes for this fee. This total is calculated in the
+   * TotalActivity stage of the pricing workflow.
+   *
+   * @return  the total tax for this fee
+   */
+  Money getTotalTax();
+
+  /**
+   * Sets the total tax for this fee, which is the sum of all taxes for this fee. This total should only be set during
+   * the TotalActivity stage of the pricing workflow.
+   *
+   * @param  totalTax  the total tax for this fee
+   */
+  void setTotalTax(Money totalTax);
+} // end interface FulfillmentGroupFee

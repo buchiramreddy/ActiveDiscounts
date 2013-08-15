@@ -18,18 +18,54 @@ package org.broadleafcommerce.core.catalog.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CategoryXref extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getDisplayOrder();
 
-    public Long getDisplayOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayOrder  DOCUMENT ME!
+   */
+  void setDisplayOrder(final Long displayOrder);
 
-    public void setDisplayOrder(final Long displayOrder);
-    
-    public Category getCategory();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Category getCategory();
 
-    public void setCategory(final Category category);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  void setCategory(final Category category);
 
-    public Category getSubCategory();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Category getSubCategory();
 
-    public void setSubCategory(final Category subCategory);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  subCategory  DOCUMENT ME!
+   */
+  void setSubCategory(final Category subCategory);
+
+} // end interface CategoryXref

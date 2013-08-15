@@ -16,14 +16,6 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.profile.core.domain.Address;
-import org.broadleafcommerce.profile.core.domain.AddressImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,92 +26,143 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ORDER_MULTISHIP_OPTION")
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
 public class OrderMultishipOptionImpl implements OrderMultishipOption {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(generator = "OrderMultishipOptionId")
-    @GenericGenerator(
-        name="OrderMultishipOptionId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="OrderMultishipOptionImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.domain.OrderMultishipOptionImpl")
-        }
-    )
-    @Column(name = "ORDER_MULTISHIP_OPTION_ID")
-    protected Long id;
-    
-    @ManyToOne(targetEntity = OrderImpl.class)
-    @JoinColumn(name = "ORDER_ID")
-    @Index(name="MULTISHIP_OPTION_ORDER_INDEX", columnNames={"ORDER_ID"})
-    protected Order order;
-
-    @ManyToOne(targetEntity = OrderItemImpl.class)
-    @JoinColumn(name = "ORDER_ITEM_ID")
-    protected OrderItem orderItem;
-
-    @ManyToOne(targetEntity = AddressImpl.class)
-    @JoinColumn(name = "ADDRESS_ID")
-    protected Address address;
-    
-    @ManyToOne(targetEntity = FulfillmentOptionImpl.class)
-    @JoinColumn(name = "FULFILLMENT_OPTION_ID")
-    protected FulfillmentOption fulfillmentOption;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "ORDER_MULTISHIP_OPTION_ID")
+  @GeneratedValue(generator = "OrderMultishipOptionId")
+  @GenericGenerator(
+    name       = "OrderMultishipOptionId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "OrderMultishipOptionImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.order.domain.OrderMultishipOptionImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "MULTISHIP_OPTION_ORDER_INDEX",
+    columnNames = { "ORDER_ID" }
+  )
+  @JoinColumn(name = "ORDER_ID")
+  @ManyToOne(targetEntity = OrderImpl.class)
+  protected Order order;
 
-    @Override
-    public Order getOrder() {
-        return order;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "ORDER_ITEM_ID")
+  @ManyToOne(targetEntity = OrderItemImpl.class)
+  protected OrderItem orderItem;
 
-    @Override
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "ADDRESS_ID")
+  @ManyToOne(targetEntity = AddressImpl.class)
+  protected Address address;
 
-    @Override
-    public OrderItem getOrderItem() {
-        return orderItem;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "FULFILLMENT_OPTION_ID")
+  @ManyToOne(targetEntity = FulfillmentOptionImpl.class)
+  protected FulfillmentOption fulfillmentOption;
 
-    @Override
-    public void setOrderItem(OrderItem orderItem) {
-        this.orderItem = orderItem;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public Address getAddress() {
-        return address;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#getOrder()
+   */
+  @Override public Order getOrder() {
+    return order;
+  }
 
-    @Override
-    public FulfillmentOption getFulfillmentOption() {
-        return fulfillmentOption;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#setOrder(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    @Override
-    public void setFulfillmentOption(FulfillmentOption fulfillmentOption) {
-        this.fulfillmentOption = fulfillmentOption;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#getOrderItem()
+   */
+  @Override public OrderItem getOrderItem() {
+    return orderItem;
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#setOrderItem(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public void setOrderItem(OrderItem orderItem) {
+    this.orderItem = orderItem;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#getAddress()
+   */
+  @Override public Address getAddress() {
+    return address;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#setAddress(org.broadleafcommerce.profile.core.domain.Address)
+   */
+  @Override public void setAddress(Address address) {
+    this.address = address;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#getFulfillmentOption()
+   */
+  @Override public FulfillmentOption getFulfillmentOption() {
+    return fulfillmentOption;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderMultishipOption#setFulfillmentOption(org.broadleafcommerce.core.order.domain.FulfillmentOption)
+   */
+  @Override public void setFulfillmentOption(FulfillmentOption fulfillmentOption) {
+    this.fulfillmentOption = fulfillmentOption;
+  }
+
+} // end class OrderMultishipOptionImpl

@@ -16,42 +16,66 @@
 
 package org.broadleafcommerce.core.search.dao;
 
-import org.broadleafcommerce.core.search.domain.SearchSynonym;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
 
+import org.broadleafcommerce.core.search.domain.SearchSynonym;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blSearchSynonymDao")
 public class SearchSynonymDaoImpl implements SearchSynonymDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchSynonymDao#getAllSynonyms()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<SearchSynonym> getAllSynonyms() {
+    Query               query  = em.createNamedQuery("BC_READ_SEARCH_SYNONYMS");
+    List<SearchSynonym> result;
 
-    @SuppressWarnings("unchecked")
-    public List<SearchSynonym> getAllSynonyms() {
-        Query query = em.createNamedQuery("BC_READ_SEARCH_SYNONYMS");
-        List<SearchSynonym> result;
-        try {
-            result = (List<SearchSynonym>) query.getResultList();
-        } catch (NoResultException e) {
-            result = null;
-        }
-        return result;
+    try {
+      result = (List<SearchSynonym>) query.getResultList();
+    } catch (NoResultException e) {
+      result = null;
     }
 
-    public void createSynonym(SearchSynonym synonym) {
-        em.persist(synonym);
-    }
+    return result;
+  }
 
-    public void deleteSynonym(SearchSynonym synonym) {
-        em.remove(synonym);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchSynonymDao#createSynonym(org.broadleafcommerce.core.search.domain.SearchSynonym)
+   */
+  @Override public void createSynonym(SearchSynonym synonym) {
+    em.persist(synonym);
+  }
 
-    public void updateSynonym(SearchSynonym synonym) {
-        em.merge(synonym);
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchSynonymDao#deleteSynonym(org.broadleafcommerce.core.search.domain.SearchSynonym)
+   */
+  @Override public void deleteSynonym(SearchSynonym synonym) {
+    em.remove(synonym);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchSynonymDao#updateSynonym(org.broadleafcommerce.core.search.domain.SearchSynonym)
+   */
+  @Override public void updateSynonym(SearchSynonym synonym) {
+    em.merge(synonym);
+  }
+} // end class SearchSynonymDaoImpl

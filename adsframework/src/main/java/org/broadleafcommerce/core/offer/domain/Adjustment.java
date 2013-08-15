@@ -16,24 +16,79 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.common.money.Money;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface Adjustment extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Offer getOffer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
 
-    public String getReason();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setReason(String reason);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getReason();
 
-    public Money getValue();
-    
-    public void setValue(Money value);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getValue();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  reason  DOCUMENT ME!
+   */
+  void setReason(String reason);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  void setValue(Money value);
+
+} // end interface Adjustment

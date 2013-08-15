@@ -16,23 +16,81 @@
 
 package org.broadleafcommerce.common.config.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
 import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ModuleConfigurationService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ModuleConfiguration findById(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  config  DOCUMENT ME!
+   */
+  void delete(ModuleConfiguration config);
 
-    public ModuleConfiguration save(ModuleConfiguration config);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void delete(ModuleConfiguration config);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ModuleConfiguration> findActiveConfigurationsByType(ModuleConfigurationType type);
 
-    public List<ModuleConfiguration> findActiveConfigurationsByType(ModuleConfigurationType type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<ModuleConfiguration> findAllConfigurationByType(ModuleConfigurationType type);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ModuleConfiguration> findAllConfigurationByType(ModuleConfigurationType type);
 
-    public List<ModuleConfiguration> findByType(Class<? extends ModuleConfiguration> type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ModuleConfiguration findById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ModuleConfiguration> findByType(Class<? extends ModuleConfiguration> type);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   config  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ModuleConfiguration save(ModuleConfiguration config);
+
+} // end interface ModuleConfigurationService

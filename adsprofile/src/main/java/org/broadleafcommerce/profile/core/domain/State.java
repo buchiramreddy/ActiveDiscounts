@@ -18,17 +18,65 @@ package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface State extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getAbbreviation();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAbbreviation();
 
-    public void setAbbreviation(String abbreviation);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Country getCountry();
 
-    public void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Country getCountry();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public void setCountry(Country country);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  abbreviation  DOCUMENT ME!
+   */
+  void setAbbreviation(String abbreviation);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  country  DOCUMENT ME!
+   */
+  void setCountry(Country country);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+} // end interface State

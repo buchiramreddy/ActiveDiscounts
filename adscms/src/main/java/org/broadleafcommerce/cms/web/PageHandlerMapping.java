@@ -16,84 +16,105 @@
 
 package org.broadleafcommerce.cms.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.cms.page.dto.NullPageDTO;
 import org.broadleafcommerce.cms.page.dto.PageDTO;
 import org.broadleafcommerce.cms.page.service.PageService;
-import org.broadleafcommerce.cms.web.controller.BroadleafPageController;
+
 import org.broadleafcommerce.common.RequestDTO;
 import org.broadleafcommerce.common.TimeDTO;
 import org.broadleafcommerce.common.time.SystemTime;
 import org.broadleafcommerce.common.web.BLCAbstractHandlerMapping;
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * This handler mapping works with the Page entity to determine if a page has been configured for
- * the passed in URL.   
- * 
- * If the URL represents a valid PageUrl, then this mapping returns 
- * 
- * Allows configuration of the controller name to use if a Page was found.
+ * This handler mapping works with the Page entity to determine if a page has been configured for the passed in URL.
  *
- * @author bpolster
- * @since 2.0
- * @see org.broadleafcommerce.cms.page.domain.Page
- * @see org.broadleafcommerce.cms.web.controller.BroadleafPageController
+ * <p>If the URL represents a valid PageUrl, then this mapping returns</p>
+ *
+ * <p>Allows configuration of the controller name to use if a Page was found.</p>
+ *
+ * @author   bpolster
+ * @since    2.0
+ * @see      org.broadleafcommerce.cms.page.domain.Page
+ * @see      org.broadleafcommerce.cms.web.controller.BroadleafPageController
+ * @version  $Revision$, $Date$
  */
 public class PageHandlerMapping extends BLCAbstractHandlerMapping {
-    
-    private String controllerName="blPageController";
-    public static final String BLC_RULE_MAP_PARAM = "blRuleMap";
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    // The following attribute is set in BroadleafProcessURLFilter
-    public static final String REQUEST_DTO = "blRequestDTO";
-    
-    @Resource(name = "blPageService")
-    private PageService pageService;
-    
-    public static final String PAGE_ATTRIBUTE_NAME = "BLC_PAGE";        
+  /** DOCUMENT ME! */
+  public static final String BLC_RULE_MAP_PARAM = "blRuleMap";
 
-    @Override
-    protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
-        BroadleafRequestContext context = BroadleafRequestContext.getBroadleafRequestContext();
-        if (context != null && context.getRequestURIWithoutContext() != null) {
-            PageDTO page = pageService.findPageByURI(context.getSandbox(), context.getLocale(), context.getRequestURIWithoutContext(), buildMvelParameters(request), context.isSecure());
+  // The following attribute is set in BroadleafProcessURLFilter
+  /** DOCUMENT ME! */
+  public static final String REQUEST_DTO = "blRequestDTO";
 
-            if (page != null && ! (page instanceof NullPageDTO)) {
-                context.getRequest().setAttribute(PAGE_ATTRIBUTE_NAME, page);
-                return controllerName;
-            }
-        }
-        return null;
-    }
-    
-     /**
-     * MVEL is used to process the content targeting rules.
-     *
-     *
-     * @param request
-     * @return
-     */
-    private Map<String,Object> buildMvelParameters(HttpServletRequest request) {
-        TimeDTO timeDto = new TimeDTO(SystemTime.asCalendar());
-        RequestDTO requestDto = (RequestDTO) request.getAttribute(REQUEST_DTO);
+  /** DOCUMENT ME! */
+  public static final String PAGE_ATTRIBUTE_NAME = "BLC_PAGE";
 
-        Map<String, Object> mvelParameters = new HashMap<String, Object>();
-        mvelParameters.put("time", timeDto);
-        mvelParameters.put("request", requestDto);
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-        Map<String,Object> blcRuleMap = (Map<String,Object>) request.getAttribute(BLC_RULE_MAP_PARAM);
-        if (blcRuleMap != null) {
-            for (String mapKey : blcRuleMap.keySet()) {
-                mvelParameters.put(mapKey, blcRuleMap.get(mapKey));
-            }
-        }
+  private String controllerName = "blPageController";
 
-        return mvelParameters;
+  @Resource(name = "blPageService")
+  private PageService pageService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.handler.AbstractHandlerMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)
+   */
+  @Override protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
+    BroadleafRequestContext context = BroadleafRequestContext.getBroadleafRequestContext();
+
+    if ((context != null) && (context.getRequestURIWithoutContext() != null)) {
+      PageDTO page = pageService.findPageByURI(context.getSandbox(), context.getLocale(),
+          context.getRequestURIWithoutContext(), buildMvelParameters(request), context.isSecure());
+
+      if ((page != null) && !(page instanceof NullPageDTO)) {
+        context.getRequest().setAttribute(PAGE_ATTRIBUTE_NAME, page);
+
+        return controllerName;
+      }
     }
 
-}
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * MVEL is used to process the content targeting rules.
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  mVEL is used to process the content targeting rules.
+   */
+  private Map<String, Object> buildMvelParameters(HttpServletRequest request) {
+    TimeDTO    timeDto    = new TimeDTO(SystemTime.asCalendar());
+    RequestDTO requestDto = (RequestDTO) request.getAttribute(REQUEST_DTO);
+
+    Map<String, Object> mvelParameters = new HashMap<String, Object>();
+    mvelParameters.put("time", timeDto);
+    mvelParameters.put("request", requestDto);
+
+    Map<String, Object> blcRuleMap = (Map<String, Object>) request.getAttribute(BLC_RULE_MAP_PARAM);
+
+    if (blcRuleMap != null) {
+      for (String mapKey : blcRuleMap.keySet()) {
+        mvelParameters.put(mapKey, blcRuleMap.get(mapKey));
+      }
+    }
+
+    return mvelParameters;
+  }
+
+} // end class PageHandlerMapping

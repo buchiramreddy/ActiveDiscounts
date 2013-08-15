@@ -17,70 +17,104 @@
 package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
+
 /**
- * 
- * @author bpolster
+ * DOCUMENT ME!
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface CustomerForgotPasswordSecurityToken extends Serializable {
-    
-    /**
-     * Returns the security token.
-     * @return
-     */
-    public String getToken();
-    
-    /**
-     * Sets the security token.
-     * @return
-     */
-    public void setToken(String token);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Date the token was created
-     * @return
-     */
-    public Date getCreateDate();
+  /**
+   * Date the token was created.
+   *
+   * @return  date the token was created.
+   */
+  Date getCreateDate();
 
-    /**
-     * Set the generation date for the token.
-     * @return
-     */
-    public void setCreateDate(Date date);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Date the token was used to reset the password.
-     * @return
-     */
-    public Date getTokenUsedDate();
+  /**
+   * Id associated with this forgot password token.
+   *
+   * @return  id associated with this forgot password token.
+   */
+  Long getCustomerId();
 
-    /**
-     * Set the date the token was used to reset the password.
-     * @return
-     */
-    public void setTokenUsedDate(Date date);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Id associated with this forgot password token.
-     * @return
-     */
-    public Long getCustomerId();
+  /**
+   * Returns the security token.
+   *
+   * @return  the security token.
+   */
+  String getToken();
 
-    /**
-     * Id associated with this forgot password token.
-     * @return
-     */
-    public void setCustomerId(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns true if the token has already been used.
-     */
-    public boolean isTokenUsedFlag();
+  /**
+   * Date the token was used to reset the password.
+   *
+   * @return  date the token was used to reset the password.
+   */
+  Date getTokenUsedDate();
 
-    /**
-     * Sets the token used flag. 
-     */
-    public void setTokenUsedFlag(boolean tokenUsed);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns true if the token has already been used.
+   *
+   * @return  true if the token has already been used.
+   */
+  boolean isTokenUsedFlag();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Set the generation date for the token.
+   *
+   * @param  date  DOCUMENT ME!
+   */
+  void setCreateDate(Date date);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Id associated with this forgot password token.
+   *
+   * @param  customerId  DOCUMENT ME!
+   */
+  void setCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the security token.
+   *
+   * @param  token  DOCUMENT ME!
+   */
+  void setToken(String token);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Set the date the token was used to reset the password.
+   *
+   * @param  date  DOCUMENT ME!
+   */
+  void setTokenUsedDate(Date date);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the token used flag.
+   *
+   * @param  tokenUsed  DOCUMENT ME!
+   */
+  void setTokenUsedFlag(boolean tokenUsed);
+} // end interface CustomerForgotPasswordSecurityToken

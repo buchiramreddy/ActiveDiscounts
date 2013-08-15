@@ -17,16 +17,31 @@
 package org.broadleafcommerce.core.pricing.service;
 
 import org.broadleafcommerce.common.vendor.service.exception.FulfillmentPriceException;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+
 
 /**
- * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
- * @see {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented
+ *              in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * @see         {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService},
+ *              {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface ShippingService {
-    
-    public FulfillmentGroup calculateShippingForFulfillmentGroup(FulfillmentGroup fulfillmentGroup) throws FulfillmentPriceException;
-    
+@Deprecated public interface ShippingService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentGroup  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  FulfillmentPriceException  DOCUMENT ME!
+   */
+  FulfillmentGroup calculateShippingForFulfillmentGroup(FulfillmentGroup fulfillmentGroup)
+    throws FulfillmentPriceException;
+
 }

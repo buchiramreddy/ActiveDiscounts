@@ -16,21 +16,75 @@
 
 package org.broadleafcommerce.core.util.dao;
 
-import org.broadleafcommerce.core.util.domain.CodeType;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.util.domain.CodeType;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CodeTypeDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<CodeType> readAllCodeTypes();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CodeType create();
 
-    public CodeType readCodeTypeById(Long codeTypeId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<CodeType> readCodeTypeByKey(String key);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  codeType  DOCUMENT ME!
+   */
+  void delete(CodeType codeType);
 
-    public CodeType save(CodeType codeType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void delete(CodeType codeType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CodeType> readAllCodeTypes();
 
-    public CodeType create();
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   codeTypeId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CodeType readCodeTypeById(Long codeTypeId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   key  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CodeType> readCodeTypeByKey(String key);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   codeType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CodeType save(CodeType codeType);
+} // end interface CodeTypeDao

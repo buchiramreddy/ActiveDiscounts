@@ -16,85 +16,148 @@
 
 package org.broadleafcommerce.openadmin.server.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extensible enumeration for a Security Context Type.
- * @see org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext
  *
- * @author elbertbautista
- *
+ * @see      org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext
+ * @author   elbertbautista
+ * @version  $Revision$, $Date$
  */
 public class ContextType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, ContextType> TYPES = new LinkedHashMap<String, ContextType>();
+  private static final Map<String, ContextType> TYPES = new LinkedHashMap<String, ContextType>();
 
-    public static final ContextType GLOBAL = new ContextType("GLOBAL", "Global");
-    public static final ContextType SITE = new ContextType("SITE", "Site");
-    public static final ContextType CATALOG = new ContextType("CATALOG", "Catalog");
-    public static final ContextType TEMPLATE = new ContextType("TEMPLATE", "Template");
+  /** DOCUMENT ME! */
+  public static final ContextType GLOBAL   = new ContextType("GLOBAL", "Global");
 
-    public static ContextType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final ContextType SITE     = new ContextType("SITE", "Site");
+
+  /** DOCUMENT ME! */
+  public static final ContextType CATALOG  = new ContextType("CATALOG", "Catalog");
+
+  /** DOCUMENT ME! */
+  public static final ContextType TEMPLATE = new ContextType("TEMPLATE", "Template");
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new ContextType object.
+   */
+  public ContextType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new ContextType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public ContextType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static ContextType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public ContextType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public ContextType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public String getType() {
-        return type;
+    ContextType other = (ContextType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    @Override
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ContextType other = (ContextType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
     }
-}
+  }
+} // end class ContextType

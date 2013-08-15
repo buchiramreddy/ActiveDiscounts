@@ -17,29 +17,90 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface RelatedProduct extends PromotableProduct {
-    
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Product getProduct();
-    
-    public Category getCategory();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Product getProduct();
 
-    public Product getRelatedProduct();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Category getCategory();
 
-    public String getPromotionMessage();
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.PromotableProduct#getRelatedProduct()
+   */
+  @Override Product getRelatedProduct();
 
-    public Long getSequence();
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.PromotableProduct#getPromotionMessage()
+   */
+  @Override String getPromotionMessage();
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getSequence();
 
-    public void setProduct(Product product);
-    
-    public void setCategory(Category category);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setRelatedProduct(Product relatedProduct);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  product  DOCUMENT ME!
+   */
+  void setProduct(Product product);
 
-    public void setPromotionMessage(String promotionMessage);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  void setCategory(Category category);
 
-    public void setSequence(Long sequence);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  relatedProduct  DOCUMENT ME!
+   */
+  void setRelatedProduct(Product relatedProduct);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  promotionMessage  DOCUMENT ME!
+   */
+  void setPromotionMessage(String promotionMessage);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sequence  DOCUMENT ME!
+   */
+  void setSequence(Long sequence);
+} // end interface RelatedProduct

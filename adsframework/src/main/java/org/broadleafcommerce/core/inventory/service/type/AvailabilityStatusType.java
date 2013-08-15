@@ -16,86 +16,148 @@
 
 package org.broadleafcommerce.core.inventory.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of availability status types.
- * 
- * @author jfischer
- * 
- * @deprecated This is no longer required and is instead implemented as a third-party inventory module
+ *
+ * @author      jfischer
+ * @deprecated  This is no longer required and is instead implemented as a third-party inventory module
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public class AvailabilityStatusType implements Serializable, BroadleafEnumerationType {
+@Deprecated public class AvailabilityStatusType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    private static final Map<String, AvailabilityStatusType> TYPES = new LinkedHashMap<String, AvailabilityStatusType>();
+  private static final long                                serialVersionUID = 1L;
+  private static final Map<String, AvailabilityStatusType> TYPES            =
+    new LinkedHashMap<String, AvailabilityStatusType>();
 
-    public static final AvailabilityStatusType AVAILABLE  = new AvailabilityStatusType("AVAILABLE", "Available");
-    public static final AvailabilityStatusType UNAVAILABLE  = new AvailabilityStatusType("UNAVAILABLE", "Unavailable");
-    public static final AvailabilityStatusType BACKORDERED  = new AvailabilityStatusType("BACKORDERED", "Back Ordered");
-    
-    public static AvailabilityStatusType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final AvailabilityStatusType AVAILABLE   = new AvailabilityStatusType("AVAILABLE", "Available");
+
+  /** DOCUMENT ME! */
+  public static final AvailabilityStatusType UNAVAILABLE = new AvailabilityStatusType("UNAVAILABLE", "Unavailable");
+
+  /** DOCUMENT ME! */
+  public static final AvailabilityStatusType BACKORDERED = new AvailabilityStatusType("BACKORDERED", "Back Ordered");
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new AvailabilityStatusType object.
+   */
+  public AvailabilityStatusType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new AvailabilityStatusType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public AvailabilityStatusType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static AvailabilityStatusType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public AvailabilityStatusType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public AvailabilityStatusType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public String getType() {
-        return type;
+    AvailabilityStatusType other = (AvailabilityStatusType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    @Override
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        } else {
-            throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via " + getInstance(type).getClass().getName());
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        AvailabilityStatusType other = (AvailabilityStatusType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    } else {
+      throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via "
+        + getInstance(type).getClass().getName());
     }
-}
+  }
+} // end class AvailabilityStatusType

@@ -16,87 +16,109 @@
 
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-
 import java.io.Serializable;
+
 import java.util.List;
 import java.util.Map;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PromotableFulfillmentGroup extends Serializable {
+  /**
+   * Adds a fulfillmentGroupAdjustment.
+   *
+   * @param  adjustment  DOCUMENT ME!
+   */
+  void addCandidateFulfillmentGroupAdjustment(PromotableFulfillmentGroupAdjustment adjustment);
 
-    /**
-     * Adds a fulfillmentGroupAdjustment
-     * @return
-     */
-    void addCandidateFulfillmentGroupAdjustment(PromotableFulfillmentGroupAdjustment adjustment);
+  /**
+   * Adds a fulfillmentGroupAdjustment.
+   *
+   * @return  adds a fulfillmentGroupAdjustment.
+   */
+  List<PromotableFulfillmentGroupAdjustment> getCandidateFulfillmentGroupAdjustments();
 
-    /**
-     * Adds a fulfillmentGroupAdjustment
-     * @return
-     */
-    List<PromotableFulfillmentGroupAdjustment> getCandidateFulfillmentGroupAdjustments();
+  /**
+   * Removes all candidate adjustments.
+   */
+  void removeAllCandidateAdjustments();
 
-    /**
-     * Removes all candidate adjustments
-     * @return
-     */
-    void removeAllCandidateAdjustments();
+  /**
+   * This method will check to see if the saleAdjustments or retail only adjustments are better and finalize the set
+   * that achieves the best result for the customer.
+   */
+  void chooseSaleOrRetailAdjustments();
 
-    /**
-     * This method will check to see if the saleAdjustments or retail only adjustments are better
-     * and finalize the set that achieves the best result for the customer.
-     */
-    void chooseSaleOrRetailAdjustments();
+  /**
+   * Returns the decorated FulfillmentGroup.
+   *
+   * @return  the decorated FulfillmentGroup.
+   */
+  FulfillmentGroup getFulfillmentGroup();
 
-    /**
-     * Returns the decorated FulfillmentGroup
-     */
-    public FulfillmentGroup getFulfillmentGroup();
+  /**
+   * Adds the underlying fulfillmentGroup to the rule variable map.
+   *
+   * @param  ruleVars  DOCUMENT ME!
+   */
+  void updateRuleVariables(Map<String, Object> ruleVars);
 
-    /**
-     * Adds the underlying fulfillmentGroup to the rule variable map.
-     */
-    void updateRuleVariables(Map<String, Object> ruleVars);
+  /**
+   * Calculates the price with adjustments. Uses the sale or retail adjustments based on the passed in parameter.
+   *
+   * @param   useSalePrice  DOCUMENT ME!
+   *
+   * @return  calculates the price with adjustments.
+   */
+  Money calculatePriceWithAdjustments(boolean useSalePrice);
 
-    /**
-     * Calculates the price with adjustments.   Uses the sale or retail adjustments
-     * based on the passed in parameter.     
-     * @param useSalePrice
-     */
-    public Money calculatePriceWithAdjustments(boolean useSalePrice);
+  /**
+   * Calculates the price with all adjustments. May error in the case where adjustments have not been finalized with a
+   * call to chooseSaleOrRetailAdjustments.
+   *
+   * @return  calculates the price with all adjustments.
+   */
+  Money getFinalizedPriceWithAdjustments();
 
-    /**
-     * Calculates the price with all adjustments.   May error in the case where adjustments have
-     * not been finalized with a call to chooseSaleOrRetailAdjustments.
-     * @param useSalePrice
-     */
-    public Money getFinalizedPriceWithAdjustments();
+  /**
+   * Return list of discountable discrete order items contained in this fulfillmentGroup.
+   *
+   * @return  return list of discountable discrete order items contained in this fulfillmentGroup.
+   */
+  List<PromotableOrderItem> getDiscountableOrderItems();
 
-    /**
-     * Return list of discountable discrete order items contained in this fulfillmentGroup.
-     * @return
-     */
-    List<PromotableOrderItem> getDiscountableOrderItems();
+  /**
+   * Checks to see if the offer can be added to this fulfillmentGroup based on whether or not it is combinable or if
+   * this fulfillmentGroup already has a non-combinable offer applied.
+   *
+   * @param   fulfillmentGroupOffer  DOCUMENT ME!
+   *
+   * @return  checks to see if the offer can be added to this fulfillmentGroup based on whether or not it is combinable
+   *          or if this fulfillmentGroup already has a non-combinable offer applied.
+   */
+  boolean canApplyOffer(PromotableCandidateFulfillmentGroupOffer fulfillmentGroupOffer);
 
-    /**
-     * Checks to see if the offer can be added to this fulfillmentGroup based on whether or not 
-     * it is combinable or if this fulfillmentGroup already has a non-combinable offer applied.
-     * @param fulfillmentGroupOffer
-     * @return
-     */
-    boolean canApplyOffer(PromotableCandidateFulfillmentGroupOffer fulfillmentGroupOffer);
+  /**
+   * Returns the price of this fulfillment group if no adjustments were applied.
+   *
+   * @return  the price of this fulfillment group if no adjustments were applied.
+   */
+  Money calculatePriceWithoutAdjustments();
 
-    /**
-     * Returns the price of this fulfillment group if no adjustments were applied.
-     * @return
-     */
-    Money calculatePriceWithoutAdjustments();
-    
-    /**
-     * Returns true if totalitarian offer was applied to this promotable fulfillment group.
-     * @return
-     */
-    boolean isTotalitarianOfferApplied();
+  /**
+   * Returns true if totalitarian offer was applied to this promotable fulfillment group.
+   *
+   * @return  true if totalitarian offer was applied to this promotable fulfillment group.
+   */
+  boolean isTotalitarianOfferApplied();
 
-}
+} // end interface PromotableFulfillmentGroup

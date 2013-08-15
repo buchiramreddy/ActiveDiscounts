@@ -16,6 +16,10 @@
 
 package org.broadleafcommerce.core.offer.service.processor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimeZone;
+
 import org.broadleafcommerce.core.offer.dao.OfferDao;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
@@ -26,150 +30,238 @@ import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFa
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrder;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
-import org.easymock.classextension.EasyMock;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimeZone;
+import org.easymock.classextension.EasyMock;
 
 import junit.framework.TestCase;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class OrderOfferProcessorTest extends TestCase {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected OfferDao offerDaoMock;
-    protected OrderOfferProcessorImpl orderProcessor;
-    protected OfferDataItemProvider dataProvider = new OfferDataItemProvider();
-    protected OfferTimeZoneProcessor offerTimeZoneProcessorMock;
-    
-    @Override
-    protected void setUp() throws Exception {
-        offerDaoMock = EasyMock.createMock(OfferDao.class);
-        offerTimeZoneProcessorMock = EasyMock.createMock(OfferTimeZoneProcessor.class);
-        orderProcessor = new OrderOfferProcessorImpl();
-        orderProcessor.setOfferDao(offerDaoMock);
-        orderProcessor.setOfferTimeZoneProcessor(offerTimeZoneProcessorMock);
-        orderProcessor.setPromotableItemFactory(new PromotableItemFactoryImpl());
+  /** DOCUMENT ME! */
+  protected OfferDataItemProvider dataProvider = new OfferDataItemProvider();
+
+  /** DOCUMENT ME! */
+  protected OfferDao                offerDaoMock;
+
+  /** DOCUMENT ME! */
+  protected OfferTimeZoneProcessor  offerTimeZoneProcessorMock;
+
+  /** DOCUMENT ME! */
+  protected OrderOfferProcessorImpl orderProcessor;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  public void replay() {
+    EasyMock.expect(offerTimeZoneProcessorMock.getTimeZone(EasyMock.isA(OfferImpl.class))).andReturn(TimeZone
+      .getTimeZone("CST")).anyTimes();
+    EasyMock.replay(offerDaoMock);
+    EasyMock.replay(offerTimeZoneProcessorMock);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testCouldOfferApplyToOrder() throws Exception {
+    replay();
+
+    PromotableOrder order      = dataProvider.createBasicPromotableOrder();
+    List<Offer>     offers     = dataProvider.createOrderBasedOffer("order.subTotal.getAmount()>20",
+        OfferDiscountType.PERCENT_OFF);
+    boolean         couldApply = orderProcessor.couldOfferApplyToOrder(offers.get(0), order,
+        order.getDiscountableOrderItems().get(0), order.getFulfillmentGroups().get(0));
+
+    // test that the valid order offer is included
+    assertTrue(couldApply);
+
+    offers     = dataProvider.createOrderBasedOffer("order.subTotal.getAmount()==0", OfferDiscountType.PERCENT_OFF);
+    couldApply = orderProcessor.couldOfferApplyToOrder(offers.get(0), order, order.getDiscountableOrderItems().get(0),
+        order.getFulfillmentGroups().get(0));
+
+    // test that the invalid order offer is excluded
+    assertFalse(couldApply);
+
+    verify();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testCouldOfferApplyToOrderItems() throws Exception {
+    replay();
+
+    PromotableOrder           order      = dataProvider.createBasicPromotableOrder();
+    List<Offer>               offers     = dataProvider.createOrderBasedOfferWithItemCriteria(
+        "order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF,
+        "([MVEL.eval(\"toUpperCase()\",\"test1\"), MVEL.eval(\"toUpperCase()\",\"test2\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
+    List<PromotableOrderItem> orderItems = new ArrayList<PromotableOrderItem>();
+
+    for (PromotableOrderItem orderItem : order.getDiscountableOrderItems()) {
+      orderItems.add(orderItem);
     }
-    
-    public void replay() {
-        EasyMock.expect(offerTimeZoneProcessorMock.getTimeZone(EasyMock.isA(OfferImpl.class))).andReturn(TimeZone.getTimeZone("CST")).anyTimes();
-        EasyMock.replay(offerDaoMock);
-        EasyMock.replay(offerTimeZoneProcessorMock);
-    }
-    
-    public void verify() {
-        EasyMock.verify(offerDaoMock);
-        EasyMock.verify(offerTimeZoneProcessorMock);
-    }
-    
-    public void testFilterOffers() throws Exception {
-        replay();
-        
-        PromotableOrder order = dataProvider.createBasicPromotableOrder();
-        List<Offer> offers = dataProvider.createCustomerBasedOffer("customer.registered==true", dataProvider.yesterday(), dataProvider.yesterday(), OfferDiscountType.PERCENT_OFF);
-        orderProcessor.filterOffers(offers, order.getOrder().getCustomer());
-        //confirm out-of-date orders are filtered out
-        assertTrue(offers.size() == 0);
-        
-        offers = dataProvider.createCustomerBasedOffer("customer.registered==true", dataProvider.yesterday(), dataProvider.tomorrow(), OfferDiscountType.PERCENT_OFF);
-        orderProcessor.filterOffers(offers, order.getOrder().getCustomer());
-        //confirm valid customer offer is retained
-        assertTrue(offers.size() == 1);
-        
-        offers = dataProvider.createCustomerBasedOffer("customer.registered==false", dataProvider.yesterday(), dataProvider.tomorrow(), OfferDiscountType.PERCENT_OFF);
-        orderProcessor.filterOffers(offers, order.getOrder().getCustomer());
-        //confirm invalid customer offer is culled
-        assertTrue(offers.size() == 0);
-        
-        verify();
-    }
-    
-    public void testFilterOrderLevelOffer() throws Exception {
-        replay();
-        
-        PromotableOrder order = dataProvider.createBasicPromotableOrder();
-        List<PromotableCandidateOrderOffer> qualifiedOffers = new ArrayList<PromotableCandidateOrderOffer>();
-        List<Offer> offers = dataProvider.createOrderBasedOffer("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF);
-        
-        orderProcessor.filterOrderLevelOffer(order, qualifiedOffers, offers.get(0));
-        
-        //test that the valid order offer is included
-        assertTrue(qualifiedOffers.size() == 1 && qualifiedOffers.get(0).getOffer().equals(offers.get(0)));
-        
-        qualifiedOffers = new ArrayList<PromotableCandidateOrderOffer>();
-        offers = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF, "([MVEL.eval(\"toUpperCase()\",\"test1\"), MVEL.eval(\"toUpperCase()\",\"test2\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
-        orderProcessor.filterOrderLevelOffer(order, qualifiedOffers, offers.get(0));
-        
-        //test that the valid order offer is included
-        assertTrue(qualifiedOffers.size() == 1 && qualifiedOffers.get(0).getOffer().equals(offers.get(0))) ;
-         
-        qualifiedOffers = new ArrayList<PromotableCandidateOrderOffer>();
-        offers = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF, "([5,6] contains discreteOrderItem.category.id.intValue())");
-        orderProcessor.filterOrderLevelOffer(order, qualifiedOffers, offers.get(0));
-        
-        //test that the invalid order offer is excluded
-        assertTrue(qualifiedOffers.size() == 0) ;
-        
-        verify();
-    }
-    
-    public void testCouldOfferApplyToOrder() throws Exception {
-        replay();
-        
-        PromotableOrder order = dataProvider.createBasicPromotableOrder();
-        List<Offer> offers = dataProvider.createOrderBasedOffer("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF);
-        boolean couldApply = orderProcessor.couldOfferApplyToOrder(offers.get(0), order, order.getDiscountableOrderItems().get(0), order.getFulfillmentGroups().get(0));
-        //test that the valid order offer is included
-        assertTrue(couldApply);
-        
-        offers = dataProvider.createOrderBasedOffer("order.subTotal.getAmount()==0", OfferDiscountType.PERCENT_OFF);
-        couldApply = orderProcessor.couldOfferApplyToOrder(offers.get(0), order, order.getDiscountableOrderItems().get(0), order.getFulfillmentGroups().get(0));
-        //test that the invalid order offer is excluded
-        assertFalse(couldApply);
-        
-        verify();
-    }
-    
-    public void testCouldOrderItemMeetOfferRequirement() throws Exception {
-        replay();
-        
-        PromotableOrder order = dataProvider.createBasicPromotableOrder();
-        List<Offer> offers = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF, "([MVEL.eval(\"toUpperCase()\",\"test1\"), MVEL.eval(\"toUpperCase()\",\"test2\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
-        boolean couldApply = orderProcessor.couldOrderItemMeetOfferRequirement(offers.get(0).getQualifyingItemCriteria().iterator().next(), order.getDiscountableOrderItems().get(0));
-        //test that the valid order offer is included
-        assertTrue(couldApply);
-        
-        offers = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF, "([MVEL.eval(\"toUpperCase()\",\"test5\"), MVEL.eval(\"toUpperCase()\",\"test6\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
-        couldApply = orderProcessor.couldOrderItemMeetOfferRequirement(offers.get(0).getQualifyingItemCriteria().iterator().next(), order.getDiscountableOrderItems().get(0));
-        //test that the invalid order offer is excluded
-        assertFalse(couldApply);
-        
-        verify();
-    }
-    
-    public void testCouldOfferApplyToOrderItems() throws Exception {
-        replay();
-        
-        PromotableOrder order = dataProvider.createBasicPromotableOrder();
-        List<Offer> offers = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF, "([MVEL.eval(\"toUpperCase()\",\"test1\"), MVEL.eval(\"toUpperCase()\",\"test2\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
-        List<PromotableOrderItem> orderItems = new ArrayList<PromotableOrderItem>();
-        for (PromotableOrderItem orderItem : order.getDiscountableOrderItems()) {
-            orderItems.add(orderItem);
-        }
-        CandidatePromotionItems candidates = orderProcessor.couldOfferApplyToOrderItems(offers.get(0), orderItems);
-        //test that the valid order offer is included
-        assertTrue(candidates.isMatchedQualifier() && candidates.getCandidateQualifiersMap().size() == 1);
-        
-        offers = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF, "([MVEL.eval(\"toUpperCase()\",\"test5\"), MVEL.eval(\"toUpperCase()\",\"test6\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
-        candidates = orderProcessor.couldOfferApplyToOrderItems(offers.get(0), orderItems);
-        //test that the invalid order offer is excluded because there are no qualifying items
-        assertFalse(candidates.isMatchedQualifier() && candidates.getCandidateQualifiersMap().size() == 1);
-        
-        verify();
-    }
-}
+
+    CandidatePromotionItems candidates = orderProcessor.couldOfferApplyToOrderItems(offers.get(0), orderItems);
+
+    // test that the valid order offer is included
+    assertTrue(candidates.isMatchedQualifier() && (candidates.getCandidateQualifiersMap().size() == 1));
+
+    offers     = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20",
+        OfferDiscountType.PERCENT_OFF,
+        "([MVEL.eval(\"toUpperCase()\",\"test5\"), MVEL.eval(\"toUpperCase()\",\"test6\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
+    candidates = orderProcessor.couldOfferApplyToOrderItems(offers.get(0), orderItems);
+
+    // test that the invalid order offer is excluded because there are no qualifying items
+    assertFalse(candidates.isMatchedQualifier() && (candidates.getCandidateQualifiersMap().size() == 1));
+
+    verify();
+  } // end method testCouldOfferApplyToOrderItems
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testCouldOrderItemMeetOfferRequirement() throws Exception {
+    replay();
+
+    PromotableOrder order      = dataProvider.createBasicPromotableOrder();
+    List<Offer>     offers     = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20",
+        OfferDiscountType.PERCENT_OFF,
+        "([MVEL.eval(\"toUpperCase()\",\"test1\"), MVEL.eval(\"toUpperCase()\",\"test2\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
+    boolean         couldApply = orderProcessor.couldOrderItemMeetOfferRequirement(offers.get(0)
+        .getQualifyingItemCriteria().iterator().next(), order.getDiscountableOrderItems().get(0));
+
+    // test that the valid order offer is included
+    assertTrue(couldApply);
+
+    offers     = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20",
+        OfferDiscountType.PERCENT_OFF,
+        "([MVEL.eval(\"toUpperCase()\",\"test5\"), MVEL.eval(\"toUpperCase()\",\"test6\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
+    couldApply = orderProcessor.couldOrderItemMeetOfferRequirement(offers.get(0).getQualifyingItemCriteria().iterator()
+        .next(), order.getDiscountableOrderItems().get(0));
+
+    // test that the invalid order offer is excluded
+    assertFalse(couldApply);
+
+    verify();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testFilterOffers() throws Exception {
+    replay();
+
+    PromotableOrder order  = dataProvider.createBasicPromotableOrder();
+    List<Offer>     offers = dataProvider.createCustomerBasedOffer("customer.registered==true",
+        dataProvider.yesterday(), dataProvider.yesterday(), OfferDiscountType.PERCENT_OFF);
+    orderProcessor.filterOffers(offers, order.getOrder().getCustomer());
+
+    // confirm out-of-date orders are filtered out
+    assertTrue(offers.size() == 0);
+
+    offers = dataProvider.createCustomerBasedOffer("customer.registered==true", dataProvider.yesterday(),
+        dataProvider.tomorrow(), OfferDiscountType.PERCENT_OFF);
+    orderProcessor.filterOffers(offers, order.getOrder().getCustomer());
+
+    // confirm valid customer offer is retained
+    assertTrue(offers.size() == 1);
+
+    offers = dataProvider.createCustomerBasedOffer("customer.registered==false", dataProvider.yesterday(),
+        dataProvider.tomorrow(), OfferDiscountType.PERCENT_OFF);
+    orderProcessor.filterOffers(offers, order.getOrder().getCustomer());
+
+    // confirm invalid customer offer is culled
+    assertTrue(offers.size() == 0);
+
+    verify();
+  } // end method testFilterOffers
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testFilterOrderLevelOffer() throws Exception {
+    replay();
+
+    PromotableOrder                     order           = dataProvider.createBasicPromotableOrder();
+    List<PromotableCandidateOrderOffer> qualifiedOffers = new ArrayList<PromotableCandidateOrderOffer>();
+    List<Offer>                         offers          = dataProvider.createOrderBasedOffer(
+        "order.subTotal.getAmount()>20", OfferDiscountType.PERCENT_OFF);
+
+    orderProcessor.filterOrderLevelOffer(order, qualifiedOffers, offers.get(0));
+
+    // test that the valid order offer is included
+    assertTrue((qualifiedOffers.size() == 1) && qualifiedOffers.get(0).getOffer().equals(offers.get(0)));
+
+    qualifiedOffers = new ArrayList<PromotableCandidateOrderOffer>();
+    offers          = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20",
+        OfferDiscountType.PERCENT_OFF,
+        "([MVEL.eval(\"toUpperCase()\",\"test1\"), MVEL.eval(\"toUpperCase()\",\"test2\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.category.name))");
+    orderProcessor.filterOrderLevelOffer(order, qualifiedOffers, offers.get(0));
+
+    // test that the valid order offer is included
+    assertTrue((qualifiedOffers.size() == 1) && qualifiedOffers.get(0).getOffer().equals(offers.get(0)));
+
+    qualifiedOffers = new ArrayList<PromotableCandidateOrderOffer>();
+    offers          = dataProvider.createOrderBasedOfferWithItemCriteria("order.subTotal.getAmount()>20",
+        OfferDiscountType.PERCENT_OFF, "([5,6] contains discreteOrderItem.category.id.intValue())");
+    orderProcessor.filterOrderLevelOffer(order, qualifiedOffers, offers.get(0));
+
+    // test that the invalid order offer is excluded
+    assertTrue(qualifiedOffers.size() == 0);
+
+    verify();
+  } // end method testFilterOrderLevelOffer
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  public void verify() {
+    EasyMock.verify(offerDaoMock);
+    EasyMock.verify(offerTimeZoneProcessorMock);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  junit.framework.TestCase#setUp()
+   */
+  @Override protected void setUp() throws Exception {
+    offerDaoMock               = EasyMock.createMock(OfferDao.class);
+    offerTimeZoneProcessorMock = EasyMock.createMock(OfferTimeZoneProcessor.class);
+    orderProcessor             = new OrderOfferProcessorImpl();
+    orderProcessor.setOfferDao(offerDaoMock);
+    orderProcessor.setOfferTimeZoneProcessor(offerTimeZoneProcessorMock);
+    orderProcessor.setPromotableItemFactory(new PromotableItemFactoryImpl());
+  }
+} // end class OrderOfferProcessorTest

@@ -17,74 +17,107 @@
 package org.broadleafcommerce.core.offer.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
+
 
 /**
  * Captures when an offer was applied to a customer.
  *
- * Utilized by the offer process to enforce max use by customer rules and as
- * a high-level audit of what orders and customers have used an offer.
+ * <p>Utilized by the offer process to enforce max use by customer rules and as a high-level audit of what orders and
+ * customers have used an offer.</p>
  *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface OfferAudit extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * System generated unique id for this audit record.
-     * @return
-     */
-    public Long getId();
+  /**
+   * The id of the associated customer.
+   *
+   * @return  the id of the associated customer.
+   */
+  Long getCustomerId();
 
-    /**
-     * Sets the id.
-     * @param id
-     */
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * The associated offer id.
-     * @return
-     */
-    public Long getOfferId();
+  /**
+   * System generated unique id for this audit record.
+   *
+   * @return  system generated unique id for this audit record.
+   */
+  Long getId();
 
-    /**
-     * Sets the associated offer id.
-     * @param offerId
-     */
-    public void setOfferId(Long offerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * The associated order id.
-     * @return
-     */
-    public Long getOrderId();
+  /**
+   * The associated offer id.
+   *
+   * @return  the associated offer id.
+   */
+  Long getOfferId();
 
-    /**
-     * Sets the associated order id.
-     * @param orderId
-     */
-    public void setOrderId(Long orderId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * The id of the associated customer.
-     * @return
-     */
-    public Long getCustomerId();
+  /**
+   * The associated order id.
+   *
+   * @return  the associated order id.
+   */
+  Long getOrderId();
 
-    /**
-     * Sets the customer id.
-     * @param customerId
-     */
-    public void setCustomerId(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * The date the offer was applied to the order.
-     * @return
-     */
-    public Date getRedeemedDate();
+  /**
+   * The date the offer was applied to the order.
+   *
+   * @return  the date the offer was applied to the order.
+   */
+  Date getRedeemedDate();
 
-    /**
-     * Sets the offer redeemed date.
-     * @param redeemedDate
-     */
-    public void setRedeemedDate(Date redeemedDate);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the customer id.
+   *
+   * @param  customerId  DOCUMENT ME!
+   */
+  void setCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the id.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the associated offer id.
+   *
+   * @param  offerId  DOCUMENT ME!
+   */
+  void setOfferId(Long offerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the associated order id.
+   *
+   * @param  orderId  DOCUMENT ME!
+   */
+  void setOrderId(Long orderId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the offer redeemed date.
+   *
+   * @param  redeemedDate  DOCUMENT ME!
+   */
+  void setRedeemedDate(Date redeemedDate);
+} // end interface OfferAudit

@@ -16,65 +16,97 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.core.catalog.domain.Category;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.core.catalog.domain.Category;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CategoryBreadCrumbTag extends CategoryLinkTag {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(CategoryBreadCrumbTag.class);
-    private static final long serialVersionUID = 1L;
+  private static final Log  LOG              = LogFactory.getLog(CategoryBreadCrumbTag.class);
+  private static final long serialVersionUID = 1L;
 
-    private Long categoryId;
-    private List<Category> categoryList = new ArrayList<Category>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public void doTag() throws JspException, IOException {
-        if (categoryId == null && categoryList == null) {
-            throw new RuntimeException("Either categoryId or categoryList is required for this tag");
-        }
+  private Long           categoryId;
+  private List<Category> categoryList = new ArrayList<Category>();
 
-        if (categoryId != null) {
-            Category category = this.getCatalogService().findCategoryById(categoryId);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-            if (category == null && LOG.isDebugEnabled()){
-                LOG.debug("The category returned was null for categoryId: " + categoryId);
-            }
-
-            while (category != null) {
-                categoryList.add(category);
-                category = category.getDefaultParentCategory();
-            }
-
-            Collections.reverse(categoryList);
-        }
-
-        JspWriter out = getJspContext().getOut();
-        int count = 0;
-        for (Category cat : categoryList) {
-            out.println(getUrl(cat));
-
-            if (count < categoryList.size() - 1) {
-                out.println(" > ");
-            }
-
-            ++count;
-        }
+  /**
+   * @see  org.broadleafcommerce.core.web.catalog.taglib.CategoryLinkTag#doTag()
+   */
+  @Override public void doTag() throws JspException, IOException {
+    if ((categoryId == null) && (categoryList == null)) {
+      throw new RuntimeException("Either categoryId or categoryList is required for this tag");
     }
 
-    public void setCategoryList(List<Category> categoryList) {
-        this.categoryList = categoryList;
+    if (categoryId != null) {
+      Category category = this.getCatalogService().findCategoryById(categoryId);
+
+      if ((category == null) && LOG.isDebugEnabled()) {
+        LOG.debug("The category returned was null for categoryId: " + categoryId);
+      }
+
+      while (category != null) {
+        categoryList.add(category);
+        category = category.getDefaultParentCategory();
+      }
+
+      Collections.reverse(categoryList);
     }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
+    JspWriter out   = getJspContext().getOut();
+    int       count = 0;
 
-}
+    for (Category cat : categoryList) {
+      out.println(getUrl(cat));
+
+      if (count < (categoryList.size() - 1)) {
+        out.println(" > ");
+      }
+
+      ++count;
+    }
+  } // end method doTag
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  categoryId  DOCUMENT ME!
+   */
+  public void setCategoryId(long categoryId) {
+    this.categoryId = categoryId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  categoryList  DOCUMENT ME!
+   */
+  public void setCategoryList(List<Category> categoryList) {
+    this.categoryList = categoryList;
+  }
+
+} // end class CategoryBreadCrumbTag

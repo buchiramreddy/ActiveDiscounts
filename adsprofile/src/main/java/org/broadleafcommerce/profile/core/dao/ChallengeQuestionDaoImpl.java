@@ -16,33 +16,59 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
+
+import org.hibernate.ejb.QueryHints;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blChallengeQuestionDao")
 public class ChallengeQuestionDaoImpl implements ChallengeQuestionDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @SuppressWarnings("unchecked")
-    public List<ChallengeQuestion> readChallengeQuestions() {
-        Query query = em.createNamedQuery("BC_READ_CHALLENGE_QUESTIONS");
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        return query.getResultList();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ChallengeQuestion readChallengeQuestionById(long challengeQuestionId) {
-        Query query = em.createNamedQuery("BC_READ_CHALLENGE_QUESTION_BY_ID");
-        query.setParameter("question_id", challengeQuestionId);
-        List<ChallengeQuestion> challengeQuestions = query.getResultList();
-        return challengeQuestions == null || challengeQuestions.isEmpty() ? null : challengeQuestions.get(0);
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.ChallengeQuestionDao#readChallengeQuestionById(long)
+   */
+  @Override public ChallengeQuestion readChallengeQuestionById(long challengeQuestionId) {
+    Query query = em.createNamedQuery("BC_READ_CHALLENGE_QUESTION_BY_ID");
+    query.setParameter("question_id", challengeQuestionId);
 
-}
+    List<ChallengeQuestion> challengeQuestions = query.getResultList();
+
+    return ((challengeQuestions == null) || challengeQuestions.isEmpty()) ? null : challengeQuestions.get(0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.ChallengeQuestionDao#readChallengeQuestions()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<ChallengeQuestion> readChallengeQuestions() {
+    Query query = em.createNamedQuery("BC_READ_CHALLENGE_QUESTIONS");
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+
+    return query.getResultList();
+  }
+
+} // end class ChallengeQuestionDaoImpl

@@ -16,15 +16,34 @@
 
 package org.broadleafcommerce.common.time;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FixedTimeSource implements TimeSource {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final long timeInMillis;
+  private final long timeInMillis;
 
-    public FixedTimeSource(long timeInMillis) {
-        this.timeInMillis = timeInMillis;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public long timeInMillis() {
-        return timeInMillis;
-    }
-}
+  /**
+   * Creates a new FixedTimeSource object.
+   *
+   * @param  timeInMillis  DOCUMENT ME!
+   */
+  public FixedTimeSource(long timeInMillis) {
+    this.timeInMillis = timeInMillis;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.time.TimeSource#timeInMillis()
+   */
+  @Override public long timeInMillis() {
+    return timeInMillis;
+  }
+} // end class FixedTimeSource

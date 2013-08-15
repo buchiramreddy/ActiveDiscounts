@@ -16,14 +16,6 @@
 
 package org.broadleafcommerce.openadmin.server.security.domain;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.lang.reflect.Method;
 
 import javax.persistence.Column;
@@ -36,99 +28,178 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/24/11
- * Time: 4:34 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/24/11 Time: 4:34 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ADMIN_PERMISSION_ENTITY")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
 public class AdminPermissionQualifiedEntityImpl implements AdminPermissionQualifiedEntity {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(AdminPermissionQualifiedEntityImpl.class);
-    private static final long serialVersionUID = 1L;
+  private static final Log  LOG              = LogFactory.getLog(AdminPermissionQualifiedEntityImpl.class);
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "AdminPermissionEntityId")
-    @GenericGenerator(
-        name="AdminPermissionEntityId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="AdminPermissionEntityImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntityImpl")
-        }
-    )
-    @Column(name = "ADMIN_PERMISSION_ENTITY_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "CEILING_ENTITY", nullable=false)
-    @AdminPresentation(friendlyName = "AdminPermissionQualifiedEntityImpl_Ceiling_Entity_Name", order=1, group = "AdminPermissionQualifiedEntityImpl_Permission", prominent=true)
-    protected String ceilingEntityFullyQualifiedName;
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "ADMIN_PERMISSION_ID")
+  @ManyToOne(targetEntity = AdminPermissionImpl.class)
+  protected AdminPermission adminPermission;
 
-    @ManyToOne(targetEntity = AdminPermissionImpl.class)
-    @JoinColumn(name = "ADMIN_PERMISSION_ID")
-    protected AdminPermission adminPermission;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminPermissionQualifiedEntityImpl_Ceiling_Entity_Name",
+    order        = 1,
+    group        = "AdminPermissionQualifiedEntityImpl_Permission",
+    prominent    = true
+  )
+  @Column(
+    name     = "CEILING_ENTITY",
+    nullable = false
+  )
+  protected String ceilingEntityFullyQualifiedName;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "ADMIN_PERMISSION_ENTITY_ID")
+  @GeneratedValue(generator = "AdminPermissionEntityId")
+  @GenericGenerator(
+    name       = "AdminPermissionEntityId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "AdminPermissionEntityImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntityImpl"
+      )
+    }
+  )
+  @Id protected Long id;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   qualifiedEntity  DOCUMENT ME!
+   *
+   * @throws  CloneNotSupportedException  DOCUMENT ME!
+   * @throws  SecurityException           DOCUMENT ME!
+   * @throws  NoSuchMethodException       DOCUMENT ME!
+   */
+  public void checkCloneable(AdminPermissionQualifiedEntity qualifiedEntity) throws CloneNotSupportedException,
+    SecurityException, NoSuchMethodException {
+    Method cloneMethod = qualifiedEntity.getClass().getMethod("clone", new Class[] {});
+
+    if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce")
+          && !qualifiedEntity.getClass().getName().startsWith("org.broadleafcommerce")) {
+      // subclass is not implementing the clone method
+      throw new CloneNotSupportedException("Custom extensions and implementations should implement clone.");
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntity#clone()
+   */
+  @Override public AdminPermissionQualifiedEntity clone() {
+    AdminPermissionQualifiedEntity clone;
+
+    try {
+      clone = (AdminPermissionQualifiedEntity) Class.forName(this.getClass().getName()).newInstance();
+
+      try {
+        checkCloneable(clone);
+      } catch (CloneNotSupportedException e) {
+        LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: "
+          + clone.getClass().getName(), e);
+      }
+
+      clone.setId(id);
+      clone.setCeilingEntityFullyQualifiedName(ceilingEntityFullyQualifiedName);
+
+      // don't clone the AdminPermission, as it would cause a recursion
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+    return clone;
+  }
 
-    @Override
-    public String getCeilingEntityFullyQualifiedName() {
-        return ceilingEntityFullyQualifiedName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setCeilingEntityFullyQualifiedName(String ceilingEntityFullyQualifiedName) {
-        this.ceilingEntityFullyQualifiedName = ceilingEntityFullyQualifiedName;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntity#getAdminPermission()
+   */
+  @Override public AdminPermission getAdminPermission() {
+    return adminPermission;
+  }
 
-    @Override
-    public AdminPermission getAdminPermission() {
-        return adminPermission;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setAdminPermission(AdminPermission adminPermission) {
-        this.adminPermission = adminPermission;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntity#getCeilingEntityFullyQualifiedName()
+   */
+  @Override public String getCeilingEntityFullyQualifiedName() {
+    return ceilingEntityFullyQualifiedName;
+  }
 
-    public void checkCloneable(AdminPermissionQualifiedEntity qualifiedEntity) throws CloneNotSupportedException, SecurityException, NoSuchMethodException {
-        Method cloneMethod = qualifiedEntity.getClass().getMethod("clone", new Class[]{});
-        if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce") && !qualifiedEntity.getClass().getName().startsWith("org.broadleafcommerce")) {
-            //subclass is not implementing the clone method
-            throw new CloneNotSupportedException("Custom extensions and implementations should implement clone.");
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public AdminPermissionQualifiedEntity clone() {
-        AdminPermissionQualifiedEntity clone;
-        try {
-            clone = (AdminPermissionQualifiedEntity) Class.forName(this.getClass().getName()).newInstance();
-            try {
-                checkCloneable(clone);
-            } catch (CloneNotSupportedException e) {
-                LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: " + clone.getClass().getName(), e);
-            }
-            clone.setId(id);
-            clone.setCeilingEntityFullyQualifiedName(ceilingEntityFullyQualifiedName);
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntity#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-            //don't clone the AdminPermission, as it would cause a recursion
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return clone;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntity#setAdminPermission(org.broadleafcommerce.openadmin.server.security.domain.AdminPermission)
+   */
+  @Override public void setAdminPermission(AdminPermission adminPermission) {
+    this.adminPermission = adminPermission;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntity#setCeilingEntityFullyQualifiedName(java.lang.String)
+   */
+  @Override public void setCeilingEntityFullyQualifiedName(String ceilingEntityFullyQualifiedName) {
+    this.ceilingEntityFullyQualifiedName = ceilingEntityFullyQualifiedName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntity#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+} // end class AdminPermissionQualifiedEntityImpl

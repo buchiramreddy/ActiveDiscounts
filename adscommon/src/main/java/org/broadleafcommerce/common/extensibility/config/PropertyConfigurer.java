@@ -17,18 +17,33 @@
 package org.broadleafcommerce.common.extensibility.config;
 
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+
 import org.springframework.core.io.Resource;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setLocation(Resource location) {
-        super.setLocation(location);
-    }
+  /**
+   * @see  org.springframework.core.io.support.PropertiesLoaderSupport#setLocation(org.springframework.core.io.Resource)
+   */
+  @Override public void setLocation(Resource location) {
+    super.setLocation(location);
+  }
 
-    @Override
-    public void setLocations(Resource[] locations) {
-        super.setLocations(locations);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.core.io.support.PropertiesLoaderSupport#setLocations(org.springframework.core.io.Resource[])
+   */
+  @Override public void setLocations(Resource[] locations) {
+    super.setLocations(locations);
+  }
 
 }

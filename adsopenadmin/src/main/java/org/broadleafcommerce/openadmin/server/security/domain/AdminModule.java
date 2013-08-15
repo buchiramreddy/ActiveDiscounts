@@ -17,35 +17,114 @@
 package org.broadleafcommerce.openadmin.server.security.domain;
 
 import java.io.Serializable;
+
 import java.util.List;
 
+
 /**
+ * DOCUMENT ME!
  *
- * @author elbertbautista
- *
+ * @author   elbertbautista
+ * @version  $Revision$, $Date$
  */
 public interface AdminModule extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getDisplayOrder();
 
-    public String getName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getIcon();
 
-    public String getModuleKey();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setModuleKey(String moduleKey);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public String getIcon();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setIcon(String icon);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getModuleKey();
 
-    public List<AdminSection> getSections();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSections(List<AdminSection> sections);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public Integer getDisplayOrder();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setDisplayOrder(Integer displayOrder);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminSection> getSections();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayOrder  DOCUMENT ME!
+   */
+  void setDisplayOrder(Integer displayOrder);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  icon  DOCUMENT ME!
+   */
+  void setIcon(String icon);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  moduleKey  DOCUMENT ME!
+   */
+  void setModuleKey(String moduleKey);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sections  DOCUMENT ME!
+   */
+  void setSections(List<AdminSection> sections);
+
+} // end interface AdminModule

@@ -19,10 +19,31 @@ package org.broadleafcommerce.openadmin.web.service;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface FormBuilderExtensionManager {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean canHandle(EntityForm ef);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ef  DOCUMENT ME!
+   */
+  void addFormExtensions(EntityForm ef);
 
-    public void addFormExtensions(EntityForm ef);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   ef  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean canHandle(EntityForm ef);
 
 }

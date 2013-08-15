@@ -16,13 +16,43 @@
 
 package org.broadleafcommerce.core.search.dao;
 
-import org.broadleafcommerce.core.search.domain.SearchSynonym;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.search.domain.SearchSynonym;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SearchSynonymDao {
-    public List<SearchSynonym> getAllSynonyms();
-    public void createSynonym(SearchSynonym synonym);
-    public void updateSynonym(SearchSynonym synonym);
-    public void deleteSynonym(SearchSynonym synonym);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<SearchSynonym> getAllSynonyms();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  synonym  DOCUMENT ME!
+   */
+  void createSynonym(SearchSynonym synonym);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  synonym  DOCUMENT ME!
+   */
+  void updateSynonym(SearchSynonym synonym);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  synonym  DOCUMENT ME!
+   */
+  void deleteSynonym(SearchSynonym synonym);
+} // end interface SearchSynonymDao

@@ -16,68 +16,94 @@
 
 package org.broadleafcommerce.openadmin.web.handler;
 
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.web.BLCAbstractHandlerMapping;
+
 import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
 import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * This handler mapping works with the AdminSection entity to determine if a section has been configured for
- * the passed in URL.
+ * This handler mapping works with the AdminSection entity to determine if a section has been configured for the passed
+ * in URL.
  *
- * If the URL matches a valid AdminSection then this mapping returns the handler configured via the
- * controllerName property or blAdminModulesController by default.
+ * <p>If the URL matches a valid AdminSection then this mapping returns the handler configured via the controllerName
+ * property or blAdminModulesController by default.</p>
  *
- * @author elbertbautista
- * @since 2.1
+ * @author   elbertbautista
+ * @since    2.1
+ * @version  $Revision$, $Date$
  */
 public class AdminNavigationHandlerMapping extends BLCAbstractHandlerMapping {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private String controllerName="blAdminModulesController";
+  /** DOCUMENT ME! */
+  public static final String CURRENT_ADMIN_MODULE_ATTRIBUTE_NAME  = "currentAdminModule";
 
-    @Resource(name = "blAdminNavigationService")
-    private AdminNavigationService adminNavigationService;
+  /** DOCUMENT ME! */
+  public static final String CURRENT_ADMIN_SECTION_ATTRIBUTE_NAME = "currentAdminSection";
 
-    public static final String CURRENT_ADMIN_MODULE_ATTRIBUTE_NAME = "currentAdminModule";
-    public static final String CURRENT_ADMIN_SECTION_ATTRIBUTE_NAME = "currentAdminSection";
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
-        //TODO: BLCRequestContext should be refactored to be used in the admin as well
-        AdminSection adminSection = adminNavigationService.findAdminSectionByURI(getRequestURIWithoutPreamble(request));
-        if (adminSection != null && adminSection.getUseDefaultHandler()) {
-            request.setAttribute(CURRENT_ADMIN_SECTION_ATTRIBUTE_NAME, adminSection);
-            request.setAttribute(CURRENT_ADMIN_MODULE_ATTRIBUTE_NAME, adminSection.getModule());
-            if (adminSection.getDisplayController() != null) {
-                return adminSection.getDisplayController();
-            }
+  @Resource(name = "blAdminNavigationService")
+  private AdminNavigationService adminNavigationService;
 
-            return controllerName;
-        } else {
-            return null;
-        }
+  private String controllerName = "blAdminModulesController";
 
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRequestURIWithoutPreamble(HttpServletRequest request) {
+    int    lastPos                  = request.getRequestURI().lastIndexOf("/");
+    String requestURIWithoutContext;
+
+    if (lastPos >= 0) {
+      requestURIWithoutContext = request.getRequestURI().substring(lastPos, request.getRequestURI().length());
+    } else {
+      requestURIWithoutContext = request.getRequestURI();
     }
 
-    public String getRequestURIWithoutPreamble(HttpServletRequest request) {
-        int lastPos = request.getRequestURI().lastIndexOf("/");
-        String requestURIWithoutContext;
+    // Remove JSESSION-ID or other modifiers
+    int pos = requestURIWithoutContext.indexOf(";");
 
-        if (lastPos >= 0) {
-            requestURIWithoutContext = request.getRequestURI().substring(lastPos, request.getRequestURI().length());
-        } else {
-            requestURIWithoutContext = request.getRequestURI();
-        }
-
-        // Remove JSESSION-ID or other modifiers
-        int pos = requestURIWithoutContext.indexOf(";");
-        if (pos >= 0) {
-            requestURIWithoutContext = requestURIWithoutContext.substring(0,pos);
-        }
-
-        return requestURIWithoutContext;
+    if (pos >= 0) {
+      requestURIWithoutContext = requestURIWithoutContext.substring(0, pos);
     }
 
-}
+    return requestURIWithoutContext;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.handler.AbstractHandlerMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)
+   */
+  @Override protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
+    // TODO: BLCRequestContext should be refactored to be used in the admin as well
+    AdminSection adminSection = adminNavigationService.findAdminSectionByURI(getRequestURIWithoutPreamble(request));
+
+    if ((adminSection != null) && adminSection.getUseDefaultHandler()) {
+      request.setAttribute(CURRENT_ADMIN_SECTION_ATTRIBUTE_NAME, adminSection);
+      request.setAttribute(CURRENT_ADMIN_MODULE_ATTRIBUTE_NAME, adminSection.getModule());
+
+      if (adminSection.getDisplayController() != null) {
+        return adminSection.getDisplayController();
+      }
+
+      return controllerName;
+    } else {
+      return null;
+    }
+
+  }
+
+} // end class AdminNavigationHandlerMapping

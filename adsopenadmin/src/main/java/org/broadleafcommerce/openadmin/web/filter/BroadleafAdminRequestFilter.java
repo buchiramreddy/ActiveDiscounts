@@ -16,49 +16,65 @@
 
 package org.broadleafcommerce.openadmin.web.filter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.exception.SiteNotFoundException;
-import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.ServletWebRequest;
+import java.io.IOException;
 
 import javax.annotation.Resource;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.exception.SiteNotFoundException;
+import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
+
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.context.request.ServletWebRequest;
+
 
 /**
- * Responsible for setting the necessary attributes on the BroadleafRequestContext
- * 
- * @author Andre Azzolini (apazzolini)
+ * Responsible for setting the necessary attributes on the BroadleafRequestContext.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Component("blAdminRequestFilter")
 public class BroadleafAdminRequestFilter extends AbstractBroadleafAdminRequestFilter {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final Log LOG = LogFactory.getLog(BroadleafAdminRequestFilter.class);
+  /** DOCUMENT ME! */
+  @Resource(name = "blAdminRequestProcessor")
+  protected BroadleafWebRequestProcessor requestProcessor;
 
-    @Resource(name = "blAdminRequestProcessor")
-    protected BroadleafWebRequestProcessor requestProcessor;
+  private final Log LOG = LogFactory.getLog(BroadleafAdminRequestFilter.class);
 
-    @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if (!shouldProcessURL(request, request.getRequestURI())) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Process URL not processing URL " + request.getRequestURI());
-            }
-            filterChain.doFilter(request, response);
-            return;
-        }
+  /**
+   * @see  org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,
+   *       javax.servlet.FilterChain)
+   */
+  @Override public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+    FilterChain filterChain) throws IOException, ServletException {
+    if (!shouldProcessURL(request, request.getRequestURI())) {
+      if (LOG.isTraceEnabled()) {
+        LOG.trace("Process URL not processing URL " + request.getRequestURI());
+      }
 
-        try {
-            requestProcessor.process(new ServletWebRequest(request, response));
-            filterChain.doFilter(request, response);
-        } catch (SiteNotFoundException e) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
+      filterChain.doFilter(request, response);
+
+      return;
     }
-}
+
+    try {
+      requestProcessor.process(new ServletWebRequest(request, response));
+      filterChain.doFilter(request, response);
+    } catch (SiteNotFoundException e) {
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
+  }
+} // end class BroadleafAdminRequestFilter

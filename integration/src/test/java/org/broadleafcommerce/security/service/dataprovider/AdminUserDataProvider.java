@@ -18,17 +18,32 @@ package org.broadleafcommerce.security.service.dataprovider;
 
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
+
 import org.testng.annotations.DataProvider;
 
-public class AdminUserDataProvider {
-    @DataProvider(name = "setupAdminUser")
-    public static Object[][] createAdminUser() {
-        AdminUser adminUser = new AdminUserImpl();
-        adminUser.setName("TestAdminUserName");
-        adminUser.setLogin("TestAdminUserLogin");
-        adminUser.setEmail("TestAdminUserEmail@broadleafcommerce.org");
-        adminUser.setPassword("TestAdminUserPassword");
 
-        return new Object[][] { new Object[] { adminUser } };
-    }
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class AdminUserDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupAdminUser")
+  public static Object[][] createAdminUser() {
+    AdminUser adminUser = new AdminUserImpl();
+    adminUser.setName("TestAdminUserName");
+    adminUser.setLogin("TestAdminUserLogin");
+    adminUser.setEmail("TestAdminUserEmail@broadleafcommerce.org");
+    adminUser.setPassword("TestAdminUserPassword");
+
+    return new Object[][] { new Object[] { adminUser } };
+  }
 }

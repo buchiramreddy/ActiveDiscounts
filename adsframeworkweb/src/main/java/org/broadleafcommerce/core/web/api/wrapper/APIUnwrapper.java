@@ -16,19 +16,33 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.springframework.context.ApplicationContext;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.ApplicationContext;
+
+
 /**
- * This interface is the super interface for all classes that will provide a JAXB unwrapper
- * around classes.  Any class that will be exposed via JAXB annotations to the JAXRS API
- * may implement this as a convenience to provide a standard method to unwrap data objects.
+ * This interface is the super interface for all classes that will provide a JAXB unwrapper around classes. Any class
+ * that will be exposed via JAXB annotations to the JAXRS API may implement this as a convenience to provide a standard
+ * method to unwrap data objects.
  *
- * This is not a requirement as objects will not generally be passed using a reference to this
- * interface.
- * @param <T>
+ * <p>This is not a requirement as objects will not generally be passed using a reference to this interface.</p>
+ *
+ * @param    <T>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface APIUnwrapper<T> {
-    public T unwrap(HttpServletRequest request, ApplicationContext context);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   * @param   context  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  T unwrap(HttpServletRequest request, ApplicationContext context);
 }

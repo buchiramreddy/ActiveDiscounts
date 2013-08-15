@@ -16,10 +16,6 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -30,136 +26,237 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_OFFER_AUDIT")
-@Inheritance(strategy=InheritanceType.JOINED)
 public class OfferAuditImpl implements OfferAudit {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "OfferAuditId")
-    @GenericGenerator(
-        name="OfferAuditId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="OfferAuditImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.offer.domain.OfferAuditImpl")
-        }
-    )
-    @Column(name = "OFFER_AUDIT_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "OFFER_ID")
-    @Index(name="OFFERAUDIT_OFFER_INDEX", columnNames={"OFFER_ID"})
-    protected Long offerId;
+  /** DOCUMENT ME! */
+  @Column(name = "CUSTOMER_ID")
+  @Index(
+    name        = "OFFERAUDIT_CUSTOMER_INDEX",
+    columnNames = { "CUSTOMER_ID" }
+  )
+  protected Long customerId;
 
-    @Column(name = "CUSTOMER_ID")
-    @Index(name="OFFERAUDIT_CUSTOMER_INDEX", columnNames={"CUSTOMER_ID"})
-    protected Long customerId;
+  /** DOCUMENT ME! */
+  @Column(name = "OFFER_AUDIT_ID")
+  @GeneratedValue(generator = "OfferAuditId")
+  @GenericGenerator(
+    name       = "OfferAuditId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "OfferAuditImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.offer.domain.OfferAuditImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Column(name = "ORDER_ID")
-    @Index(name="OFFERAUDIT_ORDER_INDEX", columnNames={"ORDER_ID"})
-    protected Long orderId;
+  /** DOCUMENT ME! */
+  @Column(name = "OFFER_ID")
+  @Index(
+    name        = "OFFERAUDIT_OFFER_INDEX",
+    columnNames = { "OFFER_ID" }
+  )
+  protected Long offerId;
 
-    @Column(name = "REDEEMED_DATE")
-    protected Date redeemedDate;
+  /** DOCUMENT ME! */
+  @Column(name = "ORDER_ID")
+  @Index(
+    name        = "OFFERAUDIT_ORDER_INDEX",
+    columnNames = { "ORDER_ID" }
+  )
+  protected Long orderId;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "REDEEMED_DATE")
+  protected Date redeemedDate;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public Long getOfferId() {
-        return offerId;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setOfferId(Long offerId) {
-        this.offerId = offerId;
+    OfferAuditImpl other = (OfferAuditImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public Long getCustomerId() {
-        return customerId;
+    if (customerId == null) {
+      if (other.customerId != null) {
+        return false;
+      }
+    } else if (!customerId.equals(other.customerId)) {
+      return false;
     }
 
-    @Override
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    if (offerId == null) {
+      if (other.offerId != null) {
+        return false;
+      }
+    } else if (!offerId.equals(other.offerId)) {
+      return false;
     }
 
-    @Override
-    public Long getOrderId() {
-        return orderId;
+    if (redeemedDate == null) {
+      if (other.redeemedDate != null) {
+        return false;
+      }
+    } else if (!redeemedDate.equals(other.redeemedDate)) {
+      return false;
     }
 
-    @Override
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    if (orderId == null) {
+      if (other.orderId != null) {
+        return false;
+      }
+    } else if (!orderId.equals(other.orderId)) {
+      return false;
     }
 
-    @Override
-    public Date getRedeemedDate() {
-        return redeemedDate;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public void setRedeemedDate(Date redeemedDate) {
-        this.redeemedDate = redeemedDate;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((customerId == null) ? 0 : customerId.hashCode());
-        result = prime * result + ((offerId == null) ? 0 : offerId.hashCode());
-        result = prime * result + ((redeemedDate == null) ? 0 : redeemedDate.hashCode());
-        result = prime * result + ((orderId == null) ? 0 : orderId.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#getCustomerId()
+   */
+  @Override public Long getCustomerId() {
+    return customerId;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        OfferAuditImpl other = (OfferAuditImpl) obj;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-        if (customerId == null) {
-            if (other.customerId != null)
-                return false;
-        } else if (!customerId.equals(other.customerId))
-            return false;
-        if (offerId == null) {
-            if (other.offerId != null)
-                return false;
-        } else if (!offerId.equals(other.offerId))
-            return false;
-        if (redeemedDate == null) {
-            if (other.redeemedDate != null)
-                return false;
-        } else if (!redeemedDate.equals(other.redeemedDate))
-            return false;
-        if (orderId == null) {
-            if (other.orderId != null)
-                return false;
-        } else if (!orderId.equals(other.orderId))
-            return false;
-        return true;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#getOfferId()
+   */
+  @Override public Long getOfferId() {
+    return offerId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#getOrderId()
+   */
+  @Override public Long getOrderId() {
+    return orderId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#getRedeemedDate()
+   */
+  @Override public Date getRedeemedDate() {
+    return redeemedDate;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((customerId == null) ? 0 : customerId.hashCode());
+    result = (prime * result) + ((offerId == null) ? 0 : offerId.hashCode());
+    result = (prime * result) + ((redeemedDate == null) ? 0 : redeemedDate.hashCode());
+    result = (prime * result) + ((orderId == null) ? 0 : orderId.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#setCustomerId(java.lang.Long)
+   */
+  @Override public void setCustomerId(Long customerId) {
+    this.customerId = customerId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#setOfferId(java.lang.Long)
+   */
+  @Override public void setOfferId(Long offerId) {
+    this.offerId = offerId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#setOrderId(java.lang.Long)
+   */
+  @Override public void setOrderId(Long orderId) {
+    this.orderId = orderId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.OfferAudit#setRedeemedDate(java.util.Date)
+   */
+  @Override public void setRedeemedDate(Date redeemedDate) {
+    this.redeemedDate = redeemedDate;
+  }
+} // end class OfferAuditImpl

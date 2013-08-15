@@ -16,99 +16,258 @@
 
 package org.broadleafcommerce.profile.core.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.security.util.PasswordChange;
 import org.broadleafcommerce.common.security.util.PasswordReset;
 import org.broadleafcommerce.common.service.GenericResponse;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.service.handler.PasswordUpdatedHandler;
 import org.broadleafcommerce.profile.core.service.listener.PostRegistrationObserver;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Customer saveCustomer(Customer customer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  postRegisterListeners  DOCUMENT ME!
+   */
+  void addPostRegisterListener(PostRegistrationObserver postRegisterListeners);
 
-    public Customer saveCustomer(Customer customer, boolean register);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Customer registerCustomer(Customer customer, String password, String passwordConfirm);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   passwordChange  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer changePassword(PasswordChange passwordChange);
 
-    public Customer readCustomerByUsername(String customerName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Customer readCustomerByEmail(String emailAddress);
+  /**
+   * Verifies that the passed in token is valid.
+   *
+   * <p>Returns responseCodes of "invalidToken", "tokenUsed", and "tokenExpired".</p>
+   *
+   * @param   token  DOCUMENT ME!
+   *
+   * @return  verifies that the passed in token is valid.
+   */
+  GenericResponse checkPasswordResetToken(String token);
 
-    public Customer changePassword(PasswordChange passwordChange);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Customer readCustomerById(Long userId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer createCustomer();
 
-    public Customer createCustomer();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns a <code>Customer</code> by first looking in the database, otherwise creating a new non-persisted <code>Customer</code>
-     * @param customerId the id of the customer to lookup
-     * @return either a <code>Customer</code> from the database if it exists, or a new non-persisted <code>Customer</code>
-     */
-    public Customer createCustomerFromId(Long customerId);
-    
-    /**
-     * Returns a non-persisted <code>Customer</code>.    Typically used with registering a new customer.
-     */
-    public Customer createNewCustomer();
+  /**
+   * Returns a <code>Customer</code> by first looking in the database, otherwise creating a new non-persisted <code>
+   * Customer.</code>
+   *
+   * @param   customerId  the id of the customer to lookup
+   *
+   * @return  either a <code>Customer</code> from the database if it exists, or a new non-persisted <code>
+   *          Customer</code>
+   */
+  Customer createCustomerFromId(Long customerId);
 
-    public void addPostRegisterListener(PostRegistrationObserver postRegisterListeners);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void removePostRegisterListener(PostRegistrationObserver postRegisterListeners);
-    
-    public Customer resetPassword(PasswordReset passwordReset);
-    
-    public List<PasswordUpdatedHandler> getPasswordResetHandlers();
+  /**
+   * Returns a non-persisted <code>Customer</code>. Typically used with registering a new customer.
+   *
+   * @return  a non-persisted <code>Customer</code>.
+   */
+  Customer createNewCustomer();
 
-    public void setPasswordResetHandlers(List<PasswordUpdatedHandler> passwordResetHandlers);
-    
-    public List<PasswordUpdatedHandler> getPasswordChangedHandlers();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPasswordChangedHandlers(List<PasswordUpdatedHandler> passwordChangedHandlers);
-    
-    /**
-     * Looks up the corresponding Customer and emails the address on file with
-     * the associated username.
-     *
-     * @param emailAddress
-     * @return Response can contain errors including (notFound)
-     */
-    GenericResponse sendForgotUsernameNotification(String emailAddress);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long findNextCustomerId();
 
-    /**
-     * Generates an access token and then emails the user.
-     *
-     * @param userName - the user to send a reset password email to.
-     * @param forgotPasswordUrl - Base url to include in the email.
-     * @return Response can contain errors including (invalidEmail, invalidUsername, inactiveUser)
-     * 
-     */
-    GenericResponse sendForgotPasswordNotification(String userName, String forgotPasswordUrl);
-    
-    /**
-     * Updates the password for the passed in customer only if the passed
-     * in token is valid for that customer.
-     *
-     * @param username Username of the customer
-     * @param token Valid reset token
-     * @param password new password
-     *
-     * @return Response can contain errors including (invalidUsername, inactiveUser, invalidToken, invalidPassword, tokenExpired)
-     */
-    GenericResponse resetPasswordUsingToken(String username, String token, String password, String confirmPassword);
-    
-    /**
-     * Verifies that the passed in token is valid.   
-     * 
-     * Returns responseCodes of "invalidToken", "tokenUsed", and "tokenExpired".
-     * @param token
-     * @return
-     */
-    public GenericResponse checkPasswordResetToken(String token);
-    
-    public Long findNextCustomerId();
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<PasswordUpdatedHandler> getPasswordChangedHandlers();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<PasswordUpdatedHandler> getPasswordResetHandlers();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailAddress  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer readCustomerByEmail(String emailAddress);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   userId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer readCustomerById(Long userId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer readCustomerByUsername(String customerName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer         DOCUMENT ME!
+   * @param   password         DOCUMENT ME!
+   * @param   passwordConfirm  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer registerCustomer(Customer customer, String password, String passwordConfirm);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  postRegisterListeners  DOCUMENT ME!
+   */
+  void removePostRegisterListener(PostRegistrationObserver postRegisterListeners);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   passwordReset  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer resetPassword(PasswordReset passwordReset);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer saveCustomer(Customer customer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   * @param   register  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer saveCustomer(Customer customer, boolean register);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordChangedHandlers  DOCUMENT ME!
+   */
+  void setPasswordChangedHandlers(List<PasswordUpdatedHandler> passwordChangedHandlers);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordResetHandlers  DOCUMENT ME!
+   */
+  void setPasswordResetHandlers(List<PasswordUpdatedHandler> passwordResetHandlers);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Updates the password for the passed in customer only if the passed in token is valid for that customer.
+   *
+   * @param   username         Username of the customer
+   * @param   token            Valid reset token
+   * @param   password         new password
+   * @param   confirmPassword  DOCUMENT ME!
+   *
+   * @return  Response can contain errors including (invalidUsername, inactiveUser, invalidToken, invalidPassword,
+   *          tokenExpired)
+   */
+  GenericResponse resetPasswordUsingToken(String username, String token, String password, String confirmPassword);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Generates an access token and then emails the user.
+   *
+   * @param   userName           - the user to send a reset password email to.
+   * @param   forgotPasswordUrl  - Base url to include in the email.
+   *
+   * @return  Response can contain errors including (invalidEmail, invalidUsername, inactiveUser)
+   */
+  GenericResponse sendForgotPasswordNotification(String userName, String forgotPasswordUrl);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Looks up the corresponding Customer and emails the address on file with the associated username.
+   *
+   * @param   emailAddress  DOCUMENT ME!
+   *
+   * @return  Response can contain errors including (notFound)
+   */
+  GenericResponse sendForgotUsernameNotification(String emailAddress);
+
+} // end interface CustomerService

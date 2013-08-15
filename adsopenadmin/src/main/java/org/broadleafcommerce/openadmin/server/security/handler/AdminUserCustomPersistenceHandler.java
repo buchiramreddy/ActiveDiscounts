@@ -16,10 +16,16 @@
 
 package org.broadleafcommerce.openadmin.server.security.handler;
 
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
@@ -32,93 +38,134 @@ import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityServ
 import org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 
-import java.util.Map;
-
-import javax.annotation.Resource;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class AdminUserCustomPersistenceHandler extends CustomPersistenceHandlerAdapter {
-    
-    private static final Log LOG = LogFactory.getLog(AdminUserCustomPersistenceHandler.class);
-    
-    @Resource(name="blAdminSecurityService")
-    protected AdminSecurityService adminSecurityService;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Resource(name="blAdminSecurityRemoteService")
-    protected SecurityVerifier adminRemoteSecurityService;
+  private static final Log LOG = LogFactory.getLog(AdminUserCustomPersistenceHandler.class);
 
-    @Override
-    public Boolean willHandleSecurity(PersistencePackage persistencePackage) {
-        return true;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blAdminSecurityRemoteService")
+  protected SecurityVerifier adminRemoteSecurityService;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blAdminSecurityService")
+  protected AdminSecurityService adminSecurityService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#add(org.broadleafcommerce.openadmin.dto.PersistencePackage,
+   *       org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao,
+   *       org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper)
+   */
+  @Override public Entity add(PersistencePackage persistencePackage, DynamicEntityDao dynamicEntityDao,
+    RecordHelper helper) throws ServiceException {
+    adminRemoteSecurityService.securityCheck(persistencePackage.getCeilingEntityFullyQualifiedClassname(),
+      EntityOperationType.ADD);
+
+    Entity entity = persistencePackage.getEntity();
+
+    try {
+      PersistencePerspective     persistencePerspective = persistencePackage.getPersistencePerspective();
+      AdminUser                  adminInstance          = (AdminUser) Class.forName(entity.getType()[0]).newInstance();
+      Map<String, FieldMetadata> adminProperties        = helper.getSimpleMergedProperties(AdminUser.class.getName(),
+          persistencePerspective);
+      adminInstance = (AdminUser) helper.createPopulatedInstance(adminInstance, entity, adminProperties, false);
+      adminInstance.setUnencodedPassword(adminInstance.getPassword());
+      adminInstance.setPassword(null);
+
+      adminInstance = adminSecurityService.saveAdminUser(adminInstance);
+
+      Entity adminEntity = helper.getRecord(adminProperties, adminInstance, null, null);
+
+      return adminEntity;
+    } catch (Exception e) {
+      throw new ServiceException("Unable to add entity for " + entity.getType()[0], e);
     }
+  }
 
-    @Override
-    public Boolean canHandleAdd(PersistencePackage persistencePackage) {
-        try {
-            return persistencePackage.getCeilingEntityFullyQualifiedClassname() != null && AdminUser.class.isAssignableFrom(Class.forName(persistencePackage.getCeilingEntityFullyQualifiedClassname()));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#canHandleAdd(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleAdd(PersistencePackage persistencePackage) {
+    try {
+      return (persistencePackage.getCeilingEntityFullyQualifiedClassname() != null)
+        && AdminUser.class.isAssignableFrom(Class.forName(
+            persistencePackage.getCeilingEntityFullyQualifiedClassname()));
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    @Override
-    public Boolean canHandleUpdate(PersistencePackage persistencePackage) {
-        return canHandleAdd(persistencePackage);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Entity add(PersistencePackage persistencePackage, DynamicEntityDao dynamicEntityDao, RecordHelper helper) throws ServiceException {
-        adminRemoteSecurityService.securityCheck(persistencePackage.getCeilingEntityFullyQualifiedClassname(), EntityOperationType.ADD);
-        Entity entity  = persistencePackage.getEntity();
-        try {
-            PersistencePerspective persistencePerspective = persistencePackage.getPersistencePerspective();
-            AdminUser adminInstance = (AdminUser) Class.forName(entity.getType()[0]).newInstance();
-            Map<String, FieldMetadata> adminProperties = helper.getSimpleMergedProperties(AdminUser.class.getName(), persistencePerspective);
-            adminInstance = (AdminUser) helper.createPopulatedInstance(adminInstance, entity, adminProperties, false);
-            adminInstance.setUnencodedPassword(adminInstance.getPassword());
-            adminInstance.setPassword(null);
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#canHandleUpdate(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleUpdate(PersistencePackage persistencePackage) {
+    return canHandleAdd(persistencePackage);
+  }
 
-            adminInstance = adminSecurityService.saveAdminUser(adminInstance);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-            Entity adminEntity = helper.getRecord(adminProperties, adminInstance, null, null);
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#update(org.broadleafcommerce.openadmin.dto.PersistencePackage,
+   *       org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao,
+   *       org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper)
+   */
+  @Override public Entity update(PersistencePackage persistencePackage, DynamicEntityDao dynamicEntityDao,
+    RecordHelper helper) throws ServiceException {
+    Entity entity = persistencePackage.getEntity();
 
-            return adminEntity;
-        } catch (Exception e) {
-            throw new ServiceException("Unable to add entity for " + entity.getType()[0], e);
-        }
-    }
+    try {
+      PersistencePerspective     persistencePerspective = persistencePackage.getPersistencePerspective();
+      Map<String, FieldMetadata> adminProperties        = helper.getSimpleMergedProperties(AdminUser.class.getName(),
+          persistencePerspective);
+      Object                     primaryKey             = helper.getPrimaryKey(entity, adminProperties);
+      AdminUser                  adminInstance          = (AdminUser) dynamicEntityDao.retrieve(Class.forName(
+            entity.getType()[0]), primaryKey);
+      dynamicEntityDao.detach(adminInstance);
+      adminInstance = (AdminUser) helper.createPopulatedInstance(adminInstance, entity, adminProperties, false);
 
-    @Override
-    public Entity update(PersistencePackage persistencePackage, DynamicEntityDao dynamicEntityDao, RecordHelper helper) throws ServiceException {       
-        Entity entity = persistencePackage.getEntity();
-        try {
-            PersistencePerspective persistencePerspective = persistencePackage.getPersistencePerspective();
-            Map<String, FieldMetadata> adminProperties = helper.getSimpleMergedProperties(AdminUser.class.getName(), persistencePerspective);
-            Object primaryKey = helper.getPrimaryKey(entity, adminProperties);
-            AdminUser adminInstance = (AdminUser) dynamicEntityDao.retrieve(Class.forName(entity.getType()[0]), primaryKey);
-            dynamicEntityDao.detach(adminInstance);
-            adminInstance = (AdminUser) helper.createPopulatedInstance(adminInstance, entity, adminProperties, false);
-            if (StringUtils.isNotEmpty(adminInstance.getPassword())) {
-                adminInstance.setUnencodedPassword(adminInstance.getPassword());
-                adminInstance.setPassword(null);
-            }
-            
-            // The current user can update their data, but they cannot update other user's data.
-            if (! adminRemoteSecurityService.getPersistentAdminUser().getId().equals(adminInstance.getId())) {
-                adminRemoteSecurityService.securityCheck(persistencePackage.getCeilingEntityFullyQualifiedClassname(), EntityOperationType.UPDATE);                
-            }
-            
-            adminInstance = adminSecurityService.saveAdminUser(adminInstance);
-            Entity adminEntity = helper.getRecord(adminProperties, adminInstance, null, null);
+      if (StringUtils.isNotEmpty(adminInstance.getPassword())) {
+        adminInstance.setUnencodedPassword(adminInstance.getPassword());
+        adminInstance.setPassword(null);
+      }
 
-            return adminEntity;
+      // The current user can update their data, but they cannot update other user's data.
+      if (!adminRemoteSecurityService.getPersistentAdminUser().getId().equals(adminInstance.getId())) {
+        adminRemoteSecurityService.securityCheck(persistencePackage.getCeilingEntityFullyQualifiedClassname(),
+          EntityOperationType.UPDATE);
+      }
 
-        } catch (Exception e) {
-            throw new ServiceException("Unable to update entity for " + entity.getType()[0], e);
-        }
-    }
-}
+      adminInstance = adminSecurityService.saveAdminUser(adminInstance);
+
+      Entity adminEntity = helper.getRecord(adminProperties, adminInstance, null, null);
+
+      return adminEntity;
+
+    } catch (Exception e) {
+      throw new ServiceException("Unable to update entity for " + entity.getType()[0], e);
+    } // end try-catch
+  } // end method update
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#willHandleSecurity(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean willHandleSecurity(PersistencePackage persistencePackage) {
+    return true;
+  }
+} // end class AdminUserCustomPersistenceHandler

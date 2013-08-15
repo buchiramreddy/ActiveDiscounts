@@ -16,80 +16,146 @@
 
 package org.broadleafcommerce.common;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.springframework.web.context.request.WebRequest;
-
 import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+
+import org.springframework.web.context.request.WebRequest;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class RequestDTOImpl implements RequestDTO, Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @AdminPresentation(friendlyName = "RequestDTOImpl_Request_URI")
-    private String requestURI;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
+  @AdminPresentation(friendlyName = "RequestDTOImpl_Full_Url")
+  private String fullUrlWithQueryString;
 
-    @AdminPresentation(friendlyName = "RequestDTOImpl_Full_Url")
-    private String fullUrlWithQueryString;
+  @AdminPresentation(friendlyName = "RequestDTOImpl_Request_URI")
+  private String requestURI;
 
-    @AdminPresentation(friendlyName = "RequestDTOImpl_Is_Secure")
-    private Boolean secure;
+  @AdminPresentation(friendlyName = "RequestDTOImpl_Is_Secure")
+  private Boolean secure;
 
-    public RequestDTOImpl(HttpServletRequest request) {
-        requestURI = request.getRequestURI();
-        fullUrlWithQueryString = request.getRequestURL().toString();
-        secure = ("HTTPS".equalsIgnoreCase(request.getScheme()) || request.isSecure());
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public RequestDTOImpl(WebRequest request) {
-        // Page level targeting does not work for WebRequest.
-        secure = request.isSecure();
-    }
+  /**
+   * Creates a new RequestDTOImpl object.
+   *
+   * @param  request  DOCUMENT ME!
+   */
+  public RequestDTOImpl(HttpServletRequest request) {
+    requestURI             = request.getRequestURI();
+    fullUrlWithQueryString = request.getRequestURL().toString();
+    secure                 = ("HTTPS".equalsIgnoreCase(request.getScheme()) || request.isSecure());
+  }
 
-    /**
-     * @return  returns the request not including the protocol, domain, or query string
-     */
-    public String getRequestURI() {
-        return requestURI;
-    }
+  /**
+   * Creates a new RequestDTOImpl object.
+   *
+   * @param  request  DOCUMENT ME!
+   */
+  public RequestDTOImpl(WebRequest request) {
+    // Page level targeting does not work for WebRequest.
+    secure = request.isSecure();
+  }
 
-    /**
-     * @return Returns the URL and parameters.
-     */
-    public String getFullUrLWithQueryString() {
-        return fullUrlWithQueryString;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return true if this request came in through HTTPS
-     */
-    public Boolean isSecure() {
-        return secure;
-    }
+  /**
+   * Returns the URL and parameters.
+   *
+   * @return  Returns the URL and parameters.
+   */
+  @Override public String getFullUrLWithQueryString() {
+    return fullUrlWithQueryString;
+  }
 
-    public String getFullUrlWithQueryString() {
-        return fullUrlWithQueryString;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setFullUrlWithQueryString(String fullUrlWithQueryString) {
-        this.fullUrlWithQueryString = fullUrlWithQueryString;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFullUrlWithQueryString() {
+    return fullUrlWithQueryString;
+  }
 
-    public Boolean getSecure() {
-        return secure;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSecure(Boolean secure) {
-        this.secure = secure;
-    }
+  /**
+   * Returns the request not including the protocol, domain, or query string.
+   *
+   * @return  returns the request not including the protocol, domain, or query string
+   */
+  @Override public String getRequestURI() {
+    return requestURI;
+  }
 
-    public void setRequestURI(String requestURI) {
-        this.requestURI = requestURI;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getSecure() {
+    return secure;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * True if this request came in through HTTPS.
+   *
+   * @return  true if this request came in through HTTPS
+   */
+  @Override public Boolean isSecure() {
+    return secure;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fullUrlWithQueryString  DOCUMENT ME!
+   */
+  public void setFullUrlWithQueryString(String fullUrlWithQueryString) {
+    this.fullUrlWithQueryString = fullUrlWithQueryString;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  requestURI  DOCUMENT ME!
+   */
+  public void setRequestURI(String requestURI) {
+    this.requestURI = requestURI;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  secure  DOCUMENT ME!
+   */
+  public void setSecure(Boolean secure) {
+    this.secure = secure;
+  }
+
+} // end class RequestDTOImpl

@@ -16,20 +16,44 @@
 
 package org.broadleafcommerce.core.search.domain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class SearchQuery {
+  private String queryString;
 
-    private String queryString;
-    
-    public SearchQuery() { }
-    public SearchQuery(String queryString) {
-        setQueryString(queryString);
-    }
+  /**
+   * Creates a new SearchQuery object.
+   */
+  public SearchQuery() { }
 
-    public String getQueryString() {
-        return queryString;
-    }
+  /**
+   * Creates a new SearchQuery object.
+   *
+   * @param  queryString  DOCUMENT ME!
+   */
+  public SearchQuery(String queryString) {
+    setQueryString(queryString);
+  }
 
-    public void setQueryString(String queryString) {
-        this.queryString = queryString;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getQueryString() {
+    return queryString;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  queryString  DOCUMENT ME!
+   */
+  public void setQueryString(String queryString) {
+    this.queryString = queryString;
+  }
+} // end class SearchQuery

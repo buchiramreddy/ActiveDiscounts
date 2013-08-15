@@ -15,61 +15,108 @@
  */
 package org.broadleafcommerce.common.web.util;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+
+
 /**
- * Code is largely copied from StackOverflow post made by David Rabinowitz with contributions
- * by others in the same thread.   Overrides all status setting methods and retains the status.
- * <br><br>
+ * Code is largely copied from StackOverflow post made by David Rabinowitz with contributions by others in the same
+ * thread. Overrides all status setting methods and retains the status.<br>
+ * <br>
  *
- * http://stackoverflow.com/questions/1302072/how-can-i-get-the-http-status-code-out-of-a-servletresponse-in-a-servletfilter<br><br>
  *
- * This won't be needed with Servlet 3.0.<br><br>
+ * <p>
+ * http://stackoverflow.com/questions/1302072/how-can-i-get-the-http-status-code-out-of-a-servletresponse-in-a-servletfilter
+ * <br>
+ * <br>
+ * </p>
  *
- * Addeded by bpolster.
+ * <p>This won't be needed with Servlet 3.0.<br>
+ * <br>
+ * </p>
+ *
+ * <p>Addeded by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class StatusExposingServletResponse extends HttpServletResponseWrapper {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private int httpStatus=200;
+  private int httpStatus = 200;
 
-    public StatusExposingServletResponse(HttpServletResponse response) {
-        super(response);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    @Override
-    public void sendError(int sc) throws IOException {
-        httpStatus = sc;
-        super.sendError(sc);
-    }
+  /**
+   * Creates a new StatusExposingServletResponse object.
+   *
+   * @param  response  DOCUMENT ME!
+   */
+  public StatusExposingServletResponse(HttpServletResponse response) {
+    super(response);
+  }
 
-    @Override
-    public void sendError(int sc, String msg) throws IOException {
-        httpStatus = sc;
-        super.sendError(sc, msg);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setStatus(int sc) {
-        httpStatus = sc;
-        super.setStatus(sc);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getStatus() {
+    return httpStatus;
+  }
 
-    @Override
-    public void reset() {
-        super.reset();
-        this.httpStatus = SC_OK;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setStatus(int status, String string) {
-        super.setStatus(status, string);
-        this.httpStatus = status;
-    }
+  /**
+   * @see  javax.servlet.ServletResponseWrapper#reset()
+   */
+  @Override public void reset() {
+    super.reset();
+    this.httpStatus = SC_OK;
+  }
 
-    public int getStatus() {
-        return httpStatus;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  javax.servlet.http.HttpServletResponseWrapper#sendError(int)
+   */
+  @Override public void sendError(int sc) throws IOException {
+    httpStatus = sc;
+    super.sendError(sc);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.http.HttpServletResponseWrapper#sendError(int, java.lang.String)
+   */
+  @Override public void sendError(int sc, String msg) throws IOException {
+    httpStatus = sc;
+    super.sendError(sc, msg);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.http.HttpServletResponseWrapper#setStatus(int)
+   */
+  @Override public void setStatus(int sc) {
+    httpStatus = sc;
+    super.setStatus(sc);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.http.HttpServletResponseWrapper#setStatus(int, java.lang.String)
+   */
+  @Override public void setStatus(int status, String string) {
+    super.setStatus(status, string);
+    this.httpStatus = status;
+  }
+
+} // end class StatusExposingServletResponse

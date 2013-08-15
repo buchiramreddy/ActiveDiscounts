@@ -16,26 +16,42 @@
 
 package org.broadleafcommerce.core.payment.service.module;
 
-import org.broadleafcommerce.core.payment.domain.PaymentInfo;
-import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.core.payment.domain.PaymentInfo;
+import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentResponseImpl implements PaymentResponse {
+  /** DOCUMENT ME! */
+  protected Map<PaymentInfo, PaymentResponseItem> responses = new HashMap<PaymentInfo, PaymentResponseItem>();
 
-    protected Map<PaymentInfo, PaymentResponseItem> responses = new HashMap<PaymentInfo, PaymentResponseItem>();
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentResponse#addPaymentResponseItem(org.broadleafcommerce.core.payment.domain.PaymentInfo,
+   *       org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public void addPaymentResponseItem(PaymentInfo paymentInfo, PaymentResponseItem paymentResponseItem) {
+    responses.put(paymentInfo, paymentResponseItem);
+  }
 
-    public void addPaymentResponseItem(PaymentInfo paymentInfo, PaymentResponseItem paymentResponseItem) {
-        responses.put(paymentInfo, paymentResponseItem);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentResponse#getPaymentResponseItem(org.broadleafcommerce.core.payment.domain.PaymentInfo)
+   */
+  @Override public PaymentResponseItem getPaymentResponseItem(PaymentInfo paymentInfo) {
+    return responses.get(paymentInfo);
+  }
 
-    public PaymentResponseItem getPaymentResponseItem(PaymentInfo paymentInfo) {
-        return responses.get(paymentInfo);
-    }
-
-    public Map<PaymentInfo, PaymentResponseItem> getResponseItems() {
-        return responses;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentResponse#getResponseItems()
+   */
+  @Override public Map<PaymentInfo, PaymentResponseItem> getResponseItems() {
+    return responses;
+  }
+} // end class PaymentResponseImpl

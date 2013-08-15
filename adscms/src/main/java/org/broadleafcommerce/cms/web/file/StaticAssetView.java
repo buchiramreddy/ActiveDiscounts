@@ -17,111 +17,174 @@
 package org.broadleafcommerce.cms.web.file;
 
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.web.servlet.View;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+
 import java.net.SocketException;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.web.servlet.View;
+
+
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class StaticAssetView implements View {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(StaticAssetView.class);
+  private static final Log LOG = LogFactory.getLog(StaticAssetView.class);
 
-    protected boolean browserAssetCachingEnabled = true;
-    protected long cacheSeconds = 60 * 60 * 24;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getContentType() {
-        return null;
-    }
+  /** DOCUMENT ME! */
+  protected boolean browserAssetCachingEnabled = true;
 
-    @Override
-    public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String cacheFilePath = (String) model.get("cacheFilePath");
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(cacheFilePath));
-        try {
-            String mimeType = (String) model.get("mimeType");
-            response.setContentType(mimeType);
-            if (!browserAssetCachingEnabled) {
-                response.setHeader("Cache-Control","no-cache");
-                response.setHeader("Pragma","no-cache");
-                response.setDateHeader ("Expires", 0);
-            } else {
-                response.setHeader("Cache-Control","public");
-                response.setHeader("Pragma","cache");
-                if (!StringUtils.isEmpty(request.getHeader("If-Modified-Since"))) {
-                    long lastModified = request.getDateHeader("If-Modified-Since");
-                    Calendar last = Calendar.getInstance();
-                    last.setTime(new Date(lastModified));
-                    Calendar check = Calendar.getInstance();
-                    check.add(Calendar.SECOND, -2 * new Long(cacheSeconds).intValue());
-                    if (check.compareTo(last) < 0) {
-                        response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                        return;
-                    }
-                } else {
-                    Calendar check = Calendar.getInstance();
-                    check.add(Calendar.SECOND, -1 * new Long(cacheSeconds).intValue());
-                    response.setDateHeader ("Last-Modified", check.getTimeInMillis());
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.SECOND, new Long(cacheSeconds).intValue());
-                response.setDateHeader ("Expires", cal.getTimeInMillis());
-            }
-            OutputStream os = response.getOutputStream();
-            boolean eof = false;
-            while (!eof) {
-                int temp = bis.read();
-                if (temp < 0) {
-                    eof = true;
-                } else {
-                    os.write(temp);
-                }
-            }
-            os.flush();
-        } catch (Exception e) {
-            if (e.getCause() instanceof SocketException) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Unable to stream asset", e);
-                }
-            } else {
-                LOG.error("Unable to stream asset", e);
-                throw e;
-            }
-        } finally {
-            try {
-                bis.close();
-            } catch (Throwable e) {
-                //do nothing
-            }
+  /** DOCUMENT ME! */
+  protected long    cacheSeconds = 60 * 60 * 24;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public long getCacheSeconds() {
+    return cacheSeconds;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.View#getContentType()
+   */
+  @Override public String getContentType() {
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isBrowserAssetCachingEnabled() {
+    return browserAssetCachingEnabled;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.View#render(java.util.Map, javax.servlet.http.HttpServletRequest,
+   *       javax.servlet.http.HttpServletResponse)
+   */
+  @Override public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
+    throws Exception {
+    String              cacheFilePath = (String) model.get("cacheFilePath");
+    BufferedInputStream bis           = new BufferedInputStream(new FileInputStream(cacheFilePath));
+
+    try {
+      String mimeType = (String) model.get("mimeType");
+      response.setContentType(mimeType);
+
+      if (!browserAssetCachingEnabled) {
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+      } else {
+        response.setHeader("Cache-Control", "public");
+        response.setHeader("Pragma", "cache");
+
+        if (!StringUtils.isEmpty(request.getHeader("If-Modified-Since"))) {
+          long     lastModified = request.getDateHeader("If-Modified-Since");
+          Calendar last         = Calendar.getInstance();
+          last.setTime(new Date(lastModified));
+
+          Calendar check = Calendar.getInstance();
+          check.add(Calendar.SECOND, -2 * new Long(cacheSeconds).intValue());
+
+          if (check.compareTo(last) < 0) {
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+
+            return;
+          }
+        } else {
+          Calendar check = Calendar.getInstance();
+          check.add(Calendar.SECOND, -1 * new Long(cacheSeconds).intValue());
+          response.setDateHeader("Last-Modified", check.getTimeInMillis());
         }
-    }
 
-    public boolean isBrowserAssetCachingEnabled() {
-        return browserAssetCachingEnabled;
-    }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, new Long(cacheSeconds).intValue());
+        response.setDateHeader("Expires", cal.getTimeInMillis());
+      } // end if-else
 
-    public void setBrowserAssetCachingEnabled(boolean browserAssetCachingEnabled) {
-        this.browserAssetCachingEnabled = browserAssetCachingEnabled;
-    }
+      OutputStream os  = response.getOutputStream();
+      boolean      eof = false;
 
-    public long getCacheSeconds() {
-        return cacheSeconds;
-    }
+      while (!eof) {
+        int temp = bis.read();
 
-    public void setCacheSeconds(long cacheSeconds) {
-        this.cacheSeconds = cacheSeconds;
-    }
-}
+        if (temp < 0) {
+          eof = true;
+        } else {
+          os.write(temp);
+        }
+      }
+
+      os.flush();
+    } catch (Exception e) {
+      if (e.getCause() instanceof SocketException) {
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("Unable to stream asset", e);
+        }
+      } else {
+        LOG.error("Unable to stream asset", e);
+        throw e;
+      }
+    } finally {
+      try {
+        bis.close();
+      } catch (Throwable e) {
+        // do nothing
+      }
+    } // end try-catch-finally
+  } // end method render
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  browserAssetCachingEnabled  DOCUMENT ME!
+   */
+  public void setBrowserAssetCachingEnabled(boolean browserAssetCachingEnabled) {
+    this.browserAssetCachingEnabled = browserAssetCachingEnabled;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cacheSeconds  DOCUMENT ME!
+   */
+  public void setCacheSeconds(long cacheSeconds) {
+    this.cacheSeconds = cacheSeconds;
+  }
+} // end class StaticAssetView

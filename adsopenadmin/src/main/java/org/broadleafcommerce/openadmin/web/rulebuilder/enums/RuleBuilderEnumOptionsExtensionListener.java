@@ -16,16 +16,22 @@
 
 package org.broadleafcommerce.openadmin.web.rulebuilder.enums;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 
 /**
- * Extension Listener interface to provide option values for {@link org.broadleafcommerce.common.BroadleafEnumerationType} for admin rule builders.
- * 
- * @author Andre Azzolini (apazzolini)
+ * Extension Listener interface to provide option values for
+ * {@link org.broadleafcommerce.common.BroadleafEnumerationType} for admin rule builders.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public interface RuleBuilderEnumOptionsExtensionListener {
-    
-    public String getOptionValues();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getOptionValues();
 
 }

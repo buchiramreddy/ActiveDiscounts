@@ -16,6 +16,11 @@
 
 package org.broadleafcommerce.profile.web.core.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerPhone;
 import org.broadleafcommerce.profile.core.domain.Phone;
@@ -23,56 +28,95 @@ import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.service.CustomerPhoneService;
 import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.dataprovider.CustomerPhoneDataProvider;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.test.annotation.Rollback;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CustomerPhoneTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    List<Long> customerPhoneIds = new ArrayList<Long>();
-    String userName = new String();
-    Long userId;
+  /** DOCUMENT ME! */
+  List<Long> customerPhoneIds = new ArrayList<Long>();
 
-    @Resource
-    private CustomerPhoneService customerPhoneService;
+  /** DOCUMENT ME! */
+  Long       userId;
 
-    @Resource
-    private CustomerService customerService;
+  /** DOCUMENT ME! */
+  String     userName = new String();
 
-    @Test(groups = "createCustomerPhone", dataProvider = "setupCustomerPhone", dataProviderClass = CustomerPhoneDataProvider.class, dependsOnGroups = "readCustomer")
-    @Transactional
-    @Rollback(false)
-    public void createCustomerPhone(CustomerPhone customerPhone) {
-        userName = "customer1";
-        Customer customer = customerService.readCustomerByUsername(userName);
-        assert customerPhone.getId() == null;
-        customerPhone.setCustomer(customer);
-        Phone phone = new PhoneImpl();
-        phone.setPhoneNumber("214-214-2134");
-        customerPhone.setPhone(phone);
-        customerPhone = customerPhoneService.saveCustomerPhone(customerPhone);
-        assert customer.equals(customerPhone.getCustomer());
-        userId = customerPhone.getCustomer().getId();
+  @Resource private CustomerPhoneService customerPhoneService;
+
+  @Resource private CustomerService customerService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPhone  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = "createCustomerPhone",
+    dataProvider      = "setupCustomerPhone",
+    dataProviderClass = CustomerPhoneDataProvider.class,
+    dependsOnGroups   = "readCustomer"
+  )
+  @Transactional public void createCustomerPhone(CustomerPhone customerPhone) {
+    userName = "customer1";
+
+    Customer customer = customerService.readCustomerByUsername(userName);
+    assert customerPhone.getId() == null;
+    customerPhone.setCustomer(customer);
+
+    Phone phone = new PhoneImpl();
+    phone.setPhoneNumber("214-214-2134");
+    customerPhone.setPhone(phone);
+    customerPhone = customerPhoneService.saveCustomerPhone(customerPhone);
+    assert customer.equals(customerPhone.getCustomer());
+    userId = customerPhone.getCustomer().getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = "readCustomerPhone",
+    dependsOnGroups = "createCustomerPhone"
+  )
+  @Transactional public void readCustomerPhoneByUserId() {
+    List<CustomerPhone> customerPhoneList = customerPhoneService.readActiveCustomerPhonesByCustomerId(userId);
+
+    for (CustomerPhone customerPhone : customerPhoneList) {
+      assert customerPhone != null;
     }
+  }
 
-    @Test(groups = "readCustomerPhone", dependsOnGroups = "createCustomerPhone")
-    @Transactional
-    public void readCustomerPhoneByUserId() {
-        List<CustomerPhone> customerPhoneList = customerPhoneService.readActiveCustomerPhonesByCustomerId(userId);
-        for (CustomerPhone customerPhone : customerPhoneList) {
-            assert customerPhone != null;
-        }
-    }
-    
-    @Test(groups = "readCustomerPhone", dependsOnGroups = "createCustomerPhone")
-    @Transactional
-    public void readDeafultCustomerPhoneByUserId() {
-        CustomerPhone customerPhone = customerPhoneService.findDefaultCustomerPhone(userId);
-        assert customerPhone != null;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = "readCustomerPhone",
+    dependsOnGroups = "createCustomerPhone"
+  )
+  @Transactional public void readDeafultCustomerPhoneByUserId() {
+    CustomerPhone customerPhone = customerPhoneService.findDefaultCustomerPhone(userId);
+    assert customerPhone != null;
+  }
+} // end class CustomerPhoneTest

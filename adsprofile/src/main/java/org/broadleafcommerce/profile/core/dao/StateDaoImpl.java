@@ -16,64 +16,125 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
 import org.broadleafcommerce.profile.core.domain.Country;
 import org.broadleafcommerce.profile.core.domain.CountryImpl;
 import org.broadleafcommerce.profile.core.domain.State;
 import org.broadleafcommerce.profile.core.domain.StateImpl;
+
 import org.hibernate.ejb.QueryHints;
+
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blStateDao")
 public class StateDaoImpl implements StateDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name = "blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    public State findStateByAbbreviation(String abbreviation) {
-        return (State) em.find(StateImpl.class, abbreviation);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
-    public List<State> findStates() {
-        Query query = em.createNamedQuery("BC_FIND_STATES");
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        return query.getResultList();
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.StateDao#create()
+   */
+  @Override public State create() {
+    return (State) entityConfiguration.createEntityInstance(State.class.getName());
+  }
 
-    @SuppressWarnings("unchecked")
-    public List<State> findStates(String countryAbbreviation) {
-        Query query = em.createNamedQuery("BC_FIND_STATES_BY_COUNTRY_ABBREVIATION");
-        query.setParameter("countryAbbreviation", countryAbbreviation);
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        return query.getResultList();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Country findCountryByShortName(String shortName) {
-        return (Country) em.find(CountryImpl.class, shortName);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @SuppressWarnings("unchecked")
+  public List<Country> findCountries() {
+    Query query = em.createNamedQuery("BC_FIND_COUNTRIES");
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
 
-    @SuppressWarnings("unchecked")
-    public List<Country> findCountries() {
-        Query query = em.createNamedQuery("BC_FIND_COUNTRIES");
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        return query.getResultList();
-    }
+    return query.getResultList();
+  }
 
-    public State create() {
-        return (State) entityConfiguration.createEntityInstance(State.class.getName());
-    }
-    
-    public State save(State state) {
-        return em.merge(state);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   shortName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Country findCountryByShortName(String shortName) {
+    return (Country) em.find(CountryImpl.class, shortName);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.StateDao#findStateByAbbreviation(java.lang.String)
+   */
+  @Override public State findStateByAbbreviation(String abbreviation) {
+    return (State) em.find(StateImpl.class, abbreviation);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.StateDao#findStates()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<State> findStates() {
+    Query query = em.createNamedQuery("BC_FIND_STATES");
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+
+    return query.getResultList();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.StateDao#findStates(java.lang.String)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<State> findStates(String countryAbbreviation) {
+    Query query = em.createNamedQuery("BC_FIND_STATES_BY_COUNTRY_ABBREVIATION");
+    query.setParameter("countryAbbreviation", countryAbbreviation);
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+
+    return query.getResultList();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.StateDao#save(org.broadleafcommerce.profile.core.domain.State)
+   */
+  @Override public State save(State state) {
+    return em.merge(state);
+  }
+} // end class StateDaoImpl

@@ -16,70 +16,111 @@
 
 package org.broadleafcommerce.profile.web.core.service;
 
-import org.broadleafcommerce.profile.core.domain.IdGeneration;
-import org.broadleafcommerce.profile.core.domain.IdGenerationImpl;
-import org.broadleafcommerce.profile.core.service.IdGenerationService;
-import org.broadleafcommerce.test.BaseTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.Test;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.profile.core.domain.IdGeneration;
+import org.broadleafcommerce.profile.core.domain.IdGenerationImpl;
+import org.broadleafcommerce.profile.core.service.IdGenerationService;
+
+import org.broadleafcommerce.test.BaseTest;
+
+import org.springframework.test.annotation.Rollback;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class IdGenerationTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource
-    private IdGenerationService idGenerationService;
+  /** DOCUMENT ME! */
+  List<Long> userIds = new ArrayList<Long>();
 
-    List<Long> userIds = new ArrayList<Long>();
+  /** DOCUMENT ME! */
+  List<String> userNames = new ArrayList<String>();
 
-    List<String> userNames = new ArrayList<String>();
+  @Resource private IdGenerationService idGenerationService;
 
-    @Test(groups = "createId")
-    @Rollback(false)
-    public void createId() {
-        IdGeneration idGeneration = new IdGenerationImpl();
-        idGeneration.setType("IdGenerationTest");
-        idGeneration.setBatchStart(1L);
-        idGeneration.setBatchSize(10L);
-        em.persist(idGeneration);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(groups = "createId")
+  public void createId() {
+    IdGeneration idGeneration = new IdGenerationImpl();
+    idGeneration.setType("IdGenerationTest");
+    idGeneration.setBatchStart(1L);
+    idGeneration.setBatchSize(10L);
+    em.persist(idGeneration);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(groups = "createIdForBeginEndSequence")
+  @Transactional public void createIdForBeginEndSequence() {
+    IdGeneration idGeneration = new IdGenerationImpl();
+    idGeneration.setType("IdGenerationBeginEndTest");
+    idGeneration.setBegin(1L);
+    idGeneration.setEnd(10L);
+    idGeneration.setBatchStart(1L);
+    idGeneration.setBatchSize(3L);
+    em.persist(idGeneration);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Rollback(true)
+  @Test(
+    groups          = "findIds",
+    dependsOnGroups = "createId"
+  )
+  public void findIds() {
+    for (int i = 1; i < 101; i++) {
+      Long id = idGenerationService.findNextId("IdGenerationTest");
+      assert id == i;
     }
+  }
 
-    @Test(groups = "findIds", dependsOnGroups = "createId")
-    @Rollback(true)
-    public void findIds() {
-        for (int i = 1; i < 101; i++) {
-            Long id = idGenerationService.findNextId("IdGenerationTest");
-            assert id == i;
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Test(groups = "createIdForBeginEndSequence")
-    @Rollback(false)
-    @Transactional
-    public void createIdForBeginEndSequence() {
-        IdGeneration idGeneration = new IdGenerationImpl();
-        idGeneration.setType("IdGenerationBeginEndTest");
-        idGeneration.setBegin(1L);
-        idGeneration.setEnd(10L);
-        idGeneration.setBatchStart(1L);
-        idGeneration.setBatchSize(3L);
-        em.persist(idGeneration);
-    }
+  /**
+   * DOCUMENT ME!
+   */
+  @Rollback(true)
+  @Test(
+    groups          = "findIdsForBeginEndSequence",
+    dependsOnGroups = "createIdForBeginEndSequence"
+  )
+  public void findIdsForBeginEndSequence() {
+    for (int i = 1; i < 101; i++) {
+      Long id       = idGenerationService.findNextId("IdGenerationBeginEndTest");
+      int  expected = i % 10;
 
-    @Test(groups = "findIdsForBeginEndSequence", dependsOnGroups = "createIdForBeginEndSequence")
-    @Rollback(true)
-    public void findIdsForBeginEndSequence() {
-        for (int i = 1; i < 101; i++) {
-            Long id = idGenerationService.findNextId("IdGenerationBeginEndTest");
-            int expected = i % 10;
-            if (expected == 0) {
-                expected = 10;
-            }
-            //System.out.println("jbtest: i=" + i + ", id=" + id + ", expected=" + expected);
-            assert id == expected;
-        }
+      if (expected == 0) {
+        expected = 10;
+      }
+
+      // System.out.println("jbtest: i=" + i + ", id=" + id + ", expected=" + expected);
+      assert id == expected;
     }
-}
+  }
+} // end class IdGenerationTest

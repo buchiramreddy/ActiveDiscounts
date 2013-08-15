@@ -17,12 +17,44 @@
 package org.broadleafcommerce.profile.web.core.service;
 
 import org.broadleafcommerce.profile.core.domain.Customer;
+
 import org.springframework.security.core.Authentication;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface LoginService {
-    public Authentication loginCustomer(Customer customer);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Authentication loginCustomer(String username, String clearTextPassword);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Authentication loginCustomer(Customer customer);
 
-    public void logoutCustomer();
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   username           DOCUMENT ME!
+   * @param   clearTextPassword  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Authentication loginCustomer(String username, String clearTextPassword);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  void logoutCustomer();
+} // end interface LoginService

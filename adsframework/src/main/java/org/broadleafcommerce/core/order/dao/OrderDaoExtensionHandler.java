@@ -16,21 +16,41 @@
 
 package org.broadleafcommerce.core.order.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.extension.ExtensionHandler;
 import org.broadleafcommerce.core.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.profile.core.domain.Customer;
 
-import java.util.List;
+import org.broadleafcommerce.profile.core.domain.Customer;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 public interface OrderDaoExtensionHandler extends ExtensionHandler {
-    
-    public ExtensionResultStatusType attachAdditionalDataToNewCart(Customer customer, Order cart);
-    
-    public ExtensionResultStatusType applyAdditionalOrderLookupFilter(Customer customer, String name, List<Order> orders);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   * @param   cart      DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ExtensionResultStatusType attachAdditionalDataToNewCart(Customer customer, Order cart);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   * @param   name      DOCUMENT ME!
+   * @param   orders    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ExtensionResultStatusType applyAdditionalOrderLookupFilter(Customer customer, String name, List<Order> orders);
 
 }

@@ -16,71 +16,92 @@
 
 package org.broadleafcommerce.core.web.api;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
-import org.springframework.context.annotation.Scope;
-
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.annotation.Scope;
+
+
 /**
- * This is a generic JAX-RS ExceptionMapper.  This can be registered as a Spring Bean to catch exceptions, log them, 
- * and return reasonable responses to the client.  Alternatively, you can extend this or implement your own, more granular, mapper(s). 
- * This class does not return internationalized messages. But for convenience, this class provides a protected 
- * Spring MessageSource to allow for internationalization if one chose to go that route.
- * 
- * @author Kelly Tisdell
+ * This is a generic JAX-RS ExceptionMapper. This can be registered as a Spring Bean to catch exceptions, log them, and
+ * return reasonable responses to the client. Alternatively, you can extend this or implement your own, more granular,
+ * mapper(s). This class does not return internationalized messages. But for convenience, this class provides a
+ * protected Spring MessageSource to allow for internationalization if one chose to go that route.
  *
+ * @author   Kelly Tisdell
+ * @version  $Revision$, $Date$
  */
-//This class MUST be a singleton Spring Bean
-@Scope("singleton")
+// This class MUST be a singleton Spring Bean
 @Provider
+@Scope("singleton")
 public class BroadleafRestExceptionMapper implements ExceptionMapper<Throwable>, MessageSourceAware {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(BroadleafRestExceptionMapper.class);
+  private static final Log LOG = LogFactory.getLog(BroadleafRestExceptionMapper.class);
 
-    protected MessageSource messageSource;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public Response toResponse(Throwable t) {
+  /** DOCUMENT ME! */
+  protected MessageSource messageSource;
 
-        Response response = null;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if (t instanceof WebApplicationException) {
-            response = ((WebApplicationException) t).getResponse();
-            if (response.getStatus() == Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
-                LOG.error("An exception was caught by the JAX-RS framework: Status: " + response.getStatus() + " Message: " + response.getEntity(), t);
-            } else if (response.getStatus() == Response.Status.FORBIDDEN.getStatusCode()) {
-                LOG.warn("Someone tried to access a resource that was forbidden: Status: " + response.getStatus() + " Message: " + response.getEntity(), t);
-            } else if (response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode() && LOG.isDebugEnabled()) {
-                LOG.debug("Bad Request: Status: " + response.getStatus() + " Message: " + response.getEntity(), t);
-            } else if (response.getStatus() == Response.Status.NOT_ACCEPTABLE.getStatusCode() && LOG.isDebugEnabled()) {
-                LOG.debug("Not acceptable: Status: " + response.getStatus() + " Message: " + response.getEntity(), t);
-            } else {
-                LOG.error("An exception was caught by the JAX-RS framework: Status: " + response.getStatus() + " Message: " + response.getEntity(), t);
-            }
-        } else {
-            LOG.error("An exception was caught by the JAX-RS framework: ", t);
-        }
+  /**
+   * @see  org.springframework.context.MessageSourceAware#setMessageSource(org.springframework.context.MessageSource)
+   */
+  @Override public void setMessageSource(MessageSource messageSource) {
+    this.messageSource = messageSource;
+  }
 
-        if (response != null) {
-            Object msg = response.getEntity();
-            if (msg == null) {
-                msg = "An error occurred";
-            }
-            return Response.status(response.getStatus()).type(MediaType.TEXT_PLAIN).entity(msg).build();
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return Response.status(500).type(MediaType.TEXT_PLAIN).entity("An unknown or unreported error has occured. If the problem persists, please contact the administrator.").build();
+  /**
+   * @see  javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)
+   */
+  @Override public Response toResponse(Throwable t) {
+    Response response = null;
+
+    if (t instanceof WebApplicationException) {
+      response = ((WebApplicationException) t).getResponse();
+
+      if (response.getStatus() == Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+        LOG.error("An exception was caught by the JAX-RS framework: Status: " + response.getStatus() + " Message: "
+          + response.getEntity(), t);
+      } else if (response.getStatus() == Response.Status.FORBIDDEN.getStatusCode()) {
+        LOG.warn("Someone tried to access a resource that was forbidden: Status: " + response.getStatus() + " Message: "
+          + response.getEntity(), t);
+      } else if ((response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) && LOG.isDebugEnabled()) {
+        LOG.debug("Bad Request: Status: " + response.getStatus() + " Message: " + response.getEntity(), t);
+      } else if ((response.getStatus() == Response.Status.NOT_ACCEPTABLE.getStatusCode()) && LOG.isDebugEnabled()) {
+        LOG.debug("Not acceptable: Status: " + response.getStatus() + " Message: " + response.getEntity(), t);
+      } else {
+        LOG.error("An exception was caught by the JAX-RS framework: Status: " + response.getStatus() + " Message: "
+          + response.getEntity(), t);
+      }
+    } else {
+      LOG.error("An exception was caught by the JAX-RS framework: ", t);
     }
 
-    @Override
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
+    if (response != null) {
+      Object msg = response.getEntity();
+
+      if (msg == null) {
+        msg = "An error occurred";
+      }
+
+      return Response.status(response.getStatus()).type(MediaType.TEXT_PLAIN).entity(msg).build();
     }
-}
+
+    return Response.status(500).type(MediaType.TEXT_PLAIN).entity(
+        "An unknown or unreported error has occured. If the problem persists, please contact the administrator.")
+      .build();
+  } // end method toResponse
+} // end class BroadleafRestExceptionMapper

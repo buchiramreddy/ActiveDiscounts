@@ -16,47 +16,65 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.offer.domain.Offer;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.offer.domain.Offer;
+
+
 /**
  * This is a JAXB wrapper around OfferWrapper.
- * <p/>
- * User: Priyesh Patel
+ *
+ * <p>User: Priyesh Patel</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "paymentInfo")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "paymentInfo")
 public class OfferWrapper extends BaseWrapper implements APIWrapper<Offer> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long offerId;
+  /** DOCUMENT ME! */
+  @XmlElement protected BroadleafEnumerationTypeWrapper discountType;
 
-    @XmlElement
-    protected String marketingMessage;;
+  /** DOCUMENT ME! */
+  @XmlElement protected String marketingMessage;
 
-    @XmlElement
-    protected BroadleafEnumerationTypeWrapper offerType;;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long offerId;
 
-    @XmlElement
-    protected BroadleafEnumerationTypeWrapper discountType;;
+  /** DOCUMENT ME! */
+  @XmlElement protected BroadleafEnumerationTypeWrapper offerType;
 
-    @Override
-    public void wrapDetails(Offer model, HttpServletRequest request) {
-        this.marketingMessage = model.getMarketingMessage();
-        this.offerType = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class.getName());
-        this.offerType.wrapDetails(model.getType(), request);
-        this.discountType = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class.getName());
-        this.discountType.wrapDetails(model.getDiscountType(), request);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.offer.domain.Offer,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(Offer model, HttpServletRequest request) {
+    this.marketingMessage = model.getMarketingMessage();
+    this.offerType        = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class
+        .getName());
+    this.offerType.wrapDetails(model.getType(), request);
+    this.discountType = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class
+        .getName());
+    this.discountType.wrapDetails(model.getDiscountType(), request);
 
-    @Override
-    public void wrapSummary(Offer model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.offer.domain.Offer,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(Offer model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class OfferWrapper

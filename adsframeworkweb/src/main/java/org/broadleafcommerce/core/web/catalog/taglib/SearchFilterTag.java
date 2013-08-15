@@ -16,81 +16,142 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.Product;
+import java.io.IOException;
+
+import java.util.List;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.io.IOException;
-import java.util.List;
+
+import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.Product;
+
 
 /**
- * The SearchFilterTag sets up an environment for it's children {@link org.broadleafcommerce.core.web.catalog.taglib.SearchFilterItemTag}s. If a queryString
- * is passed in, the tag will render a textbox named queryString populated with the string passed in. It will also
- * render a hidden input containing the same value to aid in deciding whether to do ajax loads while filtering
- * search results or to do a full page refresh for new searches.
+ * The SearchFilterTag sets up an environment for it's children
+ * {@link org.broadleafcommerce.core.web.catalog.taglib.SearchFilterItemTag}s. If a queryString is passed in, the tag
+ * will render a textbox named queryString populated with the string passed in. It will also render a hidden input
+ * containing the same value to aid in deciding whether to do ajax loads while filtering search results or to do a full
+ * page refresh for new searches.
  *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class SearchFilterTag extends TagSupport {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private List<Product> products;
-    private List<Category> categories;
-    private String queryString;
-    
-    @Override
-    public int doStartTag() throws JspException {
-        JspWriter out = this.pageContext.getOut();
-//        if (products == null || products.size() == 0) { return SKIP_BODY; }
-        if(products != null && products.size() > 0 ){           
-            if (queryString != null && !"".equals(queryString)) {
-                try {
-                    out.println("<h3>Your Search</h3>");
-                    out.println("<input type=\"text\"  class=\"searchQuery\" name=\"queryString\" id=\"queryString\" value='"+queryString+"' />");
-                    out.println("<input type=\"hidden\"  name=\"originalQueryString\" id=\"originalQueryString\" value='"+queryString+"' />");
-                } catch (IOException e) {
-                }
-            }
-            return EVAL_BODY_INCLUDE;
-        }
-        if(categories != null && categories.size() > 0){
-            if (queryString != null && !"".equals(queryString)) {
-                try {
-                    out.println("<h3>Your Search</h3>");
-                    out.println("<input type=\"text\"  class=\"searchQuery\" name=\"queryString\" id=\"queryString\" value='"+queryString+"' />");
-                    out.println("<input type=\"hidden\"  name=\"originalQueryString\" id=\"originalQueryString\" value='"+queryString+"' />");
-                } catch (IOException e) {
-                }
-            }
-            return EVAL_BODY_INCLUDE;           
-        }
-        
-        return SKIP_BODY;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private List<Category> categories;
+
+  private List<Product> products;
+  private String        queryString;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.jsp.tagext.TagSupport#doStartTag()
+   */
+  @Override public int doStartTag() throws JspException {
+    JspWriter out = this.pageContext.getOut();
+// if (products == null || products.size() == 0) { return SKIP_BODY; }
+    if ((products != null) && (products.size() > 0)) {
+      if ((queryString != null) && !"".equals(queryString)) {
+        try {
+          out.println("<h3>Your Search</h3>");
+          out.println("<input type=\"text\"  class=\"searchQuery\" name=\"queryString\" id=\"queryString\" value='"
+            + queryString + "' />");
+          out.println("<input type=\"hidden\"  name=\"originalQueryString\" id=\"originalQueryString\" value='"
+            + queryString + "' />");
+        } catch (IOException e) { }
+      }
+
+      return EVAL_BODY_INCLUDE;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    if ((categories != null) && (categories.size() > 0)) {
+      if ((queryString != null) && !"".equals(queryString)) {
+        try {
+          out.println("<h3>Your Search</h3>");
+          out.println("<input type=\"text\"  class=\"searchQuery\" name=\"queryString\" id=\"queryString\" value='"
+            + queryString + "' />");
+          out.println("<input type=\"hidden\"  name=\"originalQueryString\" id=\"originalQueryString\" value='"
+            + queryString + "' />");
+        } catch (IOException e) { }
+      }
+
+      return EVAL_BODY_INCLUDE;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+    return SKIP_BODY;
+  } // end method doStartTag
 
-    public List<Category> getCategories() {
-        return categories;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Category> getCategories() {
+    return categories;
+  }
 
-    public String getQueryString() {
-        return queryString;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setQueryString(String queryString) {
-        this.queryString = queryString;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Product> getProducts() {
+    return products;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getQueryString() {
+    return queryString;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  categories  DOCUMENT ME!
+   */
+  public void setCategories(List<Category> categories) {
+    this.categories = categories;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  products  DOCUMENT ME!
+   */
+  public void setProducts(List<Product> products) {
+    this.products = products;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  queryString  DOCUMENT ME!
+   */
+  public void setQueryString(String queryString) {
+    this.queryString = queryString;
+  }
+} // end class SearchFilterTag

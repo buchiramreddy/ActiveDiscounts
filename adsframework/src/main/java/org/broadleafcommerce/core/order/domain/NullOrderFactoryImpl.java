@@ -18,18 +18,24 @@ package org.broadleafcommerce.core.order.domain;
 
 import org.springframework.stereotype.Service;
 
+
 /**
- * @see NullOrderFactory
- * @author apazzolini
+ * DOCUMENT ME!
+ *
+ * @see      NullOrderFactory
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 @Service("blNullOrderFactory")
 public class NullOrderFactoryImpl implements NullOrderFactory {
-    
-    protected static final Order NULL_ORDER = new NullOrderImpl();
+  /** DOCUMENT ME! */
+  protected static final Order NULL_ORDER = new NullOrderImpl();
 
-    @Override
-    public Order getNullOrder() {
-        return NULL_ORDER;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.NullOrderFactory#getNullOrder()
+   */
+  @Override public Order getNullOrder() {
+    return NULL_ORDER;
+  }
 
 }

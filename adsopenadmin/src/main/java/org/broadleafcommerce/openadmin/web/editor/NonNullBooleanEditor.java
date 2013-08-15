@@ -17,26 +17,37 @@
 package org.broadleafcommerce.openadmin.web.editor;
 
 import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.propertyeditors.CustomBooleanEditor;
 
+
 /**
- * Property editor for Booleans that will set the boolean to false if it came in as a null
+ * Property editor for Booleans that will set the boolean to false if it came in as a null.
  *
- * @author Andre Azzolini (apazzolini)
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class NonNullBooleanEditor extends CustomBooleanEditor {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public NonNullBooleanEditor() {
-        super(false);
-    }
+  /**
+   * Creates a new NonNullBooleanEditor object.
+   */
+  public NonNullBooleanEditor() {
+    super(false);
+  }
 
-    @Override
-    public void setAsText(String text) throws IllegalArgumentException {
-        if (StringUtils.isBlank(text)) {
-            setValue(Boolean.FALSE);
-        } else {
-            super.setAsText(text);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.beans.propertyeditors.CustomBooleanEditor#setAsText(java.lang.String)
+   */
+  @Override public void setAsText(String text) throws IllegalArgumentException {
+    if (StringUtils.isBlank(text)) {
+      setValue(Boolean.FALSE);
+    } else {
+      super.setAsText(text);
     }
+  }
 
 }

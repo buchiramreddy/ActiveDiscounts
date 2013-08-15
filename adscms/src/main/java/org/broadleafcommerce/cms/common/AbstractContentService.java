@@ -16,11 +16,16 @@
 
 package org.broadleafcommerce.cms.common;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.sandbox.domain.SandBoxType;
+
 import org.hibernate.Criteria;
+
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
@@ -28,84 +33,129 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 
-import java.util.List;
 
 /**
- * PageService and StructuredContentService are similar and can share
- * much of the logic.   This class provides a place for that code.
- * 
- * @author bpolster
+ * PageService and StructuredContentService are similar and can share much of the logic. This class provides a place for
+ * that code.
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
-public class AbstractContentService  {
-    private static final Log LOG = LogFactory.getLog(AbstractContentService.class);
+public class AbstractContentService {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public <T, U> List<T> findItems(SandBox sandbox, Criteria c, Class<T> baseClass, Class<U> concreteClass, String originalIdProperty) {
-        c.add(Restrictions.eq("archivedFlag", false));
+  private static final Log LOG = LogFactory.getLog(AbstractContentService.class);
 
-        if (sandbox == null) {
-            // Query is hitting the production sandbox for a single site
-            c.add(Restrictions.isNull("sandbox"));
-            return (List<T>) c.list();
-        } if (SandBoxType.PRODUCTION.equals(sandbox.getSandBoxType())) {
-            // Query is hitting the production sandbox for a multi-site
-            c.add(Restrictions.eq("sandbox", sandbox));
-            return (List<T>) c.list();
-        } else {
-            addSandboxCriteria(sandbox, c, concreteClass, originalIdProperty);
-            return (List<T>) c.list();
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   <T>                 DOCUMENT ME!
+   * @param   sandbox             DOCUMENT ME!
+   * @param   c                   DOCUMENT ME!
+   * @param   concreteClass       DOCUMENT ME!
+   * @param   originalIdProperty  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public <T> Long countItems(SandBox sandbox, Criteria c, Class<T> concreteClass, String originalIdProperty) {
+    c.add(Restrictions.eq("archivedFlag", false));
+    c.setProjection(Projections.rowCount());
+
+    if (sandbox == null) {
+      // Query is hitting the production sandbox for a single site
+      c.add(Restrictions.isNull("sandbox"));
+
+      return (Long) c.uniqueResult();
     }
 
-    public <T> Long countItems(SandBox sandbox, Criteria c, Class<T> concreteClass, String originalIdProperty) {
-        c.add(Restrictions.eq("archivedFlag", false));
-        c.setProjection(Projections.rowCount());
+    if (SandBoxType.PRODUCTION.equals(sandbox.getSandBoxType())) {
+      // Query is hitting the production sandbox for a multi-site
+      c.add(Restrictions.eq("sandbox", sandbox));
 
-        if (sandbox == null) {
-            // Query is hitting the production sandbox for a single site
-            c.add(Restrictions.isNull("sandbox"));
-            return (Long) c.uniqueResult();
-        } if (SandBoxType.PRODUCTION.equals(sandbox.getSandBoxType())) {
-            // Query is hitting the production sandbox for a multi-site
-            c.add(Restrictions.eq("sandbox", sandbox));
-            return (Long) c.uniqueResult();
-        } else {
-            addSandboxCriteria(sandbox, c, concreteClass, originalIdProperty);
-            return (Long) c.uniqueResult();
-        }
+      return (Long) c.uniqueResult();
+    } else {
+      addSandboxCriteria(sandbox, c, concreteClass, originalIdProperty);
+
+      return (Long) c.uniqueResult();
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   <T>                 DOCUMENT ME!
+   * @param   <U>                 DOCUMENT ME!
+   * @param   sandbox             DOCUMENT ME!
+   * @param   c                   DOCUMENT ME!
+   * @param   baseClass           DOCUMENT ME!
+   * @param   concreteClass       DOCUMENT ME!
+   * @param   originalIdProperty  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public <T, U> List<T> findItems(SandBox sandbox, Criteria c, Class<T> baseClass, Class<U> concreteClass,
+    String originalIdProperty) {
+    c.add(Restrictions.eq("archivedFlag", false));
+
+    if (sandbox == null) {
+      // Query is hitting the production sandbox for a single site
+      c.add(Restrictions.isNull("sandbox"));
+
+      return (List<T>) c.list();
     }
 
-    private <T> void addSandboxCriteria(SandBox sandbox, Criteria c, Class<T> type, String originalIdProperty) {
-        Criterion originalSandboxExpression = Restrictions.eq("originalSandBox", sandbox);
-        Criterion currentSandboxExpression = Restrictions.eq("sandbox", sandbox);
-        Criterion userSandboxExpression = Restrictions.or(currentSandboxExpression, originalSandboxExpression);
-        Criterion productionSandboxExpression = null;
-        if (sandbox.getSite() == null || sandbox.getSite().getProductionSandbox() == null) {
-            productionSandboxExpression = Restrictions.isNull("sandbox");
-        } else {
-            productionSandboxExpression = Restrictions.eq("sandbox", sandbox.getSite().getProductionSandbox());
-        }
+    if (SandBoxType.PRODUCTION.equals(sandbox.getSandBoxType())) {
+      // Query is hitting the production sandbox for a multi-site
+      c.add(Restrictions.eq("sandbox", sandbox));
 
-        if (productionSandboxExpression != null) {
-            c.add(Restrictions.or(userSandboxExpression, productionSandboxExpression));
-        } else {
-            c.add(userSandboxExpression);
-        }
+      return (List<T>) c.list();
+    } else {
+      addSandboxCriteria(sandbox, c, concreteClass, originalIdProperty);
 
-        // Build a sub-query to exclude items from production that are also in my sandbox.
-        // (e.g. my sandbox always wins even if the items in my sandbox don't match the
-        // current criteria.)
-        //
-        // This subquery prevents the following:
-        // 1.  Duplicate items (one for sbox, one for prod)
-        // 2.  Filter issues where the production item qualifies for the passed in criteria
-        //     but has been modified so that the item in the sandbox no longer does.
-        // 3.  Inverse of #2.
-        DetachedCriteria existsInSboxCriteria = DetachedCriteria.forClass(type, "sboxItem");
-        existsInSboxCriteria.add(userSandboxExpression);
-        existsInSboxCriteria.add(Restrictions.eq("archivedFlag", false));
-        String outerAlias = c.getAlias();
-        existsInSboxCriteria.add(Property.forName(outerAlias + ".id").eqProperty("sboxItem."+originalIdProperty));
-        existsInSboxCriteria.setProjection(Projections.id());
-        c.add(Subqueries.notExists(existsInSboxCriteria));
+      return (List<T>) c.list();
     }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private <T> void addSandboxCriteria(SandBox sandbox, Criteria c, Class<T> type, String originalIdProperty) {
+    Criterion originalSandboxExpression   = Restrictions.eq("originalSandBox", sandbox);
+    Criterion currentSandboxExpression    = Restrictions.eq("sandbox", sandbox);
+    Criterion userSandboxExpression       = Restrictions.or(currentSandboxExpression, originalSandboxExpression);
+    Criterion productionSandboxExpression = null;
+
+    if ((sandbox.getSite() == null) || (sandbox.getSite().getProductionSandbox() == null)) {
+      productionSandboxExpression = Restrictions.isNull("sandbox");
+    } else {
+      productionSandboxExpression = Restrictions.eq("sandbox", sandbox.getSite().getProductionSandbox());
+    }
+
+    if (productionSandboxExpression != null) {
+      c.add(Restrictions.or(userSandboxExpression, productionSandboxExpression));
+    } else {
+      c.add(userSandboxExpression);
+    }
+
+    // Build a sub-query to exclude items from production that are also in my sandbox.
+    // (e.g. my sandbox always wins even if the items in my sandbox don't match the
+    // current criteria.)
+    //
+    // This subquery prevents the following:
+    // 1.  Duplicate items (one for sbox, one for prod)
+    // 2.  Filter issues where the production item qualifies for the passed in criteria
+    // but has been modified so that the item in the sandbox no longer does.
+    // 3.  Inverse of #2.
+    DetachedCriteria existsInSboxCriteria = DetachedCriteria.forClass(type, "sboxItem");
+    existsInSboxCriteria.add(userSandboxExpression);
+    existsInSboxCriteria.add(Restrictions.eq("archivedFlag", false));
+
+    String outerAlias = c.getAlias();
+    existsInSboxCriteria.add(Property.forName(outerAlias + ".id").eqProperty("sboxItem." + originalIdProperty));
+    existsInSboxCriteria.setProjection(Projections.id());
+    c.add(Subqueries.notExists(existsInSboxCriteria));
+  } // end method addSandboxCriteria
+} // end class AbstractContentService

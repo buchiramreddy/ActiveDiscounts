@@ -16,25 +16,81 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CandidateFulfillmentGroupOffer extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Money getDiscountedPrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getDiscountedPrice();
 
-    public void setDiscountedPrice(Money discountedPrice);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public FulfillmentGroup getFulfillmentGroup();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroup getFulfillmentGroup();
 
-    public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
-    
-    public void setOffer(Offer offer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Offer getOffer();
-    
-    public int getPriority();
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int getPriority();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discountedPrice  DOCUMENT ME!
+   */
+  void setDiscountedPrice(Money discountedPrice);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  void setOffer(Offer offer);
+
+} // end interface CandidateFulfillmentGroupOffer

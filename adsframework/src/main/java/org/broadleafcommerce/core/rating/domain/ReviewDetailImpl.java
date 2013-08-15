@@ -16,13 +16,6 @@
 
 package org.broadleafcommerce.core.rating.domain;
 
-import org.broadleafcommerce.core.rating.service.type.ReviewStatusType;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,126 +33,227 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.core.rating.service.type.ReviewStatusType;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_REVIEW_DETAIL")
 public class ReviewDetailImpl implements ReviewDetail {
-
-    @Id
-    @GeneratedValue(generator = "ReviewDetailId")
-    @GenericGenerator(
-        name="ReviewDetailId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="ReviewDetailImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.rating.domain.ReviewDetailImpl")
-        }
-    )
-    @Column(name = "REVIEW_DETAIL_ID")
-    private Long id;
-
-    @ManyToOne(targetEntity = CustomerImpl.class, optional = false)
-    @JoinColumn(name = "CUSTOMER_ID")
-    @Index(name="REVIEWDETAIL_CUSTOMER_INDEX", columnNames={"CUSTOMER_ID"})
-    protected Customer customer;
-
-    @Column(name = "REVIEW_SUBMITTED_DATE", nullable = false)
-    protected Date reivewSubmittedDate;
-
-    @Column(name = "REVIEW_TEXT", nullable = false)
-    protected String reviewText;
-
-    @Column(name = "REVIEW_STATUS", nullable = false)
-    @Index(name="REVIEWDETAIL_STATUS_INDEX", columnNames={"REVIEW_STATUS"})
-    protected String reviewStatus;
-
-    @Column(name = "HELPFUL_COUNT", nullable = false)
-    protected Integer helpfulCount;
-
-    @Column(name = "NOT_HELPFUL_COUNT", nullable = false)
-    protected Integer notHelpfulCount;
-
-    @ManyToOne(optional = false, targetEntity = RatingSummaryImpl.class)
-    @JoinColumn(name = "RATING_SUMMARY_ID")
-    @Index(name="REVIEWDETAIL_SUMMARY_INDEX", columnNames={"RATING_SUMMARY_ID"})
-    protected RatingSummary ratingSummary;
-
-    @OneToMany(mappedBy = "reviewDetail", targetEntity = ReviewFeedbackImpl.class, cascade = {CascadeType.ALL})
-    protected List<ReviewFeedback> reviewFeedback;
-
-    @OneToOne(targetEntity = RatingDetailImpl.class)
-    @JoinColumn(name = "RATING_DETAIL_ID")
-    @Index(name="REVIEWDETAIL_RATING_INDEX", columnNames={"RATING_DETAIL_ID"})
-    protected RatingDetail ratingDetail;
-
-    public ReviewDetailImpl() {}
-
-    public ReviewDetailImpl(Customer customer, Date reivewSubmittedDate, RatingDetail ratingDetail, String reviewText, RatingSummary ratingSummary) {
-        super();
-        this.customer = customer;
-        this.reivewSubmittedDate = reivewSubmittedDate;
-        this.reviewText = reviewText;
-        this.ratingSummary = ratingSummary;
-        this.reviewFeedback = new ArrayList<ReviewFeedback>();
-        this.helpfulCount = Integer.valueOf(0);
-        this.notHelpfulCount = Integer.valueOf(0);
-        this.reviewStatus = ReviewStatusType.PENDING.getType();
-        this.ratingDetail = ratingDetail;
+  @Column(name = "REVIEW_DETAIL_ID")
+  @GeneratedValue(generator = "ReviewDetailId")
+  @GenericGenerator(
+    name       = "ReviewDetailId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "ReviewDetailImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.rating.domain.ReviewDetailImpl"
+      )
     }
+  )
+  @Id private Long id;
 
-    @Override
-    public Date getReviewSubmittedDate() {
-        return reivewSubmittedDate;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "REVIEWDETAIL_CUSTOMER_INDEX",
+    columnNames = { "CUSTOMER_ID" }
+  )
+  @JoinColumn(name = "CUSTOMER_ID")
+  @ManyToOne(
+    targetEntity = CustomerImpl.class,
+    optional     = false
+  )
+  protected Customer customer;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "REVIEW_SUBMITTED_DATE",
+    nullable = false
+  )
+  protected Date reivewSubmittedDate;
 
-    @Override
-    public String getReviewText() {
-        return reviewText;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "REVIEW_TEXT",
+    nullable = false
+  )
+  protected String reviewText;
 
-    @Override
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "REVIEW_STATUS",
+    nullable = false
+  )
+  @Index(
+    name        = "REVIEWDETAIL_STATUS_INDEX",
+    columnNames = { "REVIEW_STATUS" }
+  )
+  protected String reviewStatus;
 
-    @Override
-    public ReviewStatusType getStatus() {
-        return new ReviewStatusType(reviewStatus);
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "HELPFUL_COUNT",
+    nullable = false
+  )
+  protected Integer helpfulCount;
 
-    @Override
-    public Customer getCustomer() {
-        return customer;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "NOT_HELPFUL_COUNT",
+    nullable = false
+  )
+  protected Integer notHelpfulCount;
 
-    @Override
-    public Integer helpfulCount() {
-        return helpfulCount;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "REVIEWDETAIL_SUMMARY_INDEX",
+    columnNames = { "RATING_SUMMARY_ID" }
+  )
+  @JoinColumn(name = "RATING_SUMMARY_ID")
+  @ManyToOne(
+    optional     = false,
+    targetEntity = RatingSummaryImpl.class
+  )
+  protected RatingSummary ratingSummary;
 
-    @Override
-    public Integer notHelpfulCount() {
-        return notHelpfulCount;
-    }
+  /** DOCUMENT ME! */
+  @OneToMany(
+    mappedBy     = "reviewDetail",
+    targetEntity = ReviewFeedbackImpl.class,
+    cascade      = { CascadeType.ALL }
+  )
+  protected List<ReviewFeedback> reviewFeedback;
 
-    @Override
-    public RatingSummary getRatingSummary() {
-        return ratingSummary;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "REVIEWDETAIL_RATING_INDEX",
+    columnNames = { "RATING_DETAIL_ID" }
+  )
+  @JoinColumn(name = "RATING_DETAIL_ID")
+  @OneToOne(targetEntity = RatingDetailImpl.class)
+  protected RatingDetail ratingDetail;
 
-    @Override
-    public RatingDetail getRatingDetail() {
-        return ratingDetail;
-    }
+  /**
+   * Creates a new ReviewDetailImpl object.
+   */
+  public ReviewDetailImpl() { }
 
-    @Override
-    public List<ReviewFeedback> getReviewFeedback() {
-        return reviewFeedback == null ? new ArrayList<ReviewFeedback>() : reviewFeedback;
-    }
+  /**
+   * Creates a new ReviewDetailImpl object.
+   *
+   * @param  customer             DOCUMENT ME!
+   * @param  reivewSubmittedDate  DOCUMENT ME!
+   * @param  ratingDetail         DOCUMENT ME!
+   * @param  reviewText           DOCUMENT ME!
+   * @param  ratingSummary        DOCUMENT ME!
+   */
+  public ReviewDetailImpl(Customer customer, Date reivewSubmittedDate, RatingDetail ratingDetail, String reviewText,
+    RatingSummary ratingSummary) {
+    super();
+    this.customer            = customer;
+    this.reivewSubmittedDate = reivewSubmittedDate;
+    this.reviewText          = reviewText;
+    this.ratingSummary       = ratingSummary;
+    this.reviewFeedback      = new ArrayList<ReviewFeedback>();
+    this.helpfulCount        = Integer.valueOf(0);
+    this.notHelpfulCount     = Integer.valueOf(0);
+    this.reviewStatus        = ReviewStatusType.PENDING.getType();
+    this.ratingDetail        = ratingDetail;
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getReviewSubmittedDate()
+   */
+  @Override public Date getReviewSubmittedDate() {
+    return reivewSubmittedDate;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getReviewText()
+   */
+  @Override public String getReviewText() {
+    return reviewText;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#setReviewText(java.lang.String)
+   */
+  @Override public void setReviewText(String reviewText) {
+    this.reviewText = reviewText;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getStatus()
+   */
+  @Override public ReviewStatusType getStatus() {
+    return new ReviewStatusType(reviewStatus);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getCustomer()
+   */
+  @Override public Customer getCustomer() {
+    return customer;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#helpfulCount()
+   */
+  @Override public Integer helpfulCount() {
+    return helpfulCount;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#notHelpfulCount()
+   */
+  @Override public Integer notHelpfulCount() {
+    return notHelpfulCount;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getRatingSummary()
+   */
+  @Override public RatingSummary getRatingSummary() {
+    return ratingSummary;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getRatingDetail()
+   */
+  @Override public RatingDetail getRatingDetail() {
+    return ratingDetail;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.ReviewDetail#getReviewFeedback()
+   */
+  @Override public List<ReviewFeedback> getReviewFeedback() {
+    return (reviewFeedback == null) ? new ArrayList<ReviewFeedback>() : reviewFeedback;
+  }
+
+} // end class ReviewDetailImpl

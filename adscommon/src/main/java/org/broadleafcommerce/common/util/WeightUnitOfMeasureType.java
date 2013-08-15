@@ -16,80 +16,142 @@
 
 package org.broadleafcommerce.common.util;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of units of measure types.
- * 
- * @author jfischer
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class WeightUnitOfMeasureType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, WeightUnitOfMeasureType> TYPES = new LinkedHashMap<String, WeightUnitOfMeasureType>();
+  private static final Map<String, WeightUnitOfMeasureType> TYPES =
+    new LinkedHashMap<String, WeightUnitOfMeasureType>();
 
-    public static final WeightUnitOfMeasureType POUNDS  = new WeightUnitOfMeasureType("POUNDS", "Pounds");
-    public static final WeightUnitOfMeasureType KILOGRAMS  = new WeightUnitOfMeasureType("KILOGRAMS", "Kilograms");
+  /** DOCUMENT ME! */
+  public static final WeightUnitOfMeasureType POUNDS    = new WeightUnitOfMeasureType("POUNDS", "Pounds");
 
-    public static WeightUnitOfMeasureType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final WeightUnitOfMeasureType KILOGRAMS = new WeightUnitOfMeasureType("KILOGRAMS", "Kilograms");
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new WeightUnitOfMeasureType object.
+   */
+  public WeightUnitOfMeasureType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new WeightUnitOfMeasureType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public WeightUnitOfMeasureType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static WeightUnitOfMeasureType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public WeightUnitOfMeasureType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public WeightUnitOfMeasureType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
-    }
-    
-    public String getFriendlyType() {
-        return friendlyType;
+    WeightUnitOfMeasureType other = (WeightUnitOfMeasureType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)){
-            TYPES.put(type, this);
-        }
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        WeightUnitOfMeasureType other = (WeightUnitOfMeasureType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
     }
-}
+  }
+} // end class WeightUnitOfMeasureType

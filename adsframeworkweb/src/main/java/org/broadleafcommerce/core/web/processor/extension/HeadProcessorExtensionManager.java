@@ -16,36 +16,64 @@
 
 package org.broadleafcommerce.core.web.processor.extension;
 
-import org.springframework.stereotype.Service;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import org.thymeleaf.Arguments;
+
+import org.thymeleaf.dom.Element;
+
+
 /**
- * @author Jerry Ocanas (jocanas)
+ * DOCUMENT ME!
+ *
+ * @author   Jerry Ocanas (jocanas)
+ * @version  $Revision$, $Date$
  */
 @Service("blHeadProcessorExtensionManager")
 public class HeadProcessorExtensionManager implements HeadProcessorExtensionListener {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected List<HeadProcessorExtensionListener> listeners;
+  /** DOCUMENT ME! */
+  protected List<HeadProcessorExtensionListener> listeners;
 
-    @Override
-    public void processAttributeValues(Arguments arguments, Element element) {
-        if(listeners == null) {
-            listeners = new ArrayList<HeadProcessorExtensionListener>();
-        }
-        for(HeadProcessorExtensionListener listener : listeners){
-            listener.processAttributeValues(arguments, element);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<HeadProcessorExtensionListener> getListeners() {
+    return listeners;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.processor.extension.HeadProcessorExtensionListener#processAttributeValues(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element)
+   */
+  @Override public void processAttributeValues(Arguments arguments, Element element) {
+    if (listeners == null) {
+      listeners = new ArrayList<HeadProcessorExtensionListener>();
     }
 
-    public List<HeadProcessorExtensionListener> getListeners() {
-        return listeners;
+    for (HeadProcessorExtensionListener listener : listeners) {
+      listener.processAttributeValues(arguments, element);
     }
+  }
 
-    public void setListeners(List<HeadProcessorExtensionListener> listeners) {
-        this.listeners = listeners;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  listeners  DOCUMENT ME!
+   */
+  public void setListeners(List<HeadProcessorExtensionListener> listeners) {
+    this.listeners = listeners;
+  }
+} // end class HeadProcessorExtensionManager

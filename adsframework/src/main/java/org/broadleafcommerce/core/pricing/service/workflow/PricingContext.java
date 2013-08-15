@@ -19,27 +19,50 @@ package org.broadleafcommerce.core.pricing.service.workflow;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PricingContext implements ProcessContext {
-    public final static long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    private boolean stopEntireProcess = false;
-    private Order seedData;
+  private boolean stopEntireProcess = false;
+  private Order   seedData;
 
-    public void setSeedData(Object seedObject) {
-        seedData = (Order)seedObject;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#setSeedData(java.lang.Object)
+   */
+  @Override public void setSeedData(Object seedObject) {
+    seedData = (Order) seedObject;
+  }
 
-    public boolean stopProcess() {
-        this.stopEntireProcess = true;
-        return stopEntireProcess;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#stopProcess()
+   */
+  @Override public boolean stopProcess() {
+    this.stopEntireProcess = true;
 
-    public boolean isStopped() {
-        return stopEntireProcess;
-    }
+    return stopEntireProcess;
+  }
 
-    public Order getSeedData(){
-        return seedData;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#isStopped()
+   */
+  @Override public boolean isStopped() {
+    return stopEntireProcess;
+  }
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Order getSeedData() {
+    return seedData;
+  }
+
+} // end class PricingContext

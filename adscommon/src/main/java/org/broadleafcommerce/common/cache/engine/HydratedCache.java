@@ -17,49 +17,116 @@
 package org.broadleafcommerce.common.cache.engine;
 
 import java.io.Serializable;
+
 import java.util.Hashtable;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-@Deprecated
-public class HydratedCache extends Hashtable<String, Object> {
+@Deprecated public class HydratedCache extends Hashtable<String, Object> {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String cacheName;
-    private String cacheRegion;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public HydratedCache(String cacheRegion, String cacheName) {
-        this.cacheRegion = cacheRegion;
-        this.cacheName = cacheName;
-    }
+  private String cacheName;
+  private String cacheRegion;
 
-    public String getCacheName() {
-        return cacheName;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public String getCacheRegion() {
-        return cacheRegion;
-    }
+  /**
+   * Creates a new HydratedCache object.
+   *
+   * @param  cacheRegion  DOCUMENT ME!
+   * @param  cacheName    DOCUMENT ME!
+   */
+  public HydratedCache(String cacheRegion, String cacheName) {
+    this.cacheRegion = cacheRegion;
+    this.cacheName   = cacheName;
+  }
 
-    public void setCacheRegion(String cacheRegion) {
-        this.cacheRegion = cacheRegion;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public HydratedCacheElement getCacheElement(String cacheRegion, String cacheName, Serializable key) {
-        return (HydratedCacheElement) get(cacheRegion + "_" + cacheName + "_" + key);
-    }
-    
-    public HydratedCacheElement removeCacheElement(String cacheRegion, String cacheName, Serializable key) {
-        String myKey = cacheRegion + "_" + cacheName + "_" + key;
-        return (HydratedCacheElement) remove(myKey);
-    }
-    
-    public void addCacheElement(String cacheRegion, String cacheName, Serializable key, Object value) {
-        String myKey = cacheRegion + "_" + cacheName + "_" + key;
-        put(myKey, value);
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cacheRegion  DOCUMENT ME!
+   * @param  cacheName    DOCUMENT ME!
+   * @param  key          DOCUMENT ME!
+   * @param  value        DOCUMENT ME!
+   */
+  public void addCacheElement(String cacheRegion, String cacheName, Serializable key, Object value) {
+    String myKey = cacheRegion + "_" + cacheName + "_" + key;
+    put(myKey, value);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   cacheRegion  DOCUMENT ME!
+   * @param   cacheName    DOCUMENT ME!
+   * @param   key          DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public HydratedCacheElement getCacheElement(String cacheRegion, String cacheName, Serializable key) {
+    return (HydratedCacheElement) get(cacheRegion + "_" + cacheName + "_" + key);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCacheName() {
+    return cacheName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCacheRegion() {
+    return cacheRegion;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   cacheRegion  DOCUMENT ME!
+   * @param   cacheName    DOCUMENT ME!
+   * @param   key          DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public HydratedCacheElement removeCacheElement(String cacheRegion, String cacheName, Serializable key) {
+    String myKey = cacheRegion + "_" + cacheName + "_" + key;
+
+    return (HydratedCacheElement) remove(myKey);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cacheRegion  DOCUMENT ME!
+   */
+  public void setCacheRegion(String cacheRegion) {
+    this.cacheRegion = cacheRegion;
+  }
+} // end class HydratedCache

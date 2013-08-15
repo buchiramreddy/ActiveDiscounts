@@ -16,13 +16,36 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
-
 import java.util.List;
 
-public interface ChallengeQuestionDao {
+import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
 
-    public List<ChallengeQuestion> readChallengeQuestions();
-    public ChallengeQuestion readChallengeQuestionById(long challengeQuestionId);
-  
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface ChallengeQuestionDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   challengeQuestionId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ChallengeQuestion readChallengeQuestionById(long challengeQuestionId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ChallengeQuestion> readChallengeQuestions();
+
 }

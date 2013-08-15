@@ -18,11 +18,23 @@ package org.broadleafcommerce.cms.file.service.operation;
 
 import java.util.Map;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface NamedOperationManager {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    Map<String, String> manageNamedParameters(Map<String, String> parameterMap);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   parameterMap  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, String> manageNamedParameters(Map<String, String> parameterMap);
 
 }

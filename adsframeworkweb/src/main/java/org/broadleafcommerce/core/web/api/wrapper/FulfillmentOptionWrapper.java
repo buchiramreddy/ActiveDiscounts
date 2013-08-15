@@ -16,47 +16,76 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "fulfillmentOption")
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "fulfillmentOption")
 public class FulfillmentOptionWrapper extends BaseWrapper implements APIWrapper<FulfillmentOption> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected String description;
 
-    @XmlElement
-    protected String name;
+  /** DOCUMENT ME! */
+  @XmlElement protected BroadleafEnumerationTypeWrapper fulfillmentType;
 
-    @XmlElement
-    protected String description;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected BroadleafEnumerationTypeWrapper fulfillmentType;
+  /** DOCUMENT ME! */
+  @XmlElement protected String name;
 
-    @Override
-    public void wrapDetails(FulfillmentOption model, HttpServletRequest request) {
-        this.id = model.getId();
-        if (model.getFulfillmentType() != null) {
-            this.fulfillmentType = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class.getName());
-            this.fulfillmentType.wrapDetails(model.getFulfillmentType(), request);
-        }
-        this.name = model.getName();
-        this.description = model.getLongDescription();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return this.id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.order.domain.FulfillmentOption,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(FulfillmentOption model, HttpServletRequest request) {
+    this.id = model.getId();
+
+    if (model.getFulfillmentType() != null) {
+      this.fulfillmentType = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class
+          .getName());
+      this.fulfillmentType.wrapDetails(model.getFulfillmentType(), request);
     }
 
-    @Override
-    public void wrapSummary(FulfillmentOption model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
+    this.name        = model.getName();
+    this.description = model.getLongDescription();
+  }
 
-    public Long getId() {
-        return this.id;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.order.domain.FulfillmentOption,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(FulfillmentOption model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class FulfillmentOptionWrapper

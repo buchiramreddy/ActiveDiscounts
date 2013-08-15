@@ -18,15 +18,29 @@ package org.broadleafcommerce.profile.dataprovider;
 
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+
 import org.testng.annotations.DataProvider;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PhoneDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "setupPhone")
-    public static Object[][] createPhone() {
-        Phone phone = new PhoneImpl();
-        phone.setPhoneNumber("999-999-9999");
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupPhone")
+  public static Object[][] createPhone() {
+    Phone phone = new PhoneImpl();
+    phone.setPhoneNumber("999-999-9999");
 
-        return new Object[][] { new Object[] { phone } };
-    }
+    return new Object[][] { new Object[] { phone } };
+  }
 }

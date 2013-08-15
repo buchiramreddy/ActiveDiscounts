@@ -16,41 +16,50 @@
 
 package org.broadleafcommerce.cms.structure.message.jms;
 
-import org.broadleafcommerce.cms.structure.service.StructuredContentService;
+import java.util.HashMap;
 
 import javax.annotation.Resource;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import java.util.HashMap;
+
+import org.broadleafcommerce.cms.structure.service.StructuredContentService;
+
 
 /**
- * Receives JMS message with a String that indicates the cache key
- * to invalidate.
+ * Receives JMS message with a String that indicates the cache key to invalidate.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class JMSArchivedStructuredContentSubscriber implements MessageListener {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blStructuredContentService")
-    private StructuredContentService structuredContentService;
+  @Resource(name = "blStructuredContentService")
+  private StructuredContentService structuredContentService;
 
-    /*
-     * (non-Javadoc)
-     * @see javax.jms.MessageListener#onMessage(javax.jms.Message)
-     */
-    @SuppressWarnings("unchecked")
-    public void onMessage(Message message) {
-        String basePageCacheKey = null;
-        try {
-            HashMap<String,String> props = (HashMap<String,String>) ((ObjectMessage) message).getObject();
-            if (props != null) {
-                structuredContentService.removeItemFromCache(props.get("nameKey"), props.get("typeKey"));
-            }
-        } catch (JMSException e) {
-            throw new RuntimeException(e);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /*
+   * (non-Javadoc)
+   * @see javax.jms.MessageListener#onMessage(javax.jms.Message)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public void onMessage(Message message) {
+    String basePageCacheKey = null;
+
+    try {
+      HashMap<String, String> props = (HashMap<String, String>) ((ObjectMessage) message).getObject();
+
+      if (props != null) {
+        structuredContentService.removeItemFromCache(props.get("nameKey"), props.get("typeKey"));
+      }
+    } catch (JMSException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-}
+} // end class JMSArchivedStructuredContentSubscriber

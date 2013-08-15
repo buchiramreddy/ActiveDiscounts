@@ -18,14 +18,40 @@ package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
 
-public interface Role extends Serializable{
 
-    public Long getId();
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface Role extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public String getRoleName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getRoleName();
 
-    public void setRoleName(String roleName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  roleName  DOCUMENT ME!
+   */
+  void setRoleName(String roleName);
 
-}
+} // end interface Role

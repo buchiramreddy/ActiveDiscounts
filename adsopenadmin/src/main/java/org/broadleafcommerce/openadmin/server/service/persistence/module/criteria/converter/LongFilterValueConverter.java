@@ -18,14 +18,21 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 
 import org.springframework.stereotype.Component;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blLongFilterValueConverter")
 public class LongFilterValueConverter implements FilterValueConverter<Long> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Long convert(String stringValue) {
-        return Long.valueOf(stringValue);
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter#convert(java.lang.String)
+   */
+  @Override public Long convert(String stringValue) {
+    return Long.valueOf(stringValue);
+  }
 }

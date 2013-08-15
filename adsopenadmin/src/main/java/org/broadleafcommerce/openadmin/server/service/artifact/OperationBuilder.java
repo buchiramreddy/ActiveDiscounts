@@ -16,20 +16,32 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact;
 
-import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
-
 import java.io.InputStream;
+
 import java.util.Map;
 
+import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
+
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/10/11
- * Time: 6:45 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/10/11 Time: 6:45 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface OperationBuilder {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Operation buildOperation(Map<String, String> parameterMap, InputStream artifactStream, String mimeType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   parameterMap    DOCUMENT ME!
+   * @param   artifactStream  DOCUMENT ME!
+   * @param   mimeType        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Operation buildOperation(Map<String, String> parameterMap, InputStream artifactStream, String mimeType);
 
 }

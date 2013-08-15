@@ -16,92 +16,158 @@
 
 package org.broadleafcommerce.profile.core.service;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.profile.core.dao.CustomerPaymentDao;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blCustomerPaymentService")
 public class CustomerPaymentServiceImpl implements CustomerPaymentService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /** Services */
-    @Resource(name="blCustomerPaymentDao")
-    protected CustomerPaymentDao customerPaymentDao;
+  /** Services. */
+  @Resource(name = "blCustomerPaymentDao")
+  protected CustomerPaymentDao customerPaymentDao;
 
-    @Resource(name="blCustomerService")
-    protected CustomerService customerService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  protected CustomerService customerService;
 
-    @Override
-    @Transactional("blTransactionManager")
-    public CustomerPayment saveCustomerPayment(CustomerPayment customerPayment) {
-        return customerPaymentDao.save(customerPayment);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#create()
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public CustomerPayment create() {
+    return customerPaymentDao.create();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#deleteCustomerPaymentById(java.lang.Long)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void deleteCustomerPaymentById(Long customerPaymentId) {
+    customerPaymentDao.deleteCustomerPaymentById(customerPaymentId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#deleteCustomerPaymentFromCustomer(org.broadleafcommerce.profile.core.domain.Customer,
+   *       org.broadleafcommerce.profile.core.domain.CustomerPayment)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Customer deleteCustomerPaymentFromCustomer(Customer customer, CustomerPayment payment) {
+    List<CustomerPayment> payments = customer.getCustomerPayments();
+
+    for (CustomerPayment customerPayment : payments) {
+      if (customerPayment.getId().equals(payment.getId())) {
+        customer.getCustomerPayments().remove(customerPayment);
+
+        break;
+      }
     }
 
-    @Override
-    public List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId) {
-        return customerPaymentDao.readCustomerPaymentsByCustomerId(customerId);
+    return customerService.saveCustomer(customer);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#findDefaultPaymentForCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public CustomerPayment findDefaultPaymentForCustomer(Customer customer) {
+    if (customer == null) {
+      return null;
     }
 
-    @Override
-    public CustomerPayment readCustomerPaymentById(Long customerPaymentId) {
-        return customerPaymentDao.readCustomerPaymentById(customerPaymentId);
+    List<CustomerPayment> payments = readCustomerPaymentsByCustomerId(customer.getId());
+
+    for (CustomerPayment payment : payments) {
+      if (payment.isDefault()) {
+        return payment;
+      }
     }
 
-    @Override
-    public CustomerPayment readCustomerPaymentByToken(String token) {
-        return customerPaymentDao.readCustomerPaymentByToken(token);
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#readCustomerPaymentById(java.lang.Long)
+   */
+  @Override public CustomerPayment readCustomerPaymentById(Long customerPaymentId) {
+    return customerPaymentDao.readCustomerPaymentById(customerPaymentId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#readCustomerPaymentByToken(java.lang.String)
+   */
+  @Override public CustomerPayment readCustomerPaymentByToken(String token) {
+    return customerPaymentDao.readCustomerPaymentByToken(token);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#readCustomerPaymentsByCustomerId(java.lang.Long)
+   */
+  @Override public List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId) {
+    return customerPaymentDao.readCustomerPaymentsByCustomerId(customerId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#saveCustomerPayment(org.broadleafcommerce.profile.core.domain.CustomerPayment)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public CustomerPayment saveCustomerPayment(CustomerPayment customerPayment) {
+    return customerPaymentDao.save(customerPayment);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.CustomerPaymentService#setAsDefaultPayment(org.broadleafcommerce.profile.core.domain.CustomerPayment)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public CustomerPayment setAsDefaultPayment(CustomerPayment payment) {
+    CustomerPayment oldDefault = findDefaultPaymentForCustomer(payment.getCustomer());
+
+    if (oldDefault != null) {
+      oldDefault.setDefault(false);
+      saveCustomerPayment(oldDefault);
     }
 
-    @Override
-    @Transactional("blTransactionManager")
-    public void deleteCustomerPaymentById(Long customerPaymentId) {
-        customerPaymentDao.deleteCustomerPaymentById(customerPaymentId);
-    }
+    payment.setDefault(true);
 
-    @Override
-    @Transactional("blTransactionManager")
-    public CustomerPayment create() {
-        return customerPaymentDao.create();
-    }
+    return saveCustomerPayment(payment);
+  }
 
-    public CustomerPayment findDefaultPaymentForCustomer(Customer customer) {
-        if (customer == null) { return null; }
-        List<CustomerPayment> payments = readCustomerPaymentsByCustomerId(customer.getId());
-        for (CustomerPayment payment : payments) {
-            if (payment.isDefault()) {
-                return payment;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    @Transactional("blTransactionManager")
-    public CustomerPayment setAsDefaultPayment(CustomerPayment payment) {
-        CustomerPayment oldDefault = findDefaultPaymentForCustomer(payment.getCustomer());
-        if (oldDefault != null) {
-            oldDefault.setDefault(false);
-            saveCustomerPayment(oldDefault);
-        }
-        payment.setDefault(true);
-        return saveCustomerPayment(payment);
-    }
-
-    @Override
-    @Transactional("blTransactionManager")
-    public Customer deleteCustomerPaymentFromCustomer(Customer customer, CustomerPayment payment) {
-        List<CustomerPayment> payments = customer.getCustomerPayments();
-        for (CustomerPayment customerPayment : payments) {
-            if (customerPayment.getId().equals(payment.getId())) {
-                customer.getCustomerPayments().remove(customerPayment);
-                break;
-            }
-        }
-       return customerService.saveCustomer(customer);
-    }
-
-}
+} // end class CustomerPaymentServiceImpl

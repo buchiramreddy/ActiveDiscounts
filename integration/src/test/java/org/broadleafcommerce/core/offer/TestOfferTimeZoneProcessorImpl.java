@@ -16,23 +16,34 @@
 
 package org.broadleafcommerce.core.offer;
 
+import java.util.TimeZone;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.service.processor.OfferTimeZoneProcessor;
 import org.broadleafcommerce.core.offer.service.processor.OfferTimeZoneProcessorImpl;
 
-import java.util.TimeZone;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class TestOfferTimeZoneProcessorImpl implements OfferTimeZoneProcessor {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(OfferTimeZoneProcessorImpl.class);
+  private static final Log LOG = LogFactory.getLog(OfferTimeZoneProcessorImpl.class);
 
-    public TimeZone getTimeZone(Offer offer) {
-        return TimeZone.getTimeZone("CST");
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.processor.OfferTimeZoneProcessor#getTimeZone(org.broadleafcommerce.core.offer.domain.Offer)
+   */
+  @Override public TimeZone getTimeZone(Offer offer) {
+    return TimeZone.getTimeZone("CST");
+  }
 
 }

@@ -18,26 +18,102 @@ package org.broadleafcommerce.common.media.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface Media extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAltText();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getUrl();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setUrl(String url);
-    
-    public String getTitle();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setTitle(String title);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTags();
 
-    public String getAltText();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAltText(String altText);
-    
-    public String getTags();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTitle();
 
-    public void setTags(String tags);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUrl();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  altText  DOCUMENT ME!
+   */
+  void setAltText(String altText);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  tags  DOCUMENT ME!
+   */
+  void setTags(String tags);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  title  DOCUMENT ME!
+   */
+  void setTitle(String title);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  url  DOCUMENT ME!
+   */
+  void setUrl(String url);
+
+} // end interface Media

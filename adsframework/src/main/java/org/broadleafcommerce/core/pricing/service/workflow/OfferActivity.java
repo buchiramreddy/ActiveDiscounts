@@ -16,28 +16,36 @@
 
 package org.broadleafcommerce.core.pricing.service.workflow;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.service.OfferService;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import java.util.List;
 
-import javax.annotation.Resource;
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OfferActivity extends BaseActivity<PricingContext> {
+  @Resource(name = "blOfferService")
+  private OfferService offerService;
 
-    @Resource(name="blOfferService")
-    private OfferService offerService;
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.pricing.service.workflow.PricingContext)
+   */
+  @Override public PricingContext execute(PricingContext context) throws Exception {
+    Order       order  = context.getSeedData();
+    List<Offer> offers = offerService.buildOfferListForOrder(order);
+    offerService.applyOffersToOrder(offers, order);
+    context.setSeedData(order);
 
-    @Override
-    public PricingContext execute(PricingContext context) throws Exception {
-        Order order = context.getSeedData();
-        List<Offer> offers = offerService.buildOfferListForOrder(order);
-        offerService.applyOffersToOrder(offers, order);
-        context.setSeedData(order);
-
-        return context;
-    }
+    return context;
+  }
 
 }

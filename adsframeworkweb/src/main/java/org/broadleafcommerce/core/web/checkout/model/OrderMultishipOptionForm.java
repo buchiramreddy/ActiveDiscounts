@@ -16,32 +16,51 @@
 
 package org.broadleafcommerce.core.web.checkout.model;
 
-import org.broadleafcommerce.core.order.service.call.OrderMultishipOptionDTO;
-
 import java.io.Serializable;
+
 import java.util.List;
 
+import org.broadleafcommerce.core.order.service.call.OrderMultishipOptionDTO;
+
+
 /**
- * This form is used to bind multiship options in a way that doesn't require
- * the actual objects to be instantiated -- we handle that at the controller
- * level.
- * 
- * @see org.broadleafcommerce.core.order.service.call.OrderMultishipOptionDTO
- * 
- * @author Andre Azzolini (apazzolini)
+ * This form is used to bind multiship options in a way that doesn't require the actual objects to be instantiated -- we
+ * handle that at the controller level.
+ *
+ * @see      org.broadleafcommerce.core.order.service.call.OrderMultishipOptionDTO
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class OrderMultishipOptionForm implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = -5989681894142759293L;
-    
-    protected List<OrderMultishipOptionDTO> options;
+  private static final long serialVersionUID = -5989681894142759293L;
 
-    public List<OrderMultishipOptionDTO> getOptions() {
-        return options;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setOptions(List<OrderMultishipOptionDTO> options) {
-        this.options = options;
-    }
-    
-}
+  /** DOCUMENT ME! */
+  protected List<OrderMultishipOptionDTO> options;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<OrderMultishipOptionDTO> getOptions() {
+    return options;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  options  DOCUMENT ME!
+   */
+  public void setOptions(List<OrderMultishipOptionDTO> options) {
+    this.options = options;
+  }
+
+} // end class OrderMultishipOptionForm

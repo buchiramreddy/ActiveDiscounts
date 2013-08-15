@@ -16,23 +16,32 @@
 
 package org.broadleafcommerce.core.checkout.service.workflow;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.PricingService;
 import org.broadleafcommerce.core.workflow.BaseActivity;
-import javax.annotation.Resource;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PricingServiceActivity extends BaseActivity<CheckoutContext> {
+  @Resource(name = "blPricingService")
+  private PricingService pricingService;
 
-    @Resource(name="blPricingService")
-    private PricingService pricingService;
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.checkout.service.workflow.CheckoutContext)
+   */
+  @Override public CheckoutContext execute(CheckoutContext context) throws Exception {
+    CheckoutSeed seed  = context.getSeedData();
+    Order        order = pricingService.executePricing(seed.getOrder());
+    seed.setOrder(order);
 
-    @Override
-    public CheckoutContext execute(CheckoutContext context) throws Exception {
-        CheckoutSeed seed = context.getSeedData();
-        Order order = pricingService.executePricing(seed.getOrder());
-        seed.setOrder(order);
-
-        return context;
-    }
+    return context;
+  }
 
 }

@@ -16,45 +16,61 @@
 
 package org.broadleafcommerce.core.web.catalog;
 
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.web.BLCAbstractHandlerMapping;
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * This handler mapping works with the Category entity to determine if a category has been configured for
- * the passed in URL.   
- * 
- * If the URL matches a valid Category then this mapping returns the handler configured via the 
- * controllerName property or blCategoryController by default. 
+ * This handler mapping works with the Category entity to determine if a category has been configured for the passed in
+ * URL.
  *
- * @author bpolster
- * @since 2.0
- * @see org.broadleafcommerce.core.catalog.domain.Product
- * @see org.broadleafcommerce.core.catalog.service.CatalogService
+ * <p>If the URL matches a valid Category then this mapping returns the handler configured via the controllerName
+ * property or blCategoryController by default.</p>
+ *
+ * @author   bpolster
+ * @since    2.0
+ * @see      org.broadleafcommerce.core.catalog.domain.Product
+ * @see      org.broadleafcommerce.core.catalog.service.CatalogService
+ * @version  $Revision$, $Date$
  */
 public class ProductHandlerMapping extends BLCAbstractHandlerMapping {
-    
-    private String controllerName="blProductController";
-    
-    @Resource(name = "blCatalogService")
-    private CatalogService catalogService;
-    
-    public static final String CURRENT_PRODUCT_ATTRIBUTE_NAME = "currentProduct";
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Override
-    protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
-        BroadleafRequestContext context = BroadleafRequestContext.getBroadleafRequestContext();
-        if (context != null && context.getRequestURIWithoutContext() != null) {
-            Product product = catalogService.findProductByURI(context.getRequestURIWithoutContext());
-            if (product != null) {
-                context.getRequest().setAttribute(CURRENT_PRODUCT_ATTRIBUTE_NAME, product);
-                return controllerName;
-            }
-        }
-        return null;
+  /** DOCUMENT ME! */
+  public static final String CURRENT_PRODUCT_ATTRIBUTE_NAME = "currentProduct";
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  @Resource(name = "blCatalogService")
+  private CatalogService catalogService;
+
+  private String controllerName = "blProductController";
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.handler.AbstractHandlerMapping#getHandlerInternal(javax.servlet.http.HttpServletRequest)
+   */
+  @Override protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
+    BroadleafRequestContext context = BroadleafRequestContext.getBroadleafRequestContext();
+
+    if ((context != null) && (context.getRequestURIWithoutContext() != null)) {
+      Product product = catalogService.findProductByURI(context.getRequestURIWithoutContext());
+
+      if (product != null) {
+        context.getRequest().setAttribute(CURRENT_PRODUCT_ATTRIBUTE_NAME, product);
+
+        return controllerName;
+      }
     }
-}
+
+    return null;
+  }
+} // end class ProductHandlerMapping

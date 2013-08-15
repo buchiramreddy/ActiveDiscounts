@@ -17,16 +17,24 @@
 package org.broadleafcommerce.core.web.service;
 
 import org.broadleafcommerce.core.extension.ExtensionManager;
+
 import org.springframework.stereotype.Service;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 @Service("blUpdateCartServiceExtensionManager")
 public class UpdateCartServiceExtensionManager extends ExtensionManager<UpdateCartServiceExtensionHandler> {
-    
-    public UpdateCartServiceExtensionManager() {
-        super(UpdateCartServiceExtensionHandler.class);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new UpdateCartServiceExtensionManager object.
+   */
+  public UpdateCartServiceExtensionManager() {
+    super(UpdateCartServiceExtensionHandler.class);
+  }
 }

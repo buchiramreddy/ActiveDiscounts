@@ -16,50 +16,78 @@
 
 package org.broadleafcommerce.core.inventory.dao;
 
-import org.broadleafcommerce.common.util.dao.BatchRetrieveDao;
-import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
+
+import org.broadleafcommerce.common.util.dao.BatchRetrieveDao;
+
+import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
+
+import org.hibernate.ejb.QueryHints;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
- * 
- * @deprecated This is no longer required and is instead implemented as a third-party inventory module
- * 
+ * DOCUMENT ME!
+ *
+ * @deprecated  This is no longer required and is instead implemented as a third-party inventory module
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
 @Deprecated
 @Repository("blAvailabilityDao")
 public class AvailabilityDaoImpl extends BatchRetrieveDao implements AvailabilityDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Override
-    public List<SkuAvailability> readSKUAvailability(List<Long> skuIds, boolean realTime) {
-        Query query = em.createNamedQuery("BC_READ_SKU_AVAILABILITIES_BY_SKU_IDS");
-        if (! realTime) {
-            query.setHint(QueryHints.HINT_CACHEABLE, true);
-        }
-        return batchExecuteReadQuery(query, skuIds, "skuIds");
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.inventory.dao.AvailabilityDao#readSKUAvailability(java.util.List, boolean)
+   */
+  @Override public List<SkuAvailability> readSKUAvailability(List<Long> skuIds, boolean realTime) {
+    Query query = em.createNamedQuery("BC_READ_SKU_AVAILABILITIES_BY_SKU_IDS");
+
+    if (!realTime) {
+      query.setHint(QueryHints.HINT_CACHEABLE, true);
     }
 
-    @Override
-    public List<SkuAvailability> readSKUAvailabilityForLocation(List<Long> skuIds, Long locationId, boolean realTime) {
-        Query query = em.createNamedQuery("BC_READ_SKU_AVAILABILITIES_BY_LOCATION_ID_AND_SKU_IDS");
-        if (! realTime) {
-            query.setHint(QueryHints.HINT_CACHEABLE, true);
-        }
-        query.setParameter("locationId", locationId);
-        return batchExecuteReadQuery(query, skuIds, "skuIds");
+    return batchExecuteReadQuery(query, skuIds, "skuIds");
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.inventory.dao.AvailabilityDao#readSKUAvailabilityForLocation(java.util.List,java.lang.Long,
+   *       boolean)
+   */
+  @Override public List<SkuAvailability> readSKUAvailabilityForLocation(List<Long> skuIds, Long locationId,
+    boolean realTime) {
+    Query query = em.createNamedQuery("BC_READ_SKU_AVAILABILITIES_BY_LOCATION_ID_AND_SKU_IDS");
+
+    if (!realTime) {
+      query.setHint(QueryHints.HINT_CACHEABLE, true);
     }
 
-    @Override
-    public void save(SkuAvailability skuAvailability) {
-        em.merge(skuAvailability);
-    }
+    query.setParameter("locationId", locationId);
 
-}
+    return batchExecuteReadQuery(query, skuIds, "skuIds");
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.inventory.dao.AvailabilityDao#save(org.broadleafcommerce.core.inventory.domain.SkuAvailability)
+   */
+  @Override public void save(SkuAvailability skuAvailability) {
+    em.merge(skuAvailability);
+  }
+
+} // end class AvailabilityDaoImpl

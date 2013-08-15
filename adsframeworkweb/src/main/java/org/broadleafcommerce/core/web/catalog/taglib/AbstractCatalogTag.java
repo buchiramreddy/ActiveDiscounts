@@ -16,33 +16,71 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.broadleafcommerce.core.catalog.service.CatalogService;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public abstract class AbstractCatalogTag extends SimpleTagSupport {
-    private static final long serialVersionUID = 1L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    //TODO scc: test if @Resource will somehow work with this reference
-    protected CatalogService catalogService;
+  private static final long serialVersionUID = 1L;
 
-    protected CatalogService getCatalogService() {
-        if (catalogService == null) {
-            PageContext pageContext = (PageContext)getJspContext();
-            WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext());
-            catalogService = (CatalogService) applicationContext.getBean("blCatalogService");
-        }
-        return catalogService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  // TODO scc: test if @Resource will somehow work with this reference
+  /** DOCUMENT ME! */
+  protected CatalogService catalogService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   key  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String toVariableName(String key) {
+    return key.replace('.', '_');
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  catalogService  DOCUMENT ME!
+   */
+  public void setCatalogService(CatalogService catalogService) {
+    this.catalogService = catalogService;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected CatalogService getCatalogService() {
+    if (catalogService == null) {
+      PageContext           pageContext        = (PageContext) getJspContext();
+      WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(
+          pageContext.getServletContext());
+      catalogService = (CatalogService) applicationContext.getBean("blCatalogService");
     }
 
-    public void setCatalogService(CatalogService catalogService) {
-        this.catalogService = catalogService;
-    }
-
-    public static String toVariableName(String key) {
-        return key.replace('.', '_');
-    }
-}
+    return catalogService;
+  }
+} // end class AbstractCatalogTag

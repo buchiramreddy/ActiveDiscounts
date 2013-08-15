@@ -16,53 +16,75 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
+import java.io.Serializable;
+
+import java.util.Map;
+
 import org.broadleafcommerce.common.presentation.ConfigurationItem;
-import org.broadleafcommerce.common.presentation.ValidationConfiguration;
+
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 
-import java.io.Serializable;
-import java.util.Map;
-
 
 /**
- * Provides a default validate method that uses the validation configuration map to pull out the error key and pre-populate
- * the {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidationResult} based on {@link org.broadleafcommerce.common.presentation.ConfigurationItem#ERROR_MESSAGE}.
- * 
- * This class should be used as your base if you are writing a validator based on a {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}
+ * Provides a default validate method that uses the validation configuration map to pull out the error key and
+ * pre-populate the
+ * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidationResult} based on
+ * {@link org.broadleafcommerce.common.presentation.ConfigurationItem#ERROR_MESSAGE}.
  *
- * @author Phillip Verheyden (phillipuniverse)
+ * <p>This class should be used as your base if you are writing a validator based on a
+ * {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}</p>
+ *
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 public abstract class ValidationConfigurationBasedPropertyValidator implements PropertyValidator {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public PropertyValidationResult validate(Entity entity, Serializable instance, Map<String, FieldMetadata> entityFieldMetadata,
-            Map<String, String> validationConfiguration,
-            BasicFieldMetadata propertyMetadata,
-            String propertyName,
-            String value) {
-        return new PropertyValidationResult(validateInternal(entity,
-                instance,
-                entityFieldMetadata,
-                validationConfiguration,
-                propertyMetadata,
-                propertyName,
-                value), validationConfiguration.get(ConfigurationItem.ERROR_MESSAGE));
-    }
-    
-    /**
-     * Delegate method for {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}-based processors that don't need to return an error message
-     */
-    public boolean validateInternal(Entity entity,
-            Serializable instance,
-            Map<String, FieldMetadata> entityFieldMetadata,
-            Map<String, String> validationConfiguration,
-            BasicFieldMetadata propertyMetadata,
-            String propertyName,
-            String value) {
-        return false;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator#validate(org.broadleafcommerce.openadmin.dto.Entity,
+   *       java.io.Serializable, java.util.Map, java.util.Map, org.broadleafcommerce.openadmin.dto.BasicFieldMetadata,
+   *       java.lang.String, java.lang.String)
+   */
+  @Override public PropertyValidationResult validate(Entity entity, Serializable instance,
+    Map<String, FieldMetadata> entityFieldMetadata, Map<String, String> validationConfiguration,
+    BasicFieldMetadata propertyMetadata,
+    String propertyName,
+    String value) {
+    return new PropertyValidationResult(validateInternal(entity,
+          instance,
+          entityFieldMetadata,
+          validationConfiguration,
+          propertyMetadata,
+          propertyName,
+          value), validationConfiguration.get(ConfigurationItem.ERROR_MESSAGE));
+  }
 
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Delegate method for {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}-based processors that
+   * don't need to return an error message.
+   *
+   * @param   entity                   DOCUMENT ME!
+   * @param   instance                 DOCUMENT ME!
+   * @param   entityFieldMetadata      DOCUMENT ME!
+   * @param   validationConfiguration  DOCUMENT ME!
+   * @param   propertyMetadata         DOCUMENT ME!
+   * @param   propertyName             DOCUMENT ME!
+   * @param   value                    DOCUMENT ME!
+   *
+   * @return  delegate method for {@link org.broadleafcommerce.common.presentation.ValidationConfiguration}-based
+   *          processors that don't need to return an error message.
+   */
+  public boolean validateInternal(Entity entity,
+    Serializable instance, Map<String, FieldMetadata> entityFieldMetadata, Map<String, String> validationConfiguration,
+    BasicFieldMetadata propertyMetadata,
+    String propertyName,
+    String value) {
+    return false;
+  }
+
+
+} // end class ValidationConfigurationBasedPropertyValidator

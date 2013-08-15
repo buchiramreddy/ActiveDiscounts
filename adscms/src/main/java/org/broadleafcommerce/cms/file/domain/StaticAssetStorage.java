@@ -18,25 +18,67 @@ package org.broadleafcommerce.cms.file.domain;
 
 import java.sql.Blob;
 
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/8/11
- * Time: 8:15 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/8/11 Time: 8:15 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface StaticAssetStorage {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getStaticAssetId();
 
-    void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    Blob getFileData();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  staticAssetId  DOCUMENT ME!
+   */
+  void setStaticAssetId(Long staticAssetId);
 
-    void setFileData(Blob fileData);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getStaticAssetId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Blob getFileData();
 
-    public void setStaticAssetId(Long staticAssetId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fileData  DOCUMENT ME!
+   */
+  void setFileData(Blob fileData);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+} // end interface StaticAssetStorage

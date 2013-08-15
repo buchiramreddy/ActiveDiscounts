@@ -16,44 +16,61 @@
 
 package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
-import org.w3c.dom.Node;
-
 import java.util.List;
 
+import org.w3c.dom.Node;
+
+
 /**
- * This handler is responsible for replacing nodes in the source document
- * with the same nodes from the patch document. This handler will replace
- * all nodes with the same name entirely, regardless of differences in
- * attributes.
- * 
- * @author jfischer
+ * This handler is responsible for replacing nodes in the source document with the same nodes from the patch document.
+ * This handler will replace all nodes with the same name entirely, regardless of differences in attributes.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class NodeReplace extends NodeReplaceInsert {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    protected boolean checkNode(List<Node> usedNodes, Node[] primaryNodes, Node node) {
-        if (replaceNode(primaryNodes, node, usedNodes)) {
-            return true;
-        }
-        //check if this same node already exists
-        if (exactNodeExists(primaryNodes, node, usedNodes)) {
-            return true;
-        }
-        return false;
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.NodeReplaceInsert#checkNode(java.util.List,
+   *       org.w3c.dom.Node[], org.w3c.dom.Node)
+   */
+  @Override protected boolean checkNode(List<Node> usedNodes, Node[] primaryNodes, Node node) {
+    if (replaceNode(primaryNodes, node, usedNodes)) {
+      return true;
     }
 
-    protected boolean replaceNode(Node[] primaryNodes, Node testNode, List<Node> usedNodes) {
-        boolean foundItem = false;
-        for (int j=0;j<primaryNodes.length;j++){
-            if (primaryNodes[j].getNodeName().equals(testNode.getNodeName())) {
-                Node newNode = primaryNodes[j].getOwnerDocument().importNode(testNode.cloneNode(true), true);
-                primaryNodes[j].getParentNode().replaceChild(newNode, primaryNodes[j]);
-                usedNodes.add(testNode);
-                foundItem = true;
-            }
-        }
-
-        return foundItem;
+    // check if this same node already exists
+    if (exactNodeExists(primaryNodes, node, usedNodes)) {
+      return true;
     }
-}
+
+    return false;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   primaryNodes  DOCUMENT ME!
+   * @param   testNode      DOCUMENT ME!
+   * @param   usedNodes     DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected boolean replaceNode(Node[] primaryNodes, Node testNode, List<Node> usedNodes) {
+    boolean foundItem = false;
+
+    for (int j = 0; j < primaryNodes.length; j++) {
+      if (primaryNodes[j].getNodeName().equals(testNode.getNodeName())) {
+        Node newNode = primaryNodes[j].getOwnerDocument().importNode(testNode.cloneNode(true), true);
+        primaryNodes[j].getParentNode().replaceChild(newNode, primaryNodes[j]);
+        usedNodes.add(testNode);
+        foundItem = true;
+      }
+    }
+
+    return foundItem;
+  }
+} // end class NodeReplace

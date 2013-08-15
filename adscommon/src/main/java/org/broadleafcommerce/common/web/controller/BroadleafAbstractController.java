@@ -16,57 +16,63 @@
 
 package org.broadleafcommerce.common.web.controller;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
+
 /**
- * An abstract controller that provides convenience methods and resource declarations for its  children
- * 
- * Operations that are shared between all controllers belong here.   To use composition rather than
- * extension, implementors can utilize BroadleafControllerUtility.
- * 
- * @see org.broadleafcommerce.common.web.controller.BroadleafControllerUtility
- * 
- * @author apazzolini
- * @author bpolster
+ * An abstract controller that provides convenience methods and resource declarations for its children.
+ *
+ * <p>Operations that are shared between all controllers belong here. To use composition rather than extension,
+ * implementors can utilize BroadleafControllerUtility.</p>
+ *
+ * @see      org.broadleafcommerce.common.web.controller.BroadleafControllerUtility
+ * @author   apazzolini
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public abstract class BroadleafAbstractController {
-    
-    
-    /**
-     * A helper method that returns whether or not the given request was invoked via an AJAX call
-     * 
-     * @param request
-     * @return - whether or not it was an AJAX request
-     */
-    protected boolean isAjaxRequest(HttpServletRequest request) {
-        return BroadleafControllerUtility.isAjaxRequest(request);       
-    }
-    
-    /**
-     * Returns the current servlet context path. This will return a "/" if the application is
-     * deployed as root. If it's not deployed as root, it will return the context path BOTH a 
-     * leading slash but without a trailing slash.
-     * 
-     * @param request
-     * @return the context path
-     */
-    protected String getContextPath(HttpServletRequest request) {
-        String ctxPath = request.getContextPath();
-        if (StringUtils.isBlank(ctxPath)) {
-            return "/";
-        } else {
-            if (ctxPath.charAt(0) != '/') {
-                ctxPath = '/' + ctxPath;
-            }
-            if (ctxPath.charAt(ctxPath.length() - 1) != '/') {
-                ctxPath = ctxPath + '/';
-            }
-            
-            return ctxPath;
-        }
-        
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the current servlet context path. This will return a "/" if the application is deployed as root. If it's
+   * not deployed as root, it will return the context path BOTH a leading slash but without a trailing slash.
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  the context path
+   */
+  protected String getContextPath(HttpServletRequest request) {
+    String ctxPath = request.getContextPath();
+
+    if (StringUtils.isBlank(ctxPath)) {
+      return "/";
+    } else {
+      if (ctxPath.charAt(0) != '/') {
+        ctxPath = '/' + ctxPath;
+      }
+
+      if (ctxPath.charAt(ctxPath.length() - 1) != '/') {
+        ctxPath = ctxPath + '/';
+      }
+
+      return ctxPath;
     }
 
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * A helper method that returns whether or not the given request was invoked via an AJAX call.
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  - whether or not it was an AJAX request
+   */
+  protected boolean isAjaxRequest(HttpServletRequest request) {
+    return BroadleafControllerUtility.isAjaxRequest(request);
+  }
+
+} // end class BroadleafAbstractController

@@ -16,50 +16,98 @@
 
 package org.broadleafcommerce.profile.web.core.taglib;
 
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.core.service.CustomerPhoneService;
-import org.broadleafcommerce.profile.web.core.CustomerState;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.service.CustomerPhoneService;
+import org.broadleafcommerce.profile.web.core.CustomerState;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CustomerPhoneTag extends BodyTagSupport {
-    private static final long serialVersionUID = 1L;
-    private Long customerPhoneId;
-    private String var;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public int doStartTag() throws JspException {
-        WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext());
-        CustomerState customerState = (CustomerState) applicationContext.getBean("blCustomerState");
-        CustomerPhoneService customerPhoneService = (CustomerPhoneService) applicationContext.getBean("blCustomerPhoneService");
+  private static final long serialVersionUID = 1L;
 
-        Customer customer = customerState.getCustomer((HttpServletRequest) pageContext.getRequest());
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-        if(customerPhoneId != null){
-            pageContext.setAttribute(var, customerPhoneService.readCustomerPhoneById(customerPhoneId));
-        }else{
-            pageContext.setAttribute(var, customerPhoneService.readActiveCustomerPhonesByCustomerId(customer.getId()));
-        }
+  private Long   customerPhoneId;
+  private String var;
 
-        return EVAL_PAGE;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
+   */
+  @Override public int doStartTag() throws JspException {
+    WebApplicationContext applicationContext   = WebApplicationContextUtils.getWebApplicationContext(
+        pageContext.getServletContext());
+    CustomerState         customerState        = (CustomerState) applicationContext.getBean("blCustomerState");
+    CustomerPhoneService  customerPhoneService = (CustomerPhoneService) applicationContext.getBean(
+        "blCustomerPhoneService");
+
+    Customer customer = customerState.getCustomer((HttpServletRequest) pageContext.getRequest());
+
+    if (customerPhoneId != null) {
+      pageContext.setAttribute(var, customerPhoneService.readCustomerPhoneById(customerPhoneId));
+    } else {
+      pageContext.setAttribute(var, customerPhoneService.readActiveCustomerPhonesByCustomerId(customer.getId()));
     }
 
-    public Long getCustomerPhoneId() {
-        return customerPhoneId;
-    }
+    return EVAL_PAGE;
+  }
 
-    public String getVar() {
-        return var;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCustomerPhoneId(Long customerPhoneId) {
-        this.customerPhoneId = customerPhoneId;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getCustomerPhoneId() {
+    return customerPhoneId;
+  }
 
-    public void setVar(String var) {
-        this.var = var;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getVar() {
+    return var;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPhoneId  DOCUMENT ME!
+   */
+  public void setCustomerPhoneId(Long customerPhoneId) {
+    this.customerPhoneId = customerPhoneId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  var  DOCUMENT ME!
+   */
+  public void setVar(String var) {
+    this.var = var;
+  }
+} // end class CustomerPhoneTag

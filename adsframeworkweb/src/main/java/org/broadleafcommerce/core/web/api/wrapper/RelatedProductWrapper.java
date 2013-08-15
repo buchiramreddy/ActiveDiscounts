@@ -16,47 +16,62 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.RelatedProduct;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.catalog.domain.RelatedProduct;
+
+
 /**
- * This is a JAXB wrapper for RelatedProducts
+ * This is a JAXB wrapper for RelatedProducts.
  *
- * User: Kelly Tisdell
- * Date: 4/10/12
+ * <p>User: Kelly Tisdell Date: 4/10/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "relatedProduct")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "relatedProduct")
 public class RelatedProductWrapper extends BaseWrapper implements APIWrapper<RelatedProduct> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
-    
-    @XmlElement
-    protected Long sequence;
-    
-    @XmlElement
-    protected String promotionalMessage;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected ProductWrapper product;
-    
-    @Override
-    public void wrapDetails(RelatedProduct model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.sequence = model.getSequence();
-        this.promotionalMessage = model.getPromotionMessage();
-        product = (ProductWrapper) context.getBean(ProductWrapper.class.getName());
-        product.wrapSummary(model.getRelatedProduct(), request);
-    }
+  /** DOCUMENT ME! */
+  @XmlElement protected ProductWrapper product;
 
-    @Override
-    public void wrapSummary(RelatedProduct model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  /** DOCUMENT ME! */
+  @XmlElement protected String promotionalMessage;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Long sequence;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.RelatedProduct,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(RelatedProduct model, HttpServletRequest request) {
+    this.id                 = model.getId();
+    this.sequence           = model.getSequence();
+    this.promotionalMessage = model.getPromotionMessage();
+    product                 = (ProductWrapper) context.getBean(ProductWrapper.class.getName());
+    product.wrapSummary(model.getRelatedProduct(), request);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.RelatedProduct,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(RelatedProduct model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class RelatedProductWrapper

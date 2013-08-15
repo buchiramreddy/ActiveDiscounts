@@ -16,21 +16,8 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides;
-import org.broadleafcommerce.common.presentation.override.PropertyType;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.lang.reflect.Method;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -44,213 +31,339 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides;
+import org.broadleafcommerce.common.presentation.override.PropertyType;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationMergeOverrides(
+  {
+    @AdminPresentationMergeOverride(
+      name = "",
+      mergeEntries =
+        @AdminPresentationMergeEntry(
+          propertyType         = PropertyType.AdminPresentation.READONLY,
+          booleanOverrideValue = true
+        )
+    )
+  }
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blOrderElements"
+)
 @DiscriminatorColumn(name = "TYPE")
+@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_BUND_ITEM_FEE_PRICE")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blOrderElements")
-@AdminPresentationMergeOverrides(
-    {
-        @AdminPresentationMergeOverride(name = "", mergeEntries =
-            @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
-                                            booleanOverrideValue = true))
+public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
+  /** DOCUMENT ME! */
+  public static final Log   LOG              = LogFactory.getLog(BundleOrderItemFeePriceImpl.class);
+  private static final long serialVersionUID = 1L;
+
+  /** DOCUMENT ME! */
+  @Column(name = "BUND_ITEM_FEE_PRICE_ID")
+  @GeneratedValue(generator = "BundleOrderItemFeePriceId")
+  @GenericGenerator(
+    name       = "BundleOrderItemFeePriceId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "BundleOrderItemFeePriceImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.order.domain.BundleOrderItemFeePriceImpl"
+      )
     }
-)
-public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice  {
+  )
+  @Id protected Long id;
 
-    public static final Log LOG = LogFactory.getLog(BundleOrderItemFeePriceImpl.class);
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "BUND_ORDER_ITEM_ID")
+  @ManyToOne(
+    targetEntity = BundleOrderItemImpl.class,
+    optional     = false
+  )
+  protected BundleOrderItem bundleOrderItem;
 
-    @Id
-    @GeneratedValue(generator = "BundleOrderItemFeePriceId")
-    @GenericGenerator(
-        name="BundleOrderItemFeePriceId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="BundleOrderItemFeePriceImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.order.domain.BundleOrderItemFeePriceImpl")
-        }
-    )
-    @Column(name = "BUND_ITEM_FEE_PRICE_ID")
-    protected Long id;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "BundleOrderItemFeePriceImpl_Amount",
+    order        = 2,
+    prominent    = true
+  )
+  @Column(
+    name      = "AMOUNT",
+    precision = 19,
+    scale     = 5
+  )
+  protected BigDecimal amount;
 
-    @ManyToOne(targetEntity = BundleOrderItemImpl.class, optional = false)
-    @JoinColumn(name = "BUND_ORDER_ITEM_ID")
-    protected BundleOrderItem bundleOrderItem;
+  @AdminPresentation(
+    friendlyName = "BundleOrderItemFeePriceImpl_Name",
+    order        = 1,
+    prominent    = true
+  )
+  @Column(name = "NAME")
+  private String name;
 
-    @Column(name = "AMOUNT", precision=19, scale=5)
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Amount", order=2, prominent=true)
-    protected BigDecimal amount;
+  @AdminPresentation(
+    friendlyName = "BundleOrderItemFeePriceImpl_Reporting_Code",
+    order        = 3,
+    prominent    = true
+  )
+  @Column(name = "REPORTING_CODE")
+  private String reportingCode;
 
-    @Column(name = "NAME")
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Name", order=1, prominent=true)
-    private String name;
+  @AdminPresentation(
+    friendlyName = "BundleOrderItemFeePriceImpl_Taxable",
+    order        = 4
+  )
+  @Column(name = "IS_TAXABLE")
+  private Boolean isTaxable = Boolean.FALSE;
 
-    @Column(name = "REPORTING_CODE")
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Reporting_Code", order=3, prominent=true)
-    private String reportingCode;
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Column(name = "IS_TAXABLE")
-    @AdminPresentation(friendlyName = "BundleOrderItemFeePriceImpl_Taxable", order=4)
-    private Boolean isTaxable = Boolean.FALSE;
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public Long getId() {
-        return id;
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getBundleOrderItem()
+   */
+  @Override public BundleOrderItem getBundleOrderItem() {
+    return bundleOrderItem;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setBundleOrderItem(org.broadleafcommerce.core.order.domain.BundleOrderItem)
+   */
+  @Override public void setBundleOrderItem(BundleOrderItem bundleOrderItem) {
+    this.bundleOrderItem = bundleOrderItem;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getAmount()
+   */
+  @Override public Money getAmount() {
+    return convertToMoney(amount);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setAmount(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setAmount(Money amount) {
+    this.amount = Money.toAmount(amount);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#isTaxable()
+   */
+  @Override public Boolean isTaxable() {
+    return isTaxable;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setTaxable(java.lang.Boolean)
+   */
+  @Override public void setTaxable(Boolean isTaxable) {
+    this.isTaxable = isTaxable;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getReportingCode()
+   */
+  @Override public String getReportingCode() {
+    return reportingCode;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setReportingCode(java.lang.String)
+   */
+  @Override public void setReportingCode(String reportingCode) {
+    this.reportingCode = reportingCode;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   bundleFeePrice  DOCUMENT ME!
+   *
+   * @throws  CloneNotSupportedException  DOCUMENT ME!
+   * @throws  SecurityException           DOCUMENT ME!
+   * @throws  NoSuchMethodException       DOCUMENT ME!
+   */
+  public void checkCloneable(BundleOrderItemFeePrice bundleFeePrice) throws CloneNotSupportedException,
+    SecurityException, NoSuchMethodException {
+    Method cloneMethod = bundleFeePrice.getClass().getMethod("clone", new Class[] {});
+
+    if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce")
+          && !bundleFeePrice.getClass().getName().startsWith("org.broadleafcommerce")) {
+      // subclass is not implementing the clone method
+      throw new CloneNotSupportedException(
+        "Custom extensions and implementations should implement clone in order to guarantee split and merge operations are performed accurately");
+    }
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   amount  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Money convertToMoney(BigDecimal amount) {
+    return (amount == null) ? null : BroadleafCurrencyUtils.getMoney(amount, bundleOrderItem.getOrder().getCurrency());
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#clone()
+   */
+  @Override public BundleOrderItemFeePrice clone() {
+    // instantiate from the fully qualified name via reflection
+    BundleOrderItemFeePrice clone;
+
+    try {
+      clone = (BundleOrderItemFeePrice) Class.forName(this.getClass().getName()).newInstance();
+
+      try {
+        checkCloneable(clone);
+      } catch (CloneNotSupportedException e) {
+        LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: "
+          + clone.getClass().getName(), e);
+      }
+
+      clone.setAmount(convertToMoney(amount));
+      clone.setName(name);
+      clone.setReportingCode(reportingCode);
+      clone.setBundleOrderItem(bundleOrderItem);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    return clone;
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((amount == null) ? 0 : amount.hashCode());
+    result = (prime * result) + ((bundleOrderItem == null) ? 0 : bundleOrderItem.hashCode());
+    result = (prime * result) + ((id == null) ? 0 : id.hashCode());
+    result = (prime * result) + (isTaxable ? 1231 : 1237);
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+    result = (prime * result) + ((reportingCode == null) ? 0 : reportingCode.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public BundleOrderItem getBundleOrderItem() {
-        return bundleOrderItem;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public void setBundleOrderItem(BundleOrderItem bundleOrderItem) {
-        this.bundleOrderItem = bundleOrderItem;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public Money getAmount() {
-        return convertToMoney(amount);
+    BundleOrderItemFeePriceImpl other = (BundleOrderItemFeePriceImpl) obj;
+
+    if (amount == null) {
+      if (other.amount != null) {
+        return false;
+      }
+    } else if (!amount.equals(other.amount)) {
+      return false;
     }
 
-    @Override
-    public void setAmount(Money amount) {
-        this.amount = Money.toAmount(amount);
+    if (bundleOrderItem == null) {
+      if (other.bundleOrderItem != null) {
+        return false;
+      }
+    } else if (!bundleOrderItem.equals(other.bundleOrderItem)) {
+      return false;
     }
 
-    @Override
-    public String getName() {
-        return name;
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
+    if (isTaxable != other.isTaxable) {
+      return false;
     }
 
-    @Override
-    public Boolean isTaxable() {
-        return isTaxable;
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
     }
 
-    @Override
-    public void setTaxable(Boolean isTaxable) {
-        this.isTaxable = isTaxable;
+    if (reportingCode == null) {
+      if (other.reportingCode != null) {
+        return false;
+      }
+    } else if (!reportingCode.equals(other.reportingCode)) {
+      return false;
     }
 
-    @Override
-    public String getReportingCode() {
-        return reportingCode;
-    }
-
-    @Override
-    public void setReportingCode(String reportingCode) {
-        this.reportingCode = reportingCode;
-    }
-
-    public void checkCloneable(BundleOrderItemFeePrice bundleFeePrice) throws CloneNotSupportedException, SecurityException, NoSuchMethodException {
-        Method cloneMethod = bundleFeePrice.getClass().getMethod("clone", new Class[]{});
-        if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce") && !bundleFeePrice.getClass().getName().startsWith("org.broadleafcommerce")) {
-            //subclass is not implementing the clone method
-            throw new CloneNotSupportedException("Custom extensions and implementations should implement clone in order to guarantee split and merge operations are performed accurately");
-        }
-    }
-
-    protected Money convertToMoney(BigDecimal amount) {
-        return amount == null ? null : BroadleafCurrencyUtils.getMoney(amount, bundleOrderItem.getOrder().getCurrency());
-    }
-
-    @Override
-    public BundleOrderItemFeePrice clone() {
-        //instantiate from the fully qualified name via reflection
-        BundleOrderItemFeePrice clone;
-        try {
-            clone = (BundleOrderItemFeePrice) Class.forName(this.getClass().getName()).newInstance();
-            try {
-                checkCloneable(clone);
-            } catch (CloneNotSupportedException e) {
-                LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: " + clone.getClass().getName(), e);
-            }
-            clone.setAmount(convertToMoney(amount));
-            clone.setName(name);
-            clone.setReportingCode(reportingCode);
-            clone.setBundleOrderItem(bundleOrderItem);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return clone;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-        result = prime * result + ((bundleOrderItem == null) ? 0 : bundleOrderItem.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + (isTaxable ? 1231 : 1237);
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((reportingCode == null) ? 0 : reportingCode.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        BundleOrderItemFeePriceImpl other = (BundleOrderItemFeePriceImpl) obj;
-        if (amount == null) {
-            if (other.amount != null) {
-                return false;
-            }
-        } else if (!amount.equals(other.amount)) {
-            return false;
-        }
-        if (bundleOrderItem == null) {
-            if (other.bundleOrderItem != null) {
-                return false;
-            }
-        } else if (!bundleOrderItem.equals(other.bundleOrderItem)) {
-            return false;
-        }
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        if (isTaxable != other.isTaxable) {
-            return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        if (reportingCode == null) {
-            if (other.reportingCode != null) {
-                return false;
-            }
-        } else if (!reportingCode.equals(other.reportingCode)) {
-            return false;
-        }
-        return true;
-    }
-}
+    return true;
+  } // end method equals
+} // end class BundleOrderItemFeePriceImpl

@@ -16,21 +16,26 @@
 
 package org.broadleafcommerce.core.web.controller.catalog;
 
-import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
+
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+
+
 /**
- * An abstract controller that provides convenience methods and resource declarations for its
- * children. Operations that are shared between controllers that deal with customer accounts belong here
- * 
- * @author apazzolini
+ * An abstract controller that provides convenience methods and resource declarations for its children. Operations that
+ * are shared between controllers that deal with customer accounts belong here
+ *
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 public abstract class AbstractCatalogController extends BroadleafAbstractController {
-    
-    @Resource(name = "blCatalogService")
-    protected CatalogService catalogService;
-    
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blCatalogService")
+  protected CatalogService catalogService;
+
 
 }

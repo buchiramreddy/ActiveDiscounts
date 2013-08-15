@@ -20,52 +20,106 @@ import java.util.Map;
 
 
 /**
- * Container that holds additional criteria to consider when performing searches for Products
- * 
- * @author Andre Azzolini (apazzolini)
+ * Container that holds additional criteria to consider when performing searches for Products.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class ProductSearchCriteria {
-    
-    public static String PAGE_SIZE_STRING = "pageSize";
-    public static String PAGE_NUMBER = "page";
-    public static String SORT_STRING = "sort";
-    public static String QUERY_STRING = "q";
-    
-    protected Integer page = 1;
-    protected Integer pageSize;
-    protected String sortQuery;
-    protected Map<String, String[]> filterCriteria;
-    
-    public Integer getPage() {
-        return page;
-    }
+  /** DOCUMENT ME! */
+  public static String PAGE_SIZE_STRING = "pageSize";
 
-    public void setPage(Integer page) {
-        this.page = page;
-    }
+  /** DOCUMENT ME! */
+  public static String PAGE_NUMBER  = "page";
 
-    public Integer getPageSize() {
-        return pageSize;
-    }
+  /** DOCUMENT ME! */
+  public static String SORT_STRING  = "sort";
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
+  /** DOCUMENT ME! */
+  public static String QUERY_STRING = "q";
 
-    public String getSortQuery() {
-        return sortQuery;
-    }
-    
-    public void setSortQuery(String sortQuery) {
-        this.sortQuery = sortQuery;
-    }
+  /** DOCUMENT ME! */
+  protected Integer               page           = 1;
 
-    public Map<String, String[]> getFilterCriteria() {
-        return filterCriteria;
-    }
+  /** DOCUMENT ME! */
+  protected Integer               pageSize;
 
-    public void setFilterCriteria(Map<String, String[]> filterCriteria) {
-        this.filterCriteria = filterCriteria;
-    }
-    
-}
+  /** DOCUMENT ME! */
+  protected String                sortQuery;
+
+  /** DOCUMENT ME! */
+  protected Map<String, String[]> filterCriteria;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPage() {
+    return page;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  page  DOCUMENT ME!
+   */
+  public void setPage(Integer page) {
+    this.page = page;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPageSize() {
+    return pageSize;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  pageSize  DOCUMENT ME!
+   */
+  public void setPageSize(Integer pageSize) {
+    this.pageSize = pageSize;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSortQuery() {
+    return sortQuery;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sortQuery  DOCUMENT ME!
+   */
+  public void setSortQuery(String sortQuery) {
+    this.sortQuery = sortQuery;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, String[]> getFilterCriteria() {
+    return filterCriteria;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  filterCriteria  DOCUMENT ME!
+   */
+  public void setFilterCriteria(Map<String, String[]> filterCriteria) {
+    this.filterCriteria = filterCriteria;
+  }
+
+} // end class ProductSearchCriteria

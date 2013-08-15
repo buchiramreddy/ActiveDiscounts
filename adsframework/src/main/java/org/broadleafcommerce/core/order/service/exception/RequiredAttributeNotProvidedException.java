@@ -17,29 +17,48 @@
 package org.broadleafcommerce.core.order.service.exception;
 
 /**
- * This runtime exception will be thrown when an attempt to add to cart without specifying
- * all required product options has been made.
- * 
- * @author apazzolini
+ * This runtime exception will be thrown when an attempt to add to cart without specifying all required product options
+ * has been made.
+ *
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 public class RequiredAttributeNotProvidedException extends RuntimeException {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new RequiredAttributeNotProvidedException object.
+   */
+  public RequiredAttributeNotProvidedException() {
+    super();
+  }
 
-    public RequiredAttributeNotProvidedException() {
-        super();
-    }
+  /**
+   * Creates a new RequiredAttributeNotProvidedException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public RequiredAttributeNotProvidedException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public RequiredAttributeNotProvidedException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new RequiredAttributeNotProvidedException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public RequiredAttributeNotProvidedException(String message) {
+    super(message);
+  }
 
-    public RequiredAttributeNotProvidedException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new RequiredAttributeNotProvidedException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public RequiredAttributeNotProvidedException(Throwable cause) {
+    super(cause);
+  }
 
-    public RequiredAttributeNotProvidedException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class RequiredAttributeNotProvidedException

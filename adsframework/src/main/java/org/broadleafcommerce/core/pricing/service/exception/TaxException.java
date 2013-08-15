@@ -17,38 +17,49 @@
 package org.broadleafcommerce.core.pricing.service.exception;
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class TaxException extends Exception {
+  /**
+   *
+   * Creates a new TaxException object.
+   */
+  public TaxException() {
+    super();
+  }
 
-    /**
-     * 
-     */
-    public TaxException() {
-        super();
-    }
+  /**
+   *
+   * Creates a new TaxException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public TaxException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    /**
-     * @param message
-     * @param cause
-     */
-    public TaxException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   *
+   * Creates a new TaxException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public TaxException(String message) {
+    super(message);
+  }
 
-    /**
-     * @param message
-     */
-    public TaxException(String message) {
-        super(message);
-    }
+  /**
+   *
+   * Creates a new TaxException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public TaxException(Throwable cause) {
+    super(cause);
+  }
 
-    /**
-     * @param cause
-     */
-    public TaxException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class TaxException

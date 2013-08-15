@@ -17,12 +17,28 @@
 package org.broadleafcommerce.common.vendor.service.cache;
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface CacheResponse {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Object[] getCacheItemResponses();
-    public void setCacheItemResponses(Object[] cacheItemResponses);
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Object[] getCacheItemResponses();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cacheItemResponses  DOCUMENT ME!
+   */
+  void setCacheItemResponses(Object[] cacheItemResponses);
+
 }

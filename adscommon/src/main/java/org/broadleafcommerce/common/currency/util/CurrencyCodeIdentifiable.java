@@ -17,10 +17,19 @@
 package org.broadleafcommerce.common.currency.util;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface CurrencyCodeIdentifiable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getCurrencyCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCurrencyCode();
 
 }

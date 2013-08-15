@@ -16,71 +16,82 @@
 
 package org.broadleafcommerce.common.web;
 
+import java.util.TimeZone;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.util.BLCRequestUtils;
+
 import org.springframework.stereotype.Component;
+
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.TimeZone;
 
 /**
  * Responsible for returning the timezone to use for the current request.
  *
- * @author Priyesh Patel
+ * @author   Priyesh Patel
+ * @version  $Revision$, $Date$
  */
 @Component("blTimeZoneResolver")
 public class BroadleafTimeZoneResolverImpl implements BroadleafTimeZoneResolver {
-    private final Log LOG = LogFactory.getLog(BroadleafTimeZoneResolverImpl.class);
-    
-    /**
-     * Parameter/Attribute name for the current language
-     */
-    public static String TIMEZONE_VAR = "blTimeZone";
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    /**
-     * Parameter/Attribute name for the current language
-     */
-    public static String TIMEZONE_CODE_PARAM = "blTimeZoneCode";
+  /** Parameter/Attribute name for the current language. */
+  public static String TIMEZONE_VAR = "blTimeZone";
 
-    @Override
-    public TimeZone resolveTimeZone(WebRequest request) {
-        TimeZone timeZone = null;
+  /** Parameter/Attribute name for the current language. */
+  public static String TIMEZONE_CODE_PARAM = "blTimeZoneCode";
 
-        // First check for request attribute
-        timeZone = (TimeZone) request.getAttribute(TIMEZONE_VAR, WebRequest.SCOPE_REQUEST);
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-        // Second, check for a request parameter
-        if (timeZone == null && BLCRequestUtils.getURLorHeaderParameter(request, TIMEZONE_CODE_PARAM) != null) {
-            String timeZoneCode = BLCRequestUtils.getURLorHeaderParameter(request, TIMEZONE_CODE_PARAM);
-            timeZone = TimeZone.getTimeZone(timeZoneCode);
+  private final Log LOG = LogFactory.getLog(BroadleafTimeZoneResolverImpl.class);
 
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Attempt to find TimeZone by param " + timeZoneCode + " resulted in " + timeZone);
-            }
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        // Third, check the session 
-        if (timeZone == null && BLCRequestUtils.isOKtoUseSession(request)) {
-            //@TODO verify if we should take this from global session
-            timeZone = (TimeZone) request.getAttribute(TIMEZONE_VAR, WebRequest.SCOPE_GLOBAL_SESSION);
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Attempt to find timezone from session resulted in " + timeZone);
-            }
-        }
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafTimeZoneResolver#resolveTimeZone(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public TimeZone resolveTimeZone(WebRequest request) {
+    TimeZone timeZone = null;
 
-        // Finally, use the default
-        if (timeZone == null) {
-            timeZone = TimeZone.getDefault();
+    // First check for request attribute
+    timeZone = (TimeZone) request.getAttribute(TIMEZONE_VAR, WebRequest.SCOPE_REQUEST);
 
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("timezone set to default timezone " + timeZone);
-            }
-        }
+    // Second, check for a request parameter
+    if ((timeZone == null) && (BLCRequestUtils.getURLorHeaderParameter(request, TIMEZONE_CODE_PARAM) != null)) {
+      String timeZoneCode = BLCRequestUtils.getURLorHeaderParameter(request, TIMEZONE_CODE_PARAM);
+      timeZone = TimeZone.getTimeZone(timeZoneCode);
 
-        if (BLCRequestUtils.isOKtoUseSession(request)) {
-            request.setAttribute(TIMEZONE_VAR, timeZone, WebRequest.SCOPE_GLOBAL_SESSION);
-        }
-        return timeZone;
+      if (LOG.isTraceEnabled()) {
+        LOG.trace("Attempt to find TimeZone by param " + timeZoneCode + " resulted in " + timeZone);
+      }
     }
-}
+
+    // Third, check the session
+    if ((timeZone == null) && BLCRequestUtils.isOKtoUseSession(request)) {
+      // @TODO verify if we should take this from global session
+      timeZone = (TimeZone) request.getAttribute(TIMEZONE_VAR, WebRequest.SCOPE_GLOBAL_SESSION);
+
+      if (LOG.isTraceEnabled()) {
+        LOG.trace("Attempt to find timezone from session resulted in " + timeZone);
+      }
+    }
+
+    // Finally, use the default
+    if (timeZone == null) {
+      timeZone = TimeZone.getDefault();
+
+      if (LOG.isTraceEnabled()) {
+        LOG.trace("timezone set to default timezone " + timeZone);
+      }
+    }
+
+    if (BLCRequestUtils.isOKtoUseSession(request)) {
+      request.setAttribute(TIMEZONE_VAR, timeZone, WebRequest.SCOPE_GLOBAL_SESSION);
+    }
+
+    return timeZone;
+  } // end method resolveTimeZone
+} // end class BroadleafTimeZoneResolverImpl

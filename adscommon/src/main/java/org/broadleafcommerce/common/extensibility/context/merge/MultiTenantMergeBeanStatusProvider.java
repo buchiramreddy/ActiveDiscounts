@@ -17,20 +17,27 @@
 package org.broadleafcommerce.common.extensibility.context.merge;
 
 import org.springframework.context.ApplicationContext;
+
 import org.springframework.stereotype.Component;
 
+
 /**
- * This {@link org.broadleafcommerce.common.extensibility.context.merge.MergeBeanStatusProvider} can be utilized by modules that are trying to provide functionality that 
- * is only required when MultiTenant is loaded.
- * 
- * @author Andre Azzolini (apazzolini)
+ * This {@link org.broadleafcommerce.common.extensibility.context.merge.MergeBeanStatusProvider} can be utilized by
+ * modules that are trying to provide functionality that is only required when MultiTenant is loaded.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Component("blMultiTenantMergeBeanStatusProvider")
 public class MultiTenantMergeBeanStatusProvider implements MergeBeanStatusProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean isProcessingEnabled(Object bean, String beanName, ApplicationContext appCtx) {
-        return appCtx.containsBean("blMultiTenantClassTransformer");
-    }
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.MergeBeanStatusProvider#isProcessingEnabled(java.lang.Object,
+   *       java.lang.String, org.springframework.context.ApplicationContext)
+   */
+  @Override public boolean isProcessingEnabled(Object bean, String beanName, ApplicationContext appCtx) {
+    return appCtx.containsBean("blMultiTenantClassTransformer");
+  }
 
 }

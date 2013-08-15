@@ -19,19 +19,49 @@ package org.broadleafcommerce.profile.core.service.validator;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class BaseResponse {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Errors errors;
+  private Errors errors;
 
-    public BaseResponse(Object target, String objectName) {
-        errors = new BindException(target, objectName);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public boolean hasErrors() {
-        return errors.hasErrors();
-    }
+  /**
+   * Creates a new BaseResponse object.
+   *
+   * @param  target      DOCUMENT ME!
+   * @param  objectName  DOCUMENT ME!
+   */
+  public BaseResponse(Object target, String objectName) {
+    errors = new BindException(target, objectName);
+  }
 
-    public Errors getErrors() {
-        return errors;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Errors getErrors() {
+    return errors;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean hasErrors() {
+    return errors.hasErrors();
+  }
+} // end class BaseResponse

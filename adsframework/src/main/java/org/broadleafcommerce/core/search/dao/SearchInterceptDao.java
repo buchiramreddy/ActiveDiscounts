@@ -16,19 +16,53 @@
 
 package org.broadleafcommerce.core.search.dao;
 
-import org.broadleafcommerce.core.search.domain.SearchIntercept;
-import org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDao;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.search.domain.SearchIntercept;
+
+
 /**
- * @deprecated Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDao}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDao}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface SearchInterceptDao {
-    public SearchIntercept findInterceptByTerm(String term);
-    public List<SearchIntercept> findAllIntercepts();
-    public void createIntercept(SearchIntercept intercept);
-    public void updateIntercept(SearchIntercept intercept);
-    public void deleteIntercept(SearchIntercept intercept);
-}
+@Deprecated public interface SearchInterceptDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   term  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SearchIntercept findInterceptByTerm(String term);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<SearchIntercept> findAllIntercepts();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  intercept  DOCUMENT ME!
+   */
+  void createIntercept(SearchIntercept intercept);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  intercept  DOCUMENT ME!
+   */
+  void updateIntercept(SearchIntercept intercept);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  intercept  DOCUMENT ME!
+   */
+  void deleteIntercept(SearchIntercept intercept);
+} // end interface SearchInterceptDao

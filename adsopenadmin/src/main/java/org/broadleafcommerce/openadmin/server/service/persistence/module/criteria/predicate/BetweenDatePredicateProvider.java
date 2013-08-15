@@ -16,40 +16,54 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate;
 
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import java.util.List;
+
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
+
+import org.springframework.stereotype.Component;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blBetweenDatePredicateProvider")
 public class BetweenDatePredicateProvider implements PredicateProvider<Comparable, Comparable> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Predicate buildPredicate(CriteriaBuilder builder, FieldPathBuilder fieldPathBuilder, From root,
-                                    String ceilingEntity, String fullPropertyName, Path<Comparable> explicitPath,
-                                    List<Comparable> directValues) {
-        Path<Comparable> path;
-        if (explicitPath != null) {
-            path = explicitPath;
-        } else {
-            path = fieldPathBuilder.getPath(root, fullPropertyName, builder);
-        }
-        if (directValues.size() == 2) {
-            if (directValues.get(0) == null) {
-                return builder.lessThan(path, directValues.get(1));
-            } else if (directValues.get(1) == null) {
-                return builder.greaterThanOrEqualTo(path, directValues.get(0));
-            }
-            return builder.between(path, directValues.get(0), directValues.get(1));
-        } else {
-            return builder.equal(path, directValues.get(0));
-        }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate.PredicateProvider#buildPredicate(javax.persistence.criteria.CriteriaBuilder,
+   *       org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder,
+   *       javax.persistence.criteria.From, java.lang.String, java.lang.String, javax.persistence.criteria.Path,
+   *       java.util.List)
+   */
+  @Override public Predicate buildPredicate(CriteriaBuilder builder, FieldPathBuilder fieldPathBuilder, From root,
+    String ceilingEntity, String fullPropertyName, Path<Comparable> explicitPath, List<Comparable> directValues) {
+    Path<Comparable> path;
+
+    if (explicitPath != null) {
+      path = explicitPath;
+    } else {
+      path = fieldPathBuilder.getPath(root, fullPropertyName, builder);
     }
-}
+
+    if (directValues.size() == 2) {
+      if (directValues.get(0) == null) {
+        return builder.lessThan(path, directValues.get(1));
+      } else if (directValues.get(1) == null) {
+        return builder.greaterThanOrEqualTo(path, directValues.get(0));
+      }
+
+      return builder.between(path, directValues.get(0), directValues.get(1));
+    } else {
+      return builder.equal(path, directValues.get(0));
+    }
+  }
+} // end class BetweenDatePredicateProvider

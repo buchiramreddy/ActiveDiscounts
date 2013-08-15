@@ -16,81 +16,188 @@
 
 package org.broadleafcommerce.core.web.checkout.model;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 
-import java.io.Serializable;
 
 /**
  * A form to model adding a shipping address with shipping options.
- * 
- * @author Elbert Bautista (ebautista)
- * @author Andre Azzolini (apazzolini)
+ *
+ * @author   Elbert Bautista (ebautista)
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class ShippingInfoForm implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-	private static final long serialVersionUID = -7895489234675056031L;
-	protected Address address = new AddressImpl();
-    protected String addressName;
-    protected FulfillmentOption fulfillmentOption;
-    protected Long fulfillmentOptionId;
-    protected PersonalMessage personalMessage = new PersonalMessageImpl();
-    protected String deliveryMessage;
+  private static final long serialVersionUID = -7895489234675056031L;
 
-    public ShippingInfoForm() {
-        address.setPhonePrimary(new PhoneImpl());
-    }
-    
-    public Long getFulfillmentOptionId() {
-        return fulfillmentOptionId;
-    }
-    
-    public void setFulfillmentOptionId(Long fulfillmentOptionId) {
-        this.fulfillmentOptionId = fulfillmentOptionId;
-    }
-    
-    public FulfillmentOption getFulfillmentOption() {
-        return fulfillmentOption;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setFulfillmentOption(FulfillmentOption fulfillmentOption) {
-        this.fulfillmentOption = fulfillmentOption;
-    }
+  /** DOCUMENT ME! */
+  protected Address           address             = new AddressImpl();
 
-    public Address getAddress() {
-        return address;
-    }
+  /** DOCUMENT ME! */
+  protected String            addressName;
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+  /** DOCUMENT ME! */
+  protected String            deliveryMessage;
 
-    public String getAddressName() {
-        return addressName;
-    }
+  /** DOCUMENT ME! */
+  protected FulfillmentOption fulfillmentOption;
 
-    public void setAddressName(String addressName) {
-        this.addressName = addressName;
-    } 
-    
-    public String getDeliveryMessage() {
-        return deliveryMessage;
-    }
-    
-    public void setDeliveryMessage(String deliveryMessage) {
-        this.deliveryMessage = deliveryMessage;
-    }
-    
-    public void setPersonalMessage(PersonalMessage personalMessage) {
-        this.personalMessage = personalMessage;
-    }
-    
-    public PersonalMessage getPersonalMessage() {
-        return personalMessage;
-    }
-    
-}
+  /** DOCUMENT ME! */
+  protected Long              fulfillmentOptionId;
+
+  /** DOCUMENT ME! */
+  protected PersonalMessage   personalMessage = new PersonalMessageImpl();
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new ShippingInfoForm object.
+   */
+  public ShippingInfoForm() {
+    address.setPhonePrimary(new PhoneImpl());
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Address getAddress() {
+    return address;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getAddressName() {
+    return addressName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDeliveryMessage() {
+    return deliveryMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FulfillmentOption getFulfillmentOption() {
+    return fulfillmentOption;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getFulfillmentOptionId() {
+    return fulfillmentOptionId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersonalMessage getPersonalMessage() {
+    return personalMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addressName  DOCUMENT ME!
+   */
+  public void setAddressName(String addressName) {
+    this.addressName = addressName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  deliveryMessage  DOCUMENT ME!
+   */
+  public void setDeliveryMessage(String deliveryMessage) {
+    this.deliveryMessage = deliveryMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentOption  DOCUMENT ME!
+   */
+  public void setFulfillmentOption(FulfillmentOption fulfillmentOption) {
+    this.fulfillmentOption = fulfillmentOption;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentOptionId  DOCUMENT ME!
+   */
+  public void setFulfillmentOptionId(Long fulfillmentOptionId) {
+    this.fulfillmentOptionId = fulfillmentOptionId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  personalMessage  DOCUMENT ME!
+   */
+  public void setPersonalMessage(PersonalMessage personalMessage) {
+    this.personalMessage = personalMessage;
+  }
+
+} // end class ShippingInfoForm

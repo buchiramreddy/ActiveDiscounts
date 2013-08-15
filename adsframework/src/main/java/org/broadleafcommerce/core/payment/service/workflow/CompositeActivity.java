@@ -20,32 +20,48 @@ import org.broadleafcommerce.core.workflow.BaseActivity;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.SequenceProcessor;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CompositeActivity extends BaseActivity<SimplePaymentContext> {
+  private SequenceProcessor workflow;
 
-    private SequenceProcessor workflow;
+  /*
+   * (non-Javadoc)
+   * @see
+   * org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce
+   * .workflow.ProcessContext)
+   */
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce
-     * .workflow.ProcessContext)
-     */
+  @Override public SimplePaymentContext execute(SimplePaymentContext context) throws Exception {
+    ProcessContext subContext = workflow.doActivities(context.getSeedData());
 
-    @Override
-    public SimplePaymentContext execute(SimplePaymentContext context) throws Exception {
-        ProcessContext subContext = workflow.doActivities(context.getSeedData());
-        if (subContext.isStopped()) {
-            context.stopProcess();
-        }
-
-        return context;
+    if (subContext.isStopped()) {
+      context.stopProcess();
     }
 
-    public SequenceProcessor getWorkflow() {
-        return workflow;
-    }
+    return context;
+  }
 
-    public void setWorkflow(SequenceProcessor workflow) {
-        this.workflow = workflow;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SequenceProcessor getWorkflow() {
+    return workflow;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  workflow  DOCUMENT ME!
+   */
+  public void setWorkflow(SequenceProcessor workflow) {
+    this.workflow = workflow;
+  }
+} // end class CompositeActivity

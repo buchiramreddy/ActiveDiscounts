@@ -21,39 +21,76 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class StaticMapNamedOperationComponent implements NamedOperationComponent {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public List<String> setOperationValues(Map<String, String> originalParameters, Map<String, String> derivedParameters) {
-        List<String> utilizedNames = new ArrayList<String>();
-        expandFulfilledMap(originalParameters, derivedParameters, utilizedNames);
+  /** DOCUMENT ME! */
+  protected LinkedHashMap<String, LinkedHashMap<String, String>> namedOperations =
+    new LinkedHashMap<String, LinkedHashMap<String, String>>();
 
-        return utilizedNames;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    protected void expandFulfilledMap(Map<String, String> originalParameters, Map<String, String> derivedParameters, List<String> utilizedNames) {
-        for (Map.Entry<String, String> entry : originalParameters.entrySet()) {
-            if (namedOperations.containsKey(entry.getKey())) {
-                expandFulfilledMap(namedOperations.get(entry.getKey()), derivedParameters, utilizedNames);
-                if (!utilizedNames.contains(entry.getKey())) {
-                    utilizedNames.add(entry.getKey());
-                }
-            } else {
-                derivedParameters.put(entry.getKey(), entry.getValue());
-            }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public LinkedHashMap<String, LinkedHashMap<String, String>> getNamedOperations() {
+    return namedOperations;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  namedOperations  DOCUMENT ME!
+   */
+  public void setNamedOperations(LinkedHashMap<String, LinkedHashMap<String, String>> namedOperations) {
+    this.namedOperations = namedOperations;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.operation.NamedOperationComponent#setOperationValues(java.util.Map, java.util.Map)
+   */
+  @Override public List<String> setOperationValues(Map<String, String> originalParameters,
+    Map<String, String> derivedParameters) {
+    List<String> utilizedNames = new ArrayList<String>();
+    expandFulfilledMap(originalParameters, derivedParameters, utilizedNames);
+
+    return utilizedNames;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  originalParameters  DOCUMENT ME!
+   * @param  derivedParameters   DOCUMENT ME!
+   * @param  utilizedNames       DOCUMENT ME!
+   */
+  protected void expandFulfilledMap(Map<String, String> originalParameters, Map<String, String> derivedParameters,
+    List<String> utilizedNames) {
+    for (Map.Entry<String, String> entry : originalParameters.entrySet()) {
+      if (namedOperations.containsKey(entry.getKey())) {
+        expandFulfilledMap(namedOperations.get(entry.getKey()), derivedParameters, utilizedNames);
+
+        if (!utilizedNames.contains(entry.getKey())) {
+          utilizedNames.add(entry.getKey());
         }
+      } else {
+        derivedParameters.put(entry.getKey(), entry.getValue());
+      }
     }
-
-    protected LinkedHashMap<String, LinkedHashMap<String, String>> namedOperations = new LinkedHashMap<String, LinkedHashMap<String, String>>();
-
-    public LinkedHashMap<String, LinkedHashMap<String, String>> getNamedOperations() {
-        return namedOperations;
-    }
-
-    public void setNamedOperations(LinkedHashMap<String, LinkedHashMap<String, String>> namedOperations) {
-        this.namedOperations = namedOperations;
-    }
-}
+  }
+} // end class StaticMapNamedOperationComponent

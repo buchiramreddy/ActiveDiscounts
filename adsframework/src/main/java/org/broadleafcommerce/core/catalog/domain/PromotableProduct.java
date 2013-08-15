@@ -18,8 +18,25 @@ package org.broadleafcommerce.core.catalog.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PromotableProduct extends Serializable {
-    Product getRelatedProduct();
-    
-    String getPromotionMessage();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Product getRelatedProduct();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPromotionMessage();
 }

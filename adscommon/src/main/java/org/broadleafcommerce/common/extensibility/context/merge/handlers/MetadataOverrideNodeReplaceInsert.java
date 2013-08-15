@@ -16,36 +16,43 @@
 
 package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
-import org.w3c.dom.Node;
-
 import java.util.List;
 
+import org.w3c.dom.Node;
+
+
 /**
- * This handler is responsible for replacing nodes in the source document
- * with the same nodes from the patch document. Note, additional nodes
- * from the patch document that are not present in the source document
- * are simply appended to the source document. This is specialized for the
- * mo:overrideItem element.
- * 
- * @author jfischer
+ * This handler is responsible for replacing nodes in the source document with the same nodes from the patch document.
+ * Note, additional nodes from the patch document that are not present in the source document are simply appended to the
+ * source document. This is specialized for the mo:overrideItem element.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class MetadataOverrideNodeReplaceInsert extends NodeReplaceInsert {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    protected boolean checkNode(List<Node> usedNodes, Node[] primaryNodes, Node node) {
-        //find matching nodes based on id
-        if (replaceNode(primaryNodes, node, "configurationKey", usedNodes)) {
-            return true;
-        }
-        //find matching nodes based on name
-        if (replaceNode(primaryNodes, node, "ceilingEntity", usedNodes)) {
-            return true;
-        }
-        //check if this same node already exists
-        if (exactNodeExists(primaryNodes, node, usedNodes)) {
-            return true;
-        }
-        return false;
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.NodeReplaceInsert#checkNode(java.util.List,
+   *       org.w3c.dom.Node[], org.w3c.dom.Node)
+   */
+  @Override protected boolean checkNode(List<Node> usedNodes, Node[] primaryNodes, Node node) {
+    // find matching nodes based on id
+    if (replaceNode(primaryNodes, node, "configurationKey", usedNodes)) {
+      return true;
     }
 
-}
+    // find matching nodes based on name
+    if (replaceNode(primaryNodes, node, "ceilingEntity", usedNodes)) {
+      return true;
+    }
+
+    // check if this same node already exists
+    if (exactNodeExists(primaryNodes, node, usedNodes)) {
+      return true;
+    }
+
+    return false;
+  }
+
+} // end class MetadataOverrideNodeReplaceInsert

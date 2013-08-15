@@ -18,24 +18,53 @@ package org.broadleafcommerce.core.workflow;
 
 import org.broadleafcommerce.common.exception.BroadleafException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class WorkflowException extends BroadleafException {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public WorkflowException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public WorkflowException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new WorkflowException object.
+   */
+  public WorkflowException() {
+    super();
+  }
 
-    public WorkflowException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new WorkflowException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public WorkflowException(String message) {
+    super(message);
+  }
 
-    public WorkflowException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new WorkflowException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public WorkflowException(Throwable cause) {
+    super(cause);
+  }
 
-}
+  /**
+   * Creates a new WorkflowException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public WorkflowException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+} // end class WorkflowException

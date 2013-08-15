@@ -16,10 +16,6 @@
 
 package org.broadleafcommerce.cms.structure.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,105 +25,149 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SC_RULE")
 public class StructuredContentRuleImpl implements StructuredContentRule {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator= "SCRuleId")
-    @GenericGenerator(
-        name="SCRuleId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="StructuredContentRuleImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.offer.domain.StructuredContentRuleImpl")
-        }
-    )
-    @Column(name = "SC_RULE_ID")
-    protected Long id;
-    
-    @Lob
-    @Type(type = "org.hibernate.type.StringClobType")
-    @Column(name = "MATCH_RULE", length = Integer.MAX_VALUE - 1)
-    protected String matchRule;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#getId()
-     */
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "SC_RULE_ID")
+  @GeneratedValue(generator = "SCRuleId")
+  @GenericGenerator(
+    name       = "SCRuleId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "StructuredContentRuleImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.offer.domain.StructuredContentRuleImpl"
+      )
+    }
+  )
+  @Id protected Long id;
+
+  /** DOCUMENT ME! */
+  @Column(
+    name   = "MATCH_RULE",
+    length = Integer.MAX_VALUE - 1
+  )
+  @Lob
+  @Type(type = "org.hibernate.type.StringClobType")
+  protected String matchRule;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentRule#cloneEntity()
+   */
+  @Override public StructuredContentRule cloneEntity() {
+    StructuredContentRuleImpl newField = new StructuredContentRuleImpl();
+    newField.matchRule = matchRule;
+
+    return newField;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#setId(java.lang.Long)
-     */
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#getMatchRule()
-     */
-    @Override
-    public String getMatchRule() {
-        return matchRule;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#setMatchRule(java.lang.String)
-     */
-    @Override
-    public void setMatchRule(String matchRule) {
-        this.matchRule = matchRule;
+    StructuredContentRuleImpl other = (StructuredContentRuleImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((matchRule == null) ? 0 : matchRule.hashCode());
-        return result;
+    if (matchRule == null) {
+      if (other.matchRule != null) {
+        return false;
+      }
+    } else if (!matchRule.equals(other.matchRule)) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        StructuredContentRuleImpl other = (StructuredContentRuleImpl) obj;
-        
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
-        
-        if (matchRule == null) {
-            if (other.matchRule != null)
-                return false;
-        } else if (!matchRule.equals(other.matchRule))
-            return false;
-        return true;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public StructuredContentRule cloneEntity() {
-        StructuredContentRuleImpl newField = new StructuredContentRuleImpl();
-        newField.matchRule = matchRule;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return newField;
-    }
-}
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#getMatchRule()
+   */
+  @Override public String getMatchRule() {
+    return matchRule;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((id == null) ? 0 : id.hashCode());
+    result = (prime * result) + ((matchRule == null) ? 0 : matchRule.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentRule#setMatchRule(java.lang.String)
+   */
+  @Override public void setMatchRule(String matchRule) {
+    this.matchRule = matchRule;
+  }
+} // end class StructuredContentRuleImpl

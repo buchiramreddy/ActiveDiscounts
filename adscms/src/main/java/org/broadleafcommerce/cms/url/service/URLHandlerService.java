@@ -16,27 +16,47 @@
 
 package org.broadleafcommerce.cms.url.service;
 
-import org.broadleafcommerce.cms.url.domain.URLHandler;
-
 import java.util.List;
+
+import org.broadleafcommerce.cms.url.domain.URLHandler;
 
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface URLHandlerService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Checks the passed in URL to determine if there is a matching URLHandler.
-     * Returns null if no handler was found.
-     * 
-     * @param uri
-     * @return
-     */
-    public URLHandler findURLHandlerByURI(String uri);
-    
-    public List<URLHandler> findAllURLHandlers();
-    
-    public URLHandler saveURLHandler(URLHandler handler);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<URLHandler> findAllURLHandlers();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Checks the passed in URL to determine if there is a matching URLHandler. Returns null if no handler was found.
+   *
+   * @param   uri  DOCUMENT ME!
+   *
+   * @return  checks the passed in URL to determine if there is a matching URLHandler.
+   */
+  URLHandler findURLHandlerByURI(String uri);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   handler  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  URLHandler saveURLHandler(URLHandler handler);
+
+} // end interface URLHandlerService

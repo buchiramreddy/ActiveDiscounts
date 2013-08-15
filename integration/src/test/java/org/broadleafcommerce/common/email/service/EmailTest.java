@@ -16,47 +16,69 @@
 
 package org.broadleafcommerce.common.email.service;
 
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.ServerSetup;
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.email.service.info.EmailInfo;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class EmailTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource
-    EmailService emailService;
+  /** DOCUMENT ME! */
+  @Resource EmailService emailService;
 
-    private GreenMail greenMail;
+  private GreenMail greenMail;
 
-    @BeforeClass
-    protected void setupEmailTest() {
-        greenMail = new GreenMail(
-                new ServerSetup[] {
-                        new ServerSetup(30000, "127.0.0.1", ServerSetup.PROTOCOL_SMTP)
-                }
-        );
-        greenMail.start();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @AfterClass
-    protected void tearDownEmailTest() {
-        greenMail.stop();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test public void testSynchronousEmail() throws Exception {
+    EmailInfo info = new EmailInfo();
+    info.setFromAddress("me@test.com");
+    info.setSubject("test");
+    info.setEmailTemplate("org/broadleafcommerce/common/email/service/template/default.vm");
+    info.setSendEmailReliableAsync("false");
 
-    @Test
-    public void testSynchronousEmail() throws Exception {
-        EmailInfo info = new EmailInfo();
-        info.setFromAddress("me@test.com");
-        info.setSubject("test");
-        info.setEmailTemplate("org/broadleafcommerce/common/email/service/template/default.vm");
-        info.setSendEmailReliableAsync("false");
+    emailService.sendTemplateEmail("to@localhost", info, null);
+  }
 
-        emailService.sendTemplateEmail("to@localhost", info, null);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   */
+  @BeforeClass protected void setupEmailTest() {
+    greenMail = new GreenMail(
+        new ServerSetup[] { new ServerSetup(30000, "127.0.0.1", ServerSetup.PROTOCOL_SMTP) });
+    greenMail.start();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @AfterClass protected void tearDownEmailTest() {
+    greenMail.stop();
+  }
+
+} // end class EmailTest

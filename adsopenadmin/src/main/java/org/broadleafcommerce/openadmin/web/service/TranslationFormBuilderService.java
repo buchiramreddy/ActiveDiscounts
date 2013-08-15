@@ -16,31 +16,44 @@
 
 package org.broadleafcommerce.openadmin.web.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.i18n.domain.Translation;
+
 import org.broadleafcommerce.openadmin.web.form.TranslationForm;
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface TranslationFormBuilderService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Builds a ListGrid for the given list of translations
-     * 
-     * @param translations
-     * @param isRte - whether or not the field that this translation is tied to is a rich text edit field
-     * @return the list grid
-     */
-    public ListGrid buildListGrid(List<Translation> translations, boolean isRte);
+  /**
+   * Builds a ListGrid for the given list of translations.
+   *
+   * @param   translations  DOCUMENT ME!
+   * @param   isRte         - whether or not the field that this translation is tied to is a rich text edit field
+   *
+   * @return  the list grid
+   */
+  ListGrid buildListGrid(List<Translation> translations, boolean isRte);
 
-    /**
-     * Builds an EntityForm used to create or edit a translation value
-     * 
-     * @param formProperties
-     * @return the entity form
-     */
-    public EntityForm buildTranslationForm(TranslationForm formProperties);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Builds an EntityForm used to create or edit a translation value.
+   *
+   * @param   formProperties  DOCUMENT ME!
+   *
+   * @return  the entity form
+   */
+  EntityForm buildTranslationForm(TranslationForm formProperties);
 
 
-}
+} // end interface TranslationFormBuilderService

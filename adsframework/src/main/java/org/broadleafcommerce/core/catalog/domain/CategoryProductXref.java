@@ -18,61 +18,61 @@ package org.broadleafcommerce.core.catalog.domain;
 
 import java.io.Serializable;
 
+
 /**
- * Implementations of this interface are used to hold data about the many-to-many relationship between
- * the Category table and the Product table.  This entity is only used for executing a named
- * query.
+ * Implementations of this interface are used to hold data about the many-to-many relationship between the Category
+ * table and the Product table. This entity is only used for executing a named query.<br>
  * <br>
- * <br>
- * You should implement this class if you want to make significant changes to the
- * relationship between Category and Product.  If you just want to add additional fields
- * then you should extend {@link org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl}.
- * 
- *  @see {@link org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl},{@link org.broadleafcommerce.core.catalog.domain.Category}, {@link org.broadleafcommerce.core.catalog.domain.Product}
- *  @author btaylor
- * 
+ * You should implement this class if you want to make significant changes to the relationship between Category and
+ * Product. If you just want to add additional fields then you should extend
+ * {@link org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl}.
+ *
+ * @see      {@link org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl},
+ *           {@link org.broadleafcommerce.core.catalog.domain.Category},
+ *           {@link org.broadleafcommerce.core.catalog.domain.Product}
+ * @author   btaylor
+ * @version  $Revision$, $Date$
  */
 public interface CategoryProductXref extends Serializable {
+  /**
+   * Gets the category.
+   *
+   * @return  the category
+   */
+  Category getCategory();
 
-    /**
-     * Gets the category.
-     * 
-     * @return the category
-     */
-    Category getCategory();
+  /**
+   * Sets the category.
+   *
+   * @param  category  the new category
+   */
+  void setCategory(Category category);
 
-    /**
-     * Sets the category.
-     * 
-     * @param category the new category
-     */
-    void setCategory(Category category);
+  /**
+   * Gets the product.
+   *
+   * @return  the product
+   */
+  Product getProduct();
 
-    /**
-     * Gets the product.
-     * 
-     * @return the product
-     */
-    Product getProduct();
+  /**
+   * Sets the product.
+   *
+   * @param  product  the new product
+   */
+  void setProduct(Product product);
 
-    /**
-     * Sets the product.
-     * 
-     * @param product the new product
-     */
-    void setProduct(Product product);
+  /**
+   * Gets the display order.
+   *
+   * @return  the display order
+   */
+  Long getDisplayOrder();
 
-    /**
-     * Gets the display order.
-     * 
-     * @return the display order
-     */
-    Long getDisplayOrder();
-
-    /**
-     * Sets the display order.
-     * 
-     * @param displayOrder the new display order
-     */
-    void setDisplayOrder(Long displayOrder);
-}
+  /**
+   * Sets the display order.
+   *
+   * @param  displayOrder  the new display order
+   */
+  void setDisplayOrder(Long displayOrder);
+} // end interface CategoryProductXref

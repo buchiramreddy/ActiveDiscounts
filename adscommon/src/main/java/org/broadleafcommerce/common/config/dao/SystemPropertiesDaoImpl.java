@@ -16,63 +16,97 @@
 
 package org.broadleafcommerce.common.config.dao;
 
-import org.broadleafcommerce.common.config.domain.SystemProperty;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
+
+import org.broadleafcommerce.common.config.domain.SystemProperty;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.hibernate.ejb.QueryHints;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
  * This DAO enables access to manage system properties that can be stored in the database.
- * <p/>
- * User: Kelly Tisdell
- * Date: 6/20/12
+ *
+ * <p>User: Kelly Tisdell Date: 6/20/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Repository("blSystemPropertiesDao")
-public class SystemPropertiesDaoImpl implements SystemPropertiesDao{
+public class SystemPropertiesDaoImpl implements SystemPropertiesDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Override
-    public SystemProperty saveSystemProperty(SystemProperty systemProperty) {
-        return em.merge(systemProperty);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.dao.SystemPropertiesDao#createNewSystemProperty()
+   */
+  @Override public SystemProperty createNewSystemProperty() {
+    return (SystemProperty) entityConfiguration.createEntityInstance(SystemProperty.class.getName());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.dao.SystemPropertiesDao#deleteSystemProperty(org.broadleafcommerce.common.config.domain.SystemProperty)
+   */
+  @Override public void deleteSystemProperty(SystemProperty systemProperty) {
+    em.remove(systemProperty);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.dao.SystemPropertiesDao#readAllSystemProperties()
+   */
+  @Override public List<SystemProperty> readAllSystemProperties() {
+    Query query = em.createNamedQuery("BC_READ_ALL_SYSTEM_PROPERTIES");
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+
+    return query.getResultList();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.dao.SystemPropertiesDao#readSystemPropertyByName(java.lang.String)
+   */
+  @Override public SystemProperty readSystemPropertyByName(String name) {
+    Query query = em.createNamedQuery("BC_READ_SYSTEM_PROPERTIES_BY_NAME");
+    query.setParameter("propertyName", name);
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+
+    List<SystemProperty> props = query.getResultList();
+
+    if ((props != null) && !props.isEmpty()) {
+      return props.get(0);
     }
 
-    @Override
-    public void deleteSystemProperty(SystemProperty systemProperty) {
-        em.remove(systemProperty);
-    }
+    return null;
+  }
 
-    @Override
-    public List<SystemProperty> readAllSystemProperties() {
-        Query query = em.createNamedQuery("BC_READ_ALL_SYSTEM_PROPERTIES");
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        return query.getResultList();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public SystemProperty readSystemPropertyByName(String name) {
-        Query query = em.createNamedQuery("BC_READ_SYSTEM_PROPERTIES_BY_NAME");
-        query.setParameter("propertyName", name);
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        List<SystemProperty> props = query.getResultList();
-        if (props != null && ! props.isEmpty()) {
-            return props.get(0);
-        }
-        return null;
-    }
-
-    @Override
-    public SystemProperty createNewSystemProperty() {
-        return (SystemProperty)entityConfiguration.createEntityInstance(SystemProperty.class.getName());
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.common.config.dao.SystemPropertiesDao#saveSystemProperty(org.broadleafcommerce.common.config.domain.SystemProperty)
+   */
+  @Override public SystemProperty saveSystemProperty(SystemProperty systemProperty) {
+    return em.merge(systemProperty);
+  }
+} // end class SystemPropertiesDaoImpl

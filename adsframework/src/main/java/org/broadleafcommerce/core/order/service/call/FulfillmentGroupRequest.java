@@ -16,106 +16,177 @@
 
 package org.broadleafcommerce.core.order.service.call;
 
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.profile.core.domain.Address;
-import org.broadleafcommerce.profile.core.domain.Phone;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+import org.broadleafcommerce.core.order.domain.Order;
+
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.Phone;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FulfillmentGroupRequest {
+  /** DOCUMENT ME! */
+  protected Address address;
 
-    protected Address address;
-    protected Order order;
-    protected Phone phone;
-    
-    /**
-     * Both of these fields uses are superceded by the FulfillmentOption paradigm
-     */
-    @Deprecated
-    protected String method;
-    @Deprecated
-    protected String service;
-    
-    protected FulfillmentOption option;
-    
-    protected List<FulfillmentGroupItemRequest> fulfillmentGroupItemRequests = new ArrayList<FulfillmentGroupItemRequest>();
+  /** DOCUMENT ME! */
+  protected Order   order;
 
-    public Address getAddress() {
-        return address;
-    }
+  /** DOCUMENT ME! */
+  protected Phone   phone;
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+  /** Both of these fields uses are superceded by the FulfillmentOption paradigm. */
+  @Deprecated protected String method;
 
-    public Order getOrder() {
-        return order;
-    }
+  /** DOCUMENT ME! */
+  @Deprecated protected String service;
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  /** DOCUMENT ME! */
+  protected FulfillmentOption option;
 
-    public Phone getPhone() {
-        return phone;
-    }
+  /** DOCUMENT ME! */
+  protected List<FulfillmentGroupItemRequest> fulfillmentGroupItemRequests =
+    new ArrayList<FulfillmentGroupItemRequest>();
 
-    public void setPhone(Phone phone) {
-        this.phone = phone;
-    }
-    
-    public FulfillmentOption getOption() {
-        return option;
-    }
-    
-    public void setOption(FulfillmentOption option) {
-        this.option = option;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Address getAddress() {
+    return address;
+  }
 
-    public List<FulfillmentGroupItemRequest> getFulfillmentGroupItemRequests() {
-        return fulfillmentGroupItemRequests;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  public void setAddress(Address address) {
+    this.address = address;
+  }
 
-    public void setFulfillmentGroupItemRequests(List<FulfillmentGroupItemRequest> fulfillmentGroupItemRequests) {
-        this.fulfillmentGroupItemRequests = fulfillmentGroupItemRequests;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Order getOrder() {
+    return order;
+  }
 
-    /**
-     * Deprecated in favor of {@link #getOption()}
-     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
-     */
-    @Deprecated
-    public String getMethod() {
-        return method;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    /**
-     * Deprecated in favor of {@link #setOption(org.broadleafcommerce.core.order.domain.FulfillmentOption)}
-     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
-     */    
-    @Deprecated
-    public void setMethod(String method) {
-        this.method = method;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Phone getPhone() {
+    return phone;
+  }
 
-    /**
-     * Deprecated in favor of {@link #getOption()}
-     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
-     */
-    @Deprecated
-    public String getService() {
-        return service;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  public void setPhone(Phone phone) {
+    this.phone = phone;
+  }
 
-    /**
-     * Deprecated in favor of {@link #setOption(org.broadleafcommerce.core.order.domain.FulfillmentOption)}
-     * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
-     */    
-    @Deprecated
-    public void setService(String service) {
-        this.service = service;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FulfillmentOption getOption() {
+    return option;
+  }
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  option  DOCUMENT ME!
+   */
+  public void setOption(FulfillmentOption option) {
+    this.option = option;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<FulfillmentGroupItemRequest> getFulfillmentGroupItemRequests() {
+    return fulfillmentGroupItemRequests;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroupItemRequests  DOCUMENT ME!
+   */
+  public void setFulfillmentGroupItemRequests(List<FulfillmentGroupItemRequest> fulfillmentGroupItemRequests) {
+    this.fulfillmentGroupItemRequests = fulfillmentGroupItemRequests;
+  }
+
+  /**
+   * Deprecated in favor of {@link #getOption()}.
+   *
+   * @return  deprecated in favor of {@link #getOption()}.
+   *
+   * @see     {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+   */
+  @Deprecated public String getMethod() {
+    return method;
+  }
+
+  /**
+   * Deprecated in favor of {@link #setOption(org.broadleafcommerce.core.order.domain.FulfillmentOption)}.
+   *
+   * @param  method  DOCUMENT ME!
+   *
+   * @see    {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+   */
+  @Deprecated public void setMethod(String method) {
+    this.method = method;
+  }
+
+  /**
+   * Deprecated in favor of {@link #getOption()}.
+   *
+   * @return  deprecated in favor of {@link #getOption()}.
+   *
+   * @see     {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+   */
+  @Deprecated public String getService() {
+    return service;
+  }
+
+  /**
+   * Deprecated in favor of {@link #setOption(org.broadleafcommerce.core.order.domain.FulfillmentOption)}.
+   *
+   * @param  service  DOCUMENT ME!
+   *
+   * @see    {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+   */
+  @Deprecated public void setService(String service) {
+    this.service = service;
+  }
+
+} // end class FulfillmentGroupRequest

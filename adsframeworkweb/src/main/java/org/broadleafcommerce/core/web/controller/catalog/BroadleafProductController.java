@@ -16,49 +16,79 @@
 
 package org.broadleafcommerce.core.web.controller.catalog;
 
-import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
-import org.broadleafcommerce.core.catalog.domain.Product;
-import org.broadleafcommerce.core.web.catalog.ProductHandlerMapping;
-import org.hibernate.tool.hbm2x.StringUtils;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.Controller;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
+
+import org.broadleafcommerce.core.catalog.domain.Product;
+import org.broadleafcommerce.core.web.catalog.ProductHandlerMapping;
+
+import org.hibernate.tool.hbm2x.StringUtils;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
+
+
 /**
- * This class works in combination with the CategoryHandlerMapping which finds a category based upon
- * the passed in URL.
+ * This class works in combination with the CategoryHandlerMapping which finds a category based upon the passed in URL.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class BroadleafProductController extends BroadleafAbstractController implements Controller {
-    
-    protected String defaultProductView = "catalog/product";
-    protected static String MODEL_ATTRIBUTE_NAME = "product";    
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Override
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ModelAndView model = new ModelAndView();
-        Product product = (Product) request.getAttribute(ProductHandlerMapping.CURRENT_PRODUCT_ATTRIBUTE_NAME);
-        assert(product != null);
-        
-        model.addObject(MODEL_ATTRIBUTE_NAME, product);
+  /** DOCUMENT ME! */
+  protected static String MODEL_ATTRIBUTE_NAME = "product";
 
-        if (StringUtils.isNotEmpty(product.getDisplayTemplate())) {
-            model.setViewName(product.getDisplayTemplate());    
-        } else {
-            model.setViewName(getDefaultProductView());
-        }
-        return model;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected String defaultProductView = "catalog/product";
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDefaultProductView() {
+    return defaultProductView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+   */
+  @Override public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
+    throws Exception {
+    ModelAndView model   = new ModelAndView();
+    Product      product = (Product) request.getAttribute(ProductHandlerMapping.CURRENT_PRODUCT_ATTRIBUTE_NAME);
+    assert (product != null);
+
+    model.addObject(MODEL_ATTRIBUTE_NAME, product);
+
+    if (StringUtils.isNotEmpty(product.getDisplayTemplate())) {
+      model.setViewName(product.getDisplayTemplate());
+    } else {
+      model.setViewName(getDefaultProductView());
     }
 
-    public String getDefaultProductView() {
-        return defaultProductView;
-    }
+    return model;
+  }
 
-    public void setDefaultProductView(String defaultProductView) {
-        this.defaultProductView = defaultProductView;
-    }
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  defaultProductView  DOCUMENT ME!
+   */
+  public void setDefaultProductView(String defaultProductView) {
+    this.defaultProductView = defaultProductView;
+  }
+
+} // end class BroadleafProductController

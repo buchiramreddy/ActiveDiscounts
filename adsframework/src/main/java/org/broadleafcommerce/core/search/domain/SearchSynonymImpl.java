@@ -16,65 +16,106 @@
 
 package org.broadleafcommerce.core.search.domain;
 
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Table(name = "BLC_SEARCH_SYNONYM")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
 public class SearchSynonymImpl implements SearchSynonym {
-    
-    @Id
-    @GeneratedValue(generator = "SearchSynonymId")
-    @GenericGenerator(
-        name="SearchSynonymId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="SearchSynonymImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.search.domain.SearchSynonymImpl")
-        }
-    )
-    @Column(name = "SEARCH_SYNONYM_ID")
-    private Long id;
-    
-    @Column(name = "TERM")
-    @Index(name="SEARCHSYNONYM_TERM_INDEX", columnNames={"TERM"})
-    private String term;
-    
-    @Column(name = "SYNONYMS")
-    private String synonyms;
-    
-    public Long getId() {
-        return id;
+  @Column(name = "SEARCH_SYNONYM_ID")
+  @GeneratedValue(generator = "SearchSynonymId")
+  @GenericGenerator(
+    name       = "SearchSynonymId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "SearchSynonymImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.search.domain.SearchSynonymImpl"
+      )
     }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    @Override
-    public String getTerm() {
-        return term;
-    }
-    @Override
-    public void setTerm(String term) {
-        this.term = term;
-    }
-    @Override
-    public String[] getSynonyms() {
-        return synonyms.split("|");
-    }
-    @Override
-    public void setSynonyms(String[] synonyms) {
-        this.synonyms = StringUtils.join(synonyms, '|');
-    }
-    
-}
+  )
+  @Id private Long id;
+
+  @Column(name = "TERM")
+  @Index(
+    name        = "SEARCHSYNONYM_TERM_INDEX",
+    columnNames = { "TERM" }
+  )
+  private String term;
+
+  @Column(name = "SYNONYMS")
+  private String synonyms;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return id;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchSynonym#getTerm()
+   */
+  @Override public String getTerm() {
+    return term;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchSynonym#setTerm(java.lang.String)
+   */
+  @Override public void setTerm(String term) {
+    this.term = term;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchSynonym#getSynonyms()
+   */
+  @Override public String[] getSynonyms() {
+    return synonyms.split("|");
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchSynonym#setSynonyms(java.lang.String[])
+   */
+  @Override public void setSynonyms(String[] synonyms) {
+    this.synonyms = StringUtils.join(synonyms, '|');
+  }
+
+} // end class SearchSynonymImpl

@@ -16,119 +16,452 @@
 
 package org.broadleafcommerce.profile.core.domain;
 
-import org.broadleafcommerce.common.audit.Auditable;
-import org.broadleafcommerce.common.locale.domain.Locale;
-
 import java.io.Serializable;
+
 import java.util.List;
 import java.util.Map;
 
+import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.locale.domain.Locale;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface Customer extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Auditable getAuditable();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getUsername();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getChallengeAnswer();
 
-    public void setUsername(String username);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getPassword();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ChallengeQuestion getChallengeQuestion();
 
-    public void setPassword(String password);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isPasswordChangeRequired();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerAddress> getCustomerAddresses();
 
-    public void setPasswordChangeRequired(boolean passwordChangeRequired);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFirstName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, CustomerAttribute> getCustomerAttributes();
 
-    public void setFirstName(String firstName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getLastName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Locale getCustomerLocale();
 
-    public void setLastName(String lastName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getEmailAddress();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPayment> getCustomerPayments();
 
-    public void setEmailAddress(String emailAddress);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public ChallengeQuestion getChallengeQuestion();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPhone> getCustomerPhones();
 
-    public void setChallengeQuestion(ChallengeQuestion challengeQuestion);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getChallengeAnswer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getEmailAddress();
 
-    public void setChallengeAnswer(String challengeAnswer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getUnencodedPassword();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFirstName();
 
-    public void setUnencodedPassword(String unencodedPassword);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isReceiveEmail();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setReceiveEmail(boolean receiveEmail);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isRegistered();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getLastName();
 
-    public void setRegistered(boolean registered);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getUnencodedChallengeAnswer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPassword();
 
-    public void setUnencodedChallengeAnswer(String unencodedChallengeAnswer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Auditable getAuditable();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTaxExemptionCode();
 
-    public void setAuditable(Auditable auditable);
-    
-    public void setCookied(boolean cookied);
-    
-    public boolean isCookied();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setLoggedIn(boolean loggedIn);
-    
-    public boolean isLoggedIn();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUnencodedChallengeAnswer();
 
-    public void setAnonymous(boolean anonymous);
-    
-    public boolean isAnonymous(); 
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Locale getCustomerLocale();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUnencodedPassword();
 
-    public void setCustomerLocale(Locale customerLocale);
-    
-    public Map<String, CustomerAttribute> getCustomerAttributes();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCustomerAttributes(Map<String, CustomerAttribute> customerAttributes);
-    
-    /**
-     * Returns true if this user has been deactivated.
-     * Most implementations will not allow the user to login if they are deactivated.
-     * 
-     * @return
-     */
-    public boolean isDeactivated();
-    
-    /**
-     * Sets the users deactivated status.
-     * 
-     * @param deactivated
-     */
-    public void setDeactivated(boolean deactivated);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUsername();
 
-    public List<CustomerAddress> getCustomerAddresses();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCustomerAddresses(List<CustomerAddress> customerAddresses);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isAnonymous();
 
-    public List<CustomerPhone> getCustomerPhones();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCustomerPhones(List<CustomerPhone> customerPhones);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isCookied();
 
-    public List<CustomerPayment> getCustomerPayments();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCustomerPayments(List<CustomerPayment> customerPayments);
+  /**
+   * Returns true if this user has been deactivated. Most implementations will not allow the user to login if they are
+   * deactivated.
+   *
+   * @return  true if this user has been deactivated.
+   */
+  boolean isDeactivated();
 
-    public String getTaxExemptionCode();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setTaxExemptionCode(String exemption);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isLoggedIn();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isPasswordChangeRequired();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isReceiveEmail();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isRegistered();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  anonymous  DOCUMENT ME!
+   */
+  void setAnonymous(boolean anonymous);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(Auditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  challengeAnswer  DOCUMENT ME!
+   */
+  void setChallengeAnswer(String challengeAnswer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  challengeQuestion  DOCUMENT ME!
+   */
+  void setChallengeQuestion(ChallengeQuestion challengeQuestion);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cookied  DOCUMENT ME!
+   */
+  void setCookied(boolean cookied);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerAddresses  DOCUMENT ME!
+   */
+  void setCustomerAddresses(List<CustomerAddress> customerAddresses);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerAttributes  DOCUMENT ME!
+   */
+  void setCustomerAttributes(Map<String, CustomerAttribute> customerAttributes);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerLocale  DOCUMENT ME!
+   */
+  void setCustomerLocale(Locale customerLocale);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPayments  DOCUMENT ME!
+   */
+  void setCustomerPayments(List<CustomerPayment> customerPayments);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPhones  DOCUMENT ME!
+   */
+  void setCustomerPhones(List<CustomerPhone> customerPhones);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the users deactivated status.
+   *
+   * @param  deactivated  DOCUMENT ME!
+   */
+  void setDeactivated(boolean deactivated);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailAddress  DOCUMENT ME!
+   */
+  void setEmailAddress(String emailAddress);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  firstName  DOCUMENT ME!
+   */
+  void setFirstName(String firstName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  lastName  DOCUMENT ME!
+   */
+  void setLastName(String lastName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  loggedIn  DOCUMENT ME!
+   */
+  void setLoggedIn(boolean loggedIn);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  password  DOCUMENT ME!
+   */
+  void setPassword(String password);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordChangeRequired  DOCUMENT ME!
+   */
+  void setPasswordChangeRequired(boolean passwordChangeRequired);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  receiveEmail  DOCUMENT ME!
+   */
+  void setReceiveEmail(boolean receiveEmail);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  registered  DOCUMENT ME!
+   */
+  void setRegistered(boolean registered);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  exemption  DOCUMENT ME!
+   */
+  void setTaxExemptionCode(String exemption);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  unencodedChallengeAnswer  DOCUMENT ME!
+   */
+  void setUnencodedChallengeAnswer(String unencodedChallengeAnswer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  unencodedPassword  DOCUMENT ME!
+   */
+  void setUnencodedPassword(String unencodedPassword);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  username  DOCUMENT ME!
+   */
+  void setUsername(String username);
+} // end interface Customer

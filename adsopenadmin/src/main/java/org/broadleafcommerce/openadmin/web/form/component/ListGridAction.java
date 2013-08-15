@@ -18,157 +18,279 @@ package org.broadleafcommerce.openadmin.web.form.component;
 
 
 /**
- * Buttons to display on the frontend for a list grid. These will be displayed at the top of the {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid} that they
- * are related to.
- * 
- * @author Andre Azzolini (aazzolini)
- * @see {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addRowAction(org.broadleafcommerce.openadmin.web.form.component.ListGridAction)}
- * @see {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addToolbarAction(org.broadleafcommerce.openadmin.web.form.component.ListGridAction)}
+ * Buttons to display on the frontend for a list grid. These will be displayed at the top of the
+ * {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid} that they are related to.
+ *
+ * @author   Andre Azzolini (aazzolini)
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addRowAction(org.broadleafcommerce.openadmin.web.form.component.ListGridAction)}
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#addToolbarAction(org.broadleafcommerce.openadmin.web.form.component.ListGridAction)}
+ * @version  $Revision$, $Date$
  */
 public class ListGridAction implements Cloneable {
-    
-    public static final String ADD = "ADD";
-    public static final String GEN_SKUS = "GEN_SKUS";
-    public static final String REORDER = "REORDER";
-    public static final String REMOVE = "REMOVE";
-    public static final String UPDATE = "UPDATE";
-    public static final String VIEW = "VIEW";
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    protected String buttonClass = "";
-    protected String urlPostfix = "";
-    protected String iconClass = "";
-    protected String displayText = "";
-    protected String actionId = "";
-    protected Boolean forListGridReadOnly = false;
+  /** DOCUMENT ME! */
+  public static final String ADD      = "ADD";
 
-    
-    public ListGridAction(String actionId) {
-        this.actionId = actionId;
-    }
-    
-    /**
-     * @see {@link #setButtonClass(String)}
-     */
-    public ListGridAction withButtonClass(String buttonClass) {
-        setButtonClass(buttonClass);
-        return this;
-    }
-    
-    /**
-     * @see {@link #setUrlPostfix(String)}
-     */
-    public ListGridAction withUrlPostfix(String urlPostfix) {
-        setUrlPostfix(urlPostfix);
-        return this;
-    }
-    
-    /**
-     * @see {@link #setIconClass(String)}
-     */
-    public ListGridAction withIconClass(String iconClass) {
-        setIconClass(iconClass);
-        return this;
-    }
-    
-    /**
-     * @see {@link #setDisplayText(String)}
-     */
-    public ListGridAction withDisplayText(String displayText) {
-        setDisplayText(displayText);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  public static final String GEN_SKUS = "GEN_SKUS";
 
-    public ListGridAction withForListGridReadOnly(Boolean forListGridReadOnly) {
-        setForListGridReadOnly(forListGridReadOnly);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  public static final String REORDER = "REORDER";
 
-    public String getButtonClass() {
-        return buttonClass;
-    }
+  /** DOCUMENT ME! */
+  public static final String REMOVE = "REMOVE";
 
-    public Boolean getForListGridReadOnly() {
-        return forListGridReadOnly;
-    }
+  /** DOCUMENT ME! */
+  public static final String UPDATE = "UPDATE";
 
-    /**
-     * Main intent is for the button class to be used in a JQuery selector for giving this button a click action. You could
-     * technically also apply additional styling to this anchor but is not usually recommended.
-     * <p>
-     * An example JQuery selector would look like:
-     *   $('body').on('click', 'button.some-class', function() {
-     *       doSomeFunction()
-     *   });
-     * </p>
-     * @param buttonClass
-     */
-    public void setButtonClass(String buttonClass) {
-        this.buttonClass = buttonClass;
-    }
-    
-    public String getUrlPostfix() {
-        return urlPostfix;
-    }
-    /**
-     * This means different things depending on where this action is on the list grid.
-     * <ul>
-     *  <li>If this is a toolbar action: this postfix will be appended onto the end of {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#getPath()} and 
-     *  presented as a 'data-actionurl' attribute for the button</li>
-     *  <li>If this is a row action: this postfix will be presented as a 'data-urlpostfix' attribute on the button</li>
-     * </ul>
-     * @param urlPostfix
-     */
-    public void setUrlPostfix(String urlPostfix) {
-        this.urlPostfix = urlPostfix;
-    }
-    
-    public String getIconClass() {
-        return iconClass;
-    }
-    
-    /**
-     * Icon classes are displayed next to the {@link #getDisplayText()}. These can technically be whatever you like and
-     * you can use css selectors to style them accordingly. That said, Broadleaf uses the FontAwesome set of icons out of
-     * the box, and it is intended that <b>iconClass</b> is an icon from the FontAwesome framework. To see the icons that
-     * are included, check out http://fortawesome.github.com/Font-Awesome/#icons-new
-     * 
-     * @param iconClass
-     */
-    public void setIconClass(String iconClass) {
-        this.iconClass = iconClass;
-    }
-    
-    public String getDisplayText() {
-        return displayText;
-    }
-    
-    public void setDisplayText(String displayText) {
-        this.displayText = displayText;
-    }
+  /** DOCUMENT ME! */
+  public static final String VIEW = "VIEW";
 
-    public void setForListGridReadOnly(Boolean forListGridReadOnly) {
-        this.forListGridReadOnly = forListGridReadOnly;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns an Id that controllers can use to manipulate this action.   For example, if a
-     * Controller wanted to not show the "Add" button that the system shows by default, they
-     * could remove the action with an id of "ADD".   
-     * 
-     * @return
-     */
-    public String getActionId() {
-        return actionId;
-    }
+  /** DOCUMENT ME! */
+  protected String actionId = "";
 
-    @Override
-    public ListGridAction clone() {
-        ListGridAction cloned = new ListGridAction(actionId);
-        cloned.buttonClass = buttonClass;
-        cloned.displayText = displayText;
-        cloned.iconClass = iconClass;
-        cloned.urlPostfix = urlPostfix;
-        cloned.forListGridReadOnly = forListGridReadOnly;
-        return cloned;
-    }
-}
+  /** DOCUMENT ME! */
+  protected String  buttonClass         = "";
+
+  /** DOCUMENT ME! */
+  protected String  displayText         = "";
+
+  /** DOCUMENT ME! */
+  protected Boolean forListGridReadOnly = false;
+
+  /** DOCUMENT ME! */
+  protected String  iconClass  = "";
+
+  /** DOCUMENT ME! */
+  protected String  urlPostfix = "";
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+
+  /**
+   * Creates a new ListGridAction object.
+   *
+   * @param  actionId  DOCUMENT ME!
+   */
+  public ListGridAction(String actionId) {
+    this.actionId = actionId;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override public ListGridAction clone() {
+    ListGridAction cloned = new ListGridAction(actionId);
+    cloned.buttonClass         = buttonClass;
+    cloned.displayText         = displayText;
+    cloned.iconClass           = iconClass;
+    cloned.urlPostfix          = urlPostfix;
+    cloned.forListGridReadOnly = forListGridReadOnly;
+
+    return cloned;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns an Id that controllers can use to manipulate this action. For example, if a Controller wanted to not show
+   * the "Add" button that the system shows by default, they could remove the action with an id of "ADD".
+   *
+   * @return  an Id that controllers can use to manipulate this action.
+   */
+  public String getActionId() {
+    return actionId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getButtonClass() {
+    return buttonClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDisplayText() {
+    return displayText;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getForListGridReadOnly() {
+    return forListGridReadOnly;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getIconClass() {
+    return iconClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUrlPostfix() {
+    return urlPostfix;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Main intent is for the button class to be used in a JQuery selector for giving this button a click action. You
+   * could technically also apply additional styling to this anchor but is not usually recommended.
+   *
+   * <p>An example JQuery selector would look like: $('body').on('click', 'button.some-class', function() {
+   * doSomeFunction() });</p>
+   *
+   * @param  buttonClass  DOCUMENT ME!
+   */
+  public void setButtonClass(String buttonClass) {
+    this.buttonClass = buttonClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayText  DOCUMENT ME!
+   */
+  public void setDisplayText(String displayText) {
+    this.displayText = displayText;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  forListGridReadOnly  DOCUMENT ME!
+   */
+  public void setForListGridReadOnly(Boolean forListGridReadOnly) {
+    this.forListGridReadOnly = forListGridReadOnly;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Icon classes are displayed next to the {@link #getDisplayText()}. These can technically be whatever you like and
+   * you can use css selectors to style them accordingly. That said, Broadleaf uses the FontAwesome set of icons out of
+   * the box, and it is intended that <b>iconClass</b> is an icon from the FontAwesome framework. To see the icons that
+   * are included, check out http://fortawesome.github.com/Font-Awesome/#icons-new
+   *
+   * @param  iconClass  DOCUMENT ME!
+   */
+  public void setIconClass(String iconClass) {
+    this.iconClass = iconClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * This means different things depending on where this action is on the list grid.
+   *
+   * <ul>
+   *   <li>If this is a toolbar action: this postfix will be appended onto the end of
+   *     {@link org.broadleafcommerce.openadmin.web.form.component.ListGrid#getPath()} and presented as a
+   *     'data-actionurl' attribute for the button</li>
+   *   <li>If this is a row action: this postfix will be presented as a 'data-urlpostfix' attribute on the button</li>
+   * </ul>
+   *
+   * @param  urlPostfix  DOCUMENT ME!
+   */
+  public void setUrlPostfix(String urlPostfix) {
+    this.urlPostfix = urlPostfix;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  {@link #setButtonClass(String)}
+   */
+  public ListGridAction withButtonClass(String buttonClass) {
+    setButtonClass(buttonClass);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  {@link #setDisplayText(String)}
+   */
+  public ListGridAction withDisplayText(String displayText) {
+    setDisplayText(displayText);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   forListGridReadOnly  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ListGridAction withForListGridReadOnly(Boolean forListGridReadOnly) {
+    setForListGridReadOnly(forListGridReadOnly);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  {@link #setIconClass(String)}
+   */
+  public ListGridAction withIconClass(String iconClass) {
+    setIconClass(iconClass);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  {@link #setUrlPostfix(String)}
+   */
+  public ListGridAction withUrlPostfix(String urlPostfix) {
+    setUrlPostfix(urlPostfix);
+
+    return this;
+  }
+} // end class ListGridAction

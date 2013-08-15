@@ -16,64 +16,79 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.Dimension;
-
 import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlElement;
 
+import org.broadleafcommerce.core.catalog.domain.Dimension;
+
+
 /**
- * JAXB wrapper for Dimension
- * <p/>
- * User: Kelly Tisdell
- * Date: 4/10/12
+ * JAXB wrapper for Dimension.
+ *
+ * <p>User: Kelly Tisdell Date: 4/10/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-public class DimensionWrapper extends BaseWrapper implements APIWrapper<Dimension>{
+public class DimensionWrapper extends BaseWrapper implements APIWrapper<Dimension> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected BigDecimal width;
+  /** DOCUMENT ME! */
+  @XmlElement protected String container;
 
-    @XmlElement
-    protected BigDecimal height;
+  /** DOCUMENT ME! */
+  @XmlElement protected BigDecimal depth;
 
-    @XmlElement
-    protected BigDecimal depth;
+  /** DOCUMENT ME! */
+  @XmlElement protected String dimensionUnitOfMeasure;
 
-    @XmlElement
-    protected BigDecimal girth;
+  /** DOCUMENT ME! */
+  @XmlElement protected BigDecimal girth;
 
-    @XmlElement
-    protected String container;
+  /** DOCUMENT ME! */
+  @XmlElement protected BigDecimal height;
 
-    @XmlElement
-    protected String size;
-    
-    @XmlElement
-    protected String dimensionUnitOfMeasure;
-    
-    @Override
-    public void wrapDetails(Dimension model, HttpServletRequest request) {
-        this.width = model.getWidth();
-        this.depth = model.getDepth();
-        this.height = model.getHeight();
-        this.girth = model.getGirth();
+  /** DOCUMENT ME! */
+  @XmlElement protected String size;
 
-        if (model.getDimensionUnitOfMeasure() != null) {
-            this.dimensionUnitOfMeasure = model.getDimensionUnitOfMeasure().getType();
-        }
+  /** DOCUMENT ME! */
+  @XmlElement protected BigDecimal width;
 
-        if (model.getSize() != null) {
-            this.size = model.getSize().getType();
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if (model.getContainer() != null) {
-            this.container = model.getContainer().getType();
-        }
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.Dimension,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(Dimension model, HttpServletRequest request) {
+    this.width  = model.getWidth();
+    this.depth  = model.getDepth();
+    this.height = model.getHeight();
+    this.girth  = model.getGirth();
+
+    if (model.getDimensionUnitOfMeasure() != null) {
+      this.dimensionUnitOfMeasure = model.getDimensionUnitOfMeasure().getType();
     }
 
-    @Override
-    public void wrapSummary(Dimension model, HttpServletRequest request) {
-        wrapDetails(model, request);
+    if (model.getSize() != null) {
+      this.size = model.getSize().getType();
     }
-}
+
+    if (model.getContainer() != null) {
+      this.container = model.getContainer().getType();
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.Dimension,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(Dimension model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class DimensionWrapper

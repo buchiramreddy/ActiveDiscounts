@@ -20,28 +20,43 @@ import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.State;
 import org.broadleafcommerce.profile.core.domain.StateImpl;
+
 import org.testng.annotations.DataProvider;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AddressDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "setupAddress")
-    public static Object[][] createAddress() {
-        Address address1 = new AddressImpl();
-        address1.setAddressLine1("1234 Merit Drive");
-        address1.setCity("Dallas");
-        State state = new StateImpl();
-        state.setAbbreviation("TX");
-        address1.setState(state);
-        address1.setPostalCode("75251");
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupAddress")
+  public static Object[][] createAddress() {
+    Address address1 = new AddressImpl();
+    address1.setAddressLine1("1234 Merit Drive");
+    address1.setCity("Dallas");
 
-        Address address2 = new AddressImpl();
-        address2.setAddressLine1("12 Testing Drive");
-        address2.setCity("San Jose");
-        state = new StateImpl();
-        state.setAbbreviation("CA");
-        address2.setState(state);
-        address2.setPostalCode("75251");
+    State state = new StateImpl();
+    state.setAbbreviation("TX");
+    address1.setState(state);
+    address1.setPostalCode("75251");
 
-        return new Object[][] { new Object[] { address1 }, new Object[] { address2 } };
-    }
-}
+    Address address2 = new AddressImpl();
+    address2.setAddressLine1("12 Testing Drive");
+    address2.setCity("San Jose");
+    state = new StateImpl();
+    state.setAbbreviation("CA");
+    address2.setState(state);
+    address2.setPostalCode("75251");
+
+    return new Object[][] { new Object[] { address1 }, new Object[] { address2 } };
+  }
+} // end class AddressDataProvider

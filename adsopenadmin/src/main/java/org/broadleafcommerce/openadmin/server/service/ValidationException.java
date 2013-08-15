@@ -17,34 +17,63 @@
 package org.broadleafcommerce.openadmin.server.service;
 
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.openadmin.dto.Entity;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
 
 
 /**
  * Thrown when an entity fails validation when attempting to populate an actual Hibernate entity based on its DTO
- * representation
+ * representation.
  *
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
- * @author Phillip Verheyden (phillipuniverse)
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 public class ValidationException extends ServiceException {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    
-    protected Entity entity;
+  private static final long serialVersionUID = 1L;
 
-    public ValidationException(Entity entity, String message) {
-        super(message);
-        setEntity(entity);
-    }
-    
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
-    
-    public Entity getEntity() {
-        return entity;
-    }
-    
-}
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected Entity entity;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new ValidationException object.
+   *
+   * @param  entity   DOCUMENT ME!
+   * @param  message  DOCUMENT ME!
+   */
+  public ValidationException(Entity entity, String message) {
+    super(message);
+    setEntity(entity);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Entity getEntity() {
+    return entity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entity  DOCUMENT ME!
+   */
+  public void setEntity(Entity entity) {
+    this.entity = entity;
+  }
+
+} // end class ValidationException

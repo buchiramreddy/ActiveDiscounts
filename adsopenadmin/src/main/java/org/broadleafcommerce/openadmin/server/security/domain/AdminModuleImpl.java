@@ -16,16 +16,6 @@
 
 package org.broadleafcommerce.openadmin.server.security.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,126 +28,256 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
 /**
+ * DOCUMENT ME!
  *
- * @author elbertbautista
- *
+ * @author   elbertbautista
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(friendlyName = "AdminModuleImpl_baseAdminModule")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ADMIN_MODULE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-@AdminPresentationClass(friendlyName = "AdminModuleImpl_baseAdminModule")
 public class AdminModuleImpl implements AdminModule {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "AdminModuleId")
-    @GenericGenerator(
-        name="AdminModuleId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="AdminModuleImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.openadmin.server.security.domain.AdminModuleImpl")
-        }
-    )
-    @Column(name = "ADMIN_MODULE_ID")
-    @AdminPresentation(friendlyName = "AdminModuleImpl_Admin_Module_ID", group = "AdminModuleImpl_Primary_Key", visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "NAME", nullable=false)
-    @Index(name="ADMINMODULE_NAME_INDEX", columnNames={"NAME"})
-    @AdminPresentation(friendlyName = "AdminModuleImpl_Name", order=1, group = "AdminModuleImpl_Module", prominent=true)
-    protected String name;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminModuleImpl_Display_Order",
+    order        = 4,
+    group        = "AdminModuleImpl_Module",
+    prominent    = true
+  )
+  @Column(
+    name     = "DISPLAY_ORDER",
+    nullable = true
+  )
+  protected Integer displayOrder;
 
-    @Column(name = "MODULE_KEY", nullable=false)
-    @AdminPresentation(friendlyName = "AdminModuleImpl_Module_Key", order=2, group = "AdminModuleImpl_Module", prominent=true)
-    protected String moduleKey;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminModuleImpl_Icon",
+    order        = 3,
+    group        = "AdminModuleImpl_Module",
+    prominent    = true
+  )
+  @Column(
+    name     = "ICON",
+    nullable = true
+  )
+  protected String icon;
 
-    @Column(name = "ICON", nullable=true)
-    @AdminPresentation(friendlyName = "AdminModuleImpl_Icon", order=3, group = "AdminModuleImpl_Module", prominent=true)
-    protected String icon;
-
-    @OneToMany(mappedBy = "module", targetEntity = AdminSectionImpl.class)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-    @BatchSize(size = 50)
-    protected List<AdminSection> sections = new ArrayList<AdminSection>();
-
-    @Column(name = "DISPLAY_ORDER", nullable=true)
-    @AdminPresentation(friendlyName = "AdminModuleImpl_Display_Order", order=4, group = "AdminModuleImpl_Module", prominent=true)
-    protected Integer displayOrder;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminModuleImpl_Admin_Module_ID",
+    group        = "AdminModuleImpl_Primary_Key",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "ADMIN_MODULE_ID")
+  @GeneratedValue(generator = "AdminModuleId")
+  @GenericGenerator(
+    name       = "AdminModuleId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "AdminModuleImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.openadmin.server.security.domain.AdminModuleImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminModuleImpl_Module_Key",
+    order        = 2,
+    group        = "AdminModuleImpl_Module",
+    prominent    = true
+  )
+  @Column(
+    name     = "MODULE_KEY",
+    nullable = false
+  )
+  protected String moduleKey;
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminModuleImpl_Name",
+    order        = 1,
+    group        = "AdminModuleImpl_Module",
+    prominent    = true
+  )
+  @Column(
+    name     = "NAME",
+    nullable = false
+  )
+  @Index(
+    name        = "ADMINMODULE_NAME_INDEX",
+    columnNames = { "NAME" }
+  )
+  protected String name;
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
+  /** DOCUMENT ME! */
+  @BatchSize(size = 50)
+  @Cache(
+    usage  = CacheConcurrencyStrategy.READ_WRITE,
+    region = "blStandardElements"
+  )
+  @OneToMany(
+    mappedBy     = "module",
+    targetEntity = AdminSectionImpl.class
+  )
+  protected List<AdminSection> sections = new ArrayList<AdminSection>();
 
-    @Override
-    public String getModuleKey() {
-        return moduleKey;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setModuleKey(String moduleKey) {
-        this.moduleKey = moduleKey;
-    }
+  /**
+   * Set all properties except the sections.
+   *
+   * @return  set all properties except the sections.
+   */
+  public AdminModuleDTO getAdminModuleDTO() {
+    AdminModuleDTO dto = new AdminModuleDTO();
+    dto.setDisplayOrder(displayOrder);
+    dto.setIcon(icon);
+    dto.setId(id);
+    dto.setModuleKey(moduleKey);
+    dto.setName(name);
 
-    @Override
-    public String getIcon() {
-        return icon;
-    }
+    return dto;
+  }
 
-    @Override
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public List<AdminSection> getSections() {
-        return sections;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getDisplayOrder()
+   */
+  @Override public Integer getDisplayOrder() {
+    return displayOrder;
+  }
 
-    @Override
-    public void setSections(List<AdminSection> sections) {
-        this.sections = sections;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getIcon()
+   */
+  @Override public String getIcon() {
+    return icon;
+  }
 
-    @Override
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Set all properties except the sections.
-     * @return
-     */
-    public AdminModuleDTO getAdminModuleDTO() {
-        AdminModuleDTO dto = new AdminModuleDTO();
-        dto.setDisplayOrder(displayOrder);
-        dto.setIcon(icon);
-        dto.setId(id);
-        dto.setModuleKey(moduleKey);
-        dto.setName(name);
-        return dto;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getModuleKey()
+   */
+  @Override public String getModuleKey() {
+    return moduleKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#getSections()
+   */
+  @Override public List<AdminSection> getSections() {
+    return sections;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setDisplayOrder(java.lang.Integer)
+   */
+  @Override public void setDisplayOrder(Integer displayOrder) {
+    this.displayOrder = displayOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setIcon(java.lang.String)
+   */
+  @Override public void setIcon(String icon) {
+    this.icon = icon;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setModuleKey(java.lang.String)
+   */
+  @Override public void setModuleKey(String moduleKey) {
+    this.moduleKey = moduleKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminModule#setSections(java.util.List)
+   */
+  @Override public void setSections(List<AdminSection> sections) {
+    this.sections = sections;
+  }
+} // end class AdminModuleImpl

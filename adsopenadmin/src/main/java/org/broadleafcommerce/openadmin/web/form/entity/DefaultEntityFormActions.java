@@ -17,16 +17,21 @@
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class DefaultEntityFormActions {
-    
-    public static final EntityFormAction SAVE = new EntityFormAction(EntityFormAction.SAVE)
-        .withButtonType("submit")
-        .withButtonClass("submit-button")
-        .withDisplayText("Save");
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final EntityFormAction DELETE = new EntityFormAction(EntityFormAction.DELETE)
-        .withButtonClass("delete-button alert")
-        .withDisplayText("Delete");
-    
+  /** DOCUMENT ME! */
+  public static final EntityFormAction SAVE = new EntityFormAction(EntityFormAction.SAVE).withButtonType("submit")
+    .withButtonClass("submit-button").withDisplayText("Save");
+
+  /** DOCUMENT ME! */
+  public static final EntityFormAction DELETE = new EntityFormAction(EntityFormAction.DELETE).withButtonClass(
+      "delete-button alert").withDisplayText("Delete");
+
 }

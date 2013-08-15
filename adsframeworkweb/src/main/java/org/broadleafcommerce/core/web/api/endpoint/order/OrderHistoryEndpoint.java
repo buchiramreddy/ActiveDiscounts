@@ -16,62 +16,83 @@
 
 package org.broadleafcommerce.core.web.api.endpoint.order;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.web.api.endpoint.BaseEndpoint;
 import org.broadleafcommerce.core.web.api.wrapper.OrderWrapper;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.web.core.CustomerState;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
- * This endpoint depends on JAX-RS.  It should be extended by components that actually wish 
- * to provide an endpoint.  The annotations such as @Path, @Scope, @Context, @PathParam, @QueryParam, 
- * @GET, @POST, @PUT, and @DELETE are purposely not provided here to allow implementors finer control over 
- * the details of the endpoint.
- * <p/>
- * User: Kelly Tisdell
- * Date: 4/10/12
+ * This endpoint depends on JAX-RS. It should be extended by components that actually wish to provide an endpoint. The
+ * annotations such as @Path, @Scope, @Context, @PathParam, @QueryParam,
+ *
+ * @GET      , @POST, @PUT, and @DELETE are purposely not provided here to allow implementors finer control over the
+ *           details of the endpoint.
+ *
+ *           <p>User: Kelly Tisdell Date: 4/10/12</p>
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public abstract class OrderHistoryEndpoint extends BaseEndpoint {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blOrderService")
-    protected OrderService orderService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    public List<OrderWrapper> findOrdersForCustomer(HttpServletRequest request,
-            String orderStatus) {
-        Customer customer = CustomerState.getCustomer(request);
-        OrderStatus status = OrderStatus.getInstance(orderStatus);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if (customer != null && status != null) {
-            List<Order> orders = orderService.findOrdersForCustomer(customer, status);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request      DOCUMENT ME!
+   * @param   orderStatus  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  WebApplicationException  DOCUMENT ME!
+   */
+  public List<OrderWrapper> findOrdersForCustomer(HttpServletRequest request,
+    String orderStatus) {
+    Customer    customer = CustomerState.getCustomer(request);
+    OrderStatus status   = OrderStatus.getInstance(orderStatus);
 
-            if (orders != null && !orders.isEmpty()) {
-                List<OrderWrapper> wrappers = new ArrayList<OrderWrapper>();
-                for (Order order : orders) {
-                    OrderWrapper wrapper = (OrderWrapper) context.getBean(OrderWrapper.class.getName());
-                    wrapper.wrapSummary(order, request);
-                    wrappers.add(wrapper);
-                }
+    if ((customer != null) && (status != null)) {
+      List<Order> orders = orderService.findOrdersForCustomer(customer, status);
 
-                return wrappers;
-            }
+      if ((orders != null) && !orders.isEmpty()) {
+        List<OrderWrapper> wrappers = new ArrayList<OrderWrapper>();
 
-            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .type(MediaType.TEXT_PLAIN).entity("Cart could not be found").build());
+        for (Order order : orders) {
+          OrderWrapper wrapper = (OrderWrapper) context.getBean(OrderWrapper.class.getName());
+          wrapper.wrapSummary(order, request);
+          wrappers.add(wrapper);
         }
 
-        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-                .type(MediaType.TEXT_PLAIN).entity("Could not find customer associated with request. " +
-                        "Ensure that customer ID is passed in the request as header or request parameter : customerId").build());
+        return wrappers;
+      }
+
+      throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(
+          "Cart could not be found").build());
     }
-}
+
+    throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).type(MediaType.TEXT_PLAIN).entity(
+        "Could not find customer associated with request. "
+        + "Ensure that customer ID is passed in the request as header or request parameter : customerId").build());
+  } // end method findOrdersForCustomer
+} // end class OrderHistoryEndpoint

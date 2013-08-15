@@ -18,15 +18,22 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 
 import org.springframework.stereotype.Component;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blStringLikeFilterValueConverter")
 public class StringLikeFilterValueConverter implements FilterValueConverter<String> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String convert(String stringValue) {
-        return stringValue.toLowerCase() + "%";
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter#convert(java.lang.String)
+   */
+  @Override public String convert(String stringValue) {
+    return stringValue.toLowerCase() + "%";
+  }
 
 }

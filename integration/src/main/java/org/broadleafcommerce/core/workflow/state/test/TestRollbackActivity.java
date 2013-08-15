@@ -19,16 +19,21 @@ package org.broadleafcommerce.core.workflow.state.test;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 
+
 /**
- * Create an activity that simply throws an exception in order to engage the rollback behavior for the workflow
+ * Create an activity that simply throws an exception in order to engage the rollback behavior for the workflow.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class TestRollbackActivity extends BaseActivity<ProcessContext> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public ProcessContext execute(ProcessContext context) throws Exception {
-        throw new IllegalArgumentException("TestRollbackActivity Accessed...");
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.workflow.ProcessContext)
+   */
+  @Override public ProcessContext execute(ProcessContext context) throws Exception {
+    throw new IllegalArgumentException("TestRollbackActivity Accessed...");
+  }
 
 }

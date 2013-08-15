@@ -18,16 +18,33 @@ package org.broadleafcommerce.core.catalog;
 
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
+
 import org.testng.annotations.DataProvider;
 
-public class CategoryDaoDataProvider {
 
-    @DataProvider(name = "basicCategory")
-    public static Object[][] provideBasicCategory() {
-        Category category = new CategoryImpl();
-        category.setName("Yuban");
-        category.setDescription("Yuban");
-        category.setId(1001L);
-        return new Object[][] { { category } };
-    }
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class CategoryDaoDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicCategory")
+  public static Object[][] provideBasicCategory() {
+    Category category = new CategoryImpl();
+    category.setName("Yuban");
+    category.setDescription("Yuban");
+    category.setId(1001L);
+
+    return new Object[][] {
+        { category }
+      };
+  }
 }

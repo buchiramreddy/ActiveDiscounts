@@ -18,14 +18,28 @@ package org.broadleafcommerce.common.exception;
 
 /**
  * Interface indicating that the exception knows how to return the root cause message.
- * 
- * @author bpolster
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
-public interface RootCauseAccessor  {
+public interface RootCauseAccessor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
 
-    public Throwable getRootCause();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Throwable getRootCause();
 
-    public String getRootCauseMessage();
-    
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getRootCauseMessage();
+
 }

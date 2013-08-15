@@ -17,8 +17,13 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum UnspecifiedBooleanType {
-    TRUE,FALSE,UNSPECIFIED
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  TRUE, FALSE, UNSPECIFIED
 }

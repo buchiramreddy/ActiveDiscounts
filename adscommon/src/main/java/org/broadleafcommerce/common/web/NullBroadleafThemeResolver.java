@@ -16,30 +16,42 @@
 
 package org.broadleafcommerce.common.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.Theme;
 import org.broadleafcommerce.common.site.domain.ThemeDTO;
+
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * Returns null for the Site (typical for non-multi-site implementations of
- * Broadleaf Commerce.
+ * Returns null for the Site (typical for non-multi-site implementations of Broadleaf Commerce.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class NullBroadleafThemeResolver implements BroadleafThemeResolver {
-    private final Theme theme = new ThemeDTO();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public Theme resolveTheme(HttpServletRequest request, Site site) {
-        return resolveTheme(new ServletWebRequest(request));
-    }
-    
-    @Override
-    public Theme resolveTheme(WebRequest request) {
-        return theme;
-    }
+  private final Theme theme = new ThemeDTO();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafThemeResolver#resolveTheme(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public Theme resolveTheme(WebRequest request) {
+    return theme;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafThemeResolver#resolveTheme(javax.servlet.http.HttpServletRequest, org.broadleafcommerce.common.site.domain.Site)
+   */
+  @Override public Theme resolveTheme(HttpServletRequest request, Site site) {
+    return resolveTheme(new ServletWebRequest(request));
+  }
 }

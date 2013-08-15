@@ -17,30 +17,67 @@
 package org.broadleafcommerce.openadmin.web.form.component;
 
 import org.broadleafcommerce.common.media.domain.Media;
+
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 
+
 /**
- * @author bpolster
+ * DOCUMENT ME!
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class MediaField extends Field {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected Media media;
-    protected String height;
+  /** DOCUMENT ME! */
+  protected String height;
 
-    public Media getMedia() {
-        return media;
-    }
+  /** DOCUMENT ME! */
+  protected Media media;
 
-    public void setMedia(Media media) {
-        this.media = media;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getHeight() {
-        return height;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getHeight() {
+    return height;
+  }
 
-    public void setHeight(String height) {
-        this.height = height;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Media getMedia() {
+    return media;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  height  DOCUMENT ME!
+   */
+  public void setHeight(String height) {
+    this.height = height;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  media  DOCUMENT ME!
+   */
+  public void setMedia(Media media) {
+    this.media = media;
+  }
+
+} // end class MediaField

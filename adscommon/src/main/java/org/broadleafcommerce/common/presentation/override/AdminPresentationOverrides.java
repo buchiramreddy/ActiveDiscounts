@@ -21,25 +21,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 /**
- * 
- * @author pverheyden
- * @deprecated use {@link org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides} instead
+ * DOCUMENT ME!
+ *
+ * @author      pverheyden
+ * @deprecated  use {@link org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides} instead
+ * @version     $Revision$, $Date$
  */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Deprecated
 public @interface AdminPresentationOverrides {
-
-    AdminPresentationOverride[] value() default {};
-
-    AdminPresentationCollectionOverride[] collections() default {};
-
-    AdminPresentationAdornedTargetCollectionOverride[] adornedTargetCollections() default {};
-
-    AdminPresentationMapOverride[] maps() default {};
-
-    AdminPresentationToOneLookupOverride[] toOneLookups() default{};
-
-    AdminPresentationDataDrivenEnumerationOverride[] dataDrivenEnums() default{};
+  AdminPresentationOverride[] value() default {};
+  AdminPresentationCollectionOverride[] collections() default {};
+  AdminPresentationAdornedTargetCollectionOverride[] adornedTargetCollections() default {};
+  AdminPresentationMapOverride[] maps() default {};
+  AdminPresentationToOneLookupOverride[] toOneLookups() default {};
+  AdminPresentationDataDrivenEnumerationOverride[] dataDrivenEnums() default {};
 }

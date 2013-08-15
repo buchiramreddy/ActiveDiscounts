@@ -16,6 +16,15 @@
 
 package org.broadleafcommerce.core.order.service;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.dao.FulfillmentGroupDao;
 import org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao;
 import org.broadleafcommerce.core.order.domain.BundleOrderItem;
@@ -31,387 +40,482 @@ import org.broadleafcommerce.core.order.service.call.FulfillmentGroupItemRequest
 import org.broadleafcommerce.core.order.service.call.FulfillmentGroupRequest;
 import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
+
 import org.broadleafcommerce.profile.core.domain.Address;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blFulfillmentGroupService")
 public class FulfillmentGroupServiceImpl implements FulfillmentGroupService {
+  /** DOCUMENT ME! */
+  @Resource(name = "blFulfillmentGroupDao")
+  protected FulfillmentGroupDao fulfillmentGroupDao;
 
-    @Resource(name="blFulfillmentGroupDao")
-    protected FulfillmentGroupDao fulfillmentGroupDao;
-    
-    @Resource(name = "blFulfillmentGroupItemDao")
-    protected FulfillmentGroupItemDao fulfillmentGroupItemDao;
-    
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
-    
-    @Resource(name = "blOrderMultishipOptionService")
-    protected OrderMultishipOptionService orderMultishipOptionService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blFulfillmentGroupItemDao")
+  protected FulfillmentGroupItemDao fulfillmentGroupItemDao;
 
-    @Override
-    @Transactional("blTransactionManager")
-    public FulfillmentGroup save(FulfillmentGroup fulfillmentGroup) {
-        if (fulfillmentGroup.getSequence() == null) {
-            fulfillmentGroup.setSequence(
-                    fulfillmentGroupDao.readNextFulfillmentGroupSequnceForOrder(
-                            fulfillmentGroup.getOrder()));
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderMultishipOptionService")
+  protected OrderMultishipOptionService orderMultishipOptionService;
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#save(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public FulfillmentGroup save(FulfillmentGroup fulfillmentGroup) {
+    if (fulfillmentGroup.getSequence() == null) {
+      fulfillmentGroup.setSequence(
+        fulfillmentGroupDao.readNextFulfillmentGroupSequnceForOrder(
+          fulfillmentGroup.getOrder()));
+    }
+
+    return fulfillmentGroupDao.save(fulfillmentGroup);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#createEmptyFulfillmentGroup()
+   */
+  @Override public FulfillmentGroup createEmptyFulfillmentGroup() {
+    return fulfillmentGroupDao.create();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#findFulfillmentGroupById(java.lang.Long)
+   */
+  @Override public FulfillmentGroup findFulfillmentGroupById(Long fulfillmentGroupId) {
+    return fulfillmentGroupDao.readFulfillmentGroupById(fulfillmentGroupId);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#delete(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void delete(FulfillmentGroup fulfillmentGroup) {
+    fulfillmentGroupDao.delete(fulfillmentGroup);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#addFulfillmentGroupToOrder(org.broadleafcommerce.core.order.service.call.FulfillmentGroupRequest,
+   *       boolean)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public FulfillmentGroup addFulfillmentGroupToOrder(FulfillmentGroupRequest fulfillmentGroupRequest,
+    boolean priceOrder) throws PricingException {
+    FulfillmentGroup fg = fulfillmentGroupDao.create();
+    fg.setAddress(fulfillmentGroupRequest.getAddress());
+    fg.setOrder(fulfillmentGroupRequest.getOrder());
+    fg.setPhone(fulfillmentGroupRequest.getPhone());
+    fg.setFulfillmentOption(fulfillmentGroupRequest.getOption());
+
+    for (int i = 0; i < fulfillmentGroupRequest.getFulfillmentGroupItemRequests().size(); i++) {
+      FulfillmentGroupItemRequest request = fulfillmentGroupRequest.getFulfillmentGroupItemRequests().get(i);
+      request.setFulfillmentGroup(fg);
+      request.setOrder(fulfillmentGroupRequest.getOrder());
+
+      boolean shouldPriceOrder = (priceOrder
+          && (i == (fulfillmentGroupRequest.getFulfillmentGroupItemRequests().size() - 1)));
+      fg = addItemToFulfillmentGroup(request, shouldPriceOrder);
+    }
+
+    return fg;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#addItemToFulfillmentGroup(org.broadleafcommerce.core.order.service.call.FulfillmentGroupItemRequest,
+   *       boolean)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public FulfillmentGroup addItemToFulfillmentGroup(FulfillmentGroupItemRequest fulfillmentGroupItemRequest,
+    boolean priceOrder) throws PricingException {
+    Order            order            = fulfillmentGroupItemRequest.getOrder();
+    OrderItem        item             = fulfillmentGroupItemRequest.getOrderItem();
+    FulfillmentGroup fulfillmentGroup = fulfillmentGroupItemRequest.getFulfillmentGroup();
+
+    if (order == null) {
+      if (item.getOrder() != null) {
+        order = item.getOrder();
+      } else {
+        throw new IllegalArgumentException("Order must not be null");
+      }
+    }
+
+    // 1) Find the order item's existing fulfillment group, if any
+    for (FulfillmentGroup fg : order.getFulfillmentGroups()) {
+      Iterator<FulfillmentGroupItem> itr = fg.getFulfillmentGroupItems().iterator();
+
+      while (itr.hasNext()) {
+        FulfillmentGroupItem fgItem = itr.next();
+
+        if (fgItem.getOrderItem().equals(item)) {
+          // 2) remove item from it's existing fulfillment group
+          itr.remove();
+          fulfillmentGroupItemDao.delete(fgItem);
         }
-
-        return fulfillmentGroupDao.save(fulfillmentGroup);
+      }
     }
 
-    @Override
-    public FulfillmentGroup createEmptyFulfillmentGroup() {
-        return fulfillmentGroupDao.create();
+    if ((fulfillmentGroup == null) || (fulfillmentGroup.getId() == null)) {
+      // API user is trying to add an item to a fulfillment group not created
+      fulfillmentGroup = fulfillmentGroupDao.create();
+
+      FulfillmentGroupRequest fgRequest = new FulfillmentGroupRequest();
+      fgRequest.setOrder(order);
+      fulfillmentGroup = addFulfillmentGroupToOrder(fgRequest, false);
+      fulfillmentGroup = save(fulfillmentGroup);
+      order.getFulfillmentGroups().add(fulfillmentGroup);
     }
 
-    @Override
-    public FulfillmentGroup findFulfillmentGroupById(Long fulfillmentGroupId) {
-        return fulfillmentGroupDao.readFulfillmentGroupById(fulfillmentGroupId);
-    }
+    FulfillmentGroupItem fgi = createFulfillmentGroupItemFromOrderItem(item, fulfillmentGroup,
+        fulfillmentGroupItemRequest.getQuantity());
+    fgi = fulfillmentGroupItemDao.save(fgi);
 
-    @Override
-    @Transactional("blTransactionManager")
-    public void delete(FulfillmentGroup fulfillmentGroup) {
-        fulfillmentGroupDao.delete(fulfillmentGroup);
-    }
+    // 3) add the item to the new fulfillment group
+    fulfillmentGroup.addFulfillmentGroupItem(fgi);
+    order = orderService.save(order, priceOrder);
 
-    @Override
-    @Transactional("blTransactionManager")
-    public FulfillmentGroup addFulfillmentGroupToOrder(FulfillmentGroupRequest fulfillmentGroupRequest, boolean priceOrder) throws PricingException {
-        FulfillmentGroup fg = fulfillmentGroupDao.create();
-        fg.setAddress(fulfillmentGroupRequest.getAddress());
-        fg.setOrder(fulfillmentGroupRequest.getOrder());
-        fg.setPhone(fulfillmentGroupRequest.getPhone());
-        fg.setFulfillmentOption(fulfillmentGroupRequest.getOption());
+    return fulfillmentGroup;
+  } // end method addItemToFulfillmentGroup
 
-        for (int i = 0; i < fulfillmentGroupRequest.getFulfillmentGroupItemRequests().size(); i++) {
-            FulfillmentGroupItemRequest request = fulfillmentGroupRequest.getFulfillmentGroupItemRequests().get(i);
-            request.setFulfillmentGroup(fg);
-            request.setOrder(fulfillmentGroupRequest.getOrder());
-            
-            boolean shouldPriceOrder = (priceOrder && (i == (fulfillmentGroupRequest.getFulfillmentGroupItemRequests().size() - 1)));
-            fg = addItemToFulfillmentGroup(request, shouldPriceOrder);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#removeOrderItemFromFullfillmentGroups(org.broadleafcommerce.core.order.domain.Order,
+   *       org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void removeOrderItemFromFullfillmentGroups(Order order, OrderItem orderItem) {
+    List<FulfillmentGroup> fulfillmentGroups = order.getFulfillmentGroups();
 
-        return fg;
-    }
+    for (FulfillmentGroup fulfillmentGroup : fulfillmentGroups) {
+      Iterator<FulfillmentGroupItem> itr = fulfillmentGroup.getFulfillmentGroupItems().iterator();
 
-    @Override
-    @Transactional("blTransactionManager")
-    public FulfillmentGroup addItemToFulfillmentGroup(FulfillmentGroupItemRequest fulfillmentGroupItemRequest, boolean priceOrder) throws PricingException {
-        Order order = fulfillmentGroupItemRequest.getOrder();
-        OrderItem item = fulfillmentGroupItemRequest.getOrderItem();
-        FulfillmentGroup fulfillmentGroup = fulfillmentGroupItemRequest.getFulfillmentGroup();
-        
-        if (order == null) {
-            if (item.getOrder() != null) {
-                order = item.getOrder();
-            } else {
-                throw new IllegalArgumentException("Order must not be null");
+      while (itr.hasNext()) {
+        FulfillmentGroupItem fulfillmentGroupItem = itr.next();
+
+        if (fulfillmentGroupItem.getOrderItem().equals(orderItem)) {
+          itr.remove();
+          fulfillmentGroupItemDao.delete(fulfillmentGroupItem);
+        } else if (orderItem instanceof BundleOrderItem) {
+          BundleOrderItem bundleOrderItem = (BundleOrderItem) orderItem;
+
+          for (DiscreteOrderItem discreteOrderItem : bundleOrderItem.getDiscreteOrderItems()) {
+            if (fulfillmentGroupItem.getOrderItem().equals(discreteOrderItem)) {
+              itr.remove();
+              fulfillmentGroupItemDao.delete(fulfillmentGroupItem);
+
+              break;
             }
+          }
         }
-        
-        // 1) Find the order item's existing fulfillment group, if any
-        for (FulfillmentGroup fg : order.getFulfillmentGroups()) {
-            Iterator<FulfillmentGroupItem> itr = fg.getFulfillmentGroupItems().iterator();
-            while (itr.hasNext()) {
-                FulfillmentGroupItem fgItem = itr.next();
-                if (fgItem.getOrderItem().equals(item)) {
-                    // 2) remove item from it's existing fulfillment group
-                    itr.remove();
-                    fulfillmentGroupItemDao.delete(fgItem);
-                }
-            }
-        }
-
-        if (fulfillmentGroup == null || fulfillmentGroup.getId() == null) {
-            // API user is trying to add an item to a fulfillment group not created
-            fulfillmentGroup = fulfillmentGroupDao.create();
-            FulfillmentGroupRequest fgRequest = new FulfillmentGroupRequest();
-            fgRequest.setOrder(order);
-            fulfillmentGroup = addFulfillmentGroupToOrder(fgRequest, false);
-            fulfillmentGroup = save(fulfillmentGroup);
-            order.getFulfillmentGroups().add(fulfillmentGroup);
-        }
-
-        FulfillmentGroupItem fgi = createFulfillmentGroupItemFromOrderItem(item, fulfillmentGroup, fulfillmentGroupItemRequest.getQuantity());
-        fgi = fulfillmentGroupItemDao.save(fgi);
-
-        // 3) add the item to the new fulfillment group
-        fulfillmentGroup.addFulfillmentGroupItem(fgi);
-        order = orderService.save(order, priceOrder);
-
-        return fulfillmentGroup;
+      }
     }
-    
-    @Override
-    @Transactional("blTransactionManager")
-    public void removeOrderItemFromFullfillmentGroups(Order order, OrderItem orderItem) {
-        List<FulfillmentGroup> fulfillmentGroups = order.getFulfillmentGroups();
-        for (FulfillmentGroup fulfillmentGroup : fulfillmentGroups) {
-            Iterator<FulfillmentGroupItem> itr = fulfillmentGroup.getFulfillmentGroupItems().iterator();
-            while (itr.hasNext()) {
-                FulfillmentGroupItem fulfillmentGroupItem = itr.next();
-                if (fulfillmentGroupItem.getOrderItem().equals(orderItem)) {
-                    itr.remove();
-                    fulfillmentGroupItemDao.delete(fulfillmentGroupItem);
-                } else if (orderItem instanceof BundleOrderItem) {
-                    BundleOrderItem bundleOrderItem = (BundleOrderItem) orderItem;
-                    for (DiscreteOrderItem discreteOrderItem : bundleOrderItem.getDiscreteOrderItems()) {
-                        if (fulfillmentGroupItem.getOrderItem().equals(discreteOrderItem)){
-                            itr.remove();
-                            fulfillmentGroupItemDao.delete(fulfillmentGroupItem);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+  } // end method removeOrderItemFromFullfillmentGroups
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#collapseToOneFulfillmentGroup(org.broadleafcommerce.core.order.domain.Order,
+   *       boolean)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Order collapseToOneFulfillmentGroup(Order order, boolean priceOrder) throws PricingException {
+    if ((order.getFulfillmentGroups() == null) || (order.getFulfillmentGroups().size() < 2)) {
+      return order;
     }
-    
-    @Override
-    @Transactional("blTransactionManager")
-    public Order collapseToOneFulfillmentGroup(Order order, boolean priceOrder) throws PricingException {
-        if (order.getFulfillmentGroups() == null || order.getFulfillmentGroups().size() < 2) {
-            return order;
+
+    // Get the default (first) fulfillment group to collapse the others into
+    ListIterator<FulfillmentGroup> fgIter      = order.getFulfillmentGroups().listIterator();
+    FulfillmentGroup               collapsedFg = fgIter.next();
+
+    // Build out a map representing the default fgs items keyed by OrderItem id
+    Map<Long, FulfillmentGroupItem> fgOrderItemMap = new HashMap<Long, FulfillmentGroupItem>();
+
+    for (FulfillmentGroupItem fgi : collapsedFg.getFulfillmentGroupItems()) {
+      fgOrderItemMap.put(fgi.getOrderItem().getId(), fgi);
+    }
+
+    // For all non default fgs, collapse the items into the default fg
+    while (fgIter.hasNext()) {
+      FulfillmentGroup                   fg         = fgIter.next();
+      ListIterator<FulfillmentGroupItem> fgItemIter = fg.getFulfillmentGroupItems().listIterator();
+
+      while (fgItemIter.hasNext()) {
+        FulfillmentGroupItem fgi = fgItemIter.next();
+
+        Long                 orderItemId = fgi.getOrderItem().getId();
+        FulfillmentGroupItem matchingFgi = fgOrderItemMap.get(orderItemId);
+
+        if (matchingFgi == null) {
+          matchingFgi = fulfillmentGroupItemDao.create();
+          matchingFgi.setFulfillmentGroup(collapsedFg);
+          matchingFgi.setOrderItem(fgi.getOrderItem());
+          matchingFgi.setQuantity(fgi.getQuantity());
+          matchingFgi = fulfillmentGroupItemDao.save(matchingFgi);
+          collapsedFg.getFulfillmentGroupItems().add(matchingFgi);
+          fgOrderItemMap.put(orderItemId, matchingFgi);
+        } else {
+          matchingFgi.setQuantity(matchingFgi.getQuantity() + fgi.getQuantity());
         }
-        
-        // Get the default (first) fulfillment group to collapse the others into
-        ListIterator<FulfillmentGroup> fgIter = order.getFulfillmentGroups().listIterator();
-        FulfillmentGroup collapsedFg = fgIter.next();
-        
-        // Build out a map representing the default fgs items keyed by OrderItem id
-        Map<Long, FulfillmentGroupItem> fgOrderItemMap = new HashMap<Long, FulfillmentGroupItem>();
-        for (FulfillmentGroupItem fgi : collapsedFg.getFulfillmentGroupItems()) {
-            fgOrderItemMap.put(fgi.getOrderItem().getId(), fgi);
+
+        fulfillmentGroupItemDao.delete(fgi);
+        fgItemIter.remove();
+      }
+
+      fulfillmentGroupDao.delete(fg);
+      fgIter.remove();
+    } // end while
+
+    return orderService.save(order, priceOrder);
+  } // end method collapseToOneFulfillmentGroup
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#matchFulfillmentGroupsToMultishipOptions(org.broadleafcommerce.core.order.domain.Order,
+   *       boolean)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Order matchFulfillmentGroupsToMultishipOptions(Order order, boolean priceOrder) throws PricingException {
+    List<OrderMultishipOption> multishipOptions = orderMultishipOptionService.findOrderMultishipOptions(order.getId());
+
+    // Build map of fulfillmentGroupItemId --> FulfillmentGroupItem.quantity
+    // Also build map of addressId:fulfillmentOptionId --> FulfillmentGroup
+    Map<Long, Integer>            fgItemQuantityMap = new HashMap<Long, Integer>();
+    Map<String, FulfillmentGroup> multishipGroups   = new HashMap<String, FulfillmentGroup>();
+
+    for (FulfillmentGroup fg : order.getFulfillmentGroups()) {
+      String key = getKey(fg.getAddress(), fg.getFulfillmentOption());
+      multishipGroups.put(key, fg);
+
+      for (FulfillmentGroupItem fgi : fg.getFulfillmentGroupItems()) {
+        fgItemQuantityMap.put(fgi.getId(), fgi.getQuantity());
+      }
+    }
+
+    for (OrderMultishipOption option : multishipOptions) {
+      String           key = getKey(option.getAddress(), option.getFulfillmentOption());
+      FulfillmentGroup fg  = multishipGroups.get(key);
+
+      // Get or create a fulfillment group that matches this OrderMultishipOption destination
+      if (fg == null) {
+        FulfillmentGroupRequest fgr = new FulfillmentGroupRequest();
+
+        fgr.setOrder(order);
+
+        if (option.getAddress() != null) {
+          fgr.setAddress(option.getAddress());
         }
-        
-        // For all non default fgs, collapse the items into the default fg
-        while (fgIter.hasNext()) {
-            FulfillmentGroup fg = fgIter.next();
-            ListIterator<FulfillmentGroupItem> fgItemIter = fg.getFulfillmentGroupItems().listIterator();
-            while (fgItemIter.hasNext()) {
-                FulfillmentGroupItem fgi = fgItemIter.next();
-                
-                Long orderItemId = fgi.getOrderItem().getId();
-                FulfillmentGroupItem matchingFgi = fgOrderItemMap.get(orderItemId);
-                
-                if (matchingFgi == null) {
-                    matchingFgi = fulfillmentGroupItemDao.create();
-                    matchingFgi.setFulfillmentGroup(collapsedFg);
-                    matchingFgi.setOrderItem(fgi.getOrderItem());
-                    matchingFgi.setQuantity(fgi.getQuantity());
-                    matchingFgi = fulfillmentGroupItemDao.save(matchingFgi);
-                    collapsedFg.getFulfillmentGroupItems().add(matchingFgi);
-                    fgOrderItemMap.put(orderItemId, matchingFgi);
-                } else {
-                    matchingFgi.setQuantity(matchingFgi.getQuantity() + fgi.getQuantity());
-                }
-                
-                fulfillmentGroupItemDao.delete(fgi);
-                fgItemIter.remove();
-            }
+
+        if (option.getFulfillmentOption() != null) {
+          fgr.setOption(option.getFulfillmentOption());
+        }
+
+        fg = addFulfillmentGroupToOrder(fgr, false);
+        fg = save(fg);
+        order.getFulfillmentGroups().add(fg);
+      }
+
+      // See if there is a fulfillment group item that matches this OrderMultishipOption
+      // OrderItem request
+      FulfillmentGroupItem fulfillmentGroupItem = null;
+
+      for (FulfillmentGroupItem fgi : fg.getFulfillmentGroupItems()) {
+        if (fgi.getOrderItem().getId() == option.getOrderItem().getId()) {
+          fulfillmentGroupItem = fgi;
+        }
+      }
+
+      // If there is no matching fulfillment group item, create a new one with quantity 1
+      if (fulfillmentGroupItem == null) {
+        fulfillmentGroupItem = fulfillmentGroupItemDao.create();
+        fulfillmentGroupItem.setFulfillmentGroup(fg);
+        fulfillmentGroupItem.setOrderItem(option.getOrderItem());
+        fulfillmentGroupItem.setQuantity(1);
+        fulfillmentGroupItem = fulfillmentGroupItemDao.save(fulfillmentGroupItem);
+        fg.getFulfillmentGroupItems().add(fulfillmentGroupItem);
+      } else {
+        // There are three potential scenarios where a fulfillment group item exists:
+        // 1: It has been previously created and exists in the database and
+        // has an id. This means it's in the fgItemQuantityMap. If there is
+        // remaining quantity in that map, we will decrement it for future
+        // usage. If the quantity is 0 in the map, that means that we have more
+        // items than we did before, and we must simply increment the quantity.
+        // (qty == 0 or qty is not null)
+        // 2: It was created in this request but has been saved to the database because
+        // it is a brand new fulfillment group and so it has an id.
+        // However, it does not have an entry in the fgItemQuantityMap,
+        // so we can simply increment the quantity.
+        // (qty == null)
+        // 3: It was created in this request and has not yet been saved to the database.
+        // This is because it was a previously existing fulfillment group that has new
+        // items. Therefore, we simply increment the quantity.
+        // (fulfillmentGroupItem.getId() == null)
+        if (fulfillmentGroupItem.getId() != null) {
+          Integer qty = fgItemQuantityMap.get(fulfillmentGroupItem.getId());
+
+          if ((qty == null) || (qty == 0)) {
+            fulfillmentGroupItem.setQuantity(fulfillmentGroupItem.getQuantity() + 1);
+          } else {
+            qty -= 1;
+            fgItemQuantityMap.put(fulfillmentGroupItem.getId(), qty);
+          }
+        } else {
+          fulfillmentGroupItem.setQuantity(fulfillmentGroupItem.getQuantity() + 1);
+        }
+      } // end if-else
+
+      multishipGroups.put(key, fg);
+    } // end for
+
+    // Go through all of the items in the fgItemQuantityMap. For all items that have a
+    // zero quantity, we don't need to do anything because we've already matched them
+    // to the newly requested OrderMultishipOption. For items that have a non-zero quantity,
+    // there are two possible scenarios:
+    // 1: The quantity remaining matches exactly the quantity of a fulfillmentGroupItem.
+    // In this case, we can simply remove the fulfillmentGroupItem.
+    // 2: The quantity in the map is greater than what we've found. This means that we
+    // need to subtract the remaining old quantity from the new quantity.
+    // Furthermore, delete the empty fulfillment groups.
+    for (Entry<Long, Integer> entry : fgItemQuantityMap.entrySet()) {
+      if (entry.getValue() > 0) {
+        FulfillmentGroupItem fgi = fulfillmentGroupItemDao.readFulfillmentGroupItemById(entry.getKey());
+
+        if (fgi.getQuantity() == entry.getValue()) {
+          FulfillmentGroup fg = fgi.getFulfillmentGroup();
+          fg.getFulfillmentGroupItems().remove(fgi);
+          fulfillmentGroupItemDao.delete(fgi);
+
+          if (fg.getFulfillmentGroupItems().size() == 0) {
+            order.getFulfillmentGroups().remove(fg);
             fulfillmentGroupDao.delete(fg);
-            fgIter.remove();
+          }
+        } else {
+          fgi.setQuantity(fgi.getQuantity() - entry.getValue());
+          fulfillmentGroupItemDao.save(fgi);
         }
-        
-        return orderService.save(order, priceOrder);
-    }
-    
-    @Override
-    @Transactional("blTransactionManager")
-    public Order matchFulfillmentGroupsToMultishipOptions(Order order, boolean priceOrder) throws PricingException {
-        List<OrderMultishipOption> multishipOptions =  orderMultishipOptionService.findOrderMultishipOptions(order.getId());
-        
-        // Build map of fulfillmentGroupItemId --> FulfillmentGroupItem.quantity
-        // Also build map of addressId:fulfillmentOptionId --> FulfillmentGroup
-        Map<Long, Integer> fgItemQuantityMap = new HashMap<Long, Integer>();
-        Map<String, FulfillmentGroup> multishipGroups = new HashMap<String, FulfillmentGroup>();
-        for (FulfillmentGroup fg : order.getFulfillmentGroups()) {
-            String key = getKey(fg.getAddress(), fg.getFulfillmentOption());
-            multishipGroups.put(key, fg);
-            
-            for (FulfillmentGroupItem fgi : fg.getFulfillmentGroupItems()) {
-                fgItemQuantityMap.put(fgi.getId(), fgi.getQuantity());
-            }
-        }
-        
-        for (OrderMultishipOption option : multishipOptions) {
-            String key = getKey(option.getAddress(), option.getFulfillmentOption());
-            FulfillmentGroup fg = multishipGroups.get(key);
-            
-            // Get or create a fulfillment group that matches this OrderMultishipOption destination
-            if (fg == null) {
-                FulfillmentGroupRequest fgr = new FulfillmentGroupRequest();
-                
-                fgr.setOrder(order);
-                
-                if (option.getAddress() != null) {
-                    fgr.setAddress(option.getAddress());
-                }
-                
-                if (option.getFulfillmentOption() != null) {
-                    fgr.setOption(option.getFulfillmentOption());
-                }
-                
-                fg = addFulfillmentGroupToOrder(fgr, false);
-                fg = save(fg);
-                order.getFulfillmentGroups().add(fg);
-            }
-            
-            // See if there is a fulfillment group item that matches this OrderMultishipOption
-            // OrderItem request
-            FulfillmentGroupItem fulfillmentGroupItem = null;
-            for (FulfillmentGroupItem fgi : fg.getFulfillmentGroupItems()) {
-                if (fgi.getOrderItem().getId() == option.getOrderItem().getId()) {
-                    fulfillmentGroupItem = fgi;
-                }
-            }
-            
-            // If there is no matching fulfillment group item, create a new one with quantity 1
-            if (fulfillmentGroupItem == null) {
-                fulfillmentGroupItem = fulfillmentGroupItemDao.create();
-                fulfillmentGroupItem.setFulfillmentGroup(fg);
-                fulfillmentGroupItem.setOrderItem(option.getOrderItem());
-                fulfillmentGroupItem.setQuantity(1);
-                fulfillmentGroupItem = fulfillmentGroupItemDao.save(fulfillmentGroupItem);
-                fg.getFulfillmentGroupItems().add(fulfillmentGroupItem);
-            } else {
-                // There are three potential scenarios where a fulfillment group item exists:
-                //   1: It has been previously created and exists in the database and
-                //      has an id. This means it's in the fgItemQuantityMap. If there is 
-                //      remaining quantity in that map, we will decrement it for future
-                //      usage. If the quantity is 0 in the map, that means that we have more
-                //      items than we did before, and we must simply increment the quantity.
-                //      (qty == 0 or qty is not null)
-                //   2: It was created in this request but has been saved to the database because
-                //      it is a brand new fulfillment group and so it has an id. 
-                //      However, it does not have an entry in the fgItemQuantityMap,
-                //      so we can simply increment the quantity.
-                //      (qty == null)
-                //   3: It was created in this request and has not yet been saved to the database.
-                //      This is because it was a previously existing fulfillment group that has new
-                //      items. Therefore, we simply increment the quantity.
-                //      (fulfillmentGroupItem.getId() == null)
-                if (fulfillmentGroupItem.getId() != null) {
-                    Integer qty = fgItemQuantityMap.get(fulfillmentGroupItem.getId());
-                    if (qty == null || qty == 0) {
-                        fulfillmentGroupItem.setQuantity(fulfillmentGroupItem.getQuantity() + 1);
-                    } else {
-                        qty -= 1;
-                        fgItemQuantityMap.put(fulfillmentGroupItem.getId(), qty);
-                    }
-                } else {
-                    fulfillmentGroupItem.setQuantity(fulfillmentGroupItem.getQuantity() + 1);
-                }
-            }
-            
-            multishipGroups.put(key, fg);
-        }
-        
-        // Go through all of the items in the fgItemQuantityMap. For all items that have a
-        // zero quantity, we don't need to do anything because we've already matched them
-        // to the newly requested OrderMultishipOption. For items that have a non-zero quantity,
-        // there are two possible scenarios:
-        //   1: The quantity remaining matches exactly the quantity of a fulfillmentGroupItem.
-        //      In this case, we can simply remove the fulfillmentGroupItem.
-        //   2: The quantity in the map is greater than what we've found. This means that we
-        //      need to subtract the remaining old quantity from the new quantity.
-        // Furthermore, delete the empty fulfillment groups.
-        for (Entry<Long, Integer> entry : fgItemQuantityMap.entrySet()) {
-            if (entry.getValue() > 0) {
-                FulfillmentGroupItem fgi = fulfillmentGroupItemDao.readFulfillmentGroupItemById(entry.getKey());
-                if (fgi.getQuantity() == entry.getValue()) {
-                    FulfillmentGroup fg = fgi.getFulfillmentGroup();
-                    fg.getFulfillmentGroupItems().remove(fgi);
-                    fulfillmentGroupItemDao.delete(fgi);
-                    if (fg.getFulfillmentGroupItems().size() == 0) {
-                        order.getFulfillmentGroups().remove(fg);
-                        fulfillmentGroupDao.delete(fg);
-                    }
-                } else { 
-                    fgi.setQuantity(fgi.getQuantity() - entry.getValue());
-                    fulfillmentGroupItemDao.save(fgi);
-                }
-            }
-        }
-
-        return orderService.save(order, priceOrder);
-    }
-    
-    protected String getKey(Address address, FulfillmentOption option) {
-        Long addressKey = (address == null) ? -1 : address.getId();
-        Long fulfillmentOptionKey = (option == null) ? -1 : option.getId();
-        return addressKey + ":" + fulfillmentOptionKey;
-    }
-    
-    protected FulfillmentGroupItem createFulfillmentGroupItemFromOrderItem(OrderItem orderItem, FulfillmentGroup fulfillmentGroup, int quantity) {
-        FulfillmentGroupItem fgi = fulfillmentGroupItemDao.create();
-        fgi.setFulfillmentGroup(fulfillmentGroup);
-        fgi.setOrderItem(orderItem);
-        fgi.setQuantity(quantity);
-        return fgi;
+      }
     }
 
-    @Override
-    @Transactional("blTransactionManager")
-    public Order removeAllFulfillmentGroupsFromOrder(Order order, boolean priceOrder) throws PricingException {
-        if (order.getFulfillmentGroups() != null) {
-            for (Iterator<FulfillmentGroup> iterator = order.getFulfillmentGroups().iterator(); iterator.hasNext();) {
-                FulfillmentGroup fulfillmentGroup = iterator.next();
-                iterator.remove();
-                fulfillmentGroupDao.delete(fulfillmentGroup);
-            }
-            order = orderService.save(order, priceOrder);
-        }
-        return order;
+    return orderService.save(order, priceOrder);
+  } // end method matchFulfillmentGroupsToMultishipOptions
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   address  DOCUMENT ME!
+   * @param   option   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected String getKey(Address address, FulfillmentOption option) {
+    Long addressKey           = (address == null) ? -1 : address.getId();
+    Long fulfillmentOptionKey = (option == null) ? -1 : option.getId();
+
+    return addressKey + ":" + fulfillmentOptionKey;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItem         DOCUMENT ME!
+   * @param   fulfillmentGroup  DOCUMENT ME!
+   * @param   quantity          DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected FulfillmentGroupItem createFulfillmentGroupItemFromOrderItem(OrderItem orderItem,
+    FulfillmentGroup fulfillmentGroup, int quantity) {
+    FulfillmentGroupItem fgi = fulfillmentGroupItemDao.create();
+    fgi.setFulfillmentGroup(fulfillmentGroup);
+    fgi.setOrderItem(orderItem);
+    fgi.setQuantity(quantity);
+
+    return fgi;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#removeAllFulfillmentGroupsFromOrder(org.broadleafcommerce.core.order.domain.Order,
+   *       boolean)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Order removeAllFulfillmentGroupsFromOrder(Order order, boolean priceOrder) throws PricingException {
+    if (order.getFulfillmentGroups() != null) {
+      for (Iterator<FulfillmentGroup> iterator = order.getFulfillmentGroups().iterator(); iterator.hasNext();) {
+        FulfillmentGroup fulfillmentGroup = iterator.next();
+        iterator.remove();
+        fulfillmentGroupDao.delete(fulfillmentGroup);
+      }
+
+      order = orderService.save(order, priceOrder);
     }
 
-    @Override
-    public FulfillmentGroupFee createFulfillmentGroupFee() {
-        return fulfillmentGroupDao.createFulfillmentGroupFee();
-    }
-    
-    @Override
-    public List<FulfillmentGroup> findUnfulfilledFulfillmentGroups(int start,
-            int maxResults) {
-        return fulfillmentGroupDao.readUnfulfilledFulfillmentGroups(start, maxResults);
-    }
+    return order;
+  }
 
-    @Override
-    public List<FulfillmentGroup> findPartiallyFulfilledFulfillmentGroups(
-            int start, int maxResults) {
-        return fulfillmentGroupDao.readPartiallyFulfilledFulfillmentGroups(start, maxResults);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#createFulfillmentGroupFee()
+   */
+  @Override public FulfillmentGroupFee createFulfillmentGroupFee() {
+    return fulfillmentGroupDao.createFulfillmentGroupFee();
+  }
 
-    @Override
-    public List<FulfillmentGroup> findUnprocessedFulfillmentGroups(int start,
-            int maxResults) {
-        return fulfillmentGroupDao.readUnprocessedFulfillmentGroups(start, maxResults);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#findUnfulfilledFulfillmentGroups(int, int)
+   */
+  @Override public List<FulfillmentGroup> findUnfulfilledFulfillmentGroups(int start,
+    int maxResults) {
+    return fulfillmentGroupDao.readUnfulfilledFulfillmentGroups(start, maxResults);
+  }
 
-    @Override
-    public List<FulfillmentGroup> findFulfillmentGroupsByStatus(
-            FulfillmentGroupStatusType status, int start, int maxResults,
-            boolean ascending) {
-        return fulfillmentGroupDao.readFulfillmentGroupsByStatus(status, start, maxResults, ascending);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#findPartiallyFulfilledFulfillmentGroups(int, int)
+   */
+  @Override public List<FulfillmentGroup> findPartiallyFulfilledFulfillmentGroups(
+    int start, int maxResults) {
+    return fulfillmentGroupDao.readPartiallyFulfilledFulfillmentGroups(start, maxResults);
+  }
 
-    @Override
-    public List<FulfillmentGroup> findFulfillmentGroupsByStatus(
-            FulfillmentGroupStatusType status, int start, int maxResults) {
-        return fulfillmentGroupDao.readFulfillmentGroupsByStatus(status, start, maxResults);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#findUnprocessedFulfillmentGroups(int, int)
+   */
+  @Override public List<FulfillmentGroup> findUnprocessedFulfillmentGroups(int start,
+    int maxResults) {
+    return fulfillmentGroupDao.readUnprocessedFulfillmentGroups(start, maxResults);
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#findFulfillmentGroupsByStatus(org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType,
+   *       int, int, boolean)
+   */
+  @Override public List<FulfillmentGroup> findFulfillmentGroupsByStatus(
+    FulfillmentGroupStatusType status, int start, int maxResults,
+    boolean ascending) {
+    return fulfillmentGroupDao.readFulfillmentGroupsByStatus(status, start, maxResults, ascending);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.FulfillmentGroupService#findFulfillmentGroupsByStatus(org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType,
+   *       int, int)
+   */
+  @Override public List<FulfillmentGroup> findFulfillmentGroupsByStatus(
+    FulfillmentGroupStatusType status, int start, int maxResults) {
+    return fulfillmentGroupDao.readFulfillmentGroupsByStatus(status, start, maxResults);
+  }
+
+} // end class FulfillmentGroupServiceImpl

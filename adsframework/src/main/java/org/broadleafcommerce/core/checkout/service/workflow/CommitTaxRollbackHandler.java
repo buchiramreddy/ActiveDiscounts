@@ -16,6 +16,10 @@
 
 package org.broadleafcommerce.core.checkout.service.workflow;
 
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.TaxService;
 import org.broadleafcommerce.core.pricing.service.exception.TaxException;
@@ -24,25 +28,33 @@ import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.state.RollbackFailureException;
 import org.broadleafcommerce.core.workflow.state.RollbackHandler;
 
-import java.util.Map;
 
-import javax.annotation.Resource;
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CommitTaxRollbackHandler implements RollbackHandler {
+  /** DOCUMENT ME! */
+  @Resource(name = "blTaxService")
+  protected TaxService taxService;
 
-    @Resource(name = "blTaxService")
-    protected TaxService taxService;
+  /**
+   * @see  org.broadleafcommerce.core.workflow.state.RollbackHandler#rollbackState(org.broadleafcommerce.core.workflow.Activity,
+   *       org.broadleafcommerce.core.workflow.ProcessContext, java.util.Map)
+   */
+  @Override public void rollbackState(Activity<? extends ProcessContext> activity, ProcessContext processContext,
+    Map<String, Object> stateConfiguration) throws RollbackFailureException {
+    CheckoutContext ctx   = (CheckoutContext) processContext;
+    Order           order = ctx.getSeedData().getOrder();
 
-    @Override
-    public void rollbackState(Activity<? extends ProcessContext> activity, ProcessContext processContext, Map<String, Object> stateConfiguration) throws RollbackFailureException {
-        CheckoutContext ctx = (CheckoutContext) processContext;
-        Order order = ctx.getSeedData().getOrder();
-        try {
-            taxService.cancelTax(order);
-        } catch (TaxException e) {
-            throw new RollbackFailureException("An exception occured cancelling taxes for order id: " + order.getId(), e);
-        }
-
+    try {
+      taxService.cancelTax(order);
+    } catch (TaxException e) {
+      throw new RollbackFailureException("An exception occured cancelling taxes for order id: " + order.getId(), e);
     }
+
+  }
 
 }

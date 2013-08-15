@@ -16,65 +16,83 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
-import org.broadleafcommerce.core.order.domain.OrderItemPriceDetail;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
+import org.broadleafcommerce.core.order.domain.OrderItemPriceDetail;
+
+
 /**
  * API wrapper to wrap Order Item Price Details.
- * @author Priyesh Patel
  *
+ * @author   Priyesh Patel
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "orderItemAttribute")
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class OrderItemPriceDetailWrapper extends BaseWrapper implements
-        APIWrapper<OrderItemPriceDetail> {
-    
-    @XmlElement
-    protected Long id;
-    
-    @XmlElement
-    protected Money totalAdjustmentValue;
+@XmlRootElement(name = "orderItemAttribute")
+public class OrderItemPriceDetailWrapper extends BaseWrapper implements APIWrapper<OrderItemPriceDetail> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Money totalAdjustedPrice;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long        id;
 
-    @XmlElement
-    protected Integer quantity;
-    @XmlElement(name = "adjustment")
-    @XmlElementWrapper(name = "adjustments")
-    protected List<AdjustmentWrapper> orderItemPriceDetailAdjustments = new LinkedList<AdjustmentWrapper>();
+  /** DOCUMENT ME! */
+  @XmlElement(name = "adjustment")
+  @XmlElementWrapper(name = "adjustments")
+  protected List<AdjustmentWrapper> orderItemPriceDetailAdjustments = new LinkedList<AdjustmentWrapper>();
 
-    @Override
-    public void wrapDetails(OrderItemPriceDetail model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.quantity = model.getQuantity();
-        this.totalAdjustmentValue = model.getTotalAdjustmentValue();
-        this.totalAdjustedPrice = model.getTotalAdjustedPrice();
-        if (!model.getOrderItemPriceDetailAdjustments().isEmpty()) {
-            this.orderItemPriceDetailAdjustments = new ArrayList<AdjustmentWrapper>();
-            for (OrderItemPriceDetailAdjustment orderItemPriceDetail : model.getOrderItemPriceDetailAdjustments()) {
-                AdjustmentWrapper orderItemPriceDetailAdjustmentWrapper =
-                        (AdjustmentWrapper) context.getBean(AdjustmentWrapper.class.getName());
-                orderItemPriceDetailAdjustmentWrapper.wrapSummary(orderItemPriceDetail, request);
-                this.orderItemPriceDetailAdjustments.add(orderItemPriceDetailAdjustmentWrapper);
-            }
-        }
+  /** DOCUMENT ME! */
+  @XmlElement protected Integer quantity;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Money totalAdjustedPrice;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Money totalAdjustmentValue;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.order.domain.OrderItemPriceDetail,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(OrderItemPriceDetail model, HttpServletRequest request) {
+    this.id                   = model.getId();
+    this.quantity             = model.getQuantity();
+    this.totalAdjustmentValue = model.getTotalAdjustmentValue();
+    this.totalAdjustedPrice   = model.getTotalAdjustedPrice();
+
+    if (!model.getOrderItemPriceDetailAdjustments().isEmpty()) {
+      this.orderItemPriceDetailAdjustments = new ArrayList<AdjustmentWrapper>();
+
+      for (OrderItemPriceDetailAdjustment orderItemPriceDetail : model.getOrderItemPriceDetailAdjustments()) {
+        AdjustmentWrapper orderItemPriceDetailAdjustmentWrapper = (AdjustmentWrapper) context.getBean(
+            AdjustmentWrapper.class.getName());
+        orderItemPriceDetailAdjustmentWrapper.wrapSummary(orderItemPriceDetail, request);
+        this.orderItemPriceDetailAdjustments.add(orderItemPriceDetailAdjustmentWrapper);
+      }
     }
-    
-    @Override
-    public void wrapSummary(OrderItemPriceDetail model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.order.domain.OrderItemPriceDetail,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(OrderItemPriceDetail model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class OrderItemPriceDetailWrapper

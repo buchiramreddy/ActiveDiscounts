@@ -17,27 +17,69 @@
 package org.broadleafcommerce.openadmin.server.security.dao;
 
 
+import java.util.List;
+
 import org.broadleafcommerce.openadmin.server.security.domain.AdminModule;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
 
-import java.util.List;
 
 /**
+ * DOCUMENT ME!
  *
- * @author elbertbautista
- *
+ * @author   elbertbautista
+ * @version  $Revision$, $Date$
  */
 public interface AdminNavigationDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<AdminModule> readAllAdminModules();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   clazz  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminSection readAdminSectionByClass(Class<?> clazz);
 
-    public List<AdminSection> readAllAdminSections();
-    
-    public AdminSection readAdminSectionByClass(Class<?> clazz);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public AdminSection readAdminSectionByURI(String uri);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sectionKey  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminSection readAdminSectionBySectionKey(String sectionKey);
 
-    public AdminSection readAdminSectionBySectionKey(String sectionKey);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   uri  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminSection readAdminSectionByURI(String uri);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminModule> readAllAdminModules();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminSection> readAllAdminSections();
 
 
-}
+} // end interface AdminNavigationDao

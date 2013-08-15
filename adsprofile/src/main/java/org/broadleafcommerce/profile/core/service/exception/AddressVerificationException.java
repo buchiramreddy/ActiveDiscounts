@@ -17,24 +17,52 @@
 package org.broadleafcommerce.profile.core.service.exception;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AddressVerificationException extends Exception {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public AddressVerificationException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public AddressVerificationException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
-    }
+  /**
+   * Creates a new AddressVerificationException object.
+   */
+  public AddressVerificationException() {
+    super();
+  }
 
-    public AddressVerificationException(String arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new AddressVerificationException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public AddressVerificationException(String arg0) {
+    super(arg0);
+  }
 
-    public AddressVerificationException(Throwable arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new AddressVerificationException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public AddressVerificationException(Throwable arg0) {
+    super(arg0);
+  }
 
-}
+  /**
+   * Creates a new AddressVerificationException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   */
+  public AddressVerificationException(String arg0, Throwable arg1) {
+    super(arg0, arg1);
+  }
+
+} // end class AddressVerificationException

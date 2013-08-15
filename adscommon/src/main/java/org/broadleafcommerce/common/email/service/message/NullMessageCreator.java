@@ -16,30 +16,56 @@
 
 package org.broadleafcommerce.common.email.service.message;
 
+import java.util.HashMap;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.email.service.info.EmailInfo;
+
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import java.util.HashMap;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class NullMessageCreator extends MessageCreator {
-    
-    private static final Log LOG = LogFactory.getLog(NullMessageCreator.class);
-    
-    public NullMessageCreator(JavaMailSender mailSender) {
-        super(mailSender);  
-    }
-    
-    @Override
-    public String buildMessageBody(EmailInfo info, HashMap<String,Object> props) {
-        return info.getEmailTemplate();
-    }
-    
-    @Override
-    public void sendMessage(final HashMap<String,Object> props) throws MailException {
-        LOG.warn("NullMessageCreator is defined -- specify a real message creator to send emails");
-    }
-    
-}
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  private static final Log LOG = LogFactory.getLog(NullMessageCreator.class);
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new NullMessageCreator object.
+   *
+   * @param  mailSender  DOCUMENT ME!
+   */
+  public NullMessageCreator(JavaMailSender mailSender) {
+    super(mailSender);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.email.service.message.MessageCreator#buildMessageBody(org.broadleafcommerce.common.email.service.info.EmailInfo,
+   *       java.util.HashMap)
+   */
+  @Override public String buildMessageBody(EmailInfo info, HashMap<String, Object> props) {
+    return info.getEmailTemplate();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.email.service.message.MessageCreator#sendMessage(java.util.HashMap)
+   */
+  @Override public void sendMessage(final HashMap<String, Object> props) throws MailException {
+    LOG.warn("NullMessageCreator is defined -- specify a real message creator to send emails");
+  }
+
+} // end class NullMessageCreator

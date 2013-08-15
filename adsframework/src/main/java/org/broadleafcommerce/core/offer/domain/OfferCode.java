@@ -16,46 +16,163 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.core.order.domain.Order;
-
 import java.io.Serializable;
+
 import java.util.Date;
 import java.util.List;
 
+import org.broadleafcommerce.core.order.domain.Order;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OfferCode extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getEndDate();
 
-    public void setId(Long id) ;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Offer getOffer() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setOffer(Offer offer) ;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getOfferCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int getMaxUses();
 
-    public void setOfferCode(String offerCode);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Date getStartDate();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
 
-    public void setStartDate(Date startDate);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Date getEndDate();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getOfferCode();
 
-    public void setEndDate(Date endDate);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public int getMaxUses() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Order> getOrders();
 
-    public void setMaxUses(int maxUses) ;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Deprecated
-    public int getUses() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getStartDate();
 
-    @Deprecated
-    public void setUses(int uses) ;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<Order> getOrders();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @Deprecated int getUses();
 
-    public void setOrders(List<Order> orders);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  endDate  DOCUMENT ME!
+   */
+  void setEndDate(Date endDate);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  maxUses  DOCUMENT ME!
+   */
+  void setMaxUses(int maxUses);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  void setOffer(Offer offer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offerCode  DOCUMENT ME!
+   */
+  void setOfferCode(String offerCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orders  DOCUMENT ME!
+   */
+  void setOrders(List<Order> orders);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  startDate  DOCUMENT ME!
+   */
+  void setStartDate(Date startDate);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  uses  DOCUMENT ME!
+   */
+  @Deprecated void setUses(int uses);
+
+} // end interface OfferCode

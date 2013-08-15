@@ -21,16 +21,20 @@ import org.broadleafcommerce.core.workflow.BaseActivity;
 
 
 /**
- * A Do-nothing activity used to test proper merge ordering in workflows
+ * A Do-nothing activity used to test proper merge ordering in workflows.
  *
- * @author Phillip Verheyden (phillipuniverse)
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 public class TestPassThroughActivity extends BaseActivity<CheckoutContext> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public CheckoutContext execute(CheckoutContext context) throws Exception {
-        // TODO Auto-generated method stub
-        return context;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.checkout.service.workflow.CheckoutContext)
+   */
+  @Override public CheckoutContext execute(CheckoutContext context) throws Exception {
+    // TODO Auto-generated method stub
+    return context;
+  }
 
 }

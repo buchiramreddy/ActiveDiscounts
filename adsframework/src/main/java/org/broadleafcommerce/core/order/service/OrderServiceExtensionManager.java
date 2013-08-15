@@ -17,23 +17,32 @@
 package org.broadleafcommerce.core.order.service;
 
 import org.broadleafcommerce.core.extension.ExtensionManager;
+
 import org.springframework.stereotype.Service;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 @Service("blOrderServiceExtensionManager")
 public class OrderServiceExtensionManager extends ExtensionManager<OrderServiceExtensionHandler> {
+  /**
+   * Creates a new OrderServiceExtensionManager object.
+   */
+  public OrderServiceExtensionManager() {
+    super(OrderServiceExtensionHandler.class);
+  }
 
-    public OrderServiceExtensionManager() {
-        super(OrderServiceExtensionHandler.class);
-    }
-
-    /**
-     * By default,this extension manager will continue on handled allowing multiple handlers to interact with the order.
-     */
-    public boolean continueOnHandled() {
-        return true;
-    }
+  /**
+   * By default,this extension manager will continue on handled allowing multiple handlers to interact with the order.
+   *
+   * @return  by default,this extension manager will continue on handled allowing multiple handlers to interact with the
+   *          order.
+   */
+  @Override public boolean continueOnHandled() {
+    return true;
+  }
 }

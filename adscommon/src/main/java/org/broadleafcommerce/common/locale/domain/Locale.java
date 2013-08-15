@@ -16,33 +16,106 @@
 
 package org.broadleafcommerce.common.locale.domain;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+
+
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface Locale extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    String getLocaleCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency getDefaultCurrency();
 
-    void setLocaleCode(String localeCode);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFriendlyName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getDefaultFlag();
 
-    public void setFriendlyName(String friendlyName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setDefaultFlag(Boolean defaultFlag);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFriendlyName();
 
-    public Boolean getDefaultFlag();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public BroadleafCurrency getDefaultCurrency();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getUseInSearchIndex();
 
-    public void setDefaultCurrency(BroadleafCurrency currency);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getUseInSearchIndex();
-    
-    public void setUseInSearchIndex(Boolean useInSearchIndex);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currency  DOCUMENT ME!
+   */
+  void setDefaultCurrency(BroadleafCurrency currency);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  defaultFlag  DOCUMENT ME!
+   */
+  void setDefaultFlag(Boolean defaultFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  friendlyName  DOCUMENT ME!
+   */
+  void setFriendlyName(String friendlyName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  useInSearchIndex  DOCUMENT ME!
+   */
+  void setUseInSearchIndex(Boolean useInSearchIndex);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getLocaleCode();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  localeCode  DOCUMENT ME!
+   */
+  void setLocaleCode(String localeCode);
+
+} // end interface Locale

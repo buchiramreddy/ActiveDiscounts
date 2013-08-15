@@ -16,70 +16,188 @@
 
 package org.broadleafcommerce.openadmin.web.form;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class TranslationForm {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String ceilingEntity;
-    protected String entityId;
-    protected String propertyName;
-    protected String localeCode;
-    protected String translatedValue;
-    protected Long translationId;
-    protected Boolean isRte;
+  /** DOCUMENT ME! */
+  protected String  ceilingEntity;
 
-    public String getCeilingEntity() {
-        return ceilingEntity;
-    }
+  /** DOCUMENT ME! */
+  protected String  entityId;
 
-    public void setCeilingEntity(String ceilingEntity) {
-        this.ceilingEntity = ceilingEntity;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean isRte;
 
-    public String getEntityId() {
-        return entityId;
-    }
+  /** DOCUMENT ME! */
+  protected String  localeCode;
 
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
-    }
+  /** DOCUMENT ME! */
+  protected String  propertyName;
 
-    public String getPropertyName() {
-        return propertyName;
-    }
+  /** DOCUMENT ME! */
+  protected String  translatedValue;
 
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
+  /** DOCUMENT ME! */
+  protected Long    translationId;
 
-    public String getLocaleCode() {
-        return localeCode;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setLocaleCode(String localeCode) {
-        this.localeCode = localeCode;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCeilingEntity() {
+    return ceilingEntity;
+  }
 
-    public String getTranslatedValue() {
-        return translatedValue;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setTranslatedValue(String translatedValue) {
-        this.translatedValue = translatedValue;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEntityId() {
+    return entityId;
+  }
 
-    public Long getTranslationId() {
-        return translationId;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setTranslationId(Long translationId) {
-        this.translationId = translationId;
-    }
-    
-    public Boolean getIsRte() {
-        return isRte == null ? false : isRte;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getIsRte() {
+    return (isRte == null) ? false : isRte;
+  }
 
-    public void setIsRte(Boolean isRte) {
-        this.isRte = isRte;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getLocaleCode() {
+    return localeCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyName() {
+    return propertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getTranslatedValue() {
+    return translatedValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getTranslationId() {
+    return translationId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ceilingEntity  DOCUMENT ME!
+   */
+  public void setCeilingEntity(String ceilingEntity) {
+    this.ceilingEntity = ceilingEntity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entityId  DOCUMENT ME!
+   */
+  public void setEntityId(String entityId) {
+    this.entityId = entityId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isRte  DOCUMENT ME!
+   */
+  public void setIsRte(Boolean isRte) {
+    this.isRte = isRte;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  localeCode  DOCUMENT ME!
+   */
+  public void setLocaleCode(String localeCode) {
+    this.localeCode = localeCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  propertyName  DOCUMENT ME!
+   */
+  public void setPropertyName(String propertyName) {
+    this.propertyName = propertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  translatedValue  DOCUMENT ME!
+   */
+  public void setTranslatedValue(String translatedValue) {
+    this.translatedValue = translatedValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  translationId  DOCUMENT ME!
+   */
+  public void setTranslationId(Long translationId) {
+    this.translationId = translationId;
+  }
+
+} // end class TranslationForm

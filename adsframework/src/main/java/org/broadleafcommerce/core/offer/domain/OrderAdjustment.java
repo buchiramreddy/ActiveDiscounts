@@ -18,12 +18,41 @@ package org.broadleafcommerce.core.offer.domain;
 
 import org.broadleafcommerce.core.order.domain.Order;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OrderAdjustment extends Adjustment {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Order getOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Order getOrder();
 
-    public void init(Order order, Offer offer, String reason);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOrder(Order order);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order   DOCUMENT ME!
+   * @param  offer   DOCUMENT ME!
+   * @param  reason  DOCUMENT ME!
+   */
+  void init(Order order, Offer offer, String reason);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  void setOrder(Order order);
+
+} // end interface OrderAdjustment

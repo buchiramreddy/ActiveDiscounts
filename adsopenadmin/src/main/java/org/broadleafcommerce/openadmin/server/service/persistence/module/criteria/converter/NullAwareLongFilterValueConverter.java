@@ -17,23 +17,32 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter;
 
 import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.stereotype.Component;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blNullAwareLongFilterValueConverter")
 public class NullAwareLongFilterValueConverter implements FilterValueConverter<Long> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Long convert(String stringValue) {
-        if (StringUtils.isEmpty(stringValue) || stringValue.equals("null")) {
-            return null;
-        }
-        try {
-            return Long.valueOf(stringValue);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter#convert(java.lang.String)
+   */
+  @Override public Long convert(String stringValue) {
+    if (StringUtils.isEmpty(stringValue) || stringValue.equals("null")) {
+      return null;
     }
+
+    try {
+      return Long.valueOf(stringValue);
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
 }

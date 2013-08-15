@@ -16,110 +16,165 @@
 
 package org.broadleafcommerce.core.inventory.domain;
 
+import java.io.Serializable;
+
+import java.util.Date;
+
 import org.broadleafcommerce.core.inventory.service.type.AvailabilityStatusType;
 
-import java.io.Serializable;
-import java.util.Date;
+
 /**
- * Implementations of this interface are used to hold data about SKU availability.
+ * Implementations of this interface are used to hold data about SKU availability.<br>
  * <br>
- * <br>
- * You should implement this class if you want to make significant changes to how the
- * class is persisted.  If you just want to add additional fields then you should extend {@link org.broadleafcommerce.core.inventory.domain.SkuAvailabilityImpl}.
+ * You should implement this class if you want to make significant changes to how the class is persisted. If you just
+ * want to add additional fields then you should extend
+ * {@link org.broadleafcommerce.core.inventory.domain.SkuAvailabilityImpl}.
  *
- * @see {@link org.broadleafcommerce.core.inventory.domain.SkuAvailabilityImpl}
- * @author bpolster
- * 
- * @deprecated This is no longer required and is instead implemented as a third-party inventory module
+ * @see         {@link org.broadleafcommerce.core.inventory.domain.SkuAvailabilityImpl}
+ * @author      bpolster
+ * @deprecated  This is no longer required and is instead implemented as a third-party inventory module
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface SkuAvailability extends Serializable {
+@Deprecated public interface SkuAvailability extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the id of this SkuAvailability
-     */
-    public Long getId();
+  /**
+   * Returns the data the SKU will be available. This property may return null which has an implementation specific
+   * meaning.
+   *
+   * @return  the data the SKU will be available.
+   */
+  Date getAvailabilityDate();
 
-    /**
-     * Sets the id of this SkuAvailability record
-     */
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the id of this SKU associated with SkuAvailability record
-     */
-    public Long getSkuId();
+  /**
+   * Returns an implementation specific availability status. This property can return null.
+   *
+   * @return  an implementation specific availability status.
+   */
+  AvailabilityStatusType getAvailabilityStatus();
 
-    /**
-     * Sets the id of this SKU
-     */
-    public void setSkuId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the USPSLocation id of this skuAvailability.   SKU availability records may or may not be location specific and
-     * using null locations are a common implementation model.
-     *
-     */
-    public Long getLocationId();
+  /**
+   * Returns the getQuantityOnHand() - getReserveQuantity(). Preferred implementation is to return null if
+   * getQuantityOnHand() is null and to treat a null in getReserveQuantity() as ZERO.
+   *
+   * @return  the getQuantityOnHand() - getReserveQuantity().
+   */
+  Integer getAvailableQuantity();
 
-    /**
-     * Sets the USPSLocation id of this skuAvailability.  SKU availability records may or may not be location specific and
-     * using null locations are a common implementation model.
-     */
-    public void setLocationId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns an implementation specific availability status.   This property can return null.
-     */
-    public AvailabilityStatusType getAvailabilityStatus();
+  /**
+   * Returns the id of this SkuAvailability.
+   *
+   * @return  the id of this SkuAvailability.
+   */
+  Long getId();
 
-    /**
-     * Sets the availability status.
-     */
-    public void setAvailabilityStatus(AvailabilityStatusType status);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the data the SKU will be available.
-     * This property may return null which has an implementation specific meaning.
-     */
-    public Date getAvailabilityDate();
+  /**
+   * Returns the USPSLocation id of this skuAvailability. SKU availability records may or may not be location specific
+   * and using null locations are a common implementation model.
+   *
+   * @return  the USPSLocation id of this skuAvailability.
+   */
+  Long getLocationId();
 
-    /**
-     * Sets the date the SKU will be available.  Setting to null is allowed and has an
-     * implementation specific meaning.
-     */
-    public void setAvailabilityDate(Date availabilityDate);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the number of this items that are currently in stock and available for sell.
-     * Returning null has an implementation specific meaning.
-     */
-    public Integer getQuantityOnHand();
+  /**
+   * Returns the number of this items that are currently in stock and available for sell. Returning null has an
+   * implementation specific meaning.
+   *
+   * @return  the number of this items that are currently in stock and available for sell.
+   */
+  Integer getQuantityOnHand();
 
-    /**
-     * Sets the quantity on hand.  Setting to null is allowed and has an
-     * implementation specific meaning.
-     */
-    public void setQuantityOnHand(Integer quantityOnHand);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the reserve quantity.   Nulls will be treated the same as 0.
-     * Implementations may want to manage a reserve quantity at each location so that the
-     * available quantity for purchases is the quantityOnHand - reserveQuantity.
-     */
-    public Integer getReserveQuantity();
+  /**
+   * Returns the reserve quantity. Nulls will be treated the same as 0. Implementations may want to manage a reserve
+   * quantity at each location so that the available quantity for purchases is the quantityOnHand - reserveQuantity.
+   *
+   * @return  the reserve quantity.
+   */
+  Integer getReserveQuantity();
 
-    /**
-     * Sets the reserve quantity.
-     * Implementations may want to manage a reserve quantity at each location so that the
-     * available quantity for purchases is the quantityOnHand - reserveQuantity.
-     */
-    public void setReserveQuantity(Integer reserveQuantity);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the getQuantityOnHand() - getReserveQuantity().
-     * Preferred implementation is to return null if getQuantityOnHand() is null and to treat
-     * a null in getReserveQuantity() as ZERO.
-     */
-    public Integer getAvailableQuantity();
-}
+  /**
+   * Returns the id of this SKU associated with SkuAvailability record.
+   *
+   * @return  the id of this SKU associated with SkuAvailability record.
+   */
+  Long getSkuId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the date the SKU will be available. Setting to null is allowed and has an implementation specific meaning.
+   *
+   * @param  availabilityDate  DOCUMENT ME!
+   */
+  void setAvailabilityDate(Date availabilityDate);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the availability status.
+   *
+   * @param  status  DOCUMENT ME!
+   */
+  void setAvailabilityStatus(AvailabilityStatusType status);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the id of this SkuAvailability record.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the USPSLocation id of this skuAvailability. SKU availability records may or may not be location specific and
+   * using null locations are a common implementation model.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setLocationId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the quantity on hand. Setting to null is allowed and has an implementation specific meaning.
+   *
+   * @param  quantityOnHand  DOCUMENT ME!
+   */
+  void setQuantityOnHand(Integer quantityOnHand);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the reserve quantity. Implementations may want to manage a reserve quantity at each location so that the
+   * available quantity for purchases is the quantityOnHand - reserveQuantity.
+   *
+   * @param  reserveQuantity  DOCUMENT ME!
+   */
+  void setReserveQuantity(Integer reserveQuantity);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the id of this SKU.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setSkuId(Long id);
+} // end interface SkuAvailability

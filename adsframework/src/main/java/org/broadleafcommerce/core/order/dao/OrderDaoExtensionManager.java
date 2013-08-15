@@ -17,25 +17,31 @@
 package org.broadleafcommerce.core.order.dao;
 
 import org.broadleafcommerce.core.extension.ExtensionManager;
+
 import org.springframework.stereotype.Service;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 @Service("blOrderDaoExtensionManager")
 public class OrderDaoExtensionManager extends ExtensionManager<OrderDaoExtensionHandler> {
+  /**
+   * Creates a new OrderDaoExtensionManager object.
+   */
+  public OrderDaoExtensionManager() {
+    super(OrderDaoExtensionHandler.class);
+  }
 
-    public OrderDaoExtensionManager() {
-        super(OrderDaoExtensionHandler.class);
-    }
-
-    /**
-     * By default, this manager will allow other handlers to process the method when a handler returns
-     * HANDLED.
-     */
-    @Override
-    public boolean continueOnHandled() {
-        return true;
-    }
+  /**
+   * By default, this manager will allow other handlers to process the method when a handler returns HANDLED.
+   *
+   * @return  by default, this manager will allow other handlers to process the method when a handler returns HANDLED.
+   */
+  @Override public boolean continueOnHandled() {
+    return true;
+  }
 }

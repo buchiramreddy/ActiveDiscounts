@@ -16,48 +16,123 @@
 
 package org.broadleafcommerce.profile.web.core.form;
 
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class RegisterCustomerForm implements Serializable {
-    protected static final long serialVersionUID = 1L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    protected Customer customer;
-    protected String password;
-    protected String passwordConfirm;
-    protected String redirectUrl;
+  /** DOCUMENT ME! */
+  protected static final long serialVersionUID = 1L;
 
-    public Customer getCustomer() {
-        return customer;
-    }
-    
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-    
-    public String getPassword() {
-        return password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-    
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-    
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
-    
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
-    }
-    
-}
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected Customer customer;
+
+  /** DOCUMENT ME! */
+  protected String   password;
+
+  /** DOCUMENT ME! */
+  protected String   passwordConfirm;
+
+  /** DOCUMENT ME! */
+  protected String   redirectUrl;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Customer getCustomer() {
+    return customer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPasswordConfirm() {
+    return passwordConfirm;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRedirectUrl() {
+    return redirectUrl;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  password  DOCUMENT ME!
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordConfirm  DOCUMENT ME!
+   */
+  public void setPasswordConfirm(String passwordConfirm) {
+    this.passwordConfirm = passwordConfirm;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  redirectUrl  DOCUMENT ME!
+   */
+  public void setRedirectUrl(String redirectUrl) {
+    this.redirectUrl = redirectUrl;
+  }
+
+} // end class RegisterCustomerForm

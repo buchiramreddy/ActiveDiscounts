@@ -16,78 +16,138 @@
 
 package org.broadleafcommerce.common.vendor.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of container shape types.
- * 
- * @author jfischer
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class ContainerShapeType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, ContainerShapeType> TYPES = new LinkedHashMap<String, ContainerShapeType>();
+  private static final Map<String, ContainerShapeType> TYPES = new LinkedHashMap<String, ContainerShapeType>();
 
-    public static ContainerShapeType getInstance(final String type) {
-        return TYPES.get(type);
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new ContainerShapeType object.
+   */
+  public ContainerShapeType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new ContainerShapeType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public ContainerShapeType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static ContainerShapeType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public ContainerShapeType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public ContainerShapeType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    ContainerShapeType other = (ContainerShapeType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        } else {
-            throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via " + getInstance(type).getClass().getName());
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ContainerShapeType other = (ContainerShapeType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    } else {
+      throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via "
+        + getInstance(type).getClass().getName());
     }
-}
+  }
+} // end class ContainerShapeType

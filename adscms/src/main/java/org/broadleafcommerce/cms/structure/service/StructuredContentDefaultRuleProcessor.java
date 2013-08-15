@@ -16,53 +16,65 @@
 
 package org.broadleafcommerce.cms.structure.service;
 
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.cms.structure.dto.StructuredContentDTO;
+
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 
 /**
  * By default, this rule processor combines all of the rules from
- * {@link org.broadleafcommerce.cms.structure.domain.StructuredContent#getStructuredContentMatchRules()}
- * into a single MVEL expression.
+ * {@link org.broadleafcommerce.cms.structure.domain.StructuredContent#getStructuredContentMatchRules()} into a single
+ * MVEL expression.
  *
- * @author bpolster.
- *
+ * @author   bpolster.
+ * @version  $Revision$, $Date$
  */
 @Service("blContentDefaultRuleProcessor")
 public class StructuredContentDefaultRuleProcessor extends AbstractStructuredContentRuleProcessor {
-    private static final Log LOG = LogFactory.getLog(StructuredContentDefaultRuleProcessor.class);
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    /**
-     * Returns true if all of the rules associated with the passed in <code>StructuredContent</code>
-     * item match based on the passed in vars.
-     *
-     * Also returns true if no rules are present for the passed in item.
-     *
-     * @param sc - a structured content item to test
-     * @param vars - a map of objects used by the rule MVEL expressions
-     * @return the result of the rule checks
-     */
-    public boolean checkForMatch(StructuredContentDTO sc, Map<String, Object> vars) {
-        String ruleExpression = sc.getRuleExpression();
+  private static final Log LOG = LogFactory.getLog(StructuredContentDefaultRuleProcessor.class);
 
-        if (ruleExpression != null) {
-            if (LOG.isTraceEnabled())  {
-                LOG.trace("Processing content rule for StructuredContent with id " + sc.getId() +".   Value = " + ruleExpression);
-            }
-            boolean result = executeExpression(ruleExpression, vars);
-            if (! result) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Content failed to pass rule and will not be included for StructuredContent with id " + sc.getId() +".   Value = " + ruleExpression);
-                }
-            }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-            return result;
-        } else {
-            // If no rule found, then consider this a match.
-            return true;
+  /**
+   * Returns true if all of the rules associated with the passed in <code>StructuredContent</code> item match based on
+   * the passed in vars.
+   *
+   * <p>Also returns true if no rules are present for the passed in item.</p>
+   *
+   * @param   sc    - a structured content item to test
+   * @param   vars  - a map of objects used by the rule MVEL expressions
+   *
+   * @return  the result of the rule checks
+   */
+  @Override public boolean checkForMatch(StructuredContentDTO sc, Map<String, Object> vars) {
+    String ruleExpression = sc.getRuleExpression();
+
+    if (ruleExpression != null) {
+      if (LOG.isTraceEnabled()) {
+        LOG.trace("Processing content rule for StructuredContent with id " + sc.getId() + ".   Value = "
+          + ruleExpression);
+      }
+
+      boolean result = executeExpression(ruleExpression, vars);
+
+      if (!result) {
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("Content failed to pass rule and will not be included for StructuredContent with id " + sc.getId()
+            + ".   Value = " + ruleExpression);
         }
+      }
+
+      return result;
+    } else {
+      // If no rule found, then consider this a match.
+      return true;
     }
-}
+  }
+} // end class StructuredContentDefaultRuleProcessor

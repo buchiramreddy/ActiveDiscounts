@@ -16,39 +16,151 @@
 
 package org.broadleafcommerce.openadmin.server.security.domain;
 
-import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
-
 import java.io.Serializable;
+
 import java.util.List;
 import java.util.Set;
 
+import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AdminPermission extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
-    public Long getId();
-    public String getName();
-    public void setName(String name);
-    public String getDescription();
-    public void setDescription(String description);
-    public PermissionType getType();
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override AdminPermission clone();
 
-    public void setType(PermissionType type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<AdminPermissionQualifiedEntity> getQualifiedEntities();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Set<AdminRole> getAllRoles();
 
-    public void setQualifiedEntities(List<AdminPermissionQualifiedEntity> qualifiedEntities);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Set<AdminUser> getAllUsers();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Set<AdminUser> getAllUsers();
 
-    public void setAllUsers(Set<AdminUser> allUsers);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public AdminPermission clone();
-    
-    public Set<AdminRole> getAllRoles();
-    public void setAllRoles(Set<AdminRole> allRoles);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDescription();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminPermissionQualifiedEntity> getQualifiedEntities();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PermissionType getType();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  allRoles  DOCUMENT ME!
+   */
+  void setAllRoles(Set<AdminRole> allRoles);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  allUsers  DOCUMENT ME!
+   */
+  void setAllUsers(Set<AdminUser> allUsers);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  void setDescription(String description);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  qualifiedEntities  DOCUMENT ME!
+   */
+  void setQualifiedEntities(List<AdminPermissionQualifiedEntity> qualifiedEntities);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setType(PermissionType type);
+} // end interface AdminPermission

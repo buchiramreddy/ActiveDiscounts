@@ -19,38 +19,68 @@ package org.broadleafcommerce.core.search.service.solr;
 import org.apache.solr.client.solrj.SolrServer;
 
 
-
 /**
- * Provides a class that will statically hold the Solr server
- * 
- * @author Andre Azzolini (apazzolini)
+ * Provides a class that will statically hold the Solr server.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class SolrContext {
+  /** DOCUMENT ME! */
+  public static final String PRIMARY = "primary";
 
-    public static final String PRIMARY = "primary";
-    public static final String REINDEX = "reindex";
+  /** DOCUMENT ME! */
+  public static final String REINDEX = "reindex";
 
-    protected static SolrServer primaryServer = null;
-    protected static SolrServer reindexServer = null;
+  /** DOCUMENT ME! */
+  protected static SolrServer primaryServer = null;
 
-    public static void setPrimaryServer(SolrServer server) {
-        primaryServer = server;
-    }
+  /** DOCUMENT ME! */
+  protected static SolrServer reindexServer = null;
 
-    public static void setReindexServer(SolrServer server) {
-        reindexServer = server;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  server  DOCUMENT ME!
+   */
+  public static void setPrimaryServer(SolrServer server) {
+    primaryServer = server;
+  }
 
-    public static SolrServer getServer() {
-        return primaryServer;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  server  DOCUMENT ME!
+   */
+  public static void setReindexServer(SolrServer server) {
+    reindexServer = server;
+  }
 
-    public static SolrServer getReindexServer() {
-        return isSingleCoreMode() ? primaryServer : reindexServer;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static SolrServer getServer() {
+    return primaryServer;
+  }
 
-    public static boolean isSingleCoreMode() {
-        return reindexServer == null;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static SolrServer getReindexServer() {
+    return isSingleCoreMode() ? primaryServer : reindexServer;
+  }
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static boolean isSingleCoreMode() {
+    return reindexServer == null;
+  }
+
+} // end class SolrContext

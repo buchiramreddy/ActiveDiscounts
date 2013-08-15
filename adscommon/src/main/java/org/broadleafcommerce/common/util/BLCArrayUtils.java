@@ -17,30 +17,34 @@
 package org.broadleafcommerce.common.util;
 
 
-
 /**
- * Convenience methods for interacting with arrays
- * 
- * @author Andre Azzolini (apazzolini)
+ * Convenience methods for interacting with arrays.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class BLCArrayUtils {
-    
-    /**
-     * Given an array and a typed predicate, determines if the array has an object that matches the condition of the
-     * predicate. The predicate should evaluate to true when a match occurs.
-     * 
-     * @param array
-     * @param predicate
-     * @return whether or not the array contains an element that matches the predicate
-     */
-    public static <T> boolean contains(T[] array, TypedPredicate<T> predicate) {
-        for (T o : array) {
-            if (predicate.evaluate(o)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * Given an array and a typed predicate, determines if the array has an object that matches the condition of the
+   * predicate. The predicate should evaluate to true when a match occurs.
+   *
+   * @param   <T>        DOCUMENT ME!
+   * @param   array      DOCUMENT ME!
+   * @param   predicate  DOCUMENT ME!
+   *
+   * @return  whether or not the array contains an element that matches the predicate
+   */
+  public static <T> boolean contains(T[] array, TypedPredicate<T> predicate) {
+    for (T o : array) {
+      if (predicate.evaluate(o)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
+} // end class BLCArrayUtils

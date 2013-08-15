@@ -17,13 +17,17 @@
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class DefaultMainActions {
-    
-    public static final EntityFormAction ADD = new EntityFormAction(EntityFormAction.ADD)
-        .withButtonClass("add-main-entity")
-        .withUrlPostfix("/add")
-        .withIconClass("icon-plus")
-        .withDisplayText("Add");
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  public static final EntityFormAction ADD = new EntityFormAction(EntityFormAction.ADD).withButtonClass(
+      "add-main-entity").withUrlPostfix("/add").withIconClass("icon-plus").withDisplayText("Add");
 
 }

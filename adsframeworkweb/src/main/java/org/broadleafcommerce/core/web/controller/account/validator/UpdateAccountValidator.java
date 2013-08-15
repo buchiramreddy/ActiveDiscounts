@@ -16,58 +16,83 @@
 
 package org.broadleafcommerce.core.web.controller.account.validator;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.validator.GenericValidator;
+
 import org.broadleafcommerce.core.web.controller.account.UpdateAccountForm;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.web.core.CustomerState;
+
 import org.springframework.stereotype.Component;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import javax.annotation.Resource;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Component("blUpdateAccountValidator")
 public class UpdateAccountValidator implements Validator {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blCustomerService")
-    CustomerService customerService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  CustomerService customerService;
 
-    public void validate(UpdateAccountForm form, Errors errors) {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailAddress", "emailAddress.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "firstName.required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "lastName.required");
+  /**
+   * @see  org.springframework.validation.Validator#supports(java.lang.Class)
+   */
+  @Override public boolean supports(Class<?> clazz) {
+    return false;
+  }
 
-        if (!errors.hasErrors()) {
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-            //is this a valid email address?
-            if (!GenericValidator.isEmail(form.getEmailAddress())) {
-                errors.rejectValue("emailAddress", "emailAddress.invalid");
-            }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  form    DOCUMENT ME!
+   * @param  errors  DOCUMENT ME!
+   */
+  public void validate(UpdateAccountForm form, Errors errors) {
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emailAddress", "emailAddress.required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "firstName.required");
+    ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "lastName.required");
 
-            //check email address to see if it is already in use by another customer
-            Customer customerMatchingNewEmail = customerService.readCustomerByEmail(form.getEmailAddress());
+    if (!errors.hasErrors()) {
+      // is this a valid email address?
+      if (!GenericValidator.isEmail(form.getEmailAddress())) {
+        errors.rejectValue("emailAddress", "emailAddress.invalid");
+      }
 
-            if (customerMatchingNewEmail != null && CustomerState.getCustomer().getId() != customerMatchingNewEmail.getId()) {
-                //customer found with new email entered, and it is not the current customer
-                errors.rejectValue("emailAddress", "emailAddress.used");
-            }
+      // check email address to see if it is already in use by another customer
+      Customer customerMatchingNewEmail = customerService.readCustomerByEmail(form.getEmailAddress());
 
-        }
+      if ((customerMatchingNewEmail != null)
+            && (CustomerState.getCustomer().getId() != customerMatchingNewEmail.getId())) {
+        // customer found with new email entered, and it is not the current customer
+        errors.rejectValue("emailAddress", "emailAddress.used");
+      }
 
     }
 
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return false;
-    }
+  }
 
-    @Override
-    public void validate(Object target, Errors errors) {
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    }
+  /**
+   * @see  org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
+   */
+  @Override public void validate(Object target, Errors errors) { }
 
-}
+} // end class UpdateAccountValidator

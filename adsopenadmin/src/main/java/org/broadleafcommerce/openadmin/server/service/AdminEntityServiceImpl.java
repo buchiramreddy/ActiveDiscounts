@@ -16,9 +16,22 @@
 
 package org.broadleafcommerce.openadmin.server.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Resource;
+
+import javax.persistence.NoResultException;
+
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.AddMethodType;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
@@ -39,541 +52,706 @@ import org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactory;
 import org.broadleafcommerce.openadmin.web.form.entity.DynamicEntityFormInfo;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
-import javax.persistence.NoResultException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Service("blAdminEntityService")
 public class AdminEntityServiceImpl implements AdminEntityService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blDynamicEntityRemoteService")
-    protected DynamicEntityService service;
+  /** DOCUMENT ME! */
+  @Resource(name = "blPersistencePackageFactory")
+  protected PersistencePackageFactory persistencePackageFactory;
 
-    @Resource(name = "blPersistencePackageFactory")
-    protected PersistencePackageFactory persistencePackageFactory;
+  /** DOCUMENT ME! */
+  @Resource(name = "blDynamicEntityRemoteService")
+  protected DynamicEntityService service;
 
-    @Override
-    public ClassMetadata getClassMetadata(PersistencePackageRequest request)
-            throws ServiceException {
-        ClassMetadata cmd = inspect(request).getClassMetaData();
-        cmd.setCeilingType(request.getCeilingEntityClassname());
-        return cmd;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#addEntity(org.broadleafcommerce.openadmin.web.form.entity.EntityForm,
+   *       java.lang.String[])
+   */
+  @Override public Entity addEntity(EntityForm entityForm, String[] customCriteria) throws ServiceException {
+    PersistencePackageRequest ppr = getRequestForEntityForm(entityForm, customCriteria);
+
+    return add(ppr);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#addSubCollectionEntity(org.broadleafcommerce.openadmin.web.form.entity.EntityForm,
+   *       org.broadleafcommerce.openadmin.dto.ClassMetadata, org.broadleafcommerce.openadmin.dto.Property, org.broadleafcommerce.openadmin.dto.Entity)
+   */
+  @Override public Entity addSubCollectionEntity(EntityForm entityForm, ClassMetadata mainMetadata, Property field,
+    Entity parentEntity) throws ServiceException, ClassNotFoundException {
+    // Assemble the properties from the entity form
+    List<Property> properties = new ArrayList<Property>();
+
+    for (Entry<String, Field> entry : entityForm.getFields().entrySet()) {
+      Property p = new Property();
+      p.setName(entry.getKey());
+      p.setValue(entry.getValue().getValue());
+      properties.add(p);
     }
 
-    @Override
-    public DynamicResultSet getRecords(PersistencePackageRequest request) throws ServiceException {
-        return fetch(request);
-    }
+    FieldMetadata md = field.getMetadata();
 
-    @Override
-    public Entity getRecord(PersistencePackageRequest request, String id, ClassMetadata cmd, boolean isCollectionRequest)
-            throws ServiceException {
-        String idProperty = getIdProperty(cmd);
-        
-        FilterAndSortCriteria fasc = new FilterAndSortCriteria(idProperty);
-        fasc.setFilterValue(id);
-        request.addFilterAndSortCriteria(fasc);
+    PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(md).withEntity(new Entity());
 
-        Entity[] entities = fetch(request).getRecords();
+    if (md instanceof BasicCollectionMetadata) {
+      BasicCollectionMetadata fmd = (BasicCollectionMetadata) md;
+      ppr.getEntity().setType(new String[] { fmd.getCollectionCeilingEntity() });
 
-        Assert.isTrue(entities != null && entities.length == 1, "Entity not found");
+      // If we're looking up an entity instead of trying to create one on the fly, let's make sure
+      // that we're not changing the target entity at all and only creating the association to the id
+      if (fmd.getAddMethodType().equals(AddMethodType.LOOKUP)) {
+        List<String> fieldsToRemove = new ArrayList<String>();
 
-        Entity entity = entities[0];
-        return entity;
-    }
+        String idProp = getIdProperty(mainMetadata);
 
-    @Override
-    public Entity addEntity(EntityForm entityForm, String[] customCriteria)
-            throws ServiceException {
-        PersistencePackageRequest ppr = getRequestForEntityForm(entityForm, customCriteria);
-        return add(ppr);
-    }
-
-    @Override
-    @Transactional("blTransactionManager")
-    public Entity updateEntity(EntityForm entityForm, String[] customCriteria)
-            throws ServiceException {
-        PersistencePackageRequest ppr = getRequestForEntityForm(entityForm, customCriteria);
-        
-        Entity returnEntity = update(ppr);
-        
-        // If the entity form has dynamic forms inside of it, we need to persist those as well.
-        // They are typically done in their own custom persistence handlers, which will get triggered
-        // based on the criteria specific in the PersistencePackage.
-        for (Entry<String, EntityForm> entry : entityForm.getDynamicForms().entrySet()) {
-            DynamicEntityFormInfo info = entityForm.getDynamicFormInfo(entry.getKey());
-            
-            customCriteria = new String[] { info.getCriteriaName(), entityForm.getId() };
-            ppr = getRequestForEntityForm(entry.getValue(), customCriteria);
-            update(ppr);
+        for (String key : entityForm.getFields().keySet()) {
+          if (!idProp.equals(key)) {
+            fieldsToRemove.add(key);
+          }
         }
-        
-        return returnEntity;
-    }
 
-    @Override
-    public void removeEntity(EntityForm entityForm, String[] customCriteria)
-            throws ServiceException {
-        PersistencePackageRequest ppr = getRequestForEntityForm(entityForm, customCriteria);
-        remove(ppr);
-    }
-    
-    protected List<Property> getPropertiesFromEntityForm(EntityForm entityForm) {
-        List<Property> properties = new ArrayList<Property>(entityForm.getFields().size());
-        
-        for (Entry<String, Field> entry : entityForm.getFields().entrySet()) {
-            Property p = new Property();
-            p.setName(entry.getKey());
-            p.setValue(entry.getValue().getValue());
-            properties.add(p);
-        }
-        
-        return properties;
-    }
+        for (String key : fieldsToRemove) {
+          ListIterator<Property> li = properties.listIterator();
 
-    protected PersistencePackageRequest getRequestForEntityForm(EntityForm entityForm, String[] customCriteria) {
-        // Ensure the ID property is on the form
-        Field idField = entityForm.findField(entityForm.getIdProperty());
-        if (idField == null) {
-            idField = new Field();
-            idField.setName(entityForm.getIdProperty());
-            idField.setValue(entityForm.getId());
-            entityForm.getFields().put(entityForm.getIdProperty(), idField);
-        }
-        
-        List<Property> propList = getPropertiesFromEntityForm(entityForm);
-        Property[] properties = new Property[propList.size()];
-        properties = propList.toArray(properties);
-
-        Entity entity = new Entity();
-        entity.setProperties(properties);
-        entity.setType(new String[] { entityForm.getEntityType() });
-
-        PersistencePackageRequest ppr = PersistencePackageRequest.standard()
-                .withEntity(entity)
-                .withCustomCriteria(customCriteria)
-                .withCeilingEntityClassname(entityForm.getCeilingEntityClassname());
-
-        return ppr;
-    }
-
-    @Override
-    public Entity getAdvancedCollectionRecord(ClassMetadata containingClassMetadata, Entity containingEntity,
-            Property collectionProperty, String collectionItemId)
-            throws ServiceException {
-        PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(collectionProperty.getMetadata());
-
-        FieldMetadata md = collectionProperty.getMetadata();
-        String containingEntityId = getContextSpecificRelationshipId(containingClassMetadata, containingEntity, 
-                collectionProperty.getName());
-
-        Entity entity = null;
-
-        if (md instanceof AdornedTargetCollectionMetadata) {
-            FilterAndSortCriteria fasc = new FilterAndSortCriteria(ppr.getAdornedList().getCollectionFieldName());
-            fasc.setFilterValue(containingEntityId);
-            ppr.addFilterAndSortCriteria(fasc);
-
-            fasc = new FilterAndSortCriteria(ppr.getAdornedList().getCollectionFieldName() + "Target");
-            fasc.setFilterValue(collectionItemId);
-            ppr.addFilterAndSortCriteria(fasc);
-
-            Entity[] entities = fetch(ppr).getRecords();
-            Assert.isTrue(entities != null && entities.length == 1, "Entity not found");
-            entity = entities[0];
-        } else if (md instanceof MapMetadata) {
-            MapMetadata mmd = (MapMetadata) md;
-            FilterAndSortCriteria fasc = new FilterAndSortCriteria(ppr.getForeignKey().getManyToField());
-            fasc.setFilterValue(containingEntityId);
-            ppr.addFilterAndSortCriteria(fasc);
-
-            Entity[] entities = fetch(ppr).getRecords();
-            for (Entity e : entities) {
-                String idProperty = getIdProperty(containingClassMetadata);
-                if (mmd.isSimpleValue()) {
-                    idProperty = "key";
-                }
-                Property p = e.getPMap().get(idProperty);
-                if (p.getValue().equals(collectionItemId)) {
-                    entity = e;
-                    break;
-                }
+          while (li.hasNext()) {
+            if (li.next().getName().equals(key)) {
+              li.remove();
             }
-        } else {
-            throw new IllegalArgumentException(String.format("The specified field [%s] for class [%s] was not an " +
-                    "advanced collection field.", collectionProperty.getName(), containingClassMetadata.getCeilingType()));
+          }
+        }
+      }
+
+      Property fp = new Property();
+      fp.setName(ppr.getForeignKey().getManyToField());
+      fp.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
+      properties.add(fp);
+    } else if (md instanceof AdornedTargetCollectionMetadata) {
+      ppr.getEntity().setType(new String[] { ppr.getAdornedList().getAdornedTargetEntityClassname() });
+    } else if (md instanceof MapMetadata) {
+      ppr.getEntity().setType(new String[] { entityForm.getEntityType() });
+
+      Property p = new Property();
+      p.setName("symbolicId");
+      p.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
+      properties.add(p);
+    } else {
+      throw new IllegalArgumentException(String.format(
+          "The specified field [%s] for class [%s] was"
+          + " not a collection field.", field.getName(), mainMetadata.getCeilingType()));
+    } // end if-else
+
+    ppr.setCeilingEntityClassname(ppr.getEntity().getType()[0]);
+
+    Property[] propArr = new Property[properties.size()];
+    properties.toArray(propArr);
+    ppr.getEntity().setProperties(propArr);
+
+    return add(ppr);
+  } // end method addSubCollectionEntity
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getAdvancedCollectionRecord(org.broadleafcommerce.openadmin.dto.ClassMetadata,
+   *       org.broadleafcommerce.openadmin.dto.Entity, org.broadleafcommerce.openadmin.dto.Property, java.lang.String)
+   */
+  @Override public Entity getAdvancedCollectionRecord(ClassMetadata containingClassMetadata, Entity containingEntity,
+    Property collectionProperty, String collectionItemId) throws ServiceException {
+    PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(collectionProperty.getMetadata());
+
+    FieldMetadata md                 = collectionProperty.getMetadata();
+    String        containingEntityId = getContextSpecificRelationshipId(containingClassMetadata, containingEntity,
+        collectionProperty.getName());
+
+    Entity entity = null;
+
+    if (md instanceof AdornedTargetCollectionMetadata) {
+      FilterAndSortCriteria fasc = new FilterAndSortCriteria(ppr.getAdornedList().getCollectionFieldName());
+      fasc.setFilterValue(containingEntityId);
+      ppr.addFilterAndSortCriteria(fasc);
+
+      fasc = new FilterAndSortCriteria(ppr.getAdornedList().getCollectionFieldName() + "Target");
+      fasc.setFilterValue(collectionItemId);
+      ppr.addFilterAndSortCriteria(fasc);
+
+      Entity[] entities = fetch(ppr).getRecords();
+      Assert.isTrue((entities != null) && (entities.length == 1), "Entity not found");
+      entity = entities[0];
+    } else if (md instanceof MapMetadata) {
+      MapMetadata           mmd  = (MapMetadata) md;
+      FilterAndSortCriteria fasc = new FilterAndSortCriteria(ppr.getForeignKey().getManyToField());
+      fasc.setFilterValue(containingEntityId);
+      ppr.addFilterAndSortCriteria(fasc);
+
+      Entity[] entities = fetch(ppr).getRecords();
+
+      for (Entity e : entities) {
+        String idProperty = getIdProperty(containingClassMetadata);
+
+        if (mmd.isSimpleValue()) {
+          idProperty = "key";
         }
 
-        if (entity == null) {
-            throw new NoResultException(String.format("Could not find record for class [%s], field [%s], main entity id " +
-                    "[%s], collection entity id [%s]", containingClassMetadata.getCeilingType(),
-                    collectionProperty.getName(), containingEntityId, collectionItemId));
-        }
+        Property p = e.getPMap().get(idProperty);
 
-        return entity;
+        if (p.getValue().equals(collectionItemId)) {
+          entity = e;
+
+          break;
+        }
+      }
+    } else {
+      throw new IllegalArgumentException(String.format(
+          "The specified field [%s] for class [%s] was not an "
+          + "advanced collection field.", collectionProperty.getName(), containingClassMetadata.getCeilingType()));
+    } // end if-else
+
+    if (entity == null) {
+      throw new NoResultException(String.format(
+          "Could not find record for class [%s], field [%s], main entity id "
+          + "[%s], collection entity id [%s]", containingClassMetadata.getCeilingType(),
+          collectionProperty.getName(), containingEntityId, collectionItemId));
     }
 
-    @Override
-    public DynamicResultSet getRecordsForCollection(ClassMetadata containingClassMetadata, Entity containingEntity,
-            Property collectionProperty, FilterAndSortCriteria[] fascs, Integer startIndex, Integer maxIndex)
-            throws ServiceException {
-        
-        PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(collectionProperty.getMetadata())
-                .withFilterAndSortCriteria(fascs)
-                .withStartIndex(startIndex)
-                .withMaxIndex(maxIndex);
-        
-        FilterAndSortCriteria fasc;
+    return entity;
+  } // end method getAdvancedCollectionRecord
 
-        FieldMetadata md = collectionProperty.getMetadata();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (md instanceof BasicCollectionMetadata) {
-            fasc = new FilterAndSortCriteria(ppr.getForeignKey().getManyToField());
-        } else if (md instanceof AdornedTargetCollectionMetadata) {
-            fasc = new FilterAndSortCriteria(ppr.getAdornedList().getCollectionFieldName());
-        } else if (md instanceof MapMetadata) {
-            fasc = new FilterAndSortCriteria(ppr.getForeignKey().getManyToField());
-        } else {
-            throw new IllegalArgumentException(String.format("The specified field [%s] for class [%s] was not a " +
-                    "collection field.", collectionProperty.getName(), containingClassMetadata.getCeilingType()));
-        }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getClassMetadata(org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest)
+   */
+  @Override public ClassMetadata getClassMetadata(PersistencePackageRequest request) throws ServiceException {
+    ClassMetadata cmd = inspect(request).getClassMetaData();
+    cmd.setCeilingType(request.getCeilingEntityClassname());
 
-        String id = getContextSpecificRelationshipId(containingClassMetadata, containingEntity, collectionProperty.getName());
-        fasc.setFilterValue(id);
-        ppr.addFilterAndSortCriteria(fasc);
+    return cmd;
+  }
 
-        return fetch(ppr);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getContextSpecificRelationshipId(org.broadleafcommerce.openadmin.dto.ClassMetadata,
+   *       org.broadleafcommerce.openadmin.dto.Entity, java.lang.String)
+   */
+  @Override public String getContextSpecificRelationshipId(ClassMetadata cmd, Entity entity, String propertyName) {
+    String prefix;
+
+    if (propertyName.contains(".")) {
+      prefix = propertyName.substring(0, propertyName.lastIndexOf("."));
+    } else {
+      prefix = "";
     }
 
-    @Override
-    public Map<String, DynamicResultSet> getRecordsForAllSubCollections(PersistencePackageRequest ppr, Entity containingEntity) 
-            throws ServiceException {
-        Map<String, DynamicResultSet> map = new HashMap<String, DynamicResultSet>();
+    if (prefix.equals("")) {
+      return entity.findProperty("id").getValue();
+    } else {
+      // we need to check all the parts of the prefix. For example, the prefix could include an @Embedded class like
+      // defaultSku.dimension. In this case, we want the id from the defaultSku property, since the @Embedded does
+      // not have an id property - nor should it.
+      String[] prefixParts = prefix.split("\\.");
 
-        ClassMetadata cmd = getClassMetadata(ppr);
-        for (Property p : cmd.getProperties()) {
-            if (p.getMetadata() instanceof CollectionMetadata) {
-                DynamicResultSet drs = getRecordsForCollection(cmd, containingEntity, p, null, null, null);
-                map.put(p.getName(), drs);
+      for (int j = 0; j < prefixParts.length; j++) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int x = 0; x < (prefixParts.length - j); x++) {
+          sb.append(prefixParts[x]);
+
+          if (x < (prefixParts.length - j - 1)) {
+            sb.append(".");
+          }
+        }
+
+        String tempPrefix = sb.toString();
+
+        for (Property property : entity.getProperties()) {
+          if (property.getName().startsWith(tempPrefix)) {
+            BasicFieldMetadata md = (BasicFieldMetadata) cmd.getPMap().get(property.getName()).getMetadata();
+
+            if (md.getFieldType().equals(SupportedFieldType.ID)) {
+              return property.getValue();
             }
+          }
         }
+      }
+    } // end if-else
 
-        return map;
+    if (!prefix.contains(".")) {
+      // this may be an embedded class directly on the root entity (e.g. embeddablePriceList.restrictedPriceLists on OfferImpl)
+      return entity.findProperty("id").getValue();
     }
 
-    @Override
-    public Entity addSubCollectionEntity(EntityForm entityForm, ClassMetadata mainMetadata, Property field, 
-            Entity parentEntity)
-            throws ServiceException, ClassNotFoundException {
-        // Assemble the properties from the entity form
-        List<Property> properties = new ArrayList<Property>();
-        for (Entry<String, Field> entry : entityForm.getFields().entrySet()) {
-            Property p = new Property();
-            p.setName(entry.getKey());
-            p.setValue(entry.getValue().getValue());
-            properties.add(p);
+    throw new RuntimeException("Unable to establish a relationship id");
+  } // end method getContextSpecificRelationshipId
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getIdProperty(org.broadleafcommerce.openadmin.dto.ClassMetadata)
+   */
+  @Override public String getIdProperty(ClassMetadata cmd) throws ServiceException {
+    for (Property p : cmd.getProperties()) {
+      if (p.getMetadata() instanceof BasicFieldMetadata) {
+        BasicFieldMetadata fmd = (BasicFieldMetadata) p.getMetadata();
+
+        // check for ID type and also make sure the field we're looking at is not a "ToOne" association
+        if (SupportedFieldType.ID.equals(fmd.getFieldType()) && !p.getName().contains(".")) {
+          return p.getName();
         }
-
-        FieldMetadata md = field.getMetadata();
-
-        PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(md)
-                .withEntity(new Entity());
-
-        if (md instanceof BasicCollectionMetadata) {
-            BasicCollectionMetadata fmd = (BasicCollectionMetadata) md;
-            ppr.getEntity().setType(new String[] { fmd.getCollectionCeilingEntity() });
-            
-            // If we're looking up an entity instead of trying to create one on the fly, let's make sure 
-            // that we're not changing the target entity at all and only creating the association to the id
-            if (fmd.getAddMethodType().equals(AddMethodType.LOOKUP)) {
-                List<String> fieldsToRemove = new ArrayList<String>();
-                
-                String idProp = getIdProperty(mainMetadata);
-                for (String key : entityForm.getFields().keySet()) {
-                    if (!idProp.equals(key)) {
-                        fieldsToRemove.add(key);
-                    }
-                }
-                
-                for (String key : fieldsToRemove) {
-                    ListIterator<Property> li = properties.listIterator();
-                    while (li.hasNext()) {
-                        if (li.next().getName().equals(key)) {
-                            li.remove();
-                        }
-                    }
-                }
-            }
-
-            Property fp = new Property();
-            fp.setName(ppr.getForeignKey().getManyToField());
-            fp.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
-            properties.add(fp);
-        } else if (md instanceof AdornedTargetCollectionMetadata) {
-            ppr.getEntity().setType(new String[] { ppr.getAdornedList().getAdornedTargetEntityClassname() });
-        } else if (md instanceof MapMetadata) {
-            ppr.getEntity().setType(new String[] { entityForm.getEntityType() });
-            
-            Property p = new Property();
-            p.setName("symbolicId");
-            p.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
-            properties.add(p);
-        } else {
-            throw new IllegalArgumentException(String.format("The specified field [%s] for class [%s] was" +
-                    " not a collection field.", field.getName(), mainMetadata.getCeilingType()));
-        }
-
-        ppr.setCeilingEntityClassname(ppr.getEntity().getType()[0]);
-
-        Property[] propArr = new Property[properties.size()];
-        properties.toArray(propArr);
-        ppr.getEntity().setProperties(propArr);
-
-        return add(ppr);
+      }
     }
 
-    @Override
-    public Entity updateSubCollectionEntity(EntityForm entityForm, ClassMetadata mainMetadata, Property field,
-            Entity parentEntity, String collectionItemId)
-            throws ServiceException, ClassNotFoundException {
-        List<Property> properties = getPropertiesFromEntityForm(entityForm);
+    throw new ServiceException("Could not determine ID field for " + cmd.getCeilingType());
+  }
 
-        FieldMetadata md = field.getMetadata();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(md)
-                .withEntity(new Entity());
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getRecord(org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest,
+   *       java.lang.String, org.broadleafcommerce.openadmin.dto.ClassMetadata, boolean)
+   */
+  @Override public Entity getRecord(PersistencePackageRequest request, String id, ClassMetadata cmd,
+    boolean isCollectionRequest) throws ServiceException {
+    String idProperty = getIdProperty(cmd);
 
-        if (md instanceof BasicCollectionMetadata) {
-            BasicCollectionMetadata fmd = (BasicCollectionMetadata) md;
-            ppr.getEntity().setType(new String[] { fmd.getCollectionCeilingEntity() });
+    FilterAndSortCriteria fasc = new FilterAndSortCriteria(idProperty);
+    fasc.setFilterValue(id);
+    request.addFilterAndSortCriteria(fasc);
 
-            Property fp = new Property();
-            fp.setName(ppr.getForeignKey().getManyToField());
-            fp.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
-            properties.add(fp);
-        } else if (md instanceof AdornedTargetCollectionMetadata) {
-            ppr.getEntity().setType(new String[] { ppr.getAdornedList().getAdornedTargetEntityClassname() });
-        } else if (md instanceof MapMetadata) {
-            ppr.getEntity().setType(new String[] { entityForm.getEntityType() });
-            
-            Property p = new Property();
-            p.setName("symbolicId");
-            p.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
-            properties.add(p);
-        } else {
-            throw new IllegalArgumentException(String.format("The specified field [%s] for class [%s] was" +
-                    " not a collection field.", field.getName(), mainMetadata.getCeilingType()));
-        }
+    Entity[] entities = fetch(request).getRecords();
 
-        ppr.setCeilingEntityClassname(ppr.getEntity().getType()[0]);
+    Assert.isTrue((entities != null) && (entities.length == 1), "Entity not found");
 
-        Property p = new Property();
-        p.setName(entityForm.getIdProperty());
-        p.setValue(collectionItemId);
-        properties.add(p);
+    Entity entity = entities[0];
 
-        Property[] propArr = new Property[properties.size()];
-        properties.toArray(propArr);
-        ppr.getEntity().setProperties(propArr);
+    return entity;
+  }
 
-        return update(ppr);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getRecords(org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest)
+   */
+  @Override public DynamicResultSet getRecords(PersistencePackageRequest request) throws ServiceException {
+    return fetch(request);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getRecordsForAllSubCollections(org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest,
+   *       org.broadleafcommerce.openadmin.dto.Entity)
+   */
+  @Override public Map<String, DynamicResultSet> getRecordsForAllSubCollections(PersistencePackageRequest ppr,
+    Entity containingEntity) throws ServiceException {
+    Map<String, DynamicResultSet> map = new HashMap<String, DynamicResultSet>();
+
+    ClassMetadata cmd = getClassMetadata(ppr);
+
+    for (Property p : cmd.getProperties()) {
+      if (p.getMetadata() instanceof CollectionMetadata) {
+        DynamicResultSet drs = getRecordsForCollection(cmd, containingEntity, p, null, null, null);
+        map.put(p.getName(), drs);
+      }
     }
 
-    @Override
-    public void removeSubCollectionEntity(ClassMetadata mainMetadata, Property field, Entity parentEntity, String itemId,
-            String priorKey)
-            throws ServiceException {
-        List<Property> properties = new ArrayList<Property>();
+    return map;
+  }
 
-        Property p;
-        String parentId = getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName());
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        Entity entity = new Entity();
-        PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(field.getMetadata())
-                .withEntity(entity);
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#getRecordsForCollection(org.broadleafcommerce.openadmin.dto.ClassMetadata,
+   *       org.broadleafcommerce.openadmin.dto.Entity, org.broadleafcommerce.openadmin.dto.Property,
+   *       org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria[], java.lang.Integer, java.lang.Integer)
+   */
+  @Override public DynamicResultSet getRecordsForCollection(ClassMetadata containingClassMetadata,
+    Entity containingEntity,
+    Property collectionProperty, FilterAndSortCriteria[] fascs, Integer startIndex, Integer maxIndex)
+    throws ServiceException {
+    PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(collectionProperty.getMetadata())
+      .withFilterAndSortCriteria(fascs).withStartIndex(startIndex).withMaxIndex(maxIndex);
 
-        if (field.getMetadata() instanceof BasicCollectionMetadata) {
-            BasicCollectionMetadata fmd = (BasicCollectionMetadata) field.getMetadata();
+    FilterAndSortCriteria fasc;
 
-            p = new Property();
-            p.setName("id");
-            p.setValue(itemId);
-            properties.add(p);
+    FieldMetadata md = collectionProperty.getMetadata();
 
-            p = new Property();
-            p.setName(ppr.getForeignKey().getManyToField());
-            p.setValue(parentId);
-            properties.add(p);
-
-            entity.setType(new String[] { fmd.getCollectionCeilingEntity() });
-        } else if (field.getMetadata() instanceof AdornedTargetCollectionMetadata) {
-            AdornedTargetList adornedList = ppr.getAdornedList();
-
-            p = new Property();
-            p.setName(adornedList.getLinkedObjectPath() + "." + adornedList.getLinkedIdProperty());
-            p.setValue(parentId);
-            properties.add(p);
-
-            p = new Property();
-            p.setName(adornedList.getTargetObjectPath() + "." + adornedList.getTargetIdProperty());
-            p.setValue(itemId);
-            properties.add(p);
-
-            entity.setType(new String[] { adornedList.getAdornedTargetEntityClassname() });
-        } else if (field.getMetadata() instanceof MapMetadata) {
-            MapMetadata fmd = (MapMetadata) field.getMetadata();
-
-            p = new Property();
-            p.setName("symbolicId");
-            p.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
-            properties.add(p);
-
-            p = new Property();
-            p.setName("priorKey");
-            p.setValue(priorKey);
-            properties.add(p);
-            
-            MapStructure mapStructure = ppr.getMapStructure();
-            
-            p = new Property();
-            p.setName(mapStructure.getKeyPropertyName());
-            p.setValue(itemId);
-            properties.add(p);
-
-            entity.setType(new String[] { fmd.getTargetClass() });
-        }
-
-        Property[] propArr = new Property[properties.size()];
-        properties.toArray(propArr);
-        ppr.getEntity().setProperties(propArr);
-
-        remove(ppr);
+    if (md instanceof BasicCollectionMetadata) {
+      fasc = new FilterAndSortCriteria(ppr.getForeignKey().getManyToField());
+    } else if (md instanceof AdornedTargetCollectionMetadata) {
+      fasc = new FilterAndSortCriteria(ppr.getAdornedList().getCollectionFieldName());
+    } else if (md instanceof MapMetadata) {
+      fasc = new FilterAndSortCriteria(ppr.getForeignKey().getManyToField());
+    } else {
+      throw new IllegalArgumentException(String.format(
+          "The specified field [%s] for class [%s] was not a "
+          + "collection field.", collectionProperty.getName(), containingClassMetadata.getCeilingType()));
     }
 
-    @Override
-    public String getContextSpecificRelationshipId(ClassMetadata cmd, Entity entity, String propertyName) {
-        String prefix;
-        if (propertyName.contains(".")) {
-            prefix = propertyName.substring(0, propertyName.lastIndexOf("."));
-        } else {
-            prefix = "";
-        }
-                
-        if (prefix.equals("")) {
-            return entity.findProperty("id").getValue();
-        } else {
-            //we need to check all the parts of the prefix. For example, the prefix could include an @Embedded class like
-            //defaultSku.dimension. In this case, we want the id from the defaultSku property, since the @Embedded does
-            //not have an id property - nor should it.
-            String[] prefixParts = prefix.split("\\.");
-            for (int j = 0; j < prefixParts.length; j++) {
-                StringBuilder sb = new StringBuilder();
-                for (int x = 0; x < prefixParts.length - j; x++) {
-                    sb.append(prefixParts[x]);
-                    if (x < prefixParts.length - j - 1) {
-                        sb.append(".");
-                    }
-                }
-                String tempPrefix = sb.toString();
-                
-                for (Property property : entity.getProperties()) {
-                    if (property.getName().startsWith(tempPrefix)) {
-                        BasicFieldMetadata md = (BasicFieldMetadata) cmd.getPMap().get(property.getName()).getMetadata();
-                        if (md.getFieldType().equals(SupportedFieldType.ID)) {
-                            return property.getValue();
-                        }
-                    }
-                }
-            }
-        }
-        if (!prefix.contains(".")) {
-            //this may be an embedded class directly on the root entity (e.g. embeddablePriceList.restrictedPriceLists on OfferImpl)
-            return entity.findProperty("id").getValue();
-        }
-        throw new RuntimeException("Unable to establish a relationship id");
-    }
-    
-    @Override
-    public String getIdProperty(ClassMetadata cmd) throws ServiceException {
-        for (Property p : cmd.getProperties()) {
-            if (p.getMetadata() instanceof BasicFieldMetadata) {
-                BasicFieldMetadata fmd = (BasicFieldMetadata) p.getMetadata();
-                //check for ID type and also make sure the field we're looking at is not a "ToOne" association
-                if (SupportedFieldType.ID.equals(fmd.getFieldType()) && !p.getName().contains(".")) {
-                    return p.getName();
-                }
-            }
-        }
-        
-        throw new ServiceException("Could not determine ID field for " + cmd.getCeilingType());
+    String id = getContextSpecificRelationshipId(containingClassMetadata, containingEntity,
+        collectionProperty.getName());
+    fasc.setFilterValue(id);
+    ppr.addFilterAndSortCriteria(fasc);
+
+    return fetch(ppr);
+  } // end method getRecordsForCollection
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#removeEntity(org.broadleafcommerce.openadmin.web.form.entity.EntityForm,
+   *       java.lang.String[])
+   */
+  @Override public void removeEntity(EntityForm entityForm, String[] customCriteria) throws ServiceException {
+    PersistencePackageRequest ppr = getRequestForEntityForm(entityForm, customCriteria);
+    remove(ppr);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#removeSubCollectionEntity(org.broadleafcommerce.openadmin.dto.ClassMetadata,
+   *       org.broadleafcommerce.openadmin.dto.Property, org.broadleafcommerce.openadmin.dto.Entity, java.lang.String,
+   *       java.lang.String)
+   */
+  @Override public void removeSubCollectionEntity(ClassMetadata mainMetadata, Property field, Entity parentEntity,
+    String itemId,
+    String priorKey) throws ServiceException {
+    List<Property> properties = new ArrayList<Property>();
+
+    Property p;
+    String   parentId = getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName());
+
+    Entity                    entity = new Entity();
+    PersistencePackageRequest ppr    = PersistencePackageRequest.fromMetadata(field.getMetadata()).withEntity(entity);
+
+    if (field.getMetadata() instanceof BasicCollectionMetadata) {
+      BasicCollectionMetadata fmd = (BasicCollectionMetadata) field.getMetadata();
+
+      p = new Property();
+      p.setName("id");
+      p.setValue(itemId);
+      properties.add(p);
+
+      p = new Property();
+      p.setName(ppr.getForeignKey().getManyToField());
+      p.setValue(parentId);
+      properties.add(p);
+
+      entity.setType(new String[] { fmd.getCollectionCeilingEntity() });
+    } else if (field.getMetadata() instanceof AdornedTargetCollectionMetadata) {
+      AdornedTargetList adornedList = ppr.getAdornedList();
+
+      p = new Property();
+      p.setName(adornedList.getLinkedObjectPath() + "." + adornedList.getLinkedIdProperty());
+      p.setValue(parentId);
+      properties.add(p);
+
+      p = new Property();
+      p.setName(adornedList.getTargetObjectPath() + "." + adornedList.getTargetIdProperty());
+      p.setValue(itemId);
+      properties.add(p);
+
+      entity.setType(new String[] { adornedList.getAdornedTargetEntityClassname() });
+    } else if (field.getMetadata() instanceof MapMetadata) {
+      MapMetadata fmd = (MapMetadata) field.getMetadata();
+
+      p = new Property();
+      p.setName("symbolicId");
+      p.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
+      properties.add(p);
+
+      p = new Property();
+      p.setName("priorKey");
+      p.setValue(priorKey);
+      properties.add(p);
+
+      MapStructure mapStructure = ppr.getMapStructure();
+
+      p = new Property();
+      p.setName(mapStructure.getKeyPropertyName());
+      p.setValue(itemId);
+      properties.add(p);
+
+      entity.setType(new String[] { fmd.getTargetClass() });
+    } // end if-else
+
+    Property[] propArr = new Property[properties.size()];
+    properties.toArray(propArr);
+    ppr.getEntity().setProperties(propArr);
+
+    remove(ppr);
+  } // end method removeSubCollectionEntity
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#updateEntity(org.broadleafcommerce.openadmin.web.form.entity.EntityForm,
+   *       java.lang.String[])
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Entity updateEntity(EntityForm entityForm, String[] customCriteria) throws ServiceException {
+    PersistencePackageRequest ppr = getRequestForEntityForm(entityForm, customCriteria);
+
+    Entity returnEntity = update(ppr);
+
+    // If the entity form has dynamic forms inside of it, we need to persist those as well.
+    // They are typically done in their own custom persistence handlers, which will get triggered
+    // based on the criteria specific in the PersistencePackage.
+    for (Entry<String, EntityForm> entry : entityForm.getDynamicForms().entrySet()) {
+      DynamicEntityFormInfo info = entityForm.getDynamicFormInfo(entry.getKey());
+
+      customCriteria = new String[] { info.getCriteriaName(), entityForm.getId() };
+      ppr            = getRequestForEntityForm(entry.getValue(), customCriteria);
+      update(ppr);
     }
 
-    protected Entity add(PersistencePackageRequest request)
-            throws ServiceException {
-        PersistencePackage pkg = persistencePackageFactory.create(request);
-        return service.add(pkg);
+    return returnEntity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AdminEntityService#updateSubCollectionEntity(org.broadleafcommerce.openadmin.web.form.entity.EntityForm,
+   *       org.broadleafcommerce.openadmin.dto.ClassMetadata, org.broadleafcommerce.openadmin.dto.Property,
+   *       org.broadleafcommerce.openadmin.dto.Entity, java.lang.String)
+   */
+  @Override public Entity updateSubCollectionEntity(EntityForm entityForm, ClassMetadata mainMetadata, Property field,
+    Entity parentEntity, String collectionItemId) throws ServiceException, ClassNotFoundException {
+    List<Property> properties = getPropertiesFromEntityForm(entityForm);
+
+    FieldMetadata md = field.getMetadata();
+
+    PersistencePackageRequest ppr = PersistencePackageRequest.fromMetadata(md).withEntity(new Entity());
+
+    if (md instanceof BasicCollectionMetadata) {
+      BasicCollectionMetadata fmd = (BasicCollectionMetadata) md;
+      ppr.getEntity().setType(new String[] { fmd.getCollectionCeilingEntity() });
+
+      Property fp = new Property();
+      fp.setName(ppr.getForeignKey().getManyToField());
+      fp.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
+      properties.add(fp);
+    } else if (md instanceof AdornedTargetCollectionMetadata) {
+      ppr.getEntity().setType(new String[] { ppr.getAdornedList().getAdornedTargetEntityClassname() });
+    } else if (md instanceof MapMetadata) {
+      ppr.getEntity().setType(new String[] { entityForm.getEntityType() });
+
+      Property p = new Property();
+      p.setName("symbolicId");
+      p.setValue(getContextSpecificRelationshipId(mainMetadata, parentEntity, field.getName()));
+      properties.add(p);
+    } else {
+      throw new IllegalArgumentException(String.format(
+          "The specified field [%s] for class [%s] was"
+          + " not a collection field.", field.getName(), mainMetadata.getCeilingType()));
     }
 
-    protected Entity update(PersistencePackageRequest request)
-            throws ServiceException {
-        PersistencePackage pkg = persistencePackageFactory.create(request);
-        return service.update(pkg);
+    ppr.setCeilingEntityClassname(ppr.getEntity().getType()[0]);
+
+    Property p = new Property();
+    p.setName(entityForm.getIdProperty());
+    p.setValue(collectionItemId);
+    properties.add(p);
+
+    Property[] propArr = new Property[properties.size()];
+    properties.toArray(propArr);
+    ppr.getEntity().setProperties(propArr);
+
+    return update(ppr);
+  } // end method updateSubCollectionEntity
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  protected Entity add(PersistencePackageRequest request) throws ServiceException {
+    PersistencePackage pkg = persistencePackageFactory.create(request);
+
+    return service.add(pkg);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  protected DynamicResultSet fetch(PersistencePackageRequest request) throws ServiceException {
+    PersistencePackage pkg = persistencePackageFactory.create(request);
+
+    CriteriaTransferObject cto = getDefaultCto();
+
+    if (request.getFilterAndSortCriteria() != null) {
+      cto.addAll(Arrays.asList(request.getFilterAndSortCriteria()));
     }
 
-    protected DynamicResultSet inspect(PersistencePackageRequest request)
-            throws ServiceException {
-        PersistencePackage pkg = persistencePackageFactory.create(request);
-        return service.inspect(pkg);
+    if (request.getStartIndex() == null) {
+      cto.setFirstResult(0);
+    } else {
+      cto.setFirstResult(request.getStartIndex());
     }
 
-    protected void remove(PersistencePackageRequest request)
-            throws ServiceException {
-        PersistencePackage pkg = persistencePackageFactory.create(request);
-        service.remove(pkg);
+    if (request.getMaxIndex() != null) {
+      int requestedMaxResults = request.getMaxIndex() - request.getStartIndex() + 1;
+
+      if ((requestedMaxResults >= 0) && (requestedMaxResults < cto.getMaxResults())) {
+        cto.setMaxResults(requestedMaxResults);
+      }
     }
 
-    protected DynamicResultSet fetch(PersistencePackageRequest request)
-            throws ServiceException {
-        PersistencePackage pkg = persistencePackageFactory.create(request);
+    return service.fetch(pkg, cto);
+  } // end method fetch
 
-        CriteriaTransferObject cto = getDefaultCto();
-        if (request.getFilterAndSortCriteria() != null) {
-            cto.addAll(Arrays.asList(request.getFilterAndSortCriteria()));
-        }
-        
-        if (request.getStartIndex() == null) {
-            cto.setFirstResult(0);
-        } else {
-            cto.setFirstResult(request.getStartIndex());
-        }
-        
-        if (request.getMaxIndex() != null) {
-            int requestedMaxResults = request.getMaxIndex() - request.getStartIndex() + 1;
-            if (requestedMaxResults >= 0 && requestedMaxResults < cto.getMaxResults()) {
-                cto.setMaxResults(requestedMaxResults);
-            }
-        }
-        
-        return service.fetch(pkg, cto);
-    }
-    
-    protected CriteriaTransferObject getDefaultCto() {
-        CriteriaTransferObject cto = new CriteriaTransferObject();
-        cto.setMaxResults(50);
-        return cto;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected CriteriaTransferObject getDefaultCto() {
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    cto.setMaxResults(50);
+
+    return cto;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entityForm  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected List<Property> getPropertiesFromEntityForm(EntityForm entityForm) {
+    List<Property> properties = new ArrayList<Property>(entityForm.getFields().size());
+
+    for (Entry<String, Field> entry : entityForm.getFields().entrySet()) {
+      Property p = new Property();
+      p.setName(entry.getKey());
+      p.setValue(entry.getValue().getValue());
+      properties.add(p);
     }
 
-}
+    return properties;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entityForm      DOCUMENT ME!
+   * @param   customCriteria  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected PersistencePackageRequest getRequestForEntityForm(EntityForm entityForm, String[] customCriteria) {
+    // Ensure the ID property is on the form
+    Field idField = entityForm.findField(entityForm.getIdProperty());
+
+    if (idField == null) {
+      idField = new Field();
+      idField.setName(entityForm.getIdProperty());
+      idField.setValue(entityForm.getId());
+      entityForm.getFields().put(entityForm.getIdProperty(), idField);
+    }
+
+    List<Property> propList   = getPropertiesFromEntityForm(entityForm);
+    Property[]     properties = new Property[propList.size()];
+    properties = propList.toArray(properties);
+
+    Entity entity = new Entity();
+    entity.setProperties(properties);
+    entity.setType(new String[] { entityForm.getEntityType() });
+
+    PersistencePackageRequest ppr = PersistencePackageRequest.standard().withEntity(entity).withCustomCriteria(
+        customCriteria).withCeilingEntityClassname(entityForm.getCeilingEntityClassname());
+
+    return ppr;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  protected DynamicResultSet inspect(PersistencePackageRequest request) throws ServiceException {
+    PersistencePackage pkg = persistencePackageFactory.create(request);
+
+    return service.inspect(pkg);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  protected void remove(PersistencePackageRequest request) throws ServiceException {
+    PersistencePackage pkg = persistencePackageFactory.create(request);
+    service.remove(pkg);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  protected Entity update(PersistencePackageRequest request) throws ServiceException {
+    PersistencePackage pkg = persistencePackageFactory.create(request);
+
+    return service.update(pkg);
+  }
+
+} // end class AdminEntityServiceImpl

@@ -17,84 +17,161 @@
 package org.broadleafcommerce.common.presentation.client;
 
 import java.io.Serializable;
+
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * 
- * @author ppatel/bpolster
+ * DOCUMENT ME!
  *
+ * @author   ppatel/bpolster
+ * @version  $Revision$, $Date$
  */
 public class RuleType implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, RuleType> TYPES = new HashMap<String, RuleType>();
+  private static final Map<String, RuleType> TYPES = new HashMap<String, RuleType>();
 
-    public static final RuleType CUSTOMER  = new RuleType("1", "Customer");
-    public static final RuleType REQUEST  = new RuleType("2", "Request");
-    public static final RuleType TIME  = new RuleType("3", "Time");
-    public static final RuleType PRODUCT  = new RuleType("4", "Product");
-    public static final RuleType ORDER_ITEM  = new RuleType("5", "OrderItem");
-    public static final RuleType LOCALE  = new RuleType("6", "Locale");
-    public static final RuleType ORDER_ITEM_HISTORY  = new RuleType("7", "OrderItemHistory");
-   
+  /** DOCUMENT ME! */
+  public static final RuleType CUSTOMER           = new RuleType("1", "Customer");
 
-    public static RuleType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final RuleType REQUEST            = new RuleType("2", "Request");
+
+  /** DOCUMENT ME! */
+  public static final RuleType TIME               = new RuleType("3", "Time");
+
+  /** DOCUMENT ME! */
+  public static final RuleType PRODUCT            = new RuleType("4", "Product");
+
+  /** DOCUMENT ME! */
+  public static final RuleType ORDER_ITEM         = new RuleType("5", "OrderItem");
+
+  /** DOCUMENT ME! */
+  public static final RuleType LOCALE             = new RuleType("6", "Locale");
+
+  /** DOCUMENT ME! */
+  public static final RuleType ORDER_ITEM_HISTORY = new RuleType("7", "OrderItemHistory");
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new RuleType object.
+   */
+  public RuleType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new RuleType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public RuleType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static RuleType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public RuleType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public RuleType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    RuleType other = (RuleType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        } else {
-            throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via " + getInstance(type).getClass().getName());
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RuleType other = (RuleType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    } else {
+      throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via "
+        + getInstance(type).getClass().getName());
     }
-}
+  }
+} // end class RuleType

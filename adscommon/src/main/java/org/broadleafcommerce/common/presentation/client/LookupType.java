@@ -17,12 +17,14 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * Defines whether or not a to-one lookup should be rendered in a modal to be selected or 
- * through a pre-populated dropdown.
- * 
- * @author Andre Azzolini (apazzolini)
+ * Defines whether or not a to-one lookup should be rendered in a modal to be selected or through a pre-populated
+ * dropdown.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public enum LookupType {
-    STANDARD,
-    DROPDOWN
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  STANDARD, DROPDOWN
 }

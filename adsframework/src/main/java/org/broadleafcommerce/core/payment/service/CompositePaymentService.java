@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.payment.service;
 
+import java.util.Map;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
@@ -23,16 +25,62 @@ import org.broadleafcommerce.core.payment.service.exception.PaymentException;
 import org.broadleafcommerce.core.payment.service.module.PaymentResponse;
 import org.broadleafcommerce.core.payment.service.workflow.CompositePaymentResponse;
 
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CompositePaymentService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order     DOCUMENT ME!
+   * @param   payments  DOCUMENT ME!
+   * @param   response  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  CompositePaymentResponse executePayment(Order order, Map<PaymentInfo, Referenced> payments, PaymentResponse response)
+    throws PaymentException;
 
-    public CompositePaymentResponse executePayment(Order order, Map<PaymentInfo, Referenced> payments, PaymentResponse response) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order     DOCUMENT ME!
+   * @param   payments  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  CompositePaymentResponse executePayment(Order order, Map<PaymentInfo, Referenced> payments) throws PaymentException;
 
-    public CompositePaymentResponse executePayment(Order order, Map<PaymentInfo, Referenced> payments) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  CompositePaymentResponse executePayment(Order order) throws PaymentException;
 
-    public CompositePaymentResponse executePayment(Order order) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order               DOCUMENT ME!
+   * @param   paymentInfoFactory  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  CompositePaymentResponse executePaymentForGateway(Order order, PaymentInfoFactory paymentInfoFactory)
+    throws PaymentException;
 
-    public CompositePaymentResponse executePaymentForGateway(Order order, PaymentInfoFactory paymentInfoFactory) throws PaymentException;
-
-}
+} // end interface CompositePaymentService

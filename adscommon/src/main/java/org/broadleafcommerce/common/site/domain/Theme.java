@@ -18,25 +18,48 @@ package org.broadleafcommerce.common.site.domain;
 
 import java.io.Serializable;
 
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface Theme extends Serializable {
-    
-    public String getName();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    /**
-     * The display name for a site.  Returns blank if no theme if no path is available.   Should return
-     * a path that does not start with "/" and that ends with a "/".   For example, "store/".
-     * @return
-     */
-    public String getPath();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the path of the theme.
-     * @param path
-     */
-    public void setPath(String path);
-}
+  /**
+   * The display name for a site. Returns blank if no theme if no path is available. Should return a path that does not
+   * start with "/" and that ends with a "/". For example, "store/".
+   *
+   * @return  the display name for a site.
+   */
+  String getPath();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the path of the theme.
+   *
+   * @param  path  DOCUMENT ME!
+   */
+  void setPath(String path);
+} // end interface Theme

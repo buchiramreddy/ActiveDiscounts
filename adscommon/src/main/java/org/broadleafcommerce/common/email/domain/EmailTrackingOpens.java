@@ -17,52 +17,91 @@
 package org.broadleafcommerce.common.email.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface EmailTrackingOpens extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the id
-     */
-    public abstract Long getId();
+  /**
+   * The dateOpened.
+   *
+   * @return  the dateOpened
+   */
+  Date getDateOpened();
 
-    /**
-     * @param id the id to set
-     */
-    public abstract void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the dateOpened
-     */
-    public abstract Date getDateOpened();
+  /**
+   * The emailTracking.
+   *
+   * @return  the emailTracking
+   */
+  EmailTracking getEmailTracking();
 
-    /**
-     * @param dateOpened the dateOpened to set
-     */
-    public abstract void setDateOpened(Date dateOpened);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the userAgent
-     */
-    public abstract String getUserAgent();
+  /**
+   * The id.
+   *
+   * @return  the id
+   */
+  Long getId();
 
-    /**
-     * @param userAgent the userAgent to set
-     */
-    public abstract void setUserAgent(String userAgent);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailTracking
-     */
-    public abstract EmailTracking getEmailTracking();
+  /**
+   * The userAgent.
+   *
+   * @return  the userAgent
+   */
+  String getUserAgent();
 
-    /**
-     * @param emailTracking the emailTracking to set
-     */
-    public abstract void setEmailTracking(EmailTracking emailTracking);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  dateOpened  the dateOpened to set
+   */
+  void setDateOpened(Date dateOpened);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailTracking  the emailTracking to set
+   */
+  void setEmailTracking(EmailTracking emailTracking);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  id  the id to set
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  userAgent  the userAgent to set
+   */
+  void setUserAgent(String userAgent);
+
+} // end interface EmailTrackingOpens

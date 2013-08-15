@@ -16,53 +16,86 @@
 
 package org.broadleafcommerce.common.config.service;
 
-import org.broadleafcommerce.common.config.dao.SystemPropertiesDao;
-import org.broadleafcommerce.common.config.domain.SystemProperty;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import javax.annotation.Resource;
-import java.util.List;
+
+import org.broadleafcommerce.common.config.dao.SystemPropertiesDao;
+import org.broadleafcommerce.common.config.domain.SystemProperty;
+
+import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * To change this template use File | Settings | File Templates.
- * <p/>
- * User: Kelly Tisdell
- * Date: 6/25/12
+ *
+ * <p>User: Kelly Tisdell Date: 6/25/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Service("blSystemPropertiesService")
-public class SystemPropertiesServiceImpl implements SystemPropertiesService{
+public class SystemPropertiesServiceImpl implements SystemPropertiesService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blSystemPropertiesDao")
-    protected SystemPropertiesDao systemPropertiesDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blSystemPropertiesDao")
+  protected SystemPropertiesDao systemPropertiesDao;
 
-    @Override
-    @Transactional("blTransactionManager")
-    public SystemProperty saveSystemProperty(SystemProperty systemProperty) {
-        return systemPropertiesDao.saveSystemProperty(systemProperty);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    @Transactional("blTransactionManager")
-    public void deleteSystemProperty(SystemProperty systemProperty) {
-        systemPropertiesDao.deleteSystemProperty(systemProperty);
-    }
+  /**
+   * @see  org.broadleafcommerce.common.config.service.SystemPropertiesService#createNewSystemProperty()
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public SystemProperty createNewSystemProperty() {
+    return systemPropertiesDao.createNewSystemProperty();
+  }
 
-    @Override
-    @Transactional("blTransactionManager")
-    public List<SystemProperty> findAllSystemProperties() {
-        return systemPropertiesDao.readAllSystemProperties();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    @Transactional("blTransactionManager")
-    public SystemProperty findSystemPropertyByName(String name) {
-        return systemPropertiesDao.readSystemPropertyByName(name);
-    }
+  /**
+   * @see  org.broadleafcommerce.common.config.service.SystemPropertiesService#deleteSystemProperty(org.broadleafcommerce.common.config.domain.SystemProperty)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void deleteSystemProperty(SystemProperty systemProperty) {
+    systemPropertiesDao.deleteSystemProperty(systemProperty);
+  }
 
-    @Override
-    @Transactional("blTransactionManager")
-    public SystemProperty createNewSystemProperty() {
-        return systemPropertiesDao.createNewSystemProperty();
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.service.SystemPropertiesService#findAllSystemProperties()
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public List<SystemProperty> findAllSystemProperties() {
+    return systemPropertiesDao.readAllSystemProperties();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.service.SystemPropertiesService#findSystemPropertyByName(java.lang.String)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public SystemProperty findSystemPropertyByName(String name) {
+    return systemPropertiesDao.readSystemPropertyByName(name);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.service.SystemPropertiesService#saveSystemProperty(org.broadleafcommerce.common.config.domain.SystemProperty)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public SystemProperty saveSystemProperty(SystemProperty systemProperty) {
+    return systemPropertiesDao.saveSystemProperty(systemProperty);
+  }
+} // end class SystemPropertiesServiceImpl

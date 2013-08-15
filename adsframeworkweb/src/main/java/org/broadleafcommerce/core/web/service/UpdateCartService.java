@@ -17,52 +17,67 @@
 package org.broadleafcommerce.core.web.service;
 
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.call.UpdateCartResponse;
+
 
 /**
  * Provides methods to facilitate order repricing.
  *
- * Author: jerryocanas
- * Date: 9/26/12
+ * <p>Author: jerryocanas Date: 9/26/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface UpdateCartService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the currency that was set as active on last pass through.
-     *
-     * @param savedCurrency
-     */
-    public void setSavedCurrency(BroadleafCurrency savedCurrency);
+  /**
+   * Reprices the order by removing all items and recreating the cart calling for a reprice on the new cart.
+   *
+   * @param   currentCart  DOCUMENT ME!
+   *
+   * @return  reprices the order by removing all items and recreating the cart calling for a reprice on the new cart.
+   */
+  UpdateCartResponse copyCartToCurrentContext(Order currentCart);
 
-    /**
-     * Gets the currency that was set as active on last pass through.
-     *
-     * @return
-     */
-    public BroadleafCurrency getSavedCurrency();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     *  Compares the currency set in the BroadleafRequestContext with the savedCurrency.
-     *  If different, returns TRUE
-     *
-     * @return
-     */
-    public boolean currencyHasChanged();
+  /**
+   * Compares the currency set in the BroadleafRequestContext with the savedCurrency. If different, returns TRUE
+   *
+   * @return  compares the currency set in the BroadleafRequestContext with the savedCurrency.
+   */
+  boolean currencyHasChanged();
 
-    /**
-     * Reprices the order by removing all items and recreating the cart calling for a reprice on the new cart.
-     *
-     * @return
-     */
-    public UpdateCartResponse copyCartToCurrentContext(Order currentCart);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Validates the cart against the active price list and locale.
-     *
-     * @param cart
-     * @throws IllegalArgumentException
-     */
-    public void validateCart(Order cart) throws IllegalArgumentException;
+  /**
+   * Gets the currency that was set as active on last pass through.
+   *
+   * @return  gets the currency that was set as active on last pass through.
+   */
+  BroadleafCurrency getSavedCurrency();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the currency that was set as active on last pass through.
+   *
+   * @param  savedCurrency  DOCUMENT ME!
+   */
+  void setSavedCurrency(BroadleafCurrency savedCurrency);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Validates the cart against the active price list and locale.
+   *
+   * @param   cart  DOCUMENT ME!
+   *
+   * @throws  IllegalArgumentException
+   */
+  void validateCart(Order cart) throws IllegalArgumentException;
+
+} // end interface UpdateCartService

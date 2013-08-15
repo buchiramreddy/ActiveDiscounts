@@ -18,17 +18,38 @@ package org.broadleafcommerce.openadmin.server.service;
 
 import org.apache.commons.lang3.StringUtils;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class JSCompatibilityHelper {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public static String encode(String name) {
-        return StringUtils.isEmpty(name)?name:name.replace(".", "__");
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String encode(String name) {
+    return StringUtils.isEmpty(name) ? name : name.replace(".", "__");
+  }
 
-    public static String unencode(String name) {
-        return StringUtils.isEmpty(name)?name:name.replace("__", ".");
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String unencode(String name) {
+    return StringUtils.isEmpty(name) ? name : name.replace("__", ".");
+  }
+
+} // end class JSCompatibilityHelper

@@ -16,40 +16,82 @@
 
 package com.activediscounts.controller.account;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.core.web.controller.account.BroadleafRegisterController;
+
 import org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm;
+
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * The controller responsible for registering a customer
+ * The controller responsible for registering a customer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Controller
 @RequestMapping("/register")
 public class RegisterController extends BroadleafRegisterController {
-    
-    @RequestMapping(method=RequestMethod.GET)
-    public String register(HttpServletRequest request, HttpServletResponse response, Model model,
-            @ModelAttribute("registrationForm") RegisterCustomerForm registerCustomerForm) {
-        return super.register(registerCustomerForm, request, response, model);
-    }
-    
-    @RequestMapping(method=RequestMethod.POST)
-    public String processRegister(HttpServletRequest request, HttpServletResponse response, Model model,
-            @ModelAttribute("registrationForm") RegisterCustomerForm registerCustomerForm, BindingResult errors) throws ServiceException {
-        return super.processRegister(registerCustomerForm, errors, request, response, model);
-    }
-    
-    @ModelAttribute("registrationForm") 
-    public RegisterCustomerForm initCustomerRegistrationForm() {
-        return super.initCustomerRegistrationForm();        
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.controller.account.BroadleafRegisterController#initCustomerRegistrationForm()
+   */
+  @ModelAttribute("registrationForm")
+  @Override public RegisterCustomerForm initCustomerRegistrationForm() {
+    return super.initCustomerRegistrationForm();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request               DOCUMENT ME!
+   * @param   response              DOCUMENT ME!
+   * @param   model                 DOCUMENT ME!
+   * @param   registerCustomerForm  DOCUMENT ME!
+   * @param   errors                DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  @RequestMapping(method = RequestMethod.POST)
+  public String processRegister(HttpServletRequest request, HttpServletResponse response, Model model,
+    @ModelAttribute("registrationForm") RegisterCustomerForm registerCustomerForm, BindingResult errors)
+    throws ServiceException {
+    return super.processRegister(registerCustomerForm, errors, request, response, model);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request               DOCUMENT ME!
+   * @param   response              DOCUMENT ME!
+   * @param   model                 DOCUMENT ME!
+   * @param   registerCustomerForm  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @RequestMapping(method = RequestMethod.GET)
+  public String register(HttpServletRequest request, HttpServletResponse response, Model model,
+    @ModelAttribute("registrationForm") RegisterCustomerForm registerCustomerForm) {
+    return super.register(registerCustomerForm, request, response, model);
+  }
+} // end class RegisterController

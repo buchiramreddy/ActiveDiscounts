@@ -16,24 +16,27 @@
 
 package org.broadleafcommerce.core.payment.service;
 
+import java.util.Map;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 
-import java.util.Map;
 
 /**
- * @author Jerry Ocanas (jocanas)
+ * DOCUMENT ME!
+ *
+ * @author   Jerry Ocanas (jocanas)
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafPaymentInfoTypeService {
-
-    /**
-     * Constructs a default entry in the payments map for each payment found on the order that matches
-     * a PaymentInfoTypes.
-     *
-     * @param order
-     * @return Map<PaymentInfo, Referenced>
-     */
-    public Map<PaymentInfo, Referenced> getPaymentsMap(Order order);
+  /**
+   * Constructs a default entry in the payments map for each payment found on the order that matches a PaymentInfoTypes.
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  Map<PaymentInfo, Referenced>
+   */
+  Map<PaymentInfo, Referenced> getPaymentsMap(Order order);
 
 }

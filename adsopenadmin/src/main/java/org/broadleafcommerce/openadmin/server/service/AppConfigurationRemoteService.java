@@ -16,32 +16,46 @@
 
 package org.broadleafcommerce.openadmin.server.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.stereotype.Service;
+
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Service("blAppConfigurationRemoteService")
 public class AppConfigurationRemoteService implements AppConfigurationService {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(AppConfigurationRemoteService.class);
+  private static final Log LOG = LogFactory.getLog(AppConfigurationRemoteService.class);
 
-    @Resource(name = "blAppConfigurationMap")
-    protected Map<String, String> propertyConfigurations = new HashMap<String, String>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public Boolean getBooleanPropertyValue(String propertyName) {
-        if (propertyConfigurations.get(propertyName) == null) {
-            return null;
-        } else {
-            return Boolean.valueOf(propertyConfigurations.get(propertyName));
-        }
+  /** DOCUMENT ME! */
+  @Resource(name = "blAppConfigurationMap")
+  protected Map<String, String> propertyConfigurations = new HashMap<String, String>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.AppConfigurationService#getBooleanPropertyValue(java.lang.String)
+   */
+  @Override public Boolean getBooleanPropertyValue(String propertyName) {
+    if (propertyConfigurations.get(propertyName) == null) {
+      return null;
+    } else {
+      return Boolean.valueOf(propertyConfigurations.get(propertyName));
     }
+  }
 
-}
+} // end class AppConfigurationRemoteService

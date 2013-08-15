@@ -16,15 +16,7 @@
 
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
-import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,47 +25,78 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
+
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(friendlyName = "Fixed Price Fulfillment")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_FULFILLMENT_OPTION_FIXED")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
-@AdminPresentationClass(friendlyName = "Fixed Price Fulfillment")
 public class FixedPriceFulfillmentOptionImpl extends FulfillmentOptionImpl implements FixedPriceFulfillmentOption {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @Column(
+    name      = "PRICE",
+    precision = 19,
+    scale     = 5,
+    nullable  = false
+  )
+  protected BigDecimal price;
 
-    @Column(name = "PRICE", precision=19, scale=5, nullable=false)
-    protected BigDecimal price;
-    
-    @ManyToOne(targetEntity = BroadleafCurrencyImpl.class)
-    @JoinColumn(name = "CURRENCY_CODE")
-    @AdminPresentation(excluded = true)
-    protected BroadleafCurrency currency;
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @JoinColumn(name = "CURRENCY_CODE")
+  @ManyToOne(targetEntity = BroadleafCurrencyImpl.class)
+  protected BroadleafCurrency currency;
 
-    @Override
-    public Money getPrice() {
-        return price == null ? null : BroadleafCurrencyUtils.getMoney(price, getCurrency());
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption#getPrice()
+   */
+  @Override public Money getPrice() {
+    return (price == null) ? null : BroadleafCurrencyUtils.getMoney(price, getCurrency());
+  }
 
-    @Override
-    public void setPrice(Money price) {
-        this.price = Money.toAmount(price);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption#setPrice(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setPrice(Money price) {
+    this.price = Money.toAmount(price);
+  }
 
-    @Override
-    public BroadleafCurrency getCurrency() {
-        return currency;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption#getCurrency()
+   */
+  @Override public BroadleafCurrency getCurrency() {
+    return currency;
+  }
 
-    @Override
-    public void setCurrency(BroadleafCurrency currency) {
-        this.currency = currency;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption#setCurrency(org.broadleafcommerce.common.currency.domain.BroadleafCurrency)
+   */
+  @Override public void setCurrency(BroadleafCurrency currency) {
+    this.currency = currency;
+  }
 
-}
+} // end class FixedPriceFulfillmentOptionImpl

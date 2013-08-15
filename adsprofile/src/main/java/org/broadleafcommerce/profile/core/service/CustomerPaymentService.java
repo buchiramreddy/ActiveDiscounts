@@ -16,29 +16,113 @@
 
 package org.broadleafcommerce.profile.core.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerPaymentService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public CustomerPayment saveCustomerPayment(CustomerPayment customerPayment);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment create();
 
-    public List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerPayment readCustomerPaymentById(Long customerPaymentId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPaymentId  DOCUMENT ME!
+   */
+  void deleteCustomerPaymentById(Long customerPaymentId);
 
-    public CustomerPayment readCustomerPaymentByToken(String token);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void deleteCustomerPaymentById(Long customerPaymentId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   * @param   payment   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer deleteCustomerPaymentFromCustomer(Customer customer, CustomerPayment payment);
 
-    public CustomerPayment create();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerPayment findDefaultPaymentForCustomer(Customer customer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment findDefaultPaymentForCustomer(Customer customer);
 
-    public CustomerPayment setAsDefaultPayment(CustomerPayment payment);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Customer deleteCustomerPaymentFromCustomer(Customer customer, CustomerPayment payment);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPaymentId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment readCustomerPaymentById(Long customerPaymentId);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   token  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment readCustomerPaymentByToken(String token);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPayment  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment saveCustomerPayment(CustomerPayment customerPayment);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   payment  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment setAsDefaultPayment(CustomerPayment payment);
+
+} // end interface CustomerPaymentService

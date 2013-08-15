@@ -18,34 +18,59 @@ package org.broadleafcommerce.core.extension;
 
 
 /**
- * Base {@link org.broadleafcommerce.core.extension.ExtensionHandler} class that provide basic extension handler properties including
- * priority (which drives the execution order of handlers) and enabled (which if false informs the
+ * Base {@link org.broadleafcommerce.core.extension.ExtensionHandler} class that provide basic extension handler
+ * properties including priority (which drives the execution order of handlers) and enabled (which if false informs the
  * manager to skip this handler).
- * 
- * @author bpolster
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public abstract class AbstractExtensionHandler implements ExtensionHandler {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private int priority;
-    private boolean enabled = true;
+  private boolean enabled = true;
 
-    /**
-     * Determines the priority of this extension handler.
-     * @return
-     */
-    public int getPriority() {
-        return priority;
-    }
+  private int priority;
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean isEnabled() {
-        return enabled;
-    }
+  /**
+   * Determines the priority of this extension handler.
+   *
+   * @return  determines the priority of this extension handler.
+   */
+  @Override public int getPriority() {
+    return priority;
+  }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.extension.ExtensionHandler#isEnabled()
+   */
+  @Override public boolean isEnabled() {
+    return enabled;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  enabled  DOCUMENT ME!
+   */
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priority  DOCUMENT ME!
+   */
+  public void setPriority(int priority) {
+    this.priority = priority;
+  }
+} // end class AbstractExtensionHandler

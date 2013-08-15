@@ -17,32 +17,47 @@
 package org.broadleafcommerce.core.web.order;
 
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.web.order.security.CartStateRequestProcessor;
+
 import org.springframework.stereotype.Component;
+
 import org.springframework.web.context.request.WebRequest;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Component("blCartState")
 public class CartState {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Gets the current cart based on the current request
-     * 
-     * @return the current customer's cart
-     */
-    public static Order getCart() {
-        WebRequest request = BroadleafRequestContext.getBroadleafRequestContext().getWebRequest();
-        return (Order) request.getAttribute(CartStateRequestProcessor.getCartRequestAttributeName(), WebRequest.SCOPE_REQUEST);
-    }
-    
-    /**
-     * Sets the current cart on the current request
-     * 
-     * @param cart the new cart to set
-     */
-    public static void setCart(Order cart) {
-        WebRequest request = BroadleafRequestContext.getBroadleafRequestContext().getWebRequest();
-        request.setAttribute(CartStateRequestProcessor.getCartRequestAttributeName(), cart, WebRequest.SCOPE_REQUEST);
-    }
+  /**
+   * Gets the current cart based on the current request.
+   *
+   * @return  the current customer's cart
+   */
+  public static Order getCart() {
+    WebRequest request = BroadleafRequestContext.getBroadleafRequestContext().getWebRequest();
 
-}
+    return (Order) request.getAttribute(CartStateRequestProcessor.getCartRequestAttributeName(),
+        WebRequest.SCOPE_REQUEST);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the current cart on the current request.
+   *
+   * @param  cart  the new cart to set
+   */
+  public static void setCart(Order cart) {
+    WebRequest request = BroadleafRequestContext.getBroadleafRequestContext().getWebRequest();
+    request.setAttribute(CartStateRequestProcessor.getCartRequestAttributeName(), cart, WebRequest.SCOPE_REQUEST);
+  }
+
+} // end class CartState

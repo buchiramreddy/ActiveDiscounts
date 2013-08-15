@@ -17,14 +17,21 @@
 package org.broadleafcommerce.common.presentation;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class NullBroadleafEnumerationType {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getType() {
-        return null;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getType() {
+    return null;
+  }
 
 }

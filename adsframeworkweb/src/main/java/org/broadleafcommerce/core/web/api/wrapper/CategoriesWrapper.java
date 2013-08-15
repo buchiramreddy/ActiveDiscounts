@@ -16,38 +16,53 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.Category;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.catalog.domain.Category;
+
+
 /**
  * This is a JAXB wrapper class for wrapping a collection of categories.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "categories")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "categories")
 public class CategoriesWrapper extends BaseWrapper implements APIWrapper<List<Category>> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement(name = "category")
-    protected List<CategoryWrapper> categories = new ArrayList<CategoryWrapper>();
+  /** DOCUMENT ME! */
+  @XmlElement(name = "category")
+  protected List<CategoryWrapper> categories = new ArrayList<CategoryWrapper>();
 
-    @Override
-    public void wrapDetails(List<Category> cats, HttpServletRequest request) {
-        for (Category category : cats) {
-            CategoryWrapper wrapper = (CategoryWrapper) context.getBean(CategoryWrapper.class.getName());
-            wrapper.wrapSummary(category, request);
-            categories.add(wrapper);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(java.util.List, javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(List<Category> cats, HttpServletRequest request) {
+    for (Category category : cats) {
+      CategoryWrapper wrapper = (CategoryWrapper) context.getBean(CategoryWrapper.class.getName());
+      wrapper.wrapSummary(category, request);
+      categories.add(wrapper);
     }
+  }
 
-    @Override
-    public void wrapSummary(List<Category> cats, HttpServletRequest request) {
-        wrapDetails(cats, request);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(java.util.List, javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(List<Category> cats, HttpServletRequest request) {
+    wrapDetails(cats, request);
+  }
+} // end class CategoriesWrapper

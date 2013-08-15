@@ -16,24 +16,35 @@
 
 package org.broadleafcommerce.core.checkout.service.workflow;
 
+import java.text.SimpleDateFormat;
+
+import java.util.Calendar;
+
 import org.broadleafcommerce.common.time.SystemTime;
+
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CompleteOrderActivity extends BaseActivity<CheckoutContext> {
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.checkout.service.workflow.CheckoutContext)
+   */
+  @Override public CheckoutContext execute(CheckoutContext context) throws Exception {
+    CheckoutSeed seed = context.getSeedData();
 
-    @Override
-    public CheckoutContext execute(CheckoutContext context) throws Exception {
-        CheckoutSeed seed = context.getSeedData();
+    seed.getOrder().setStatus(OrderStatus.SUBMITTED);
+    seed.getOrder().setOrderNumber(new SimpleDateFormat("yyyyMMddHHmmssS").format(SystemTime.asDate())
+      + seed.getOrder().getId());
+    seed.getOrder().setSubmitDate(Calendar.getInstance().getTime());
 
-        seed.getOrder().setStatus(OrderStatus.SUBMITTED);
-        seed.getOrder().setOrderNumber(new SimpleDateFormat("yyyyMMddHHmmssS").format(SystemTime.asDate()) + seed.getOrder().getId());
-        seed.getOrder().setSubmitDate(Calendar.getInstance().getTime());
-
-        return context;
-    }
+    return context;
+  }
 
 }

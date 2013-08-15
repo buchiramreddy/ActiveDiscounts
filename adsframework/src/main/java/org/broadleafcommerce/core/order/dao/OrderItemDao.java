@@ -22,27 +22,85 @@ import org.broadleafcommerce.core.order.domain.OrderItemQualifier;
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OrderItemDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItemId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem readOrderItemById(Long orderItemId);
 
-    OrderItem readOrderItemById(Long orderItemId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItem  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem save(OrderItem orderItem);
 
-    OrderItem save(OrderItem orderItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  void delete(OrderItem orderItem);
 
-    void delete(OrderItem orderItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItemType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem create(OrderItemType orderItemType);
 
-    OrderItem create(OrderItemType orderItemType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItem  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem saveOrderItem(OrderItem orderItem);
 
-    OrderItem saveOrderItem(OrderItem orderItem);
-    
-    PersonalMessage createPersonalMessage();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PersonalMessage createPersonalMessage();
 
-    OrderItemPriceDetail createOrderItemPriceDetail();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItemPriceDetail createOrderItemPriceDetail();
 
-    OrderItemQualifier createOrderItemQualifier();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItemQualifier createOrderItemQualifier();
 
-    /**
-     * Sets the initial orderItemPriceDetail for the item.
-     */
-    OrderItemPriceDetail initializeOrderItemPriceDetails(OrderItem item);
+  /**
+   * Sets the initial orderItemPriceDetail for the item.
+   *
+   * @param   item  DOCUMENT ME!
+   *
+   * @return  sets the initial orderItemPriceDetail for the item.
+   */
+  OrderItemPriceDetail initializeOrderItemPriceDetails(OrderItem item);
 
-}
+} // end interface OrderItemDao

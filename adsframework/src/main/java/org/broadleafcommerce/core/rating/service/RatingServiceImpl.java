@@ -16,8 +16,18 @@
 
 package org.broadleafcommerce.core.rating.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.beanutils.BeanComparator;
+
 import org.broadleafcommerce.common.time.SystemTime;
+
 import org.broadleafcommerce.core.rating.dao.RatingSummaryDao;
 import org.broadleafcommerce.core.rating.dao.ReviewDetailDao;
 import org.broadleafcommerce.core.rating.domain.RatingDetail;
@@ -29,149 +39,193 @@ import org.broadleafcommerce.core.rating.domain.ReviewDetailImpl;
 import org.broadleafcommerce.core.rating.domain.ReviewFeedback;
 import org.broadleafcommerce.core.rating.service.type.RatingSortType;
 import org.broadleafcommerce.core.rating.service.type.RatingType;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blRatingService")
 public class RatingServiceImpl implements RatingService {
+  /** DOCUMENT ME! */
+  @Resource(name = "blRatingSummaryDao")
+  protected RatingSummaryDao ratingSummaryDao;
 
-    @Resource(name="blRatingSummaryDao")
-    protected RatingSummaryDao ratingSummaryDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blReviewDetailDao")
+  protected ReviewDetailDao reviewDetailDao;
 
-    @Resource(name="blReviewDetailDao")
-    protected ReviewDetailDao reviewDetailDao;
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#deleteRatingSummary(org.broadleafcommerce.core.rating.domain.RatingSummary)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void deleteRatingSummary(RatingSummary ratingSummary) {
+    ratingSummaryDao.deleteRatingSummary(ratingSummary);
+  }
 
-    @Transactional("blTransactionManager")
-    public void deleteRatingSummary(RatingSummary ratingSummary) {
-        ratingSummaryDao.deleteRatingSummary(ratingSummary);
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#markReviewHelpful(java.lang.Long,org.broadleafcommerce.profile.core.domain.Customer,
+   *       java.lang.Boolean)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void markReviewHelpful(Long reviewId, Customer customer, Boolean helpful) {
+    ReviewDetail reviewDetail = reviewDetailDao.readReviewDetailById(reviewId);
+
+    if (reviewDetail != null) {
+      ReviewFeedback reviewFeedback = reviewDetailDao.createFeedback();
+      reviewFeedback.setCustomer(customer);
+      reviewFeedback.setIsHelpful(helpful);
+      reviewFeedback.setReviewDetail(reviewDetail);
+      reviewDetail.getReviewFeedback().add(reviewFeedback);
+      reviewDetailDao.saveReviewDetail(reviewDetail);
     }
 
-    @Transactional("blTransactionManager")
-    public void markReviewHelpful(Long reviewId, Customer customer, Boolean helpful) {
-        ReviewDetail reviewDetail = reviewDetailDao.readReviewDetailById(reviewId);
+  }
 
-        if (reviewDetail != null) {
-            ReviewFeedback reviewFeedback = reviewDetailDao.createFeedback();
-            reviewFeedback.setCustomer(customer);
-            reviewFeedback.setIsHelpful(helpful);
-            reviewFeedback.setReviewDetail(reviewDetail);
-            reviewDetail.getReviewFeedback().add(reviewFeedback);
-            reviewDetailDao.saveReviewDetail(reviewDetail);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#rateItem(java.lang.String,org.broadleafcommerce.core.rating.service.type.RatingType,
+   *       org.broadleafcommerce.profile.core.domain.Customer, java.lang.Double)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void rateItem(String itemId, RatingType type, Customer customer, Double rating) {
+    RatingSummary ratingSummary = this.readRatingSummary(itemId, type);
 
+    if (ratingSummary == null) {
+      ratingSummary = new RatingSummaryImpl(itemId, type);
     }
 
-    @Transactional("blTransactionManager")
-    public void rateItem(String itemId, RatingType type, Customer customer, Double rating) {
-        RatingSummary ratingSummary = this.readRatingSummary(itemId, type);
+    RatingDetail ratingDetail = ratingSummaryDao.readRating(customer.getId(), ratingSummary.getId());
 
-        if (ratingSummary == null) {
-            ratingSummary = new RatingSummaryImpl(itemId, type);
-        }
-
-        RatingDetail ratingDetail = ratingSummaryDao.readRating(customer.getId(), ratingSummary.getId());
-
-        if (ratingDetail == null) {
-            ratingDetail = new RatingDetailImpl(ratingSummary, rating, SystemTime.asDate(), customer);
-        }
-
-        ratingDetail.setRating(rating);
-
-        ratingSummary.getRatings().add(ratingDetail);
-        ratingSummaryDao.saveRatingSummary(ratingSummary);
+    if (ratingDetail == null) {
+      ratingDetail = new RatingDetailImpl(ratingSummary, rating, SystemTime.asDate(), customer);
     }
 
-    public RatingSummary readRatingSummary(String itemId, RatingType type) {
-        return ratingSummaryDao.readRatingSummary(itemId, type);
+    ratingDetail.setRating(rating);
+
+    ratingSummary.getRatings().add(ratingDetail);
+    ratingSummaryDao.saveRatingSummary(ratingSummary);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#readRatingSummary(java.lang.String, org.broadleafcommerce.core.rating.service.type.RatingType)
+   */
+  @Override public RatingSummary readRatingSummary(String itemId, RatingType type) {
+    return ratingSummaryDao.readRatingSummary(itemId, type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#readRatingSummaries(java.util.List, org.broadleafcommerce.core.rating.service.type.RatingType)
+   */
+  @Override public Map<String, RatingSummary> readRatingSummaries(List<String> itemIds, RatingType type) {
+    List<RatingSummary>        ratings    = ratingSummaryDao.readRatingSummaries(itemIds, type);
+    Map<String, RatingSummary> ratingsMap = new HashMap<String, RatingSummary>();
+
+    for (RatingSummary ratingSummary : ratings) {
+      ratingsMap.put(ratingSummary.getItemId(), ratingSummary);
     }
 
-    public Map<String, RatingSummary> readRatingSummaries(List<String> itemIds, RatingType type) {
-        List<RatingSummary> ratings = ratingSummaryDao.readRatingSummaries(itemIds, type);
-        Map<String, RatingSummary> ratingsMap = new HashMap<String, RatingSummary>();
+    return ratingsMap;
+  }
 
-        for (RatingSummary ratingSummary : ratings) {
-            ratingsMap.put(ratingSummary.getItemId(), ratingSummary);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#readReviews(java.lang.String,org.broadleafcommerce.core.rating.service.type.RatingType,
+   *       int, int, org.broadleafcommerce.core.rating.service.type.RatingSortType)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<ReviewDetail> readReviews(String itemId, RatingType type, int start, int finish, RatingSortType sortBy) {
+    RatingSummary      summary         = this.readRatingSummary(itemId, type);
+    List<ReviewDetail> reviews         = summary.getReviews();
+    List<ReviewDetail> reviewsToReturn = new ArrayList<ReviewDetail>();
+    int                i               = 0;
 
-        return ratingsMap;
+    for (ReviewDetail review : reviews) {
+      if (i > finish) {
+        break;
+      }
+
+      if (i >= start) {
+        reviewsToReturn.add(review);
+      }
+
+      i++;
     }
 
-    @SuppressWarnings("unchecked")
-    public List<ReviewDetail> readReviews(String itemId, RatingType type, int start, int finish, RatingSortType sortBy) {
-        RatingSummary summary = this.readRatingSummary(itemId, type);
-        List<ReviewDetail> reviews = summary.getReviews();
-        List<ReviewDetail> reviewsToReturn = new ArrayList<ReviewDetail>();
-        int i = 0;
-        for (ReviewDetail review : reviews) {
-            if (i > finish) {
-                break;
-            }
+    String sortByBeanProperty = "reviewSubmittedDate";
 
-            if (i >= start) {
-                reviewsToReturn.add(review);
-            }
-
-            i++;
-        }
-
-        String sortByBeanProperty = "reviewSubmittedDate";
-        if (sortBy == RatingSortType.MOST_HELPFUL) {
-            sortByBeanProperty = "helpfulCount";
-        }
-
-        Collections.sort(reviewsToReturn, new BeanComparator(sortByBeanProperty));
-
-        return reviewsToReturn;
+    if (sortBy == RatingSortType.MOST_HELPFUL) {
+      sortByBeanProperty = "helpfulCount";
     }
 
-    @Transactional("blTransactionManager")
-    public RatingSummary saveRatingSummary(RatingSummary ratingSummary) {
-        return ratingSummaryDao.saveRatingSummary(ratingSummary);
+    Collections.sort(reviewsToReturn, new BeanComparator(sortByBeanProperty));
+
+    return reviewsToReturn;
+  } // end method readReviews
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#saveRatingSummary(org.broadleafcommerce.core.rating.domain.RatingSummary)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public RatingSummary saveRatingSummary(RatingSummary ratingSummary) {
+    return ratingSummaryDao.saveRatingSummary(ratingSummary);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#reviewItem(java.lang.String,org.broadleafcommerce.core.rating.service.type.RatingType,
+   *       org.broadleafcommerce.profile.core.domain.Customer, java.lang.Double, java.lang.String)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void reviewItem(String itemId, RatingType type, Customer customer, Double rating, String reviewText) {
+    RatingSummary ratingSummary = this.readRatingSummary(itemId, type);
+
+    if (ratingSummary == null) {
+      ratingSummary = new RatingSummaryImpl(itemId, type);
     }
 
-    @Transactional("blTransactionManager")
-    public void reviewItem(String itemId, RatingType type, Customer customer, Double rating, String reviewText) {
-        RatingSummary ratingSummary = this.readRatingSummary(itemId, type);
+    RatingDetail ratingDetail = ratingSummaryDao.readRating(customer.getId(), ratingSummary.getId());
 
-        if (ratingSummary == null) {
-            ratingSummary = new RatingSummaryImpl(itemId, type);
-        }
-
-        RatingDetail ratingDetail = ratingSummaryDao.readRating(customer.getId(), ratingSummary.getId());
-
-        if (ratingDetail == null) {
-            ratingDetail = new RatingDetailImpl(ratingSummary, rating, SystemTime.asDate(), customer);
-        } else {
-            ratingDetail.setRating(rating);         
-        }
-
-        ratingSummary.getRatings().add(ratingDetail);
-
-        ReviewDetail reviewDetail = ratingSummaryDao.readReview(customer.getId(), ratingSummary.getId());
-
-        if (reviewDetail == null) {
-            reviewDetail = new ReviewDetailImpl(customer, SystemTime.asDate(), ratingDetail, reviewText, ratingSummary);
-        } else {
-            reviewDetail.setReviewText(reviewText);         
-        }
-
-        ratingSummary.getReviews().add(reviewDetail);
-        // load reviews
-        ratingSummary.getReviews().size();
-        ratingSummaryDao.saveRatingSummary(ratingSummary);
-    }
-    
-    @Override
-    public ReviewDetail readReviewByCustomerAndItem(Customer customer, String itemId) {
-        return reviewDetailDao.readReviewByCustomerAndItem(customer, itemId);
+    if (ratingDetail == null) {
+      ratingDetail = new RatingDetailImpl(ratingSummary, rating, SystemTime.asDate(), customer);
+    } else {
+      ratingDetail.setRating(rating);
     }
 
-}
+    ratingSummary.getRatings().add(ratingDetail);
+
+    ReviewDetail reviewDetail = ratingSummaryDao.readReview(customer.getId(), ratingSummary.getId());
+
+    if (reviewDetail == null) {
+      reviewDetail = new ReviewDetailImpl(customer, SystemTime.asDate(), ratingDetail, reviewText, ratingSummary);
+    } else {
+      reviewDetail.setReviewText(reviewText);
+    }
+
+    ratingSummary.getReviews().add(reviewDetail);
+
+    // load reviews
+    ratingSummary.getReviews().size();
+    ratingSummaryDao.saveRatingSummary(ratingSummary);
+  } // end method reviewItem
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.service.RatingService#readReviewByCustomerAndItem(org.broadleafcommerce.profile.core.domain.Customer,
+   *       java.lang.String)
+   */
+  @Override public ReviewDetail readReviewByCustomerAndItem(Customer customer, String itemId) {
+    return reviewDetailDao.readReviewByCustomerAndItem(customer, itemId);
+  }
+
+} // end class RatingServiceImpl

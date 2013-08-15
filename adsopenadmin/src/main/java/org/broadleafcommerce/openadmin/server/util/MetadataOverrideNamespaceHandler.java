@@ -18,14 +18,21 @@ package org.broadleafcommerce.openadmin.server.util;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class MetadataOverrideNamespaceHandler extends NamespaceHandlerSupport {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void init() {
-        registerBeanDefinitionParser("override", new MetadataOverrideBeanDefinitionParser());
-    }
+  /**
+   * @see  org.springframework.beans.factory.xml.NamespaceHandler#init()
+   */
+  @Override public void init() {
+    registerBeanDefinitionParser("override", new MetadataOverrideBeanDefinitionParser());
+  }
 
 }

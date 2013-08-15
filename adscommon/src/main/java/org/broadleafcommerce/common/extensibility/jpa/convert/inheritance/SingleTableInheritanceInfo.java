@@ -18,73 +18,158 @@ package org.broadleafcommerce.common.extensibility.jpa.convert.inheritance;
 
 import javax.persistence.DiscriminatorType;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class SingleTableInheritanceInfo {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String className;
-    protected String discriminatorName;
-    protected DiscriminatorType discriminatorType;
-    protected int discriminatorLength;
-    
-    public String getClassName() {
-        return className;
-    }
-    
-    public void setClassName(String className) {
-        this.className = className;
-    }
-    
-    public String getDiscriminatorName() {
-        return discriminatorName;
-    }
-    
-    public void setDiscriminatorName(String discriminatorName) {
-        this.discriminatorName = discriminatorName;
-    }
-    
-    public DiscriminatorType getDiscriminatorType() {
-        return discriminatorType;
-    }
-    
-    public void setDiscriminatorType(DiscriminatorType discriminatorType) {
-        this.discriminatorType = discriminatorType;
-    }
-    
-    public int getDiscriminatorLength() {
-        return discriminatorLength;
-    }
-    
-    public void setDiscriminatorLength(int discriminatorLength) {
-        this.discriminatorLength = discriminatorLength;
+  /** DOCUMENT ME! */
+  protected String            className;
+
+  /** DOCUMENT ME! */
+  protected int               discriminatorLength;
+
+  /** DOCUMENT ME! */
+  protected String            discriminatorName;
+
+  /** DOCUMENT ME! */
+  protected DiscriminatorType discriminatorType;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((className == null) ? 0 : className.hashCode());
-        return result;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        SingleTableInheritanceInfo other = (SingleTableInheritanceInfo) obj;
-        if (className == null) {
-            if (other.className != null)
-                return false;
-        } else if (!className.equals(other.className))
-            return false;
-        return true;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
-    
-}
+
+    SingleTableInheritanceInfo other = (SingleTableInheritanceInfo) obj;
+
+    if (className == null) {
+      if (other.className != null) {
+        return false;
+      }
+    } else if (!className.equals(other.className)) {
+      return false;
+    }
+
+    return true;
+  } // end method equals
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getClassName() {
+    return className;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getDiscriminatorLength() {
+    return discriminatorLength;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDiscriminatorName() {
+    return discriminatorName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DiscriminatorType getDiscriminatorType() {
+    return discriminatorType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((className == null) ? 0 : className.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  className  DOCUMENT ME!
+   */
+  public void setClassName(String className) {
+    this.className = className;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discriminatorLength  DOCUMENT ME!
+   */
+  public void setDiscriminatorLength(int discriminatorLength) {
+    this.discriminatorLength = discriminatorLength;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discriminatorName  DOCUMENT ME!
+   */
+  public void setDiscriminatorName(String discriminatorName) {
+    this.discriminatorName = discriminatorName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discriminatorType  DOCUMENT ME!
+   */
+  public void setDiscriminatorType(DiscriminatorType discriminatorType) {
+    this.discriminatorType = discriminatorType;
+  }
+
+} // end class SingleTableInheritanceInfo

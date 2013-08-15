@@ -16,31 +16,106 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.OrderItem;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CandidateItemOffer extends Serializable {
-    
-    public Long getId();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override CandidateItemOffer clone();
 
-    public OrderItem getOrderItem();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOrderItem(OrderItem orderItem);
-    
-    public CandidateItemOffer clone();
-    
-    public void setOffer(Offer offer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getDiscountedPrice();
 
-    public int getPriority();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Offer getOffer();
-    
-    public Money getDiscountedPrice();
-    
-    public void setDiscountedPrice(Money discountedPrice);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem getOrderItem();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int getPriority();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discountedPrice  DOCUMENT ME!
+   */
+  void setDiscountedPrice(Money discountedPrice);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  void setOffer(Offer offer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  void setOrderItem(OrderItem orderItem);
+
+} // end interface CandidateItemOffer

@@ -16,11 +16,26 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.domain.CustomerRole;
-
 import java.util.List;
 
-public interface RoleService {
+import org.broadleafcommerce.profile.core.domain.CustomerRole;
 
-    public List<CustomerRole> findCustomerRolesByCustomerId(Long customerId);
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface RoleService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerRole> findCustomerRolesByCustomerId(Long customerId);
 }

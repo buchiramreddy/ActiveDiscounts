@@ -16,38 +16,127 @@
 
 package org.broadleafcommerce.cms.page.domain;
 
+import java.io.Serializable;
+
+import java.util.List;
+
 import org.broadleafcommerce.cms.field.domain.FieldGroup;
+
 import org.broadleafcommerce.common.locale.domain.Locale;
 
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface PageTemplate extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FieldGroup> getFieldGroups();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getTemplateName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setTemplateName(String templateName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getTemplateDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Locale getLocale();
 
-    public void setTemplateDescription(String templateDescription);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getTemplatePath();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTemplateDescription();
 
-    public void setTemplatePath(String templatePath);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Locale getLocale();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTemplateName();
 
-    public void setLocale(Locale locale);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<FieldGroup> getFieldGroups();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTemplatePath();
 
-    public void setFieldGroups(List<FieldGroup> fieldGroups);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldGroups  DOCUMENT ME!
+   */
+  void setFieldGroups(List<FieldGroup> fieldGroups);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  locale  DOCUMENT ME!
+   */
+  void setLocale(Locale locale);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  templateDescription  DOCUMENT ME!
+   */
+  void setTemplateDescription(String templateDescription);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  templateName  DOCUMENT ME!
+   */
+  void setTemplateName(String templateName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  templatePath  DOCUMENT ME!
+   */
+  void setTemplatePath(String templatePath);
+} // end interface PageTemplate

@@ -16,16 +16,11 @@
 
 package org.broadleafcommerce.cms.file.dao;
 
-import org.broadleafcommerce.cms.file.domain.StaticAsset;
-import org.broadleafcommerce.cms.file.domain.StaticAssetImpl;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -33,78 +28,129 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.broadleafcommerce.cms.file.domain.StaticAsset;
+import org.broadleafcommerce.cms.file.domain.StaticAssetImpl;
+
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
+
+import org.hibernate.ejb.QueryHints;
+
+import org.springframework.stereotype.Repository;
+
+import org.springframework.util.CollectionUtils;
+
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Repository("blStaticAssetDao")
 public class StaticAssetDaoImpl implements StaticAssetDao {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static SandBox DUMMY_SANDBOX = new SandBoxImpl();
-    {
-        DUMMY_SANDBOX.setId(-1l);
+  private static SandBox DUMMY_SANDBOX = new SandBoxImpl();
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
+
+  //~ Instance initializers --------------------------------------------------------------------------------------------
+
+  {
+    DUMMY_SANDBOX.setId(-1L);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.dao.StaticAssetDao#addOrUpdateStaticAsset(org.broadleafcommerce.cms.file.domain.StaticAsset,
+   *       boolean)
+   */
+  @Override public StaticAsset addOrUpdateStaticAsset(StaticAsset asset, boolean clearLevel1Cache) {
+    if (clearLevel1Cache) {
+      em.detach(asset);
     }
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+    return em.merge(asset);
+  }
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public StaticAsset readStaticAssetById(Long id) {
-        return em.find(StaticAssetImpl.class, id);
-    }
-    
-    public List<StaticAsset> readAllStaticAssets() {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<StaticAsset> criteria = builder.createQuery(StaticAsset.class);
-        Root<StaticAssetImpl> handler = criteria.from(StaticAssetImpl.class);
-        criteria.select(handler);
-        try {
-            return em.createQuery(criteria).getResultList();
-        } catch (NoResultException e) {
-            return new ArrayList<StaticAsset>();
-        }
+  /**
+   * @see  org.broadleafcommerce.cms.file.dao.StaticAssetDao#delete(org.broadleafcommerce.cms.file.domain.StaticAsset)
+   */
+  @Override public void delete(StaticAsset asset) {
+    if (!em.contains(asset)) {
+      asset = readStaticAssetById(asset.getId());
     }
 
-    @Override
-    public StaticAsset readStaticAssetByFullUrl(String fullUrl, SandBox targetSandBox) {
-        TypedQuery<StaticAsset> query;
-        if (targetSandBox == null) {
-            query = em.createNamedQuery("BC_READ_STATIC_ASSET_BY_FULL_URL_AND_TARGET_SANDBOX_NULL", StaticAsset.class);
-            query.setParameter("fullUrl", fullUrl);
-        } else {
-            query = em.createNamedQuery("BC_READ_STATIC_ASSET_BY_FULL_URL", StaticAsset.class);
-            query.setParameter("targetSandbox", targetSandBox);
-            query.setParameter("fullUrl", fullUrl);
-        }
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
+    em.remove(asset);
+  }
 
-        List<StaticAsset> results = query.getResultList();
-        if (CollectionUtils.isEmpty(results)) {
-            return null;
-        } else {
-            return results.iterator().next();
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.dao.StaticAssetDao#readAllStaticAssets()
+   */
+  @Override public List<StaticAsset> readAllStaticAssets() {
+    CriteriaBuilder            builder  = em.getCriteriaBuilder();
+    CriteriaQuery<StaticAsset> criteria = builder.createQuery(StaticAsset.class);
+    Root<StaticAssetImpl>      handler  = criteria.from(StaticAssetImpl.class);
+    criteria.select(handler);
+
+    try {
+      return em.createQuery(criteria).getResultList();
+    } catch (NoResultException e) {
+      return new ArrayList<StaticAsset>();
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.dao.StaticAssetDao#readStaticAssetByFullUrl(java.lang.String, org.broadleafcommerce.common.sandbox.domain.SandBox)
+   */
+  @Override public StaticAsset readStaticAssetByFullUrl(String fullUrl, SandBox targetSandBox) {
+    TypedQuery<StaticAsset> query;
+
+    if (targetSandBox == null) {
+      query = em.createNamedQuery("BC_READ_STATIC_ASSET_BY_FULL_URL_AND_TARGET_SANDBOX_NULL", StaticAsset.class);
+      query.setParameter("fullUrl", fullUrl);
+    } else {
+      query = em.createNamedQuery("BC_READ_STATIC_ASSET_BY_FULL_URL", StaticAsset.class);
+      query.setParameter("targetSandbox", targetSandBox);
+      query.setParameter("fullUrl", fullUrl);
     }
 
-    @Override
-    public StaticAsset addOrUpdateStaticAsset(StaticAsset asset, boolean clearLevel1Cache) {
-        if (clearLevel1Cache) {
-            em.detach(asset);
-        }
-        return em.merge(asset);
-    }
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
 
-    @Override
-    public void delete(StaticAsset asset) {
-        if (!em.contains(asset)) {
-            asset = readStaticAssetById(asset.getId());
-        }
-        em.remove(asset);
-    }
+    List<StaticAsset> results = query.getResultList();
 
-}
+    if (CollectionUtils.isEmpty(results)) {
+      return null;
+    } else {
+      return results.iterator().next();
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.dao.StaticAssetDao#readStaticAssetById(java.lang.Long)
+   */
+  @Override public StaticAsset readStaticAssetById(Long id) {
+    return em.find(StaticAssetImpl.class, id);
+  }
+
+} // end class StaticAssetDaoImpl

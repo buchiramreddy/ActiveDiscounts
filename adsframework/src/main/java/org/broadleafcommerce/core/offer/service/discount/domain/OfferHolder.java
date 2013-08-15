@@ -17,13 +17,29 @@
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OfferHolder {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
 
-    Offer getOffer();
-
-    BroadleafCurrency getCurrency();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency getCurrency();
 
 }

@@ -16,38 +16,48 @@
 
 package org.broadleafcommerce.core.search.redirect.dao;
 
-import org.broadleafcommerce.core.search.redirect.domain.SearchRedirect;
-import org.springframework.stereotype.Repository;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Date;
-import java.util.List;
+
+import org.broadleafcommerce.core.search.redirect.domain.SearchRedirect;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
  * Created by ppatel.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Repository("blSearchRedirectDao")
 public class SearchRedirectDaoImpl implements SearchRedirectDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /**
+   * @see  org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDao#findSearchRedirectBySearchTerm(java.lang.String)
+   */
+  @Override public SearchRedirect findSearchRedirectBySearchTerm(String searchTerm) {
+    Query query;
+    query = em.createNamedQuery("BC_READ_SEARCH_URL");
+    query.setParameter("searchTerm", searchTerm);
+    query.setParameter("now", new Date());
+    query.setMaxResults(1);
 
-    @Override
-    public SearchRedirect findSearchRedirectBySearchTerm(String searchTerm) {
-        Query query;
-        query = em.createNamedQuery("BC_READ_SEARCH_URL");
-        query.setParameter("searchTerm", searchTerm);
-        query.setParameter("now",new Date());
-        query.setMaxResults(1);
-        @SuppressWarnings("unchecked")
-        List<SearchRedirect> results = query.getResultList();
-        if (results != null && !results.isEmpty()) {
-            return results.get(0);
-        } else {
-            return null;
-        }
+    @SuppressWarnings("unchecked")
+    List<SearchRedirect> results = query.getResultList();
+
+    if ((results != null) && !results.isEmpty()) {
+      return results.get(0);
+    } else {
+      return null;
     }
+  }
 
-}
+} // end class SearchRedirectDaoImpl

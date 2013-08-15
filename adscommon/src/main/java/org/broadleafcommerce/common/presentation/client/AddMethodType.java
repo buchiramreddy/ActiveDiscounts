@@ -19,9 +19,11 @@ package org.broadleafcommerce.common.presentation.client;
 /**
  * Define whether a new collection member is searched for or constructed.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum AddMethodType {
-    PERSIST,
-    LOOKUP
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  PERSIST, LOOKUP
 }

@@ -16,21 +16,56 @@
 
 package org.broadleafcommerce.common.email.service;
 
+import java.util.HashMap;
+
 import org.broadleafcommerce.common.email.domain.EmailTarget;
 import org.broadleafcommerce.common.email.service.info.EmailInfo;
 
-import java.util.HashMap;
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface EmailService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean sendTemplateEmail(String emailAddress, EmailInfo emailInfo, HashMap<String, Object> props);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailInfo    DOCUMENT ME!
+   * @param   emailTarget  DOCUMENT ME!
+   * @param   props        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean sendBasicEmail(EmailInfo emailInfo, EmailTarget emailTarget, HashMap<String, Object> props);
 
-    public boolean sendTemplateEmail(EmailTarget emailTarget, EmailInfo emailInfo, HashMap<String, Object> props);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean sendBasicEmail(EmailInfo emailInfo, EmailTarget emailTarget, HashMap<String, Object> props);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailAddress  DOCUMENT ME!
+   * @param   emailInfo     DOCUMENT ME!
+   * @param   props         DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean sendTemplateEmail(String emailAddress, EmailInfo emailInfo, HashMap<String, Object> props);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailTarget  DOCUMENT ME!
+   * @param   emailInfo    DOCUMENT ME!
+   * @param   props        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean sendTemplateEmail(EmailTarget emailTarget, EmailInfo emailInfo, HashMap<String, Object> props);
+
+} // end interface EmailService

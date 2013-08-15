@@ -20,28 +20,34 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.PaymentInfoImpl;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
+
 import org.springframework.stereotype.Service;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blCreditCardPaymentInfoFactory")
 public class CreditCardPaymentInfoFactoryImpl implements PaymentInfoFactory {
+  /**
+   * Constructs a default Credit Card PaymentInfo object based on the passed in order. Sets the basic information
+   * necessary to complete an order.
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  PaymentInfo - the Credit Card Payment object that gets persisted in Broadleaf.
+   */
+  @Override public PaymentInfo constructPaymentInfo(Order order) {
+    PaymentInfoImpl paymentInfo = new PaymentInfoImpl();
+    paymentInfo.setOrder(order);
+    paymentInfo.setType(PaymentInfoType.CREDIT_CARD);
+    paymentInfo.setReferenceNumber(String.valueOf(order.getId()));
+    paymentInfo.setAmount(order.getRemainingTotal());
 
-    /**
-     * Constructs a default Credit Card PaymentInfo object based on the passed in order.
-     * Sets the basic information necessary to complete an order.
-     *
-     * @param order
-     * @return PaymentInfo - the Credit Card Payment object that gets persisted in Broadleaf.
-     */
-    @Override
-    public PaymentInfo constructPaymentInfo(Order order) {
-        PaymentInfoImpl paymentInfo = new PaymentInfoImpl();
-        paymentInfo.setOrder(order);
-        paymentInfo.setType(PaymentInfoType.CREDIT_CARD);
-        paymentInfo.setReferenceNumber(String.valueOf(order.getId()));
-        paymentInfo.setAmount(order.getRemainingTotal());
-
-        return paymentInfo;
-    }
+    return paymentInfo;
+  }
 
 }

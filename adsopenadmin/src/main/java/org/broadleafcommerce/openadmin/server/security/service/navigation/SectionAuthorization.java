@@ -19,9 +19,23 @@ package org.broadleafcommerce.openadmin.server.security.service.navigation;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface SectionAuthorization {
-    boolean isUserAuthorizedToViewSection(AdminUser adminUser, AdminSection section);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   adminUser  DOCUMENT ME!
+   * @param   section    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isUserAuthorizedToViewSection(AdminUser adminUser, AdminSection section);
 }

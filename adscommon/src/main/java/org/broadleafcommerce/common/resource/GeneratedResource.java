@@ -16,54 +16,90 @@
 
 package org.broadleafcommerce.common.resource;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.util.InMemoryResource;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
-
 import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.security.util.InMemoryResource;
+
 
 /**
  * An in memory generated resource. This class also overrides some parent Spring AbstractResource methods to ensure
  * compatibility with the {@link org.springframework.web.servlet.resource.ResourceHttpRequestHandler}.
- * 
- * @author Andre Azzolini (apazzolini)
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class GeneratedResource extends InMemoryResource {
-    
-    protected long timeGenerated;
-    protected String hashRepresentation;
-    
-    /**
-     * <b>Note: This constructor should not be explicitly used</b> 
-     * 
-     * To properly allow for serialization, we must provide this no-arg constructor that will 
-     * create a "dummy" GeneratedResource. The appropriate fields will be set during deserialization.
-     */
-    public GeneratedResource()  {
-        super("");
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public GeneratedResource(byte[] source, String description) {
-        super(source, description);
-        timeGenerated = System.currentTimeMillis();
-    }
-    
-    @Override
-    public String getFilename() {
-        return getDescription();
-    }
-    
-    @Override
-	public long lastModified() throws IOException {
-        return timeGenerated;
-    }
-    
-    public String getHashRepresentation() {
-        return StringUtils.isBlank(hashRepresentation) ? String.valueOf(timeGenerated) : hashRepresentation;
-    }
+  /** DOCUMENT ME! */
+  protected String hashRepresentation;
 
-    public void setHashRepresentation(String hashRepresentation) {
-        this.hashRepresentation = hashRepresentation;
-    }
+  /** DOCUMENT ME! */
+  protected long timeGenerated;
 
-}
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * <b>Note: This constructor should not be explicitly used</b>
+   *
+   * <p>To properly allow for serialization, we must provide this no-arg constructor that will create a "dummy"
+   * GeneratedResource. The appropriate fields will be set during deserialization.</p>
+   */
+  public GeneratedResource() {
+    super("");
+  }
+
+  /**
+   * Creates a new GeneratedResource object.
+   *
+   * @param  source       DOCUMENT ME!
+   * @param  description  DOCUMENT ME!
+   */
+  public GeneratedResource(byte[] source, String description) {
+    super(source, description);
+    timeGenerated = System.currentTimeMillis();
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.core.io.AbstractResource#getFilename()
+   */
+  @Override public String getFilename() {
+    return getDescription();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getHashRepresentation() {
+    return StringUtils.isBlank(hashRepresentation) ? String.valueOf(timeGenerated) : hashRepresentation;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.core.io.AbstractResource#lastModified()
+   */
+  @Override public long lastModified() throws IOException {
+    return timeGenerated;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  hashRepresentation  DOCUMENT ME!
+   */
+  public void setHashRepresentation(String hashRepresentation) {
+    this.hashRepresentation = hashRepresentation;
+  }
+
+} // end class GeneratedResource

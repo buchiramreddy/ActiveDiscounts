@@ -18,53 +18,55 @@ package org.broadleafcommerce.core.search.domain;
 
 import org.broadleafcommerce.core.catalog.domain.Category;
 
+
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public interface CategoryExcludedSearchFacet {
+  /**
+   * Gets the internal id.
+   *
+   * @return  the internal id
+   */
+  Long getId();
 
-    /**
-     * Gets the internal id
-     * 
-     * @return the internal id
-     */
-    public Long getId();
+  /**
+   * Sets the internal id.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    /** 
-     * Sets the internal id
-     * 
-     * @param id
-     */
-    public void setId(Long id);
+  /**
+   * Gets the associated category.
+   *
+   * @return  the associated category
+   */
+  Category getCategory();
 
-    /**
-     * Gets the associated category
-     * 
-     * @return the associated category
-     */
-    public Category getCategory();
+  /**
+   * Sets the associated category.
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  void setCategory(Category category);
 
-    /**
-     * Sets the associated category
-     * 
-     * @param category
-     */
-    public void setCategory(Category category);
+  /**
+   * Gets the associated search facet.
+   *
+   * @return  the associated search facet
+   */
+  SearchFacet getSearchFacet();
 
-    /**
-     * Gets the associated search facet
-     * 
-     * @return the associated search facet
-     */
-    public SearchFacet getSearchFacet();
-
-    /**
-     * Sets the associated search facet
-     * 
-     * @param searchFacet
-     */
-    public void setSearchFacet(SearchFacet searchFacet);
-
+  /**
+   * Sets the associated search facet.
+   *
+   * @param  searchFacet  DOCUMENT ME!
+   */
+  void setSearchFacet(SearchFacet searchFacet);
 
 
-}
+} // end interface CategoryExcludedSearchFacet

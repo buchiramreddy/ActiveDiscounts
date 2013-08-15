@@ -17,24 +17,52 @@
 package org.broadleafcommerce.common.vendor.service.exception;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class TaxHostException extends TaxException {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public TaxHostException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public TaxHostException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new TaxHostException object.
+   */
+  public TaxHostException() {
+    super();
+  }
 
-    public TaxHostException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new TaxHostException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public TaxHostException(String message) {
+    super(message);
+  }
 
-    public TaxHostException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new TaxHostException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public TaxHostException(Throwable cause) {
+    super(cause);
+  }
 
-}
+  /**
+   * Creates a new TaxHostException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public TaxHostException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+} // end class TaxHostException

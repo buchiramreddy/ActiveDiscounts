@@ -18,15 +18,68 @@ package org.broadleafcommerce.core.rating.domain;
 
 import org.broadleafcommerce.profile.core.domain.Customer;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ReviewFeedback {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
-    public Customer getCustomer();
-    public ReviewDetail getReviewDetail();
-    public Boolean getIsHelpful();
-    public void setIsHelpful(Boolean isHelpful);
-    public void setId(Long id);
-    public void setCustomer(Customer customer);
-    public void setReviewDetail(ReviewDetail reviewDetail);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer getCustomer();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewDetail getReviewDetail();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getIsHelpful();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isHelpful  DOCUMENT ME!
+   */
+  void setIsHelpful(Boolean isHelpful);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  void setCustomer(Customer customer);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  reviewDetail  DOCUMENT ME!
+   */
+  void setReviewDetail(ReviewDetail reviewDetail);
+
+} // end interface ReviewFeedback

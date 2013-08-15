@@ -16,23 +16,12 @@
 
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
-import org.apache.commons.lang.StringUtils;
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.OptionFilterParamType;
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
-import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
-import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.broadleafcommerce.openadmin.dto.override.FieldMetadataOverride;
-import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
-import org.broadleafcommerce.openadmin.server.dao.FieldInfo;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
 import java.math.BigDecimal;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -42,194 +31,363 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.annotation.Resource;
+
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.OptionFilterParamType;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
+
+import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
+import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.override.FieldMetadataOverride;
+import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
+import org.broadleafcommerce.openadmin.server.dao.FieldInfo;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public abstract class AbstractFieldMetadataProvider implements FieldMetadataProvider {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected Map<String, Map<String, FieldMetadataOverride>> metadataOverrides;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Resource(name = "blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  protected Map<String, Map<String, FieldMetadataOverride>> metadataOverrides;
 
-    @Resource(name="blMetadataOverrides")
-    public void setMetadataOverrides(Map metadataOverrides) {
-        try {
-            this.metadataOverrides = metadataOverrides;
-        } catch (Throwable e) {
-            throw new IllegalArgumentException(
-                    "Unable to assign metadataOverrides. You are likely using an obsolete spring application context " +
-                    "configuration for this value. Please utilize the xmlns:mo=\"http://schema.broadleafcommerce.org/mo\" namespace " +
-                    "and http://schema.broadleafcommerce.org/mo http://schema.broadleafcommerce.org/mo/mo.xsd schemaLocation " +
-                    "in the xml schema config for your app context. This will allow you to use the appropriate <mo:override> element to configure your overrides.", e);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   metadataOverrides  DOCUMENT ME!
+   *
+   * @throws  IllegalArgumentException  DOCUMENT ME!
+   */
+  @Resource(name = "blMetadataOverrides")
+  public void setMetadataOverrides(Map metadataOverrides) {
+    try {
+      this.metadataOverrides = metadataOverrides;
+    } catch (Throwable e) {
+      throw new IllegalArgumentException(
+        "Unable to assign metadataOverrides. You are likely using an obsolete spring application context "
+        + "configuration for this value. Please utilize the xmlns:mo=\"http://schema.broadleafcommerce.org/mo\" namespace "
+        + "and http://schema.broadleafcommerce.org/mo http://schema.broadleafcommerce.org/mo/mo.xsd schemaLocation "
+        + "in the xml schema config for your app context. This will allow you to use the appropriate <mo:override> element to configure your overrides.",
+        e);
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   field  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected FieldInfo buildFieldInfo(Field field) {
+    FieldInfo info = new FieldInfo();
+    info.setName(field.getName());
+    info.setGenericType(field.getGenericType());
+
+    ManyToMany manyToMany = field.getAnnotation(ManyToMany.class);
+
+    if (manyToMany != null) {
+      info.setManyToManyMappedBy(manyToMany.mappedBy());
+      info.setManyToManyTargetEntity(manyToMany.targetEntity().getName());
     }
 
-    protected void setClassOwnership(Class<?> parentClass, Class<?> targetClass, Map<String, FieldMetadata> attributes, FieldInfo field) {
-        FieldMetadata metadata = attributes.get(field.getName());
-        if (metadata != null) {
-            AdminPresentationClass adminPresentationClass;
-            if (parentClass != null) {
-                metadata.setOwningClass(parentClass.getName());
-                adminPresentationClass = parentClass.getAnnotation(AdminPresentationClass.class);
-            } else {
-                adminPresentationClass = targetClass.getAnnotation(AdminPresentationClass.class);
+    OneToMany oneToMany = field.getAnnotation(OneToMany.class);
+
+    if (oneToMany != null) {
+      info.setOneToManyMappedBy(oneToMany.mappedBy());
+      info.setOneToManyTargetEntity(oneToMany.targetEntity().getName());
+    }
+
+    return info;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   value  DOCUMENT ME!
+   * @param   type   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Object convertType(String value, OptionFilterParamType type) {
+    Object response;
+
+    switch (type) {
+      case BIGDECIMAL: {
+        response = new BigDecimal(value);
+
+        break;
+      }
+
+      case BOOLEAN: {
+        response = Boolean.parseBoolean(value);
+
+        break;
+      }
+
+      case DOUBLE: {
+        response = Double.parseDouble(value);
+
+        break;
+      }
+
+      case FLOAT: {
+        response = Float.parseFloat(value);
+
+        break;
+      }
+
+      case INTEGER: {
+        response = Integer.parseInt(value);
+
+        break;
+      }
+
+      case LONG: {
+        response = Long.parseLong(value);
+
+        break;
+      }
+
+      default: {
+        response = value;
+
+        break;
+      }
+    } // end switch
+
+    return response;
+  } // end method convertType
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entries  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Map<String, AdminPresentationMergeEntry> getAdminPresentationEntries(
+    AdminPresentationMergeEntry[] entries) {
+    Map<String, AdminPresentationMergeEntry> response = new HashMap<String, AdminPresentationMergeEntry>();
+
+    for (AdminPresentationMergeEntry entry : entries) {
+      response.put(entry.propertyType(), entry);
+    }
+
+    return response;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fieldType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Class<?> getBasicJavaType(SupportedFieldType fieldType) {
+    Class<?> response;
+
+    switch (fieldType) {
+      case BOOLEAN: {
+        response = Boolean.TYPE;
+
+        break;
+      }
+
+      case DATE: {
+        response = Date.class;
+
+        break;
+      }
+
+      case DECIMAL: {
+        response = BigDecimal.class;
+
+        break;
+      }
+
+      case MONEY: {
+        response = BigDecimal.class;
+
+        break;
+      }
+
+      case INTEGER: {
+        response = Integer.TYPE;
+
+        break;
+      }
+
+      case UNKNOWN: {
+        response = null;
+
+        break;
+      }
+
+      default: {
+        response = String.class;
+
+        break;
+      }
+    } // end switch
+
+    return response;
+  } // end method getBasicJavaType
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   configurationKey                      DOCUMENT ME!
+   * @param   ceilingEntityFullyQualifiedClassname  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Map<String, FieldMetadataOverride> getTargetedOverride(String configurationKey,
+    String ceilingEntityFullyQualifiedClassname) {
+    if ((metadataOverrides != null) && ((configurationKey != null) || (ceilingEntityFullyQualifiedClassname != null))) {
+      return metadataOverrides.containsKey(configurationKey)
+        ? metadataOverrides.get(configurationKey) : metadataOverrides.get(ceilingEntityFullyQualifiedClassname);
+    }
+
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  parentClass  DOCUMENT ME!
+   * @param  targetClass  DOCUMENT ME!
+   * @param  attributes   DOCUMENT ME!
+   * @param  field        DOCUMENT ME!
+   */
+  protected void setClassOwnership(Class<?> parentClass, Class<?> targetClass, Map<String, FieldMetadata> attributes,
+    FieldInfo field) {
+    FieldMetadata metadata = attributes.get(field.getName());
+
+    if (metadata != null) {
+      AdminPresentationClass adminPresentationClass;
+
+      if (parentClass != null) {
+        metadata.setOwningClass(parentClass.getName());
+        adminPresentationClass = parentClass.getAnnotation(AdminPresentationClass.class);
+      } else {
+        adminPresentationClass = targetClass.getAnnotation(AdminPresentationClass.class);
+      }
+
+      if (adminPresentationClass != null) {
+        String friendlyName = adminPresentationClass.friendlyName();
+
+        if (!StringUtils.isEmpty(friendlyName) && StringUtils.isEmpty(metadata.getOwningClassFriendlyName())) {
+          metadata.setOwningClassFriendlyName(friendlyName);
+        }
+      }
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   broadleafEnumerationClass  DOCUMENT ME!
+   * @param   fieldMetadata              DOCUMENT ME!
+   * @param   dynamicEntityDao           DOCUMENT ME!
+   *
+   * @throws  RuntimeException  DOCUMENT ME!
+   */
+  protected void setupBroadleafEnumeration(String broadleafEnumerationClass, BasicFieldMetadata fieldMetadata,
+    DynamicEntityDao dynamicEntityDao) {
+    try {
+      Map<String, String> enumVals;
+      Class<?>            broadleafEnumeration = Class.forName(broadleafEnumerationClass);
+
+      Method typeMethod         = broadleafEnumeration.getMethod("getType");
+      Method friendlyTypeMethod = broadleafEnumeration.getMethod("getFriendlyType");
+      Field  types              = dynamicEntityDao.getFieldManager().getField(broadleafEnumeration, "TYPES");
+
+      if (Comparable.class.isAssignableFrom(broadleafEnumeration)) {
+        enumVals = new LinkedHashMap<String, String>();
+
+        Set<BroadleafEnumerationType> blcEnumSet = new TreeSet<BroadleafEnumerationType>();
+
+        if (types != null) {
+          Map typesMap = (Map) types.get(null);
+
+          for (Object value : typesMap.values()) {
+            blcEnumSet.add((BroadleafEnumerationType) value);
+          }
+
+          for (Object value : typesMap.values()) {
+            enumVals.put((String) friendlyTypeMethod.invoke(value), (String) typeMethod.invoke(value));
+          }
+        }
+      } else {
+        enumVals = new TreeMap<String, String>();
+
+        if (types != null) {
+          Map typesMap = (Map) types.get(null);
+
+          for (Object value : typesMap.values()) {
+            enumVals.put((String) friendlyTypeMethod.invoke(value), (String) typeMethod.invoke(value));
+          }
+        } else {
+          Field[] fields = dynamicEntityDao.getAllFields(broadleafEnumeration);
+
+          for (Field field : fields) {
+            boolean isStatic = Modifier.isStatic(field.getModifiers());
+
+            if (isStatic && field.getType().isAssignableFrom(broadleafEnumeration)) {
+              enumVals.put((String) friendlyTypeMethod.invoke(field.get(null)),
+                (String) typeMethod.invoke(field.get(null)));
             }
-            if (adminPresentationClass != null) {
-                String friendlyName = adminPresentationClass.friendlyName();
-                if (!StringUtils.isEmpty(friendlyName) && StringUtils.isEmpty(metadata.getOwningClassFriendlyName())) {
-                    metadata.setOwningClassFriendlyName(friendlyName);
-                }
-            }
+          }
         }
-    }
+      } // end if-else
 
-    protected FieldInfo buildFieldInfo(Field field) {
-        FieldInfo info = new FieldInfo();
-        info.setName(field.getName());
-        info.setGenericType(field.getGenericType());
-        ManyToMany manyToMany = field.getAnnotation(ManyToMany.class);
-        if (manyToMany != null) {
-            info.setManyToManyMappedBy(manyToMany.mappedBy());
-            info.setManyToManyTargetEntity(manyToMany.targetEntity().getName());
-        }
-        OneToMany oneToMany = field.getAnnotation(OneToMany.class);
-        if (oneToMany != null) {
-            info.setOneToManyMappedBy(oneToMany.mappedBy());
-            info.setOneToManyTargetEntity(oneToMany.targetEntity().getName());
-        }
-        return info;
-    }
 
-    protected Map<String, FieldMetadataOverride> getTargetedOverride(String configurationKey, String ceilingEntityFullyQualifiedClassname) {
-        if (metadataOverrides != null && (configurationKey != null || ceilingEntityFullyQualifiedClassname != null)) {
-            return metadataOverrides.containsKey(configurationKey)?metadataOverrides.get(configurationKey):metadataOverrides.get(ceilingEntityFullyQualifiedClassname);
-        }
-        return null;
-    }
+      String[][] enumerationValues = new String[enumVals.size()][2];
+      int        j                 = 0;
 
-    protected Class<?> getBasicJavaType(SupportedFieldType fieldType) {
-        Class<?> response;
-        switch (fieldType) {
-            case BOOLEAN:
-                response = Boolean.TYPE;
-                break;
-            case DATE:
-                response = Date.class;
-                break;
-            case DECIMAL:
-                response = BigDecimal.class;
-                break;
-            case MONEY:
-                response = BigDecimal.class;
-                break;
-            case INTEGER:
-                response = Integer.TYPE;
-                break;
-            case UNKNOWN:
-                response = null;
-                break;
-            default:
-                response = String.class;
-                break;
-        }
+      for (String key : enumVals.keySet()) {
+        enumerationValues[j][0] = enumVals.get(key);
+        enumerationValues[j][1] = key;
+        j++;
+      }
 
-        return response;
-    }
-
-    protected Object convertType(String value, OptionFilterParamType type) {
-        Object response;
-        switch (type) {
-            case BIGDECIMAL:
-               response = new BigDecimal(value);
-               break;
-            case BOOLEAN:
-               response = Boolean.parseBoolean(value);
-               break;
-            case DOUBLE:
-               response = Double.parseDouble(value);
-               break;
-            case FLOAT:
-               response = Float.parseFloat(value);
-               break;
-            case INTEGER:
-               response = Integer.parseInt(value);
-               break;
-            case LONG:
-               response = Long.parseLong(value);
-               break;
-            default:
-               response = value;
-               break;
-        }
-
-        return response;
-    }
-
-    protected void setupBroadleafEnumeration(String broadleafEnumerationClass, BasicFieldMetadata fieldMetadata, DynamicEntityDao dynamicEntityDao) {
-        try {
-            
-            Map<String, String> enumVals;
-            Class<?> broadleafEnumeration = Class.forName(broadleafEnumerationClass);  
-
-            Method typeMethod = broadleafEnumeration.getMethod("getType");
-            Method friendlyTypeMethod = broadleafEnumeration.getMethod("getFriendlyType");
-            Field types = dynamicEntityDao.getFieldManager().getField(broadleafEnumeration, "TYPES");
-            
-            if (Comparable.class.isAssignableFrom(broadleafEnumeration)) {
-                enumVals = new LinkedHashMap<String, String>();
-                Set<BroadleafEnumerationType> blcEnumSet = new TreeSet<BroadleafEnumerationType>();
-                if (types != null) {
-                    Map typesMap = (Map) types.get(null);
-                    for (Object value : typesMap.values()) {
-                        blcEnumSet.add((BroadleafEnumerationType) value);
-                    }
-
-                    for (Object value : typesMap.values()) {
-                        enumVals.put((String) friendlyTypeMethod.invoke(value), (String) typeMethod.invoke(value));
-                    }
-                }
-            } else {
-                enumVals = new TreeMap<String, String>();
-                if (types != null) {
-                    Map typesMap = (Map) types.get(null);
-                    for (Object value : typesMap.values()) {
-                        enumVals.put((String) friendlyTypeMethod.invoke(value), (String) typeMethod.invoke(value));
-                    }
-                } else {
-                    Field[] fields = dynamicEntityDao.getAllFields(broadleafEnumeration);
-                    for (Field field : fields) {
-                        boolean isStatic = Modifier.isStatic(field.getModifiers());
-                        if (isStatic && field.getType().isAssignableFrom(broadleafEnumeration)){
-                            enumVals.put((String) friendlyTypeMethod.invoke(field.get(null)), (String) typeMethod.invoke(field.get(null)));
-                        }
-                    }
-                }
-            }
-            
-            
-            String[][] enumerationValues = new String[enumVals.size()][2];
-            int j = 0;
-            for (String key : enumVals.keySet()) {
-                enumerationValues[j][0] = enumVals.get(key);
-                enumerationValues[j][1] = key;
-                j++;
-            }
-            fieldMetadata.setEnumerationValues(enumerationValues);
-            fieldMetadata.setEnumerationClass(broadleafEnumerationClass);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected Map<String, AdminPresentationMergeEntry> getAdminPresentationEntries(AdminPresentationMergeEntry[] entries) {
-        Map<String, AdminPresentationMergeEntry> response = new HashMap<String, AdminPresentationMergeEntry>();
-        for (AdminPresentationMergeEntry entry : entries) {
-            response.put(entry.propertyType(), entry);
-        }
-        return response;
-    }
-}
+      fieldMetadata.setEnumerationValues(enumerationValues);
+      fieldMetadata.setEnumerationClass(broadleafEnumerationClass);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } // end try-catch
+  } // end method setupBroadleafEnumeration
+} // end class AbstractFieldMetadataProvider

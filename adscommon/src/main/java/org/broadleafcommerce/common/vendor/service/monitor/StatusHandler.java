@@ -18,8 +18,22 @@ package org.broadleafcommerce.common.vendor.service.monitor;
 
 import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
 
-public interface StatusHandler {
 
-    public void handleStatus(String serviceName, ServiceStatusType status);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface StatusHandler {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  serviceName  DOCUMENT ME!
+   * @param  status       DOCUMENT ME!
+   */
+  void handleStatus(String serviceName, ServiceStatusType status);
 
 }

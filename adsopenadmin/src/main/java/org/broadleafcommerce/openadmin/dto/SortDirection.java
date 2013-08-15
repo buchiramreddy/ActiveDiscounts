@@ -17,8 +17,13 @@
 package org.broadleafcommerce.openadmin.dto;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum SortDirection {
-    ASCENDING, DESCENDING
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  ASCENDING, DESCENDING
 }

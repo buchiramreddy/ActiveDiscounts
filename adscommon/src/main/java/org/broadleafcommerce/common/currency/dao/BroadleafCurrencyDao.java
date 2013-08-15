@@ -16,34 +16,56 @@
 
 package org.broadleafcommerce.common.currency.dao;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-
 import java.util.List;
 
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+
+
 /**
- * Author: jerryocanas
- * Date: 9/6/12
+ * Author: jerryocanas Date: 9/6/12
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafCurrencyDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the default Broadleaf currency
-     * @return The default currency
-     */
-    public BroadleafCurrency findDefaultBroadleafCurrency();
+  /**
+   * Returns a Broadleaf currency found by a code.
+   *
+   * @param   currencyCode  DOCUMENT ME!
+   *
+   * @return  The currency
+   */
+  BroadleafCurrency findCurrencyByCode(String currencyCode);
 
-    /**
-     * Returns a Broadleaf currency found by a code
-     * @return The currency
-     */
-    public BroadleafCurrency findCurrencyByCode(String currencyCode);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns a list of all the Broadleaf Currencies
-     * @return List of currencies
-     */
-    public List<BroadleafCurrency> getAllCurrencies();
+  /**
+   * Returns the default Broadleaf currency.
+   *
+   * @return  The default currency
+   */
+  BroadleafCurrency findDefaultBroadleafCurrency();
 
-    public BroadleafCurrency save(BroadleafCurrency currency);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * Returns a list of all the Broadleaf Currencies.
+   *
+   * @return  List of currencies
+   */
+  List<BroadleafCurrency> getAllCurrencies();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   currency  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency save(BroadleafCurrency currency);
+
+} // end interface BroadleafCurrencyDao

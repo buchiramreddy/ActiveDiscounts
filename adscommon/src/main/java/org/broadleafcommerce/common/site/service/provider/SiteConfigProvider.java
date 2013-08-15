@@ -16,17 +16,34 @@
 
 package org.broadleafcommerce.common.site.service.provider;
 
-import org.broadleafcommerce.common.site.domain.Site;
-
 import java.util.Map;
 
+import org.broadleafcommerce.common.site.domain.Site;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface SiteConfigProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void configSite(Site site);
-    
-    public void init(Map<String, Object> map);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  site  DOCUMENT ME!
+   */
+  void configSite(Site site);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  map  DOCUMENT ME!
+   */
+  void init(Map<String, Object> map);
 
 }

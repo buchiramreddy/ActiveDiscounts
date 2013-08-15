@@ -16,69 +16,121 @@
 
 package org.broadleafcommerce.profile.core.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.profile.core.domain.CustomerRole;
+
 import org.springframework.dao.DataAccessException;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
-@Service("blUserDetailsService")
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Deprecated
+@Service("blUserDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blCustomerService")
-    protected CustomerService customerService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  protected CustomerService customerService;
 
-    @Resource(name="blRoleService")
-    protected RoleService roleService;
+  /** DOCUMENT ME! */
+  protected boolean forcePasswordChange = false;
 
-    protected boolean forcePasswordChange = false;
+  /** DOCUMENT ME! */
+  @Resource(name = "blRoleService")
+  protected RoleService roleService;
 
-    public void setForcePasswordChange(boolean forcePasswordChange) {
-        this.forcePasswordChange = forcePasswordChange;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
+   */
+  @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException,
+    DataAccessException {
+    org.broadleafcommerce.profile.core.domain.Customer customer = customerService.readCustomerByUsername(username);
+
+    if (customer == null) {
+      throw new UsernameNotFoundException("The customer was not found");
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-        org.broadleafcommerce.profile.core.domain.Customer customer = customerService.readCustomerByUsername(username);
-        if (customer == null) {
-            throw new UsernameNotFoundException("The customer was not found");
-        }
+    User returnUser = null;
 
-        User returnUser = null;
+    boolean                pwChangeRequired   = customer.isPasswordChangeRequired();
+    List<GrantedAuthority> grantedAuthorities = createGrantedAuthorities(roleService.findCustomerRolesByCustomerId(
+          customer.getId()));
 
-        boolean pwChangeRequired = customer.isPasswordChangeRequired();
-        List<GrantedAuthority> grantedAuthorities = createGrantedAuthorities(roleService.findCustomerRolesByCustomerId(customer.getId()));
-        if (pwChangeRequired) {
-            if (forcePasswordChange) {
-                returnUser = new User(username, customer.getPassword(), true, true, !customer.isPasswordChangeRequired(), true, grantedAuthorities);
-            } else {
-                grantedAuthorities.add(new GrantedAuthorityImpl("ROLE_PASSWORD_CHANGE_REQUIRED"));
-                returnUser = new User(username, customer.getPassword(), true, true, true, true, grantedAuthorities);
-            }
-        } else {
-            returnUser = new User(username, customer.getPassword(), true, true, !customer.isPasswordChangeRequired(), true, grantedAuthorities);
-        }
-        return returnUser;
+    if (pwChangeRequired) {
+      if (forcePasswordChange) {
+        returnUser = new User(username, customer.getPassword(), true, true, !customer.isPasswordChangeRequired(), true,
+            grantedAuthorities);
+      } else {
+        grantedAuthorities.add(new GrantedAuthorityImpl("ROLE_PASSWORD_CHANGE_REQUIRED"));
+        returnUser = new User(username, customer.getPassword(), true, true, true, true, grantedAuthorities);
+      }
+    } else {
+      returnUser = new User(username, customer.getPassword(), true, true, !customer.isPasswordChangeRequired(), true,
+          grantedAuthorities);
     }
 
-    public void setCustomerService(CustomerService customerService) {
-        this.customerService = customerService;
+    return returnUser;
+  } // end method loadUserByUsername
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerService  DOCUMENT ME!
+   */
+  public void setCustomerService(CustomerService customerService) {
+    this.customerService = customerService;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  forcePasswordChange  DOCUMENT ME!
+   */
+  public void setForcePasswordChange(boolean forcePasswordChange) {
+    this.forcePasswordChange = forcePasswordChange;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerRoles  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected List<GrantedAuthority> createGrantedAuthorities(List<CustomerRole> customerRoles) {
+    List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+    grantedAuthorities.add(new GrantedAuthorityImpl("ROLE_USER"));
+
+    for (CustomerRole role : customerRoles) {
+      grantedAuthorities.add(new GrantedAuthorityImpl(role.getRoleName()));
     }
 
-    protected List<GrantedAuthority> createGrantedAuthorities(List<CustomerRole> customerRoles) {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        grantedAuthorities.add(new GrantedAuthorityImpl("ROLE_USER"));
-        for (CustomerRole role : customerRoles) {
-            grantedAuthorities.add(new GrantedAuthorityImpl(role.getRoleName()));
-        }
-        return grantedAuthorities;
-    }
-}
+    return grantedAuthorities;
+  }
+} // end class UserDetailsServiceImpl

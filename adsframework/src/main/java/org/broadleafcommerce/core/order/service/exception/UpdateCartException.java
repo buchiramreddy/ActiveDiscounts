@@ -16,24 +16,48 @@
 
 package org.broadleafcommerce.core.order.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class UpdateCartException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new UpdateCartException object.
+   */
+  public UpdateCartException() {
+    super();
+  }
 
-    public UpdateCartException() {
-        super();
-    }
+  /**
+   * Creates a new UpdateCartException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public UpdateCartException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public UpdateCartException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new UpdateCartException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public UpdateCartException(String message) {
+    super(message);
+  }
 
-    public UpdateCartException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new UpdateCartException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public UpdateCartException(Throwable cause) {
+    super(cause);
+  }
 
-    public UpdateCartException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class UpdateCartException

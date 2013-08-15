@@ -16,6 +16,11 @@
 
 package org.broadleafcommerce.core.order.service.legacy;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.call.MergeCartResponse;
@@ -26,155 +31,228 @@ import org.broadleafcommerce.core.order.service.exception.ItemNotFoundException;
 import org.broadleafcommerce.core.order.service.exception.RemoveFromCartException;
 import org.broadleafcommerce.core.order.service.exception.UpdateCartException;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.service.CustomerService;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * TODO setup other BLC items to be JMX managed resources like this one. This would include other services, and singleton beans
  * that are configured via Spring and property files (i.e. payment modules, etc...)
  */
 /**
- * This legacy implementation should no longer be used as of 2.0
- * 
- * The new interface and implementation are OrderService and OrderServiceImpl
- * 
- * @deprecated
+ * This legacy implementation should no longer be used as of 2.0.
+ *
+ * <p>The new interface and implementation are OrderService and OrderServiceImpl</p>
+ *
+ * @deprecated  DOCUMENT ME!
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public class LegacyCartServiceImpl extends LegacyOrderServiceImpl implements LegacyCartService {
+@Deprecated public class LegacyCartServiceImpl extends LegacyOrderServiceImpl implements LegacyCartService {
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  protected CustomerService customerService;
 
-    @Resource(name="blCustomerService")
-    protected CustomerService customerService;
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#addAllItemsToCartFromNamedOrder(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order addAllItemsToCartFromNamedOrder(Order namedOrder) throws PricingException {
+    return addAllItemsToCartFromNamedOrder(namedOrder, true);
+  }
 
-    public Order addAllItemsToCartFromNamedOrder(Order namedOrder) throws PricingException {
-        return addAllItemsToCartFromNamedOrder(namedOrder, true);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#addAllItemsToCartFromNamedOrder(org.broadleafcommerce.core.order.domain.Order,
+   *       boolean)
+   */
+  @Override public Order addAllItemsToCartFromNamedOrder(Order namedOrder, boolean priceOrder) throws PricingException {
+    Order cartOrder = orderDao.readCartForCustomer(namedOrder.getCustomer());
 
-    public Order addAllItemsToCartFromNamedOrder(Order namedOrder, boolean priceOrder) throws PricingException {
-        Order cartOrder = orderDao.readCartForCustomer(namedOrder.getCustomer());
-        if (cartOrder == null) {
-            cartOrder = createNewCartForCustomer(namedOrder.getCustomer());
-        }
-        List<OrderItem> items = new ArrayList<OrderItem>(namedOrder.getOrderItems());
-        for (int i = 0; i < items.size(); i++) {
-            OrderItem orderItem = items.get(i);
-
-            // only run pricing routines on the last item.
-            boolean shouldPriceOrder = (priceOrder && (i == items.size() -1));
-            if (moveNamedOrderItems) {
-                moveItemToOrder(namedOrder, cartOrder, orderItem, shouldPriceOrder);
-            } else {
-                addOrderItemToOrder(cartOrder, orderItem, shouldPriceOrder);
-            }
-            
-        }
-        return cartOrder;
-    }
-    
-    public OrderItem moveItemToCartFromNamedOrder(Long customerId, String orderName, Long orderItemId, Integer quantity) throws PricingException {
-        return moveItemToCartFromNamedOrder(customerId, orderName, orderItemId, quantity, true);
+    if (cartOrder == null) {
+      cartOrder = createNewCartForCustomer(namedOrder.getCustomer());
     }
 
-    public OrderItem moveItemToCartFromNamedOrder(Long customerId, String orderName, Long orderItemId, Integer quantity, boolean priceOrder) throws PricingException {
-        Order wishlistOrder = findNamedOrderForCustomer(orderName, customerService.createCustomerFromId(customerId));
-        OrderItem orderItem = orderItemService.readOrderItemById(orderItemId);
-        orderItem.setQuantity(quantity);
-        return moveItemToCartFromNamedOrder(wishlistOrder, orderItem, priceOrder);
-    }
-    
-    public OrderItem moveItemToCartFromNamedOrder(Order namedOrder, OrderItem orderItem) throws PricingException {
-        return moveItemToCartFromNamedOrder(namedOrder, orderItem, true);
+    List<OrderItem> items = new ArrayList<OrderItem>(namedOrder.getOrderItems());
+
+    for (int i = 0; i < items.size(); i++) {
+      OrderItem orderItem = items.get(i);
+
+      // only run pricing routines on the last item.
+      boolean shouldPriceOrder = (priceOrder && (i == (items.size() - 1)));
+
+      if (moveNamedOrderItems) {
+        moveItemToOrder(namedOrder, cartOrder, orderItem, shouldPriceOrder);
+      } else {
+        addOrderItemToOrder(cartOrder, orderItem, shouldPriceOrder);
+      }
+
     }
 
-    public OrderItem moveItemToCartFromNamedOrder(Order namedOrder, OrderItem orderItem, boolean priceOrder) throws PricingException {
-        Order cartOrder = orderDao.readCartForCustomer(namedOrder.getCustomer());
-        if (cartOrder == null) {
-            cartOrder = createNewCartForCustomer(namedOrder.getCustomer());
-        }
-        if (moveNamedOrderItems) {
-            moveItemToOrder(namedOrder, cartOrder, orderItem, priceOrder);
-            if (namedOrder.getOrderItems().size() == 0 && deleteEmptyNamedOrders) {
-                cancelOrder(namedOrder);
-            }
-        } else {
-            orderItem = addOrderItemToOrder(cartOrder, orderItem, priceOrder);
-        }
-        
-        return orderItem;
-    }
-    
-    public Order moveAllItemsToCartFromNamedOrder(Order namedOrder) throws PricingException {
-        return moveAllItemsToCartFromNamedOrder(namedOrder, true);
+    return cartOrder;
+  } // end method addAllItemsToCartFromNamedOrder
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#moveItemToCartFromNamedOrder(java.lang.Long,
+   *       java.lang.String, java.lang.Long, java.lang.Integer)
+   */
+  @Override public OrderItem moveItemToCartFromNamedOrder(Long customerId, String orderName, Long orderItemId,
+    Integer quantity) throws PricingException {
+    return moveItemToCartFromNamedOrder(customerId, orderName, orderItemId, quantity, true);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#moveItemToCartFromNamedOrder(java.lang.Long,
+   *       java.lang.String, java.lang.Long, java.lang.Integer, boolean)
+   */
+  @Override public OrderItem moveItemToCartFromNamedOrder(Long customerId, String orderName, Long orderItemId,
+    Integer quantity, boolean priceOrder) throws PricingException {
+    Order     wishlistOrder = findNamedOrderForCustomer(orderName, customerService.createCustomerFromId(customerId));
+    OrderItem orderItem     = orderItemService.readOrderItemById(orderItemId);
+    orderItem.setQuantity(quantity);
+
+    return moveItemToCartFromNamedOrder(wishlistOrder, orderItem, priceOrder);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#moveItemToCartFromNamedOrder(org.broadleafcommerce.core.order.domain.Order,
+   *       org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public OrderItem moveItemToCartFromNamedOrder(Order namedOrder, OrderItem orderItem)
+    throws PricingException {
+    return moveItemToCartFromNamedOrder(namedOrder, orderItem, true);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#moveItemToCartFromNamedOrder(org.broadleafcommerce.core.order.domain.Order,
+   *       org.broadleafcommerce.core.order.domain.OrderItem, boolean)
+   */
+  @Override public OrderItem moveItemToCartFromNamedOrder(Order namedOrder, OrderItem orderItem, boolean priceOrder)
+    throws PricingException {
+    Order cartOrder = orderDao.readCartForCustomer(namedOrder.getCustomer());
+
+    if (cartOrder == null) {
+      cartOrder = createNewCartForCustomer(namedOrder.getCustomer());
     }
 
-    public Order moveAllItemsToCartFromNamedOrder(Order namedOrder, boolean priceOrder) throws PricingException {
-        Order cartOrder = addAllItemsToCartFromNamedOrder(namedOrder, priceOrder);
-        if (deleteEmptyNamedOrders) {
-            cancelOrder(namedOrder);
-        }
-        return cartOrder;
+    if (moveNamedOrderItems) {
+      moveItemToOrder(namedOrder, cartOrder, orderItem, priceOrder);
+
+      if ((namedOrder.getOrderItems().size() == 0) && deleteEmptyNamedOrders) {
+        cancelOrder(namedOrder);
+      }
+    } else {
+      orderItem = addOrderItemToOrder(cartOrder, orderItem, priceOrder);
     }
 
-    public MergeCartResponse mergeCart(Customer customer, Order anonymousCart) throws PricingException {
-        return mergeCart(customer, anonymousCart, true);
+    return orderItem;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#moveAllItemsToCartFromNamedOrder(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order moveAllItemsToCartFromNamedOrder(Order namedOrder) throws PricingException {
+    return moveAllItemsToCartFromNamedOrder(namedOrder, true);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#moveAllItemsToCartFromNamedOrder(org.broadleafcommerce.core.order.domain.Order,
+   *       boolean)
+   */
+  @Override public Order moveAllItemsToCartFromNamedOrder(Order namedOrder, boolean priceOrder)
+    throws PricingException {
+    Order cartOrder = addAllItemsToCartFromNamedOrder(namedOrder, priceOrder);
+
+    if (deleteEmptyNamedOrders) {
+      cancelOrder(namedOrder);
     }
 
-    public ReconstructCartResponse reconstructCart(Customer customer) throws PricingException {
-        return reconstructCart(customer, true);
-    }
+    return cartOrder;
+  }
 
-    public MergeCartResponse mergeCart(Customer customer, Order anonymousCart, boolean priceOrder) throws PricingException {
-        try {
-            return mergeCartService.mergeCart(customer, anonymousCart, priceOrder);
-        } catch (RemoveFromCartException e) {
-            // This should not happen as this service should be configured to use the LegacyMergeCartService, which will
-            // not throw this exception
-            throw new PricingException(e);
-        }
-    }
-    
-    public ReconstructCartResponse reconstructCart(Customer customer, boolean priceOrder) throws PricingException {
-        try {
-            return mergeCartService.reconstructCart(customer, priceOrder);
-        } catch (RemoveFromCartException e) {
-            // This should not happen as this service should be configured to use the LegacyMergeCartService, which will
-            // not throw this exception
-            throw new PricingException(e);
-        }
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#mergeCart(org.broadleafcommerce.profile.core.domain.Customer,
+   *       org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public MergeCartResponse mergeCart(Customer customer, Order anonymousCart) throws PricingException {
+    return mergeCart(customer, anonymousCart, true);
+  }
 
-    @Override
-    public Order addItem(Long orderId, OrderItemRequestDTO orderItemRequestDTO, boolean priceOrder) throws AddToCartException {
-        try {
-            return addItemToOrder(orderId, orderItemRequestDTO, priceOrder);
-        } catch (PricingException e) {
-            throw new AddToCartException("Could not add item", e);
-        }
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#reconstructCart(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public ReconstructCartResponse reconstructCart(Customer customer) throws PricingException {
+    return reconstructCart(customer, true);
+  }
 
-    @Override
-    public Order updateItemQuantity(Long orderId, OrderItemRequestDTO orderItemRequestDTO, boolean priceOrder) throws UpdateCartException {
-        try {
-            Order order = findOrderById(orderId);
-            updateItemQuantity(order, orderItemRequestDTO);
-            return order;
-        } catch (PricingException e) {
-            throw new UpdateCartException("Could not update cart", e);
-        } catch (ItemNotFoundException e) {
-            throw new UpdateCartException("Could not update cart", e);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#mergeCart(org.broadleafcommerce.profile.core.domain.Customer,
+   *       org.broadleafcommerce.core.order.domain.Order, boolean)
+   */
+  @Override public MergeCartResponse mergeCart(Customer customer, Order anonymousCart, boolean priceOrder)
+    throws PricingException {
+    try {
+      return mergeCartService.mergeCart(customer, anonymousCart, priceOrder);
+    } catch (RemoveFromCartException e) {
+      // This should not happen as this service should be configured to use the LegacyMergeCartService, which will
+      // not throw this exception
+      throw new PricingException(e);
     }
+  }
 
-    @Override
-    public Order removeItem(Long orderId, Long orderItemId, boolean priceOrder) throws RemoveFromCartException {
-        try {
-            return removeItemFromOrder(orderId, orderItemId, priceOrder);
-        } catch (PricingException e) {
-            throw new RemoveFromCartException("Could not remove item", e);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.legacy.LegacyCartService#reconstructCart(org.broadleafcommerce.profile.core.domain.Customer,
+   *       boolean)
+   */
+  @Override public ReconstructCartResponse reconstructCart(Customer customer, boolean priceOrder)
+    throws PricingException {
+    try {
+      return mergeCartService.reconstructCart(customer, priceOrder);
+    } catch (RemoveFromCartException e) {
+      // This should not happen as this service should be configured to use the LegacyMergeCartService, which will
+      // not throw this exception
+      throw new PricingException(e);
     }
-}
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.OrderService#addItem(java.lang.Long,org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO,
+   *       boolean)
+   */
+  @Override public Order addItem(Long orderId, OrderItemRequestDTO orderItemRequestDTO, boolean priceOrder)
+    throws AddToCartException {
+    try {
+      return addItemToOrder(orderId, orderItemRequestDTO, priceOrder);
+    } catch (PricingException e) {
+      throw new AddToCartException("Could not add item", e);
+    }
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.OrderServiceImpl#updateItemQuantity(java.lang.Long,org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO,
+   *       boolean)
+   */
+  @Override public Order updateItemQuantity(Long orderId, OrderItemRequestDTO orderItemRequestDTO, boolean priceOrder)
+    throws UpdateCartException {
+    try {
+      Order order = findOrderById(orderId);
+      updateItemQuantity(order, orderItemRequestDTO);
+
+      return order;
+    } catch (PricingException e) {
+      throw new UpdateCartException("Could not update cart", e);
+    } catch (ItemNotFoundException e) {
+      throw new UpdateCartException("Could not update cart", e);
+    }
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.service.OrderService#removeItem(java.lang.Long, java.lang.Long, boolean)
+   */
+  @Override public Order removeItem(Long orderId, Long orderItemId, boolean priceOrder) throws RemoveFromCartException {
+    try {
+      return removeItemFromOrder(orderId, orderItemId, priceOrder);
+    } catch (PricingException e) {
+      throw new RemoveFromCartException("Could not remove item", e);
+    }
+  }
+} // end class LegacyCartServiceImpl

@@ -17,25 +17,63 @@
 package org.broadleafcommerce.core.offer.service;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OfferContext {
-    
-    private static final ThreadLocal<OfferContext> OFFERCONTEXT = new ThreadLocal<OfferContext>();
-    
-    public static OfferContext getOfferContext() {
-        return OFFERCONTEXT.get();
-    }
-    
-    public static void setOfferContext(OfferContext offerContext) {
-        OFFERCONTEXT.set(offerContext);
-    }
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    protected Boolean executePromotionCalculation = true;
+  private static final ThreadLocal<OfferContext> OFFERCONTEXT = new ThreadLocal<OfferContext>();
 
-    public Boolean getExecutePromotionCalculation() {
-        return executePromotionCalculation;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setExecutePromotionCalculation(Boolean executePromotionCalculation) {
-        this.executePromotionCalculation = executePromotionCalculation;
-    }
-}
+  /** DOCUMENT ME! */
+  protected Boolean executePromotionCalculation = true;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static OfferContext getOfferContext() {
+    return OFFERCONTEXT.get();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offerContext  DOCUMENT ME!
+   */
+  public static void setOfferContext(OfferContext offerContext) {
+    OFFERCONTEXT.set(offerContext);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getExecutePromotionCalculation() {
+    return executePromotionCalculation;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  executePromotionCalculation  DOCUMENT ME!
+   */
+  public void setExecutePromotionCalculation(Boolean executePromotionCalculation) {
+    this.executePromotionCalculation = executePromotionCalculation;
+  }
+} // end class OfferContext

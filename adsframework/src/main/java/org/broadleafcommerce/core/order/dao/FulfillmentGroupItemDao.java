@@ -16,20 +16,57 @@
 
 package org.broadleafcommerce.core.order.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface FulfillmentGroupItemDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentGroupItemId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroupItem readFulfillmentGroupItemById(Long fulfillmentGroupItemId);
 
-    FulfillmentGroupItem readFulfillmentGroupItemById(Long fulfillmentGroupItemId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentGroupItem  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroupItem save(FulfillmentGroupItem fulfillmentGroupItem);
 
-    FulfillmentGroupItem save(FulfillmentGroupItem fulfillmentGroupItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentGroup  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FulfillmentGroupItem> readFulfillmentGroupItemsForFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
 
-    List<FulfillmentGroupItem> readFulfillmentGroupItemsForFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroupItem  DOCUMENT ME!
+   */
+  void delete(FulfillmentGroupItem fulfillmentGroupItem);
 
-    void delete(FulfillmentGroupItem fulfillmentGroupItem);
-
-    FulfillmentGroupItem create();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroupItem create();
+} // end interface FulfillmentGroupItemDao

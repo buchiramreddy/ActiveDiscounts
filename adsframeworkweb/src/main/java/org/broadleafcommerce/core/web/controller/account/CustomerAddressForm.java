@@ -16,42 +16,111 @@
 
 package org.broadleafcommerce.core.web.controller.account;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 
-import java.io.Serializable;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CustomerAddressForm implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected Address address = new AddressImpl();
-    protected String addressName;
-    protected Long customerAddressId;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public CustomerAddressForm() {
-        address.setPhonePrimary(new PhoneImpl());
+  /** DOCUMENT ME! */
+  protected Address address           = new AddressImpl();
+
+  /** DOCUMENT ME! */
+  protected String  addressName;
+
+  /** DOCUMENT ME! */
+  protected Long    customerAddressId;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new CustomerAddressForm object.
+   */
+  public CustomerAddressForm() {
+    address.setPhonePrimary(new PhoneImpl());
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Address getAddress() {
+    return address;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getAddressName() {
+    return addressName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getCustomerAddressId() {
+    return customerAddressId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  public void setAddress(Address address) {
+    if (address.getPhonePrimary() == null) {
+      address.setPhonePrimary(new PhoneImpl());
     }
-    public Address getAddress() {
-        return address;
-    }
-    public void setAddress(Address address) {
-        if (address.getPhonePrimary() == null) {
-            address.setPhonePrimary(new PhoneImpl());
-        }
-        this.address = address;
-    }
-    public String getAddressName() {
-        return addressName;
-    }
-    public void setAddressName(String addressName) {
-        this.addressName = addressName;
-    }
-    public Long getCustomerAddressId() {
-        return customerAddressId;
-    }
-    public void setCustomerAddressId(Long customerAddressId) {
-        this.customerAddressId = customerAddressId;
-    }
-}
+
+    this.address = address;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addressName  DOCUMENT ME!
+   */
+  public void setAddressName(String addressName) {
+    this.addressName = addressName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerAddressId  DOCUMENT ME!
+   */
+  public void setCustomerAddressId(Long customerAddressId) {
+    this.customerAddressId = customerAddressId;
+  }
+} // end class CustomerAddressForm

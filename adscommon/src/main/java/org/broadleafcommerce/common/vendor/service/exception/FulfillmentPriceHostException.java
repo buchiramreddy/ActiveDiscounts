@@ -17,24 +17,52 @@
 package org.broadleafcommerce.common.vendor.service.exception;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FulfillmentPriceHostException extends FulfillmentPriceException {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public FulfillmentPriceHostException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public FulfillmentPriceHostException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new FulfillmentPriceHostException object.
+   */
+  public FulfillmentPriceHostException() {
+    super();
+  }
 
-    public FulfillmentPriceHostException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new FulfillmentPriceHostException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public FulfillmentPriceHostException(String message) {
+    super(message);
+  }
 
-    public FulfillmentPriceHostException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new FulfillmentPriceHostException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public FulfillmentPriceHostException(Throwable cause) {
+    super(cause);
+  }
 
-}
+  /**
+   * Creates a new FulfillmentPriceHostException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public FulfillmentPriceHostException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+} // end class FulfillmentPriceHostException

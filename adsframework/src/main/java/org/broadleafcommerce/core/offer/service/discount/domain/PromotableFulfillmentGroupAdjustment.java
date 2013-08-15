@@ -16,63 +16,79 @@
 
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
-import org.broadleafcommerce.common.money.Money;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+
 /**
- * This class holds adjustment records during the discount calculation 
- * processing.  This and other disposable objects avoid churn on the database while the 
- * offer engine determines the best offer(s) for the order being priced.
- * 
- * @author bpolster
+ * This class holds adjustment records during the discount calculation processing. This and other disposable objects
+ * avoid churn on the database while the offer engine determines the best offer(s) for the order being priced.
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface PromotableFulfillmentGroupAdjustment extends Serializable {
+  /**
+   * Returns the associated promotableFulfillmentGroup.
+   *
+   * @return  the associated promotableFulfillmentGroup.
+   */
+  PromotableFulfillmentGroup getPromotableFulfillmentGroup();
 
-    /**
-     * Returns the associated promotableFulfillmentGroup
-     * @return
-     */
-    public PromotableFulfillmentGroup getPromotableFulfillmentGroup();
+  /**
+   * Returns the associated promotableCandidateOrderOffer.
+   *
+   * @return  the associated promotableCandidateOrderOffer.
+   */
+  PromotableCandidateFulfillmentGroupOffer getPromotableCandidateFulfillmentGroupOffer();
 
-    /**
-     * Returns the associated promotableCandidateOrderOffer
-     * @return
-     */
-    public PromotableCandidateFulfillmentGroupOffer getPromotableCandidateFulfillmentGroupOffer();
+  /**
+   * Returns the value of this adjustment.
+   *
+   * @return  the value of this adjustment.
+   */
+  Money getSaleAdjustmentValue();
 
-    /**
-     * Returns the value of this adjustment 
-     * @return
-     */
-    public Money getSaleAdjustmentValue();
+  /**
+   * Returns the value of this adjustment.
+   *
+   * @return  the value of this adjustment.
+   */
+  Money getRetailAdjustmentValue();
 
-    /**
-     * Returns the value of this adjustment 
-     * @return
-     */
-    public Money getRetailAdjustmentValue();
+  /**
+   * Returns the value of this adjustment.
+   *
+   * @return  the value of this adjustment.
+   */
+  Money getAdjustmentValue();
 
-    /**
-     * Returns the value of this adjustment 
-     * @return
-     */
-    public Money getAdjustmentValue();
+  /**
+   * Returns true if this adjustment represents a combinable offer.
+   *
+   * @return  true if this adjustment represents a combinable offer.
+   */
+  boolean isCombinable();
 
-    /**
-     * Returns true if this adjustment represents a combinable offer.
-     */
-    boolean isCombinable();
+  /**
+   * Returns true if this adjustment represents a totalitarian offer.
+   *
+   * @return  true if this adjustment represents a totalitarian offer.
+   */
+  boolean isTotalitarian();
 
-    /**
-     * Returns true if this adjustment represents a totalitarian offer.   
-     */
-    boolean isTotalitarian();
-    
-    /**
-     * Updates the adjustmentValue to the sales or retail value based on the passed in param
-     */
-    void finalizeAdjustment(boolean useSaleAdjustments);
+  /**
+   * Updates the adjustmentValue to the sales or retail value based on the passed in param.
+   *
+   * @param  useSaleAdjustments  DOCUMENT ME!
+   */
+  void finalizeAdjustment(boolean useSaleAdjustments);
 
-    boolean isAppliedToSalePrice();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isAppliedToSalePrice();
+} // end interface PromotableFulfillmentGroupAdjustment

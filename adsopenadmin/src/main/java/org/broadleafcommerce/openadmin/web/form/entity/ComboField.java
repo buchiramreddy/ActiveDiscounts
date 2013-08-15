@@ -21,44 +21,87 @@ import java.util.Map;
 
 
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class ComboField extends Field {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected Map<String, String> options = new LinkedHashMap<String, String>();
+  /** DOCUMENT ME! */
+  protected Map<String, String> options = new LinkedHashMap<String, String>();
 
-    /* *********** */
-    /* ADD METHODS */
-    /* *********** */
-    
-    public void putOption(String key, String value) {
-        options.put(key, value);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   optionKey  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOption(String optionKey) {
+    return getOptions().get(optionKey);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* ************************** */
+  /* STANDARD GETTERS / SETTERS */
+  /* ************************** */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, String> getOptions() {
+    return options;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* *********** */
+  /* ADD METHODS */
+  /* *********** */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key    DOCUMENT ME!
+   * @param  value  DOCUMENT ME!
+   */
+  public void putOption(String key, String value) {
+    options.put(key, value);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* ************************** */
+  /* CUSTOM GETTERS / SETTERS */
+  /* ************************** */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  options  DOCUMENT ME!
+   */
+  public void setOptions(String[][] options) {
+    for (String[] option : options) {
+      putOption(option[0], option[1]);
     }
-    
-    /* ************************** */
-    /* CUSTOM GETTERS / SETTERS */
-    /* ************************** */
-    
-    public void setOptions(String[][] options) {
-        for (String[] option : options) {
-            putOption(option[0], option[1]);
-        }
-    }
-    
-    public String getOption(String optionKey) {
-        return getOptions().get(optionKey);
-    }
+  }
 
-    /* ************************** */
-    /* STANDARD GETTERS / SETTERS */
-    /* ************************** */
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Map<String, String> getOptions() {
-        return options;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  options  DOCUMENT ME!
+   */
+  public void setOptions(Map<String, String> options) {
+    this.options = options;
+  }
 
-    public void setOptions(Map<String, String> options) {
-        this.options = options;
-    }
-
-}
+} // end class ComboField

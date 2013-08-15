@@ -16,7 +16,14 @@
 
 package org.broadleafcommerce.openadmin.server.service;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public enum SandBoxMode {
-    IMMEDIATE_COMMIT,
-    SANDBOX_COMMIT
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  IMMEDIATE_COMMIT, SANDBOX_COMMIT
 }

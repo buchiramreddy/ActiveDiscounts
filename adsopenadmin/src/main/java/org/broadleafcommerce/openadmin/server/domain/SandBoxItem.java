@@ -16,61 +16,243 @@
 
 package org.broadleafcommerce.openadmin.server.domain;
 
-import org.broadleafcommerce.openadmin.audit.AdminAuditable;
-
 import java.io.Serializable;
+
 import java.util.List;
 
+import org.broadleafcommerce.openadmin.audit.AdminAuditable;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SandBoxItem extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  action  DOCUMENT ME!
+   */
+  void addSandBoxAction(SandBoxAction action);
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getSandBoxId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getArchivedFlag();
 
-    public void setSandBoxId(Long sandBoxId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getOriginalSandBoxId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminAuditable getAuditable();
 
-    public void setOriginalSandBoxId(Long sandBox);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBoxItemType getSandBoxItemType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDescription();
 
-    public void setSandBoxItemType(SandBoxItemType itemType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBoxOperationType getSandBoxOperationType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getGroupDescription();
 
-    public void setSandBoxOperationType(SandBoxOperationType type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setDescription(String description);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getTemporaryItemId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getOriginalItemId();
 
-    public void setTemporaryItemId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getOriginalItemId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getOriginalSandBoxId();
 
-    public void setOriginalItemId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<SandBoxAction> getSandBoxActions();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<SandBoxAction> getSandBoxActions();
 
-    public void setSandBoxActions(List<SandBoxAction> actionList);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getArchivedFlag();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getSandBoxId();
 
-    public void setArchivedFlag(Boolean archivedFlag);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void addSandBoxAction(SandBoxAction action);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBoxItemType getSandBoxItemType();
 
-    public AdminAuditable getAuditable();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAuditable(AdminAuditable auditable);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBoxOperationType getSandBoxOperationType();
 
-    public String getGroupDescription();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setGroupDescription(String groupDescription);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getTemporaryItemId();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archivedFlag  DOCUMENT ME!
+   */
+  void setArchivedFlag(Boolean archivedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(AdminAuditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  void setDescription(String description);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  groupDescription  DOCUMENT ME!
+   */
+  void setGroupDescription(String groupDescription);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setOriginalItemId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBox  DOCUMENT ME!
+   */
+  void setOriginalSandBoxId(Long sandBox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  actionList  DOCUMENT ME!
+   */
+  void setSandBoxActions(List<SandBoxAction> actionList);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxId  DOCUMENT ME!
+   */
+  void setSandBoxId(Long sandBoxId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  itemType  DOCUMENT ME!
+   */
+  void setSandBoxItemType(SandBoxItemType itemType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setSandBoxOperationType(SandBoxOperationType type);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setTemporaryItemId(Long id);
+
+} // end interface SandBoxItem

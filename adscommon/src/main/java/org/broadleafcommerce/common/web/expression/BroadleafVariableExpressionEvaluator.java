@@ -16,10 +16,6 @@
 
 package org.broadleafcommerce.common.web.expression;
 
-import org.springframework.stereotype.Component;
-import org.thymeleaf.context.IProcessingContext;
-import org.thymeleaf.spring3.expression.SpelVariableExpressionEvaluator;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,28 +23,44 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Component;
+
+import org.thymeleaf.context.IProcessingContext;
+
+import org.thymeleaf.spring3.expression.SpelVariableExpressionEvaluator;
+
+
 /**
- * Provides a skeleton to register multiple {@link org.broadleafcommerce.common.web.expression.BroadleafVariableExpression} implementors.
- * 
- * @author Andre Azzolini (apazzolini)
+ * Provides a skeleton to register multiple
+ * {@link org.broadleafcommerce.common.web.expression.BroadleafVariableExpression} implementors.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Component("blVariableExpressionEvaluator")
 public class BroadleafVariableExpressionEvaluator extends SpelVariableExpressionEvaluator {
-    
-    @Resource(name = "blVariableExpressions")
-    protected List<BroadleafVariableExpression> expressions = new ArrayList<BroadleafVariableExpression>();
-    
-    @Override
-    protected Map<String,Object> computeAdditionalExpressionObjects(final IProcessingContext processingContext) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        
-        for (BroadleafVariableExpression expression : expressions) {
-            if (!(expression instanceof NullBroadleafVariableExpression)) {
-                map.put(expression.getName(), expression);
-            }
-        }
-        
-        return map;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blVariableExpressions")
+  protected List<BroadleafVariableExpression> expressions = new ArrayList<BroadleafVariableExpression>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.spring3.expression.SpelVariableExpressionEvaluator#computeAdditionalExpressionObjects(org.thymeleaf.context.IProcessingContext)
+   */
+  @Override protected Map<String, Object> computeAdditionalExpressionObjects(
+    final IProcessingContext processingContext) {
+    Map<String, Object> map = new HashMap<String, Object>();
+
+    for (BroadleafVariableExpression expression : expressions) {
+      if (!(expression instanceof NullBroadleafVariableExpression)) {
+        map.put(expression.getName(), expression);
+      }
     }
 
-}
+    return map;
+  }
+
+} // end class BroadleafVariableExpressionEvaluator

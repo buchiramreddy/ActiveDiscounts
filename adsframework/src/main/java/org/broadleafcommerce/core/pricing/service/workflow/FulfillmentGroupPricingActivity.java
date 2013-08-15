@@ -16,55 +16,69 @@
 
 package org.broadleafcommerce.core.pricing.service.workflow;
 
+import java.math.BigDecimal;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.FulfillmentPricingService;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
-import java.math.BigDecimal;
 
 /**
- * Called during the pricing workflow to compute all of the fulfillment costs
- * for all of the FulfillmentGroups on an Order and updates Order with the
- * total price of all of the FufillmentGroups
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}, {@link org.broadleafcommerce.core.order.domain.Order}
+ * Called during the pricing workflow to compute all of the fulfillment costs for all of the FulfillmentGroups on an
+ * Order and updates Order with the total price of all of the FufillmentGroups.
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup},
+ *           {@link org.broadleafcommerce.core.order.domain.Order}
+ * @version  $Revision$, $Date$
  */
 public class FulfillmentGroupPricingActivity extends BaseActivity<PricingContext> {
+  @Resource(name = "blFulfillmentPricingService")
+  private FulfillmentPricingService fulfillmentPricingService;
 
-    @Resource(name = "blFulfillmentPricingService")
-    private FulfillmentPricingService fulfillmentPricingService;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentPricingService  DOCUMENT ME!
+   */
+  public void setFulfillmentPricingService(FulfillmentPricingService fulfillmentPricingService) {
+    this.fulfillmentPricingService = fulfillmentPricingService;
+  }
 
-    public void setFulfillmentPricingService(FulfillmentPricingService fulfillmentPricingService) {
-        this.fulfillmentPricingService = fulfillmentPricingService;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.pricing.service.workflow.PricingContext)
+   */
+  @Override public PricingContext execute(PricingContext context) throws Exception {
+    Order order = context.getSeedData();
 
-    @Override
-    public PricingContext execute(PricingContext context) throws Exception {
-        Order order = context.getSeedData();
+    /*
+     * 1. Get FGs from Order
+     * 2. take each FG and call shipping module with the shipping svc
+     * 3. add FG back to order
+     */
 
-        /*
-         * 1. Get FGs from Order
-         * 2. take each FG and call shipping module with the shipping svc
-         * 3. add FG back to order
-         */
+    Money totalFulfillmentCharges = BroadleafCurrencyUtils.getMoney(BigDecimal.ZERO, order.getCurrency());
 
-        Money totalFulfillmentCharges = BroadleafCurrencyUtils.getMoney(BigDecimal.ZERO, order.getCurrency());
-        for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
-            if (fulfillmentGroup != null) {
-                fulfillmentGroup = fulfillmentPricingService.calculateCostForFulfillmentGroup(fulfillmentGroup);
-                if (fulfillmentGroup.getFulfillmentPrice() != null) {
-                    totalFulfillmentCharges = totalFulfillmentCharges.add(fulfillmentGroup.getFulfillmentPrice());
-                }
-            }
+    for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
+      if (fulfillmentGroup != null) {
+        fulfillmentGroup = fulfillmentPricingService.calculateCostForFulfillmentGroup(fulfillmentGroup);
+
+        if (fulfillmentGroup.getFulfillmentPrice() != null) {
+          totalFulfillmentCharges = totalFulfillmentCharges.add(fulfillmentGroup.getFulfillmentPrice());
         }
-        order.setTotalFulfillmentCharges(totalFulfillmentCharges);
-        context.setSeedData(order);
-        return context;
+      }
     }
 
-}
+    order.setTotalFulfillmentCharges(totalFulfillmentCharges);
+    context.setSeedData(order);
+
+    return context;
+  } // end method execute
+
+} // end class FulfillmentGroupPricingActivity

@@ -16,48 +16,99 @@
 
 package org.broadleafcommerce.core.web.checkout.model;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 
-import java.io.Serializable;
 
 /**
- * This form is used to bind multiship options in a way that doesn't require
- * the actual objects to be instantiated -- we handle that at the controller
- * level.
- * 
- * 
+ * This form is used to bind multiship options in a way that doesn't require the actual objects to be instantiated -- we
+ * handle that at the controller level.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class MultiShipInstructionForm implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    
-    protected String deliveryMessage;
-    protected PersonalMessage personalMessage = new PersonalMessageImpl();
-    protected Long fulfillmentGroupId;
-    
-    public String getDeliveryMessage() {
-        return deliveryMessage;
-    }
-    
-    public void setDeliveryMessage(String deliveryMessage) {
-        this.deliveryMessage = deliveryMessage;
-    }
-    
-    public PersonalMessage getPersonalMessage() {
-        return personalMessage;
-    }
-    
-    public void setPersonalMessage(PersonalMessage personalMessage) {
-        this.personalMessage = personalMessage;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public Long getFulfillmentGroupId() {
-        return fulfillmentGroupId;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setFulfillmentGroupId(Long id) {
-        this.fulfillmentGroupId = id;
-    }
-    
-}
+  /** DOCUMENT ME! */
+  protected String          deliveryMessage;
+
+  /** DOCUMENT ME! */
+  protected Long            fulfillmentGroupId;
+
+  /** DOCUMENT ME! */
+  protected PersonalMessage personalMessage = new PersonalMessageImpl();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDeliveryMessage() {
+    return deliveryMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getFulfillmentGroupId() {
+    return fulfillmentGroupId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersonalMessage getPersonalMessage() {
+    return personalMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  deliveryMessage  DOCUMENT ME!
+   */
+  public void setDeliveryMessage(String deliveryMessage) {
+    this.deliveryMessage = deliveryMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setFulfillmentGroupId(Long id) {
+    this.fulfillmentGroupId = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  personalMessage  DOCUMENT ME!
+   */
+  public void setPersonalMessage(PersonalMessage personalMessage) {
+    this.personalMessage = personalMessage;
+  }
+
+} // end class MultiShipInstructionForm

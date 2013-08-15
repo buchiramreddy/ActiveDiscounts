@@ -20,19 +20,28 @@ import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.ProcessContextFactory;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class SimplePaymentProcessContextFactory implements ProcessContextFactory {
-
-    public ProcessContext createContext(Object seedData) throws WorkflowException {
-        if(!(seedData instanceof PaymentSeed)){
-            throw new WorkflowException("Seed data instance is incorrect. " +
-                    "Required class is "+PaymentSeed.class.getName()+" " +
-                    "but found class: "+seedData.getClass().getName());
-        }
-
-        SimplePaymentContext response = new SimplePaymentContext();
-        response.setSeedData(seedData);
-
-        return response;
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContextFactory#createContext(java.lang.Object)
+   */
+  @Override public ProcessContext createContext(Object seedData) throws WorkflowException {
+    if (!(seedData instanceof PaymentSeed)) {
+      throw new WorkflowException("Seed data instance is incorrect. "
+        + "Required class is " + PaymentSeed.class.getName() + " "
+        + "but found class: " + seedData.getClass().getName());
     }
+
+    SimplePaymentContext response = new SimplePaymentContext();
+    response.setSeedData(seedData);
+
+    return response;
+  }
 
 }

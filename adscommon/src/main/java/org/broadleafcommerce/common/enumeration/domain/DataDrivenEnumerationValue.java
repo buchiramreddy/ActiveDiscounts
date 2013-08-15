@@ -18,28 +18,101 @@ package org.broadleafcommerce.common.enumeration.domain;
 
 import java.io.Serializable;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface DataDrivenEnumerationValue extends Serializable {
-    
-    public String getDisplay();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setDisplay(String display);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDisplay();
 
-    public Boolean getHidden();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setHidden(Boolean hidden);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getHidden();
 
-    public Long getId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public String getKey();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setKey(String key);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getKey();
 
-    public DataDrivenEnumeration getType();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setType(DataDrivenEnumeration type);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  DataDrivenEnumeration getType();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  display  DOCUMENT ME!
+   */
+  void setDisplay(String display);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  hidden  DOCUMENT ME!
+   */
+  void setHidden(Boolean hidden);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key  DOCUMENT ME!
+   */
+  void setKey(String key);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setType(DataDrivenEnumeration type);
+} // end interface DataDrivenEnumerationValue

@@ -16,38 +16,45 @@
 
 package org.broadleafcommerce.cms.page.message.jms;
 
-import org.broadleafcommerce.cms.page.service.PageService;
-
 import javax.annotation.Resource;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+import org.broadleafcommerce.cms.page.service.PageService;
+
+
 /**
- * Receives JMS message with a String that indicates the cache key
- * to invalidate.
+ * Receives JMS message with a String that indicates the cache key to invalidate.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class JMSArchivedPageSubscriber implements MessageListener {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blPageService")
-    private PageService pageService;
+  @Resource(name = "blPageService")
+  private PageService pageService;
 
-    /*
-     * (non-Javadoc)
-     * @see javax.jms.MessageListener#onMessage(javax.jms.Message)
-     */
-    @SuppressWarnings("unchecked")
-    public void onMessage(Message message) {
-        String basePageCacheKey = null;
-        try {
-            basePageCacheKey = ((TextMessage) message).getText();
-            pageService.removePageFromCache(basePageCacheKey);
-        } catch (JMSException e) {
-            throw new RuntimeException(e);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /*
+   * (non-Javadoc)
+   * @see javax.jms.MessageListener#onMessage(javax.jms.Message)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public void onMessage(Message message) {
+    String basePageCacheKey = null;
+
+    try {
+      basePageCacheKey = ((TextMessage) message).getText();
+      pageService.removePageFromCache(basePageCacheKey);
+    } catch (JMSException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-}
+} // end class JMSArchivedPageSubscriber

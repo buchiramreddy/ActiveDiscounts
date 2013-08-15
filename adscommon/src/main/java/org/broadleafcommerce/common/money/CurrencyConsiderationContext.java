@@ -18,30 +18,62 @@ package org.broadleafcommerce.common.money;
 
 import java.util.HashMap;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class CurrencyConsiderationContext {
-    
-    private static final ThreadLocal<CurrencyDeterminationService> currencyDeterminationService = new ThreadLocal<CurrencyDeterminationService>();
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final ThreadLocal<HashMap> currencyConsiderationContext = new ThreadLocal<HashMap>();
+  private static final ThreadLocal<CurrencyDeterminationService> currencyDeterminationService =
+    new ThreadLocal<CurrencyDeterminationService>();
 
-    public static HashMap getCurrencyConsiderationContext() {
-        return CurrencyConsiderationContext.currencyConsiderationContext.get();
-    }
-    
-    public static void setCurrencyConsiderationContext(HashMap currencyConsiderationContext) {
-        CurrencyConsiderationContext.currencyConsiderationContext.set(currencyConsiderationContext);
-    }
-    
-    public static CurrencyDeterminationService getCurrencyDeterminationService() {
-        return CurrencyConsiderationContext.currencyDeterminationService.get();
-    }
-    
-    public static void setCurrencyDeterminationService(CurrencyDeterminationService currencyDeterminationService) {
-        CurrencyConsiderationContext.currencyDeterminationService.set(currencyDeterminationService);
-    }
-}
+  private static final ThreadLocal<HashMap> currencyConsiderationContext = new ThreadLocal<HashMap>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static HashMap getCurrencyConsiderationContext() {
+    return CurrencyConsiderationContext.currencyConsiderationContext.get();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static CurrencyDeterminationService getCurrencyDeterminationService() {
+    return CurrencyConsiderationContext.currencyDeterminationService.get();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currencyConsiderationContext  DOCUMENT ME!
+   */
+  public static void setCurrencyConsiderationContext(HashMap currencyConsiderationContext) {
+    CurrencyConsiderationContext.currencyConsiderationContext.set(currencyConsiderationContext);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currencyDeterminationService  DOCUMENT ME!
+   */
+  public static void setCurrencyDeterminationService(CurrencyDeterminationService currencyDeterminationService) {
+    CurrencyConsiderationContext.currencyDeterminationService.set(currencyDeterminationService);
+  }
+} // end class CurrencyConsiderationContext

@@ -16,10 +16,15 @@
 
 package org.broadleafcommerce.cms.admin.server.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.TimeDTO;
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
@@ -29,60 +34,94 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 8/23/11
- * Time: 1:56 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 8/23/11 Time: 1:56 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class TimeDTOCustomPersistenceHandler extends CustomPersistenceHandlerAdapter {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(TimeDTOCustomPersistenceHandler.class);
+  private static final Log LOG = LogFactory.getLog(TimeDTOCustomPersistenceHandler.class);
 
-    @Override
-    public Boolean canHandleFetch(PersistencePackage persistencePackage) {
-        return canHandleInspect(persistencePackage);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#canHandleAdd(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleAdd(PersistencePackage persistencePackage) {
+    return canHandleInspect(persistencePackage);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#canHandleFetch(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleFetch(PersistencePackage persistencePackage) {
+    return canHandleInspect(persistencePackage);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#canHandleInspect(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleInspect(PersistencePackage persistencePackage) {
+    String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
+
+    return TimeDTO.class.getName().equals(ceilingEntityFullyQualifiedClassname);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#canHandleRemove(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleRemove(PersistencePackage persistencePackage) {
+    return canHandleInspect(persistencePackage);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#canHandleUpdate(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Boolean canHandleUpdate(PersistencePackage persistencePackage) {
+    return canHandleInspect(persistencePackage);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerAdapter#inspect(org.broadleafcommerce.openadmin.dto.PersistencePackage,
+   *       org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao,
+   *       org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper)
+   */
+  @Override public DynamicResultSet inspect(PersistencePackage persistencePackage, DynamicEntityDao dynamicEntityDao,
+    InspectHelper helper) throws ServiceException {
+    String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
+
+    try {
+      Map<MergedPropertyType, Map<String, FieldMetadata>> allMergedProperties =
+        new HashMap<MergedPropertyType, Map<String, FieldMetadata>>();
+      Map<String, FieldMetadata>                          mergedProperties    =
+        dynamicEntityDao.getSimpleMergedProperties(ceilingEntityFullyQualifiedClassname,
+          persistencePackage.getPersistencePerspective());
+      allMergedProperties.put(MergedPropertyType.PRIMARY, mergedProperties);
+
+      ClassMetadata    mergedMetadata = helper.getMergedClassMetadata(
+          new Class<?>[] { Class.forName(ceilingEntityFullyQualifiedClassname) }, allMergedProperties);
+      DynamicResultSet results        = new DynamicResultSet(mergedMetadata);
+
+      return results;
+    } catch (Exception e) {
+      ServiceException ex = new ServiceException("Unable to retrieve inspection results for "
+          + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
+      throw ex;
     }
-
-    @Override
-    public Boolean canHandleAdd(PersistencePackage persistencePackage) {
-        return canHandleInspect(persistencePackage);
-    }
-
-    @Override
-    public Boolean canHandleRemove(PersistencePackage persistencePackage) {
-        return canHandleInspect(persistencePackage);
-    }
-
-    @Override
-    public Boolean canHandleUpdate(PersistencePackage persistencePackage) {
-        return canHandleInspect(persistencePackage);
-    }
-
-    @Override
-    public Boolean canHandleInspect(PersistencePackage persistencePackage) {
-        String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
-        return TimeDTO.class.getName().equals(ceilingEntityFullyQualifiedClassname);
-    }
-
-    @Override
-    public DynamicResultSet inspect(PersistencePackage persistencePackage, DynamicEntityDao dynamicEntityDao, InspectHelper helper) throws ServiceException {
-        String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
-        try {
-            Map<MergedPropertyType, Map<String, FieldMetadata>> allMergedProperties = new HashMap<MergedPropertyType, Map<String, FieldMetadata>>();
-            Map<String, FieldMetadata> mergedProperties = dynamicEntityDao.getSimpleMergedProperties(ceilingEntityFullyQualifiedClassname, persistencePackage.getPersistencePerspective());
-            allMergedProperties.put(MergedPropertyType.PRIMARY, mergedProperties);
-            ClassMetadata mergedMetadata = helper.getMergedClassMetadata(new Class<?>[]{Class.forName(ceilingEntityFullyQualifiedClassname)}, allMergedProperties);
-            DynamicResultSet results = new DynamicResultSet(mergedMetadata);
-
-            return results;
-        } catch (Exception e) {
-            ServiceException ex = new ServiceException("Unable to retrieve inspection results for " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
-            throw ex;
-        }
-    }
-}
+  }
+} // end class TimeDTOCustomPersistenceHandler

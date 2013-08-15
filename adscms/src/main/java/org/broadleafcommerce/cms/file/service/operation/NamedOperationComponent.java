@@ -19,11 +19,24 @@ package org.broadleafcommerce.cms.file.service.operation;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface NamedOperationComponent {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    List<String> setOperationValues(Map<String, String> originalParameters, Map<String, String> derivedParameters);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   originalParameters  DOCUMENT ME!
+   * @param   derivedParameters   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<String> setOperationValues(Map<String, String> originalParameters, Map<String, String> derivedParameters);
 
 }

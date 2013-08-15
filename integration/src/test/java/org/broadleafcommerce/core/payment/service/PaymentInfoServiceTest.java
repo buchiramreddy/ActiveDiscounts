@@ -16,101 +16,155 @@
 
 package org.broadleafcommerce.core.payment.service;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.payment.PaymentInfoDataProvider;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
+
 import org.broadleafcommerce.profile.core.dao.CustomerAddressDao;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerAddress;
 import org.broadleafcommerce.profile.core.service.CustomerService;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.test.annotation.Rollback;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentInfoServiceTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    String userName = new String();
-    private PaymentInfo paymentInfo;
+  /** DOCUMENT ME! */
+  String userName = new String();
 
-    @Resource
-    private PaymentInfoService paymentInfoService;
+  @Resource private CustomerAddressDao customerAddressDao;
 
-    @Resource(name = "blOrderService")
-    private OrderService orderService;
+  @Resource private CustomerService customerService;
 
-    @Resource
-    private CustomerAddressDao customerAddressDao;
+  @Resource(name = "blOrderService")
+  private OrderService orderService;
+  private PaymentInfo  paymentInfo;
 
-    @Resource
-    private CustomerService customerService;
+  @Resource private PaymentInfoService paymentInfoService;
 
-    @Test(groups={"createPaymentInfo"}, dataProvider="basicPaymentInfo", dataProviderClass=PaymentInfoDataProvider.class, dependsOnGroups={"readCustomer", "createOrder"})
-    @Rollback(false)
-    @Transactional
-    public void createPaymentInfo(PaymentInfo paymentInfo){
-        userName = "customer1";
-        Customer customer = customerService.readCustomerByUsername(userName);
-        List<CustomerAddress> addresses = customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId());
-        Address address = null;
-        if (!addresses.isEmpty())
-            address = addresses.get(0).getAddress();
-        Order salesOrder = orderService.createNewCartForCustomer(customer);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        paymentInfo.setAddress(address);
-        paymentInfo.setOrder(salesOrder);
-        paymentInfo.setType(PaymentInfoType.CREDIT_CARD);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfo  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = { "createPaymentInfo" },
+    dataProvider      = "basicPaymentInfo",
+    dataProviderClass = PaymentInfoDataProvider.class,
+    dependsOnGroups   = { "readCustomer", "createOrder" }
+  )
+  @Transactional public void createPaymentInfo(PaymentInfo paymentInfo) {
+    userName = "customer1";
 
-        assert paymentInfo.getId() == null;
-        paymentInfo = paymentInfoService.save(paymentInfo);
-        assert paymentInfo.getId() != null;
-        this.paymentInfo = paymentInfo;
+    Customer              customer  = customerService.readCustomerByUsername(userName);
+    List<CustomerAddress> addresses = customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId());
+    Address               address   = null;
+
+    if (!addresses.isEmpty()) {
+      address = addresses.get(0).getAddress();
     }
 
-    @Test(groups={"readPaymentInfoById"}, dependsOnGroups={"createPaymentInfo"})
-    public void readPaymentInfoById(){
-        PaymentInfo sop = paymentInfoService.readPaymentInfoById(paymentInfo.getId());
-        assert sop !=null;
-        assert sop.getId().equals(paymentInfo.getId());
+    Order salesOrder = orderService.createNewCartForCustomer(customer);
+
+    paymentInfo.setAddress(address);
+    paymentInfo.setOrder(salesOrder);
+    paymentInfo.setType(PaymentInfoType.CREDIT_CARD);
+
+    assert paymentInfo.getId() == null;
+    paymentInfo = paymentInfoService.save(paymentInfo);
+    assert paymentInfo.getId() != null;
+    this.paymentInfo = paymentInfo;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "testCreatePaymentInfo" },
+    dependsOnGroups = { "createPaymentInfo" }
+  )
+  @Transactional public void createTestPaymentInfo() {
+    userName = "customer1";
+
+    PaymentInfo           paymentInfo = paymentInfoService.create();
+    Customer              customer    = customerService.readCustomerByUsername(userName);
+    List<CustomerAddress> addresses   = customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId());
+    Address               address     = null;
+
+    if (!addresses.isEmpty()) {
+      address = addresses.get(0).getAddress();
     }
 
-    @Test(groups={"readPaymentInfosByOrder"}, dependsOnGroups={"createPaymentInfo"})
-    @Transactional
-    public void readPaymentInfoByOrder(){
-        List<PaymentInfo> payments = paymentInfoService.readPaymentInfosForOrder(paymentInfo.getOrder());
-        assert payments != null;
-        assert payments.size() > 0;
-    }
+    Order salesOrder = orderService.findCartForCustomer(customer);
 
-    @Test(groups={"testCreatePaymentInfo"}, dependsOnGroups={"createPaymentInfo"})
-    @Transactional
-    public void createTestPaymentInfo(){
-        userName = "customer1";
-        PaymentInfo paymentInfo = paymentInfoService.create();
-        Customer customer = customerService.readCustomerByUsername(userName);
-        List<CustomerAddress> addresses = customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId());
-        Address address = null;
-        if (!addresses.isEmpty())
-            address = addresses.get(0).getAddress();
-        Order salesOrder = orderService.findCartForCustomer(customer);
+    paymentInfo.setAddress(address);
+    paymentInfo.setOrder(salesOrder);
+    paymentInfo.setType(PaymentInfoType.CREDIT_CARD);
 
-        paymentInfo.setAddress(address);
-        paymentInfo.setOrder(salesOrder);
-        paymentInfo.setType(PaymentInfoType.CREDIT_CARD);
+    assert paymentInfo != null;
+    paymentInfo = paymentInfoService.save(paymentInfo);
+    assert paymentInfo.getId() != null;
 
-        assert paymentInfo != null;
-        paymentInfo = paymentInfoService.save(paymentInfo);
-        assert paymentInfo.getId() != null;
-        Long paymentInfoId = paymentInfo.getId();
-        paymentInfoService.delete(paymentInfo);
-        paymentInfo = paymentInfoService.readPaymentInfoById(paymentInfoId);
-        assert paymentInfo == null;
-    }
+    Long paymentInfoId = paymentInfo.getId();
+    paymentInfoService.delete(paymentInfo);
+    paymentInfo = paymentInfoService.readPaymentInfoById(paymentInfoId);
+    assert paymentInfo == null;
+  } // end method createTestPaymentInfo
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readPaymentInfoById" },
+    dependsOnGroups = { "createPaymentInfo" }
+  )
+  public void readPaymentInfoById() {
+    PaymentInfo sop = paymentInfoService.readPaymentInfoById(paymentInfo.getId());
+    assert sop != null;
+    assert sop.getId().equals(paymentInfo.getId());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readPaymentInfosByOrder" },
+    dependsOnGroups = { "createPaymentInfo" }
+  )
+  @Transactional public void readPaymentInfoByOrder() {
+    List<PaymentInfo> payments = paymentInfoService.readPaymentInfosForOrder(paymentInfo.getOrder());
+    assert payments != null;
+    assert payments.size() > 0;
+  }
+
+} // end class PaymentInfoServiceTest

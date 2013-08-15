@@ -17,46 +17,90 @@
 package org.broadleafcommerce.common.email.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface EmailTracking extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public abstract Long getId();
+  /**
+   * The dateSent.
+   *
+   * @return  the dateSent
+   */
+  Date getDateSent();
 
-    public abstract void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailAddress
-     */
-    public abstract String getEmailAddress();
+  /**
+   * The emailAddress.
+   *
+   * @return  the emailAddress
+   */
+  String getEmailAddress();
 
-    /**
-     * @param emailAddress the emailAddress to set
-     */
-    public abstract void setEmailAddress(String emailAddress);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the dateSent
-     */
-    public abstract Date getDateSent();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    /**
-     * @param dateSent the dateSent to set
-     */
-    public abstract void setDateSent(Date dateSent);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the type
-     */
-    public abstract String getType();
+  /**
+   * The type.
+   *
+   * @return  the type
+   */
+  String getType();
 
-    /**
-     * @param type the type to set
-     */
-    public abstract void setType(String type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  dateSent  the dateSent to set
+   */
+  void setDateSent(Date dateSent);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailAddress  the emailAddress to set
+   */
+  void setEmailAddress(String emailAddress);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  type  the type to set
+   */
+  void setType(String type);
+
+} // end interface EmailTracking

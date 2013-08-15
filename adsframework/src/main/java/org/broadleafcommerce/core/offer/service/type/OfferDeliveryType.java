@@ -16,100 +16,189 @@
 
 package org.broadleafcommerce.core.offer.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
 
 /**
  * An extendible enumeration of delivery types.
  *
- * Enumeration of how the offer should be applied.
- * AUTOMATIC - will be applied to everyone's order
- * MANUAL - offer is manually assigned to a Customer by an administrator
- * CODE - a offer code must be supplied in order to receive this offer
+ * <p>Enumeration of how the offer should be applied. AUTOMATIC - will be applied to everyone's order MANUAL - offer is
+ * manually assigned to a Customer by an administrator CODE - a offer code must be supplied in order to receive this
+ * offer</p>
  *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class OfferDeliveryType implements Serializable, BroadleafEnumerationType, Comparable<OfferDeliveryType> {
-    
-    private static final long serialVersionUID = 1L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Map<String, OfferDeliveryType> TYPES = new LinkedHashMap<String, OfferDeliveryType>();
+  private static final long serialVersionUID = 1L;
 
-    public static final OfferDeliveryType AUTOMATIC = new OfferDeliveryType("AUTOMATIC", "Automatically", 1000);
-    public static final OfferDeliveryType CODE = new OfferDeliveryType("CODE", "Using Shared Code", 2000);
-    public static final OfferDeliveryType MANUAL = new OfferDeliveryType("MANUAL", "Via Application or Shared Code", 3000);
+  private static final Map<String, OfferDeliveryType> TYPES = new LinkedHashMap<String, OfferDeliveryType>();
 
-    public static OfferDeliveryType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final OfferDeliveryType AUTOMATIC = new OfferDeliveryType("AUTOMATIC", "Automatically", 1000);
+
+  /** DOCUMENT ME! */
+  public static final OfferDeliveryType CODE   = new OfferDeliveryType("CODE", "Using Shared Code", 2000);
+
+  /** DOCUMENT ME! */
+  public static final OfferDeliveryType MANUAL = new OfferDeliveryType("MANUAL", "Via Application or Shared Code",
+      3000);
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+  private int    order;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new OfferDeliveryType object.
+   */
+  public OfferDeliveryType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new OfferDeliveryType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   * @param  order         DOCUMENT ME!
+   */
+  public OfferDeliveryType(final String type, final String friendlyType, int order) {
+    this.friendlyType = friendlyType;
+    setType(type);
+    setOrder(order);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static OfferDeliveryType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Comparable#compareTo(org.broadleafcommerce.core.offer.service.type.OfferDeliveryType)
+   */
+  @Override public int compareTo(OfferDeliveryType arg0) {
+    return this.order - arg0.order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-    private int order;
-
-    public OfferDeliveryType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public OfferDeliveryType(final String type, final String friendlyType, int order) {
-        this.friendlyType = friendlyType;
-        setType(type);
-        setOrder(order);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
+    OfferDeliveryType other = (OfferDeliveryType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getType() {
-        return type;
-    }
+    return true;
+  } // end method equals
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public int getOrder() {
-        return order;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getOrder() {
+    return order;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        OfferDeliveryType other = (OfferDeliveryType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int compareTo(OfferDeliveryType arg0) {
-        return this.order - arg0.order;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(int order) {
+    this.order = order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  public void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+} // end class OfferDeliveryType

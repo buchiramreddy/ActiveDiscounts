@@ -17,82 +17,149 @@
 package org.broadleafcommerce.openadmin.server.domain;
 
 
-
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class SandBoxItemType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, SandBoxItemType> TYPES = new LinkedHashMap<String, SandBoxItemType>();
+  private static final Map<String, SandBoxItemType> TYPES = new LinkedHashMap<String, SandBoxItemType>();
 
-    public static final SandBoxItemType PAGE  = new SandBoxItemType("PAGE", "Page");
-    public static final SandBoxItemType STRUCTURED_CONTENT  = new SandBoxItemType("STRUCTURED_CONTENT", "Structured Content");
-    public static final SandBoxItemType STATIC_ASSET  = new SandBoxItemType("STATIC_ASSET", "Static Asset");
+  /** DOCUMENT ME! */
+  public static final SandBoxItemType PAGE               = new SandBoxItemType("PAGE", "Page");
 
-    public static SandBoxItemType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final SandBoxItemType STRUCTURED_CONTENT = new SandBoxItemType("STRUCTURED_CONTENT",
+      "Structured Content");
+
+  /** DOCUMENT ME! */
+  public static final SandBoxItemType STATIC_ASSET = new SandBoxItemType("STATIC_ASSET", "Static Asset");
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new SandBoxItemType object.
+   */
+  public SandBoxItemType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new SandBoxItemType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public SandBoxItemType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static SandBoxItemType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public SandBoxItemType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public SandBoxItemType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    SandBoxItemType other = (SandBoxItemType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        } else {
-            throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via " + getInstance(type).getClass().getName());
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        SandBoxItemType other = (SandBoxItemType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    } else {
+      throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via "
+        + getInstance(type).getClass().getName());
+    }
+  }
+
+} // end class SandBoxItemType

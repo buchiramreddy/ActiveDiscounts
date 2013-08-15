@@ -16,47 +16,90 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.core.catalog.domain.Category;
-
 import javax.servlet.jsp.JspException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.core.catalog.domain.Category;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CategoryTag extends AbstractCatalogTag {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(CategoryTag.class);
-    private static final long serialVersionUID = 1L;
-    private String var;
+  private static final Log  LOG              = LogFactory.getLog(CategoryTag.class);
+  private static final long serialVersionUID = 1L;
 
-    private long categoryId;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public void doTag() throws JspException {
-        catalogService = super.getCatalogService();
+  private long   categoryId;
+  private String var;
 
-        Category category = catalogService.findCategoryById(categoryId);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if(category == null && LOG.isDebugEnabled()){
-            LOG.debug("The category returned was null for categoryId: " + categoryId);
-        }
+  /**
+   * @see  javax.servlet.jsp.tagext.SimpleTagSupport#doTag()
+   */
+  @Override public void doTag() throws JspException {
+    catalogService = super.getCatalogService();
 
-        getJspContext().setAttribute(var, category);
+    Category category = catalogService.findCategoryById(categoryId);
+
+    if ((category == null) && LOG.isDebugEnabled()) {
+      LOG.debug("The category returned was null for categoryId: " + categoryId);
     }
 
-    public String getVar() {
-        return var;
-    }
+    getJspContext().setAttribute(var, category);
+  }
 
-    public void setVar(String var) {
-        this.var = var;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public long getCategoryId() {
-        return categoryId;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public long getCategoryId() {
+    return categoryId;
+  }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getVar() {
+    return var;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  categoryId  DOCUMENT ME!
+   */
+  public void setCategoryId(long categoryId) {
+    this.categoryId = categoryId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  var  DOCUMENT ME!
+   */
+  public void setVar(String var) {
+    this.var = var;
+  }
+
+} // end class CategoryTag

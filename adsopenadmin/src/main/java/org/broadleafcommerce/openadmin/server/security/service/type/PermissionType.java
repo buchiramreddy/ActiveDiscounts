@@ -16,85 +16,156 @@
 
 package org.broadleafcommerce.openadmin.server.security.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of container permission types.
- * 
- * @author jfischer
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class PermissionType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, PermissionType> TYPES = new LinkedHashMap<String, PermissionType>();
+  private static final Map<String, PermissionType> TYPES = new LinkedHashMap<String, PermissionType>();
 
-    public static final PermissionType READ  = new PermissionType("READ", "Read");
-    public static final PermissionType CREATE  = new PermissionType("CREATE", "Create");
-    public static final PermissionType UPDATE  = new PermissionType("UPDATE", "Update");
-    public static final PermissionType DELETE  = new PermissionType("DELETE", "Delete");
-    public static final PermissionType ALL  = new PermissionType("ALL", "All");
-    public static final PermissionType OTHER  = new PermissionType("OTHER", "Other");
+  /** DOCUMENT ME! */
+  public static final PermissionType READ   = new PermissionType("READ", "Read");
 
-    public static PermissionType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final PermissionType CREATE = new PermissionType("CREATE", "Create");
+
+  /** DOCUMENT ME! */
+  public static final PermissionType UPDATE = new PermissionType("UPDATE", "Update");
+
+  /** DOCUMENT ME! */
+  public static final PermissionType DELETE = new PermissionType("DELETE", "Delete");
+
+  /** DOCUMENT ME! */
+  public static final PermissionType ALL   = new PermissionType("ALL", "All");
+
+  /** DOCUMENT ME! */
+  public static final PermissionType OTHER = new PermissionType("OTHER", "Other");
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new PermissionType object.
+   */
+  public PermissionType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new PermissionType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public PermissionType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static PermissionType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public PermissionType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public PermissionType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    PermissionType other = (PermissionType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        } else {
-            throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via " + getInstance(type).getClass().getName());
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        PermissionType other = (PermissionType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    } else {
+      throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via "
+        + getInstance(type).getClass().getName());
     }
-}
+  }
+} // end class PermissionType

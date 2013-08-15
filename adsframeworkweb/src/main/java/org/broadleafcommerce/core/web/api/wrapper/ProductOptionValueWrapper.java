@@ -16,38 +16,57 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "productOptionAllowedValue")
-@XmlAccessorType(value = XmlAccessType.FIELD)
-public class ProductOptionValueWrapper extends BaseWrapper implements
-        APIWrapper<ProductOptionValue> {
-    
-    @XmlElement
-    protected String attributeValue;
-    
-    @XmlElement
-    protected Money priceAdjustment;
-    
-    @XmlElement
-    protected Long productOptionId;
-    
-    @Override
-    public void wrapDetails(ProductOptionValue model, HttpServletRequest request) {
-        this.attributeValue = model.getAttributeValue();
-        this.priceAdjustment = model.getPriceAdjustment();
-        this.productOptionId = model.getProductOption().getId();
-    }
+import org.broadleafcommerce.common.money.Money;
 
-    @Override
-    public void wrapSummary(ProductOptionValue model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "productOptionAllowedValue")
+public class ProductOptionValueWrapper extends BaseWrapper implements APIWrapper<ProductOptionValue> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @XmlElement protected String attributeValue;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Money priceAdjustment;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Long productOptionId;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.ProductOptionValue,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(ProductOptionValue model, HttpServletRequest request) {
+    this.attributeValue  = model.getAttributeValue();
+    this.priceAdjustment = model.getPriceAdjustment();
+    this.productOptionId = model.getProductOption().getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.ProductOptionValue,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(ProductOptionValue model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class ProductOptionValueWrapper

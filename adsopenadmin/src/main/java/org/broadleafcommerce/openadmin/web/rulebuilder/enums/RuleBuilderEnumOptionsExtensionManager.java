@@ -16,40 +16,65 @@
 
 package org.broadleafcommerce.openadmin.web.rulebuilder.enums;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Component;
+
 
 /**
- * Extension Manager used to aggregate option values for all registered {@link org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsExtensionListener}
- * 
- * @author Andre Azzolini (apazzolini)
+ * Extension Manager used to aggregate option values for all registered
+ * {@link org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsExtensionListener}.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Component("blRuleBuilderEnumOptionsExtensionManager")
 public class RuleBuilderEnumOptionsExtensionManager implements RuleBuilderEnumOptionsExtensionListener {
-    
-    @Resource(name = "blRuleBuilderEnumOptionsExtensionListeners")
-    protected List<RuleBuilderEnumOptionsExtensionListener> listeners = new ArrayList<RuleBuilderEnumOptionsExtensionListener>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getOptionValues() {
-        StringBuilder sb = new StringBuilder();
-        for (RuleBuilderEnumOptionsExtensionListener listener : listeners) {
-            sb.append(listener.getOptionValues()).append("\r\n");
-        }
-        return sb.toString();
-    }
-    
-    public List<RuleBuilderEnumOptionsExtensionListener> getListeners() {
-        return listeners;
-    }
-    
-    public void setListeners(List<RuleBuilderEnumOptionsExtensionListener> listeners) {
-        this.listeners = listeners;
+  /** DOCUMENT ME! */
+  @Resource(name = "blRuleBuilderEnumOptionsExtensionListeners")
+  protected List<RuleBuilderEnumOptionsExtensionListener> listeners =
+    new ArrayList<RuleBuilderEnumOptionsExtensionListener>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<RuleBuilderEnumOptionsExtensionListener> getListeners() {
+    return listeners;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsExtensionListener#getOptionValues()
+   */
+  @Override public String getOptionValues() {
+    StringBuilder sb = new StringBuilder();
+
+    for (RuleBuilderEnumOptionsExtensionListener listener : listeners) {
+      sb.append(listener.getOptionValues()).append("\r\n");
     }
 
-}
+    return sb.toString();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  listeners  DOCUMENT ME!
+   */
+  public void setListeners(List<RuleBuilderEnumOptionsExtensionListener> listeners) {
+    this.listeners = listeners;
+  }
+
+} // end class RuleBuilderEnumOptionsExtensionManager

@@ -16,27 +16,57 @@
 
 package org.broadleafcommerce.core.pricing.dao;
 
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption;
-import org.broadleafcommerce.core.pricing.domain.ShippingRate;
-import org.broadleafcommerce.core.pricing.service.FulfillmentPricingService;
-import org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider;
-
 import java.math.BigDecimal;
 
+import org.broadleafcommerce.core.pricing.domain.ShippingRate;
+
+
 /**
- * @deprecated Superceded in functionality by {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Superceded in functionality by
+ *              {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and
+ *              {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
+ * @see         {@link org.broadleafcommerce.core.order.domain.FulfillmentOption},
+ *              {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface ShippingRateDao {
+@Deprecated public interface ShippingRateDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   shippingRate  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ShippingRate save(ShippingRate shippingRate);
 
-    public ShippingRate save(ShippingRate shippingRate);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ShippingRate readShippingRateById(Long id);
 
-    public ShippingRate readShippingRateById(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   feeType       DOCUMENT ME!
+   * @param   feeSubType    DOCUMENT ME!
+   * @param   unitQuantity  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ShippingRate readShippingRateByFeeTypesUnityQty(String feeType, String feeSubType, BigDecimal unitQuantity);
 
-    public ShippingRate readShippingRateByFeeTypesUnityQty(String feeType, String feeSubType, BigDecimal unitQuantity);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ShippingRate create();
 
-    public ShippingRate create();
-
-}
+} // end interface ShippingRateDao

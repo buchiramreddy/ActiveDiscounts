@@ -16,6 +16,10 @@
 
 package org.broadleafcommerce.core.order.dao;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.catalog.dao.SkuDao;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.order.FulfillmentGroupDataProvider;
@@ -27,104 +31,147 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
 import org.broadleafcommerce.core.order.service.call.FulfillmentGroupItemRequest;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
+
 import org.broadleafcommerce.profile.core.dao.CustomerAddressDao;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.service.CustomerService;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.test.annotation.Rollback;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FulfillmentGroupItemDaoTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private FulfillmentGroup fulfillmentGroup;
-    private Order salesOrder;
-    private Long fulfillmentGroupItemId;
+  @Resource private CustomerAddressDao customerAddressDao;
 
-    @Resource
-    private FulfillmentGroupItemDao fulfillmentGroupItemDao;
+  @Resource private CustomerService customerService;
 
-    @Resource
-    private CustomerService customerService;
+  private FulfillmentGroup fulfillmentGroup;
 
-    @Resource
-    private OrderDao orderDao;
-    
-    @Resource
-    private SkuDao skuDao;
-    
-    @Resource
-    private OrderItemDao orderItemDao;
-    
-    @Resource
-    private CustomerAddressDao customerAddressDao;
-    
-    @Resource
-    private FulfillmentGroupDao fulfillmentGroupDao;
-    
-    @Resource
-    private FulfillmentGroupService fulfillmentGroupService;
+  @Resource private FulfillmentGroupDao fulfillmentGroupDao;
 
-    @Test(groups = "createItemFulfillmentGroup", dataProvider = "basicFulfillmentGroup", dataProviderClass = FulfillmentGroupDataProvider.class, dependsOnGroups = { "createOrder", "createCustomerAddress" })
-    @Rollback(false)
-    @Transactional
-    public void createDefaultFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
-        String userName = "customer1";
-        Customer customer = customerService.readCustomerByUsername(userName);
-        Address address = (customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId())).get(0).getAddress();
-        salesOrder = orderDao.createNewCartForCustomer(customer);
+  @Resource private FulfillmentGroupItemDao fulfillmentGroupItemDao;
+  private Long                              fulfillmentGroupItemId;
 
-        FulfillmentGroup newFG = fulfillmentGroupDao.createDefault();
-        newFG.setAddress(address);
-        newFG.setRetailShippingPrice(fulfillmentGroup.getRetailShippingPrice());
-        newFG.setMethod(fulfillmentGroup.getMethod());
-        newFG.setService(fulfillmentGroup.getService());
-        newFG.setOrder(salesOrder);
-        newFG.setReferenceNumber(fulfillmentGroup.getReferenceNumber());
+  @Resource private FulfillmentGroupService fulfillmentGroupService;
 
-        assert newFG.getId() == null;
-        this.fulfillmentGroup = fulfillmentGroupService.save(newFG);
-        assert this.fulfillmentGroup.getId() != null;
-    }
-    
-    @Test(groups = { "createFulfillmentGroupItem" }, dataProvider = "basicDiscreteOrderItem", dataProviderClass = OrderItemDataProvider.class, dependsOnGroups = { "createOrder", "createSku", "createItemFulfillmentGroup" })
-    @Rollback(false)
-    @Transactional
-    public void createFulfillmentGroupItem(DiscreteOrderItem orderItem) throws PricingException {        
-        Sku si = skuDao.readFirstSku();
-        orderItem.setSku(si);
-        orderItem = (DiscreteOrderItem) orderItemDao.save(orderItem);
-        orderItem.setOrder(salesOrder);
-        salesOrder.addOrderItem(orderItem);
-        orderDao.save(salesOrder);
+  @Resource private OrderDao orderDao;
 
-        FulfillmentGroupItemRequest fulfillmentGroupItemRequest = new FulfillmentGroupItemRequest();
-        fulfillmentGroupItemRequest.setOrderItem(orderItem);
-        fulfillmentGroupItemRequest.setFulfillmentGroup(fulfillmentGroup);
-        fulfillmentGroupService.addItemToFulfillmentGroup(fulfillmentGroupItemRequest, true);
-        
-        FulfillmentGroupItem fgi = fulfillmentGroup.getFulfillmentGroupItems().get(fulfillmentGroup.getFulfillmentGroupItems().size()-1);
-        assert fgi.getId() != null;
-        fulfillmentGroupItemId = fgi.getId();
-    }
+  @Resource private OrderItemDao orderItemDao;
+  private Order                  salesOrder;
 
-    @Test(groups = { "readFulfillmentGroupItemsForFulfillmentGroup" }, dependsOnGroups = { "createFulfillmentGroupItem" })
-    @Transactional
-    public void readFulfillmentGroupItemsForFulfillmentGroup() {
-        List<FulfillmentGroupItem> fgis = fulfillmentGroupItemDao.readFulfillmentGroupItemsForFulfillmentGroup(fulfillmentGroup);
-        assert fgis != null;
-        assert fgis.size() > 0;
-    }
+  @Resource private SkuDao skuDao;
 
-    @Test(groups = { "readFulfillmentGroupItemsById" }, dependsOnGroups = { "createFulfillmentGroupItem" })
-    @Transactional
-    public void readFulfillmentGroupItemsById() {
-        FulfillmentGroupItem fgi = fulfillmentGroupItemDao.readFulfillmentGroupItemById(fulfillmentGroupItemId);
-        assert fgi != null;
-        assert fgi.getId() != null;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = "createItemFulfillmentGroup",
+    dataProvider      = "basicFulfillmentGroup",
+    dataProviderClass = FulfillmentGroupDataProvider.class,
+    dependsOnGroups   = { "createOrder", "createCustomerAddress" }
+  )
+  @Transactional public void createDefaultFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
+    String   userName = "customer1";
+    Customer customer = customerService.readCustomerByUsername(userName);
+    Address  address  = (customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId())).get(0)
+      .getAddress();
+    salesOrder = orderDao.createNewCartForCustomer(customer);
+
+    FulfillmentGroup newFG = fulfillmentGroupDao.createDefault();
+    newFG.setAddress(address);
+    newFG.setRetailShippingPrice(fulfillmentGroup.getRetailShippingPrice());
+    newFG.setMethod(fulfillmentGroup.getMethod());
+    newFG.setService(fulfillmentGroup.getService());
+    newFG.setOrder(salesOrder);
+    newFG.setReferenceNumber(fulfillmentGroup.getReferenceNumber());
+
+    assert newFG.getId() == null;
+    this.fulfillmentGroup = fulfillmentGroupService.save(newFG);
+    assert this.fulfillmentGroup.getId() != null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItem  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = { "createFulfillmentGroupItem" },
+    dataProvider      = "basicDiscreteOrderItem",
+    dataProviderClass = OrderItemDataProvider.class,
+    dependsOnGroups   = { "createOrder", "createSku", "createItemFulfillmentGroup" }
+  )
+  @Transactional public void createFulfillmentGroupItem(DiscreteOrderItem orderItem) throws PricingException {
+    Sku si = skuDao.readFirstSku();
+    orderItem.setSku(si);
+    orderItem = (DiscreteOrderItem) orderItemDao.save(orderItem);
+    orderItem.setOrder(salesOrder);
+    salesOrder.addOrderItem(orderItem);
+    orderDao.save(salesOrder);
+
+    FulfillmentGroupItemRequest fulfillmentGroupItemRequest = new FulfillmentGroupItemRequest();
+    fulfillmentGroupItemRequest.setOrderItem(orderItem);
+    fulfillmentGroupItemRequest.setFulfillmentGroup(fulfillmentGroup);
+    fulfillmentGroupService.addItemToFulfillmentGroup(fulfillmentGroupItemRequest, true);
+
+    FulfillmentGroupItem fgi = fulfillmentGroup.getFulfillmentGroupItems().get(
+        fulfillmentGroup.getFulfillmentGroupItems().size() - 1);
+    assert fgi.getId() != null;
+    fulfillmentGroupItemId = fgi.getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readFulfillmentGroupItemsById" },
+    dependsOnGroups = { "createFulfillmentGroupItem" }
+  )
+  @Transactional public void readFulfillmentGroupItemsById() {
+    FulfillmentGroupItem fgi = fulfillmentGroupItemDao.readFulfillmentGroupItemById(fulfillmentGroupItemId);
+    assert fgi != null;
+    assert fgi.getId() != null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readFulfillmentGroupItemsForFulfillmentGroup" },
+    dependsOnGroups = { "createFulfillmentGroupItem" }
+  )
+  @Transactional public void readFulfillmentGroupItemsForFulfillmentGroup() {
+    List<FulfillmentGroupItem> fgis = fulfillmentGroupItemDao.readFulfillmentGroupItemsForFulfillmentGroup(
+        fulfillmentGroup);
+    assert fgis != null;
+    assert fgis.size() > 0;
+  }
+} // end class FulfillmentGroupItemDaoTest

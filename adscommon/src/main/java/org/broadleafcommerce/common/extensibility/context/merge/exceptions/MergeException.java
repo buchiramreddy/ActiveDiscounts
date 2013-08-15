@@ -17,30 +17,51 @@
 package org.broadleafcommerce.common.extensibility.context.merge.exceptions;
 
 /**
- * This exception is thrown when a problem is encountered during
- * the actual merge of the source and patch documents.
- * 
- * @author jfischer
+ * This exception is thrown when a problem is encountered during the actual merge of the source and patch documents.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class MergeException extends Exception {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public MergeException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public MergeException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
-    }
+  /**
+   * Creates a new MergeException object.
+   */
+  public MergeException() {
+    super();
+  }
 
-    public MergeException(String arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new MergeException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public MergeException(String arg0) {
+    super(arg0);
+  }
 
-    public MergeException(Throwable arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new MergeException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public MergeException(Throwable arg0) {
+    super(arg0);
+  }
 
-}
+  /**
+   * Creates a new MergeException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   */
+  public MergeException(String arg0, Throwable arg1) {
+    super(arg0, arg1);
+  }
+
+} // end class MergeException

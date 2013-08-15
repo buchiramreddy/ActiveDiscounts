@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008-2013 the original author or authors.
  *
@@ -19,34 +18,118 @@ package org.broadleafcommerce.common.i18n.domain;
 
 /**
  * This domain object represents a translated value for a given property on an entity for a specific locale.
- * 
- * @author Andre Azzolini (apazzolini)
- * @see org.broadleafcommerce.common.i18n.domain.TranslatedEntity
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @see      org.broadleafcommerce.common.i18n.domain.TranslatedEntity
+ * @version  $Revision$, $Date$
  */
 public interface Translation {
-    
-    public Long getId();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getEntityId();
 
-    public TranslatedEntity getEntityType();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setEntityType(TranslatedEntity entityType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  TranslatedEntity getEntityType();
 
-    public String getEntityId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setEntityId(String entityId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFieldName();
 
-    public String getFieldName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setFieldName(String fieldName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public String getLocaleCode();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setLocaleCode(String localeCode);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getLocaleCode();
 
-    public String getTranslatedValue();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setTranslatedValue(String translatedValue);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTranslatedValue();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entityId  DOCUMENT ME!
+   */
+  void setEntityId(String entityId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entityType  DOCUMENT ME!
+   */
+  void setEntityType(TranslatedEntity entityType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldName  DOCUMENT ME!
+   */
+  void setFieldName(String fieldName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  localeCode  DOCUMENT ME!
+   */
+  void setLocaleCode(String localeCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  translatedValue  DOCUMENT ME!
+   */
+  void setTranslatedValue(String translatedValue);
+
+} // end interface Translation

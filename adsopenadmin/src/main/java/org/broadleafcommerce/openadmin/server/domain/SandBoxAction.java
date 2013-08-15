@@ -16,33 +16,114 @@
 
 package org.broadleafcommerce.openadmin.server.domain;
 
+import java.util.List;
+
 import org.broadleafcommerce.openadmin.audit.AdminAuditable;
 
-import java.util.List;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface SandBoxAction {
-    public Long getId();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  item  DOCUMENT ME!
+   */
+  void addSandBoxItem(SandBoxItem item);
 
-    public SandBoxActionType getActionType();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setActionType(SandBoxActionType type);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBoxActionType getActionType();
 
-    public String getComment();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setComment(String comment);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminAuditable getAuditable();
 
-    public List<SandBoxItem> getSandBoxItems();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSandBoxItems(List<SandBoxItem> itemList);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getComment();
 
-    public void addSandBoxItem(SandBoxItem item);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public AdminAuditable getAuditable();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setAuditable(AdminAuditable auditable);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<SandBoxItem> getSandBoxItems();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setActionType(SandBoxActionType type);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(AdminAuditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  comment  DOCUMENT ME!
+   */
+  void setComment(String comment);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  itemList  DOCUMENT ME!
+   */
+  void setSandBoxItems(List<SandBoxItem> itemList);
+} // end interface SandBoxAction

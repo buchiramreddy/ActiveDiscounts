@@ -16,13 +16,6 @@
 
 package org.broadleafcommerce.cms.structure.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.openadmin.audit.AdminAuditable;
-import org.broadleafcommerce.openadmin.audit.AdminAuditableListener;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -36,124 +29,196 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+
+import org.broadleafcommerce.openadmin.audit.AdminAuditable;
+import org.broadleafcommerce.openadmin.audit.AdminAuditableListener;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Entity
+@EntityListeners(value = { AdminAuditableListener.class })
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SC_FLD")
-@EntityListeners(value = { AdminAuditableListener.class })
 public class StructuredContentFieldImpl implements StructuredContentField {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "StructuredContentFieldId")
-    @GenericGenerator(
-        name="StructuredContentFieldId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="StructuredContentFieldImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.structure.domain.StructuredContentFieldImpl")
-        }
-    )
-    @Column(name = "SC_FLD_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Embedded
-    @AdminPresentation(excluded = true)
-    protected AdminAuditable auditable = new AdminAuditable();
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @Embedded protected AdminAuditable auditable = new AdminAuditable();
 
-    @Column (name = "FLD_KEY")
-    protected String fieldKey;
+  /** DOCUMENT ME! */
+  @Column(name = "FLD_KEY")
+  protected String fieldKey;
 
-    @ManyToOne(targetEntity = StructuredContentImpl.class)
-    @JoinColumn(name="SC_ID")
-    protected StructuredContent structuredContent;
-
-    @Column (name = "VALUE")
-    protected String stringValue;
-
-    @Column (name = "LOB_VALUE", length = Integer.MAX_VALUE - 1)
-    @Lob
-    @Type(type = "org.hibernate.type.StringClobType")
-    protected String lobValue;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "SC_FLD_ID")
+  @GeneratedValue(generator = "StructuredContentFieldId")
+  @GenericGenerator(
+    name       = "StructuredContentFieldId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "StructuredContentFieldImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.structure.domain.StructuredContentFieldImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+  /** DOCUMENT ME! */
+  @Column(
+    name   = "LOB_VALUE",
+    length = Integer.MAX_VALUE - 1
+  )
+  @Lob
+  @Type(type = "org.hibernate.type.StringClobType")
+  protected String      lobValue;
+
+  /** DOCUMENT ME! */
+  @Column(name = "VALUE")
+  protected String stringValue;
+
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "SC_ID")
+  @ManyToOne(targetEntity = StructuredContentImpl.class)
+  protected StructuredContent structuredContent;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#cloneEntity()
+   */
+  @Override public StructuredContentField cloneEntity() {
+    StructuredContentFieldImpl newContentField = new StructuredContentFieldImpl();
+    newContentField.fieldKey          = fieldKey;
+    newContentField.structuredContent = structuredContent;
+    newContentField.lobValue          = lobValue;
+    newContentField.stringValue       = stringValue;
+
+    return newContentField;
+
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#getAuditable()
+   */
+  @Override public AdminAuditable getAuditable() {
+    return auditable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#getFieldKey()
+   */
+  @Override public String getFieldKey() {
+    return fieldKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#getStructuredContent()
+   */
+  @Override public StructuredContent getStructuredContent() {
+    return structuredContent;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#getValue()
+   */
+  @Override public String getValue() {
+    if ((stringValue != null) && (stringValue.length() > 0)) {
+      return stringValue;
+    } else {
+      return lobValue;
     }
+  }
 
-    @Override
-    public String getFieldKey() {
-        return fieldKey;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#setAuditable(org.broadleafcommerce.openadmin.audit.AdminAuditable)
+   */
+  @Override public void setAuditable(AdminAuditable auditable) {
+    this.auditable = auditable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#setFieldKey(java.lang.String)
+   */
+  @Override public void setFieldKey(String fieldKey) {
+    this.fieldKey = fieldKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#setStructuredContent(org.broadleafcommerce.cms.structure.domain.StructuredContent)
+   */
+  @Override public void setStructuredContent(StructuredContent structuredContent) {
+    this.structuredContent = structuredContent;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentField#setValue(java.lang.String)
+   */
+  @Override public void setValue(String value) {
+    if (value != null) {
+      if (value.length() <= 256) {
+        stringValue = value;
+        lobValue    = null;
+      } else {
+        stringValue = null;
+        lobValue    = value;
+      }
+    } else {
+      lobValue    = null;
+      stringValue = null;
     }
-
-    @Override
-    public void setFieldKey(String fieldKey) {
-        this.fieldKey = fieldKey;
-    }
-
-    @Override
-    public StructuredContent getStructuredContent() {
-        return structuredContent;
-    }
-
-    @Override
-    public void setStructuredContent(StructuredContent structuredContent) {
-        this.structuredContent = structuredContent;
-    }
-
-    @Override
-    public String getValue() {
-        if (stringValue != null && stringValue.length() > 0) {
-            return stringValue;
-        } else {
-            return lobValue;
-        }
-    }
-
-    @Override
-    public void setValue(String value) {
-        if (value != null) {
-            if (value.length() <= 256) {
-                stringValue = value;
-                lobValue = null;
-            } else {
-                stringValue = null;
-                lobValue = value;
-            }
-        } else {
-            lobValue = null;
-            stringValue = null;
-        }
-    }
-
-    @Override
-    public StructuredContentField cloneEntity() {
-        StructuredContentFieldImpl newContentField = new StructuredContentFieldImpl();
-        newContentField.fieldKey = fieldKey;
-        newContentField.structuredContent = structuredContent;
-        newContentField.lobValue = lobValue;
-        newContentField.stringValue = stringValue;
-
-        return newContentField;
-
-    }
-
-    @Override
-    public AdminAuditable getAuditable() {
-        return auditable;
-    }
-
-    @Override
-    public void setAuditable(AdminAuditable auditable) {
-        this.auditable = auditable;
-    }
-}
-
+  }
+} // end class StructuredContentFieldImpl

@@ -16,18 +16,28 @@
 
 package org.broadleafcommerce.core.offer.service.processor;
 
-import org.broadleafcommerce.core.offer.domain.Offer;
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.offer.domain.Offer;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface BaseProcessor {
-    
-    public List<Offer> filterOffers(List<Offer> offers, Customer customer);
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   offers    DOCUMENT ME!
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Offer> filterOffers(List<Offer> offers, Customer customer);
+
 }

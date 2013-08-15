@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
- * 
+ *
  */
 package org.broadleafcommerce.cms.url.domain;
 
@@ -23,49 +22,80 @@ import org.broadleafcommerce.cms.url.type.URLRedirectType;
 
 
 /**
- * A Null instance of a URLHandler.   Used by the default URLHandlerServiceImpl implementation to 
- * cache misses (e.g. urls  that are not being handled by forwards and redirects.
- * 
- * @author bpolster
+ * A Null instance of a URLHandler. Used by the default URLHandlerServiceImpl implementation to cache misses (e.g. urls
+ * that are not being handled by forwards and redirects.
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
-public class NullURLHandler implements URLHandler,java.io.Serializable {
-     private static final long serialVersionUID = 1L;
+public class NullURLHandler implements URLHandler, java.io.Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Override
-    public Long getId() {
-        return null;
-    }
+  private static final long serialVersionUID = 1L;
 
-    @Override
-    public void setId(Long id) {
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getIncomingURL() {
-        return null;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#getId()
+   */
+  @Override public Long getId() {
+    return null;
+  }
 
-    @Override
-    public void setIncomingURL(String incomingURL) {
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getNewURL() {
-        return null;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#getIncomingURL()
+   */
+  @Override public String getIncomingURL() {
+    return null;
+  }
 
-    @Override
-    public void setNewURL(String newURL) {
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public URLRedirectType getUrlRedirectType() {
-        return null;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#getNewURL()
+   */
+  @Override public String getNewURL() {
+    return null;
+  }
 
-    @Override
-    public void setUrlRedirectType(URLRedirectType redirectType) {
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-     
-}
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#getUrlRedirectType()
+   */
+  @Override public URLRedirectType getUrlRedirectType() {
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) { }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#setIncomingURL(java.lang.String)
+   */
+  @Override public void setIncomingURL(String incomingURL) { }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#setNewURL(java.lang.String)
+   */
+  @Override public void setNewURL(String newURL) { }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.url.domain.URLHandler#setUrlRedirectType(org.broadleafcommerce.cms.url.type.URLRedirectType)
+   */
+  @Override public void setUrlRedirectType(URLRedirectType redirectType) { }
+
+
+} // end class NullURLHandler

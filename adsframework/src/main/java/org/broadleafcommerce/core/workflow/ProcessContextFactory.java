@@ -16,8 +16,24 @@
 
 package org.broadleafcommerce.core.workflow;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ProcessContextFactory<T> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ProcessContext createContext(T preSeedData) throws WorkflowException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   preSeedData  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  WorkflowException  DOCUMENT ME!
+   */
+  ProcessContext createContext(T preSeedData) throws WorkflowException;
 
 }

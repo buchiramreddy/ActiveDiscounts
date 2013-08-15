@@ -16,7 +16,13 @@
 
 package org.broadleafcommerce.core.order.dao;
 
+import javax.annotation.Resource;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItemImpl;
@@ -26,73 +32,112 @@ import org.broadleafcommerce.core.order.domain.OrderItemQualifier;
 import org.broadleafcommerce.core.order.domain.OrderItemQualifierImpl;
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
+
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blOrderItemDao")
 public class OrderItemDaoImpl implements OrderItemDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#save(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public OrderItem save(final OrderItem orderItem) {
+    return em.merge(orderItem);
+  }
 
-    public OrderItem save(final OrderItem orderItem) {
-        return em.merge(orderItem);
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#readOrderItemById(java.lang.Long)
+   */
+  @Override public OrderItem readOrderItemById(final Long orderItemId) {
+    return em.find(OrderItemImpl.class, orderItemId);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#delete(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public void delete(OrderItem orderItem) {
+    if (!em.contains(orderItem)) {
+      orderItem = readOrderItemById(orderItem.getId());
     }
 
-    public OrderItem readOrderItemById(final Long orderItemId) {
-        return em.find(OrderItemImpl.class, orderItemId);
+    if (GiftWrapOrderItem.class.isAssignableFrom(orderItem.getClass())) {
+      final GiftWrapOrderItem giftItem = (GiftWrapOrderItem) orderItem;
+
+      for (OrderItem wrappedItem : giftItem.getWrappedItems()) {
+        wrappedItem.setGiftWrapOrderItem(null);
+        wrappedItem = save(wrappedItem);
+      }
     }
 
-    public void delete(OrderItem orderItem) {
-        if (!em.contains(orderItem)) {
-            orderItem = readOrderItemById(orderItem.getId());
-        }
-        if (GiftWrapOrderItem.class.isAssignableFrom(orderItem.getClass())) {
-            final GiftWrapOrderItem giftItem = (GiftWrapOrderItem) orderItem;
-            for (OrderItem wrappedItem : giftItem.getWrappedItems()) {
-                wrappedItem.setGiftWrapOrderItem(null);
-                wrappedItem = save(wrappedItem);
-            }
-        }
-        em.remove(orderItem);
-        em.flush();
-    }
+    em.remove(orderItem);
+    em.flush();
+  }
 
-    public OrderItem create(final OrderItemType orderItemType) {
-        final OrderItem item = (OrderItem) entityConfiguration.createEntityInstance(orderItemType.getType());
-        item.setOrderItemType(orderItemType);
-        return item;
-    }
-    
-    public PersonalMessage createPersonalMessage() {
-        PersonalMessage personalMessage = (PersonalMessage) entityConfiguration.createEntityInstance(PersonalMessage.class.getName());
-        return personalMessage;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#create(org.broadleafcommerce.core.order.service.type.OrderItemType)
+   */
+  @Override public OrderItem create(final OrderItemType orderItemType) {
+    final OrderItem item = (OrderItem) entityConfiguration.createEntityInstance(orderItemType.getType());
+    item.setOrderItemType(orderItemType);
 
-    public OrderItem saveOrderItem(final OrderItem orderItem) {
-        return em.merge(orderItem);
-    }
+    return item;
+  }
 
-    public OrderItemPriceDetail createOrderItemPriceDetail() {
-        return new OrderItemPriceDetailImpl();
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#createPersonalMessage()
+   */
+  @Override public PersonalMessage createPersonalMessage() {
+    PersonalMessage personalMessage = (PersonalMessage) entityConfiguration.createEntityInstance(PersonalMessage.class
+        .getName());
 
-    public OrderItemQualifier createOrderItemQualifier() {
-        return new OrderItemQualifierImpl();
-    }
+    return personalMessage;
+  }
 
-    public OrderItemPriceDetail initializeOrderItemPriceDetails(OrderItem item) {
-        OrderItemPriceDetail detail = createOrderItemPriceDetail();
-        detail.setOrderItem(item);
-        detail.setQuantity(item.getQuantity());
-        detail.setUseSalePrice(item.getIsOnSale());
-        item.getOrderItemPriceDetails().add(detail);
-        return detail;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#saveOrderItem(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public OrderItem saveOrderItem(final OrderItem orderItem) {
+    return em.merge(orderItem);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#createOrderItemPriceDetail()
+   */
+  @Override public OrderItemPriceDetail createOrderItemPriceDetail() {
+    return new OrderItemPriceDetailImpl();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#createOrderItemQualifier()
+   */
+  @Override public OrderItemQualifier createOrderItemQualifier() {
+    return new OrderItemQualifierImpl();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderItemDao#initializeOrderItemPriceDetails(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public OrderItemPriceDetail initializeOrderItemPriceDetails(OrderItem item) {
+    OrderItemPriceDetail detail = createOrderItemPriceDetail();
+    detail.setOrderItem(item);
+    detail.setQuantity(item.getQuantity());
+    detail.setUseSalePrice(item.getIsOnSale());
+    item.getOrderItemPriceDetails().add(detail);
+
+    return detail;
+  }
+} // end class OrderItemDaoImpl

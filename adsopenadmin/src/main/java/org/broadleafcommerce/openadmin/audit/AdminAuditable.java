@@ -16,65 +16,150 @@
 
 package org.broadleafcommerce.openadmin.audit;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
+import java.io.Serializable;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.io.Serializable;
-import java.util.Date;
 
-@Embeddable
-public class AdminAuditable implements Serializable {
+import org.broadleafcommerce.common.presentation.AdminPresentation;
 
-    private static final long serialVersionUID = 1L;
 
-    @Column(name = "DATE_CREATED", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @AdminPresentation(friendlyName = "AdminAuditable_Date_Created", group = "AdminAuditable_Audit", readOnly = true)
-    protected Date dateCreated;
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Embeddable public class AdminAuditable implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Column(name = "CREATED_BY", updatable = false)
-    protected Long createdBy;
+  private static final long serialVersionUID = 1L;
 
-    @Column(name = "DATE_UPDATED")
-    @Temporal(TemporalType.TIMESTAMP)
-    @AdminPresentation(friendlyName = "AdminAuditable_Date_Updated", group = "AdminAuditable_Audit", readOnly = true)
-    protected Date dateUpdated;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "UPDATED_BY")
-    protected Long updatedBy;
+  /** DOCUMENT ME! */
+  @Column(
+    name      = "CREATED_BY",
+    updatable = false
+  )
+  protected Long createdBy;
 
-    public Date getDateCreated() {
-        return dateCreated;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminAuditable_Date_Created",
+    group        = "AdminAuditable_Audit",
+    readOnly     = true
+  )
+  @Column(
+    name      = "DATE_CREATED",
+    updatable = false
+  )
+  @Temporal(TemporalType.TIMESTAMP)
+  protected Date dateCreated;
 
-    public Date getDateUpdated() {
-        return dateUpdated;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminAuditable_Date_Updated",
+    group        = "AdminAuditable_Audit",
+    readOnly     = true
+  )
+  @Column(name = "DATE_UPDATED")
+  @Temporal(TemporalType.TIMESTAMP)
+  protected Date dateUpdated;
 
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "UPDATED_BY")
+  protected Long updatedBy;
 
-    public void setDateUpdated(Date dateUpdated) {
-        this.dateUpdated = dateUpdated;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getCreatedBy() {
-        return createdBy;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getCreatedBy() {
+    return createdBy;
+  }
 
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getUpdatedBy() {
-        return updatedBy;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Date getDateCreated() {
+    return dateCreated;
+  }
 
-    public void setUpdatedBy(Long updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Date getDateUpdated() {
+    return dateUpdated;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getUpdatedBy() {
+    return updatedBy;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  createdBy  DOCUMENT ME!
+   */
+  public void setCreatedBy(Long createdBy) {
+    this.createdBy = createdBy;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  dateCreated  DOCUMENT ME!
+   */
+  public void setDateCreated(Date dateCreated) {
+    this.dateCreated = dateCreated;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  dateUpdated  DOCUMENT ME!
+   */
+  public void setDateUpdated(Date dateUpdated) {
+    this.dateUpdated = dateUpdated;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  updatedBy  DOCUMENT ME!
+   */
+  public void setUpdatedBy(Long updatedBy) {
+    this.updatedBy = updatedBy;
+  }
+} // end class AdminAuditable

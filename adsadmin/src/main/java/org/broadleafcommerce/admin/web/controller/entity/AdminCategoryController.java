@@ -16,70 +16,98 @@
 
 package org.broadleafcommerce.admin.web.controller.entity;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
+
 import org.broadleafcommerce.openadmin.web.controller.entity.AdminBasicEntityController;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityFormAction;
+
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
+
 import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles admin operations for the {@link org.broadleafcommerce.core.catalog.domain.Category} entity.
- * 
- * @author Andre Azzolini (apazzolini)
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Controller("blAdminCategoryController")
 @RequestMapping("/" + AdminCategoryController.SECTION_KEY)
 public class AdminCategoryController extends AdminBasicEntityController {
-    
-    protected static final String SECTION_KEY = "category";
-    
-    @Resource(name = "blCatalogService")
-    protected CatalogService catalogService;
-    
-    @Override
-    protected String getSectionKey(Map<String, String> pathVars) {
-        //allow external links to work for ToOne items
-        if (super.getSectionKey(pathVars) != null) {
-            return super.getSectionKey(pathVars);
-        }
-        return SECTION_KEY;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected static final String SECTION_KEY = "category";
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blCatalogService")
+  protected CatalogService catalogService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.controller.entity.AdminBasicEntityController#viewEntityList(javax.servlet.http.HttpServletRequest,
+   *       javax.servlet.http.HttpServletResponse, org.springframework.ui.Model, java.util.Map,
+   *       org.springframework.util.MultiValueMap)
+   */
+  @Override
+  @RequestMapping(
+    value  = "",
+    method = RequestMethod.GET
+  )
+  @SuppressWarnings("unchecked")
+  public String viewEntityList(HttpServletRequest request, HttpServletResponse response, Model model,
+    @PathVariable Map<String, String> pathVars, @RequestParam MultiValueMap<String, String> requestParams)
+    throws Exception {
+    super.viewEntityList(request, response, model, pathVars, requestParams);
+
+    List<Category> parentCategories = catalogService.findAllParentCategories();
+    model.addAttribute("parentCategories", parentCategories);
+
+    List<EntityFormAction> mainActions = (List<EntityFormAction>) model.asMap().get("mainActions");
+
+    mainActions.add(new EntityFormAction("CategoryTreeView").withButtonClass("show-category-tree-view").withDisplayText(
+        "Category_Tree_View"));
+
+    mainActions.add(new EntityFormAction("CategoryListView").withButtonClass("show-category-list-view active")
+      .withDisplayText("Category_List_View"));
+
+    model.addAttribute("viewType", "categoryTree");
+
+    return "modules/defaultContainer";
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.controller.AdminAbstractController#getSectionKey(java.util.Map)
+   */
+  @Override protected String getSectionKey(Map<String, String> pathVars) {
+    // allow external links to work for ToOne items
+    if (super.getSectionKey(pathVars) != null) {
+      return super.getSectionKey(pathVars);
     }
-    
-    @SuppressWarnings("unchecked")
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String viewEntityList(HttpServletRequest request, HttpServletResponse response, Model model,
-            @PathVariable  Map<String, String> pathVars,
-            @RequestParam  MultiValueMap<String, String> requestParams) throws Exception {
-        super.viewEntityList(request, response, model, pathVars, requestParams);
-        
-        List<Category> parentCategories = catalogService.findAllParentCategories();
-        model.addAttribute("parentCategories", parentCategories);
-        
-        List<EntityFormAction> mainActions = (List<EntityFormAction>) model.asMap().get("mainActions");
-        
-        mainActions.add(new EntityFormAction("CategoryTreeView")
-            .withButtonClass("show-category-tree-view")
-            .withDisplayText("Category_Tree_View"));
-        
-        mainActions.add(new EntityFormAction("CategoryListView")
-            .withButtonClass("show-category-list-view active")
-            .withDisplayText("Category_List_View"));
-        
-        model.addAttribute("viewType", "categoryTree");
-        return "modules/defaultContainer";
-    }
-    
-}
+
+    return SECTION_KEY;
+  }
+
+} // end class AdminCategoryController

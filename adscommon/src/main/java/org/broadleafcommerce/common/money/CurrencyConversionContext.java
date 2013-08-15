@@ -18,26 +18,63 @@ package org.broadleafcommerce.common.money;
 
 import java.util.HashMap;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CurrencyConversionContext {
-    
-    private static final ThreadLocal<CurrencyConversionService> currencyConversionService = new ThreadLocal<CurrencyConversionService>();
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final ThreadLocal<HashMap> currencyConversionContext = new ThreadLocal<HashMap>();
+  private static final ThreadLocal<CurrencyConversionService> currencyConversionService =
+    new ThreadLocal<CurrencyConversionService>();
 
-    public static HashMap getCurrencyConversionContext() {
-        return CurrencyConversionContext.currencyConversionContext.get();
-    }
-    
-    public static void setCurrencyConversionContext(HashMap currencyConsiderationContext) {
-        CurrencyConversionContext.currencyConversionContext.set(currencyConsiderationContext);
-    }
-    
-    public static CurrencyConversionService getCurrencyConversionService() {
-        return CurrencyConversionContext.currencyConversionService.get();
-    }
-    
-    public static void setCurrencyConversionService(CurrencyConversionService currencyDeterminationService) {
-        CurrencyConversionContext.currencyConversionService.set(currencyDeterminationService);
-    }
+  private static final ThreadLocal<HashMap> currencyConversionContext = new ThreadLocal<HashMap>();
 
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static HashMap getCurrencyConversionContext() {
+    return CurrencyConversionContext.currencyConversionContext.get();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static CurrencyConversionService getCurrencyConversionService() {
+    return CurrencyConversionContext.currencyConversionService.get();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currencyConsiderationContext  DOCUMENT ME!
+   */
+  public static void setCurrencyConversionContext(HashMap currencyConsiderationContext) {
+    CurrencyConversionContext.currencyConversionContext.set(currencyConsiderationContext);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currencyDeterminationService  DOCUMENT ME!
+   */
+  public static void setCurrencyConversionService(CurrencyConversionService currencyDeterminationService) {
+    CurrencyConversionContext.currencyConversionService.set(currencyDeterminationService);
+  }
+
+} // end class CurrencyConversionContext

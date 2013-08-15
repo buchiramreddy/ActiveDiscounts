@@ -17,59 +17,177 @@
 package org.broadleafcommerce.common.money;
 
 import java.math.BigDecimal;
+
 import java.util.Currency;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public final class BankersRounding {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final int DEFAULT_SCALE = 2;
+  /** DOCUMENT ME! */
+  public static final int DEFAULT_SCALE = 2;
 
-    public static final BigDecimal ZERO = setScale(0);
+  /** DOCUMENT ME! */
+  public static final BigDecimal ZERO = setScale(0);
 
-    public static int getScaleForCurrency(Currency currency) {
-        if (currency != null) {
-            return currency.getDefaultFractionDigits();
-        } else {
-            return DEFAULT_SCALE;
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   dividend  DOCUMENT ME!
+   * @param   divisor   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal divide(BigDecimal dividend, BigDecimal divisor) {
+    return divide(DEFAULT_SCALE, dividend, divisor);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   scale     DOCUMENT ME!
+   * @param   dividend  DOCUMENT ME!
+   * @param   divisor   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal divide(int scale, BigDecimal dividend, BigDecimal divisor) {
+    return dividend.divide(divisor, scale, BigDecimal.ROUND_HALF_EVEN);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   scale     DOCUMENT ME!
+   * @param   dividend  DOCUMENT ME!
+   * @param   divisor   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static double divide(int scale, double dividend, double divisor) {
+    return divide(setScale(scale, dividend), setScale(scale, divisor)).doubleValue();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   currency  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static int getScaleForCurrency(Currency currency) {
+    if (currency != null) {
+      return currency.getDefaultFractionDigits();
+    } else {
+      return DEFAULT_SCALE;
     }
+  }
 
-    public static BigDecimal setScale(int scale, BigDecimal amount) {
-        return amount.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static BigDecimal setScale(int scale, double amount) {
-        return setScale(scale, new BigDecimal(amount));
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   scale         DOCUMENT ME!
+   * @param   multiplicand  DOCUMENT ME!
+   * @param   multiplier    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static double multiply(int scale, double multiplicand, double multiplier) {
+    return setScale(scale, multiplicand).multiply(setScale(scale, multiplier)).doubleValue();
+  }
 
-    public static double multiply(int scale, double multiplicand, double multiplier) {
-        return setScale(scale, multiplicand).multiply(setScale(scale, multiplier)).doubleValue();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static BigDecimal divide(int scale, BigDecimal dividend, BigDecimal divisor) {
-        return dividend.divide(divisor, scale, BigDecimal.ROUND_HALF_EVEN);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   amount  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal setScale(BigDecimal amount) {
+    return setScale(DEFAULT_SCALE, amount);
+  }
 
-    public static double divide(int scale, double dividend, double divisor) {
-        return divide(setScale(scale, dividend), setScale(scale, divisor)).doubleValue();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static BigDecimal setScale(BigDecimal amount) {
-        return setScale(DEFAULT_SCALE, amount);
-    }
-    
-    public static BigDecimal setScale(BigDecimal amount, int scale) {
-        return setScale(scale, amount);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   amount  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal setScale(double amount) {
+    return setScale(DEFAULT_SCALE, new BigDecimal(amount));
+  }
 
-    public static BigDecimal setScale(double amount) {
-        return setScale(DEFAULT_SCALE, new BigDecimal(amount));
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static BigDecimal divide(BigDecimal dividend, BigDecimal divisor) {
-        return divide(DEFAULT_SCALE, dividend, divisor);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   scale   DOCUMENT ME!
+   * @param   amount  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal setScale(int scale, BigDecimal amount) {
+    return amount.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+  }
 
-    public static BigDecimal zeroAmount() {
-        return ZERO;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   scale   DOCUMENT ME!
+   * @param   amount  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal setScale(int scale, double amount) {
+    return setScale(scale, new BigDecimal(amount));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   amount  DOCUMENT ME!
+   * @param   scale   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal setScale(BigDecimal amount, int scale) {
+    return setScale(scale, amount);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal zeroAmount() {
+    return ZERO;
+  }
+} // end class BankersRounding

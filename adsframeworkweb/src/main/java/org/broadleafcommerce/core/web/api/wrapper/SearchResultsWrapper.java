@@ -16,88 +16,110 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.Product;
-import org.broadleafcommerce.core.search.domain.ProductSearchResult;
-import org.broadleafcommerce.core.search.domain.SearchFacetDTO;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "searchResults")
+import org.broadleafcommerce.core.catalog.domain.Product;
+import org.broadleafcommerce.core.search.domain.ProductSearchResult;
+import org.broadleafcommerce.core.search.domain.SearchFacetDTO;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "searchResults")
 public class SearchResultsWrapper extends BaseWrapper implements APIWrapper<ProductSearchResult> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Integer page;
+  /** DOCUMENT ME! */
+  @XmlElement protected Integer page;
 
-    /*
-     * Indicates the requested or default page size.
-     */
-    @XmlElement
-    protected Integer pageSize;
+  /*
+   * Indicates the requested or default page size.
+   */
+  /** DOCUMENT ME! */
+  @XmlElement protected Integer pageSize;
 
-    /*
-     * Indicates the actual results
-     */
-    @XmlElement
-    protected Integer totalResults;
+  /*
+   * List of products associated with a search
+   */
+  /** DOCUMENT ME! */
+  @XmlElement(name = "product")
+  @XmlElementWrapper(name = "products")
+  protected List<ProductWrapper> products;
 
-    /*
-     * Indicates the number of pages
-     */
-    @XmlElement
-    protected Integer totalPages;
+  /*
+   * List of available facets to be used for searching
+   */
+  /** DOCUMENT ME! */
+  @XmlElement(name = "searchFacet")
+  @XmlElementWrapper(name = "searchFacets")
+  protected List<SearchFacetWrapper> searchFacets;
 
-    /*
-     * List of products associated with a search
-     */
-    @XmlElementWrapper(name = "products")
-    @XmlElement(name = "product")
-    protected List<ProductWrapper> products;
+  /*
+   * Indicates the number of pages
+   */
+  /** DOCUMENT ME! */
+  @XmlElement protected Integer totalPages;
 
-    /*
-     * List of available facets to be used for searching
-     */
-    @XmlElementWrapper(name = "searchFacets")
-    @XmlElement(name = "searchFacet")
-    protected List<SearchFacetWrapper> searchFacets;
+  /*
+   * Indicates the actual results
+   */
+  /** DOCUMENT ME! */
+  @XmlElement protected Integer totalResults;
 
-    @Override
-    public void wrapDetails(ProductSearchResult model, HttpServletRequest request) {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        page = model.getPage();
-        pageSize = model.getPageSize();
-        totalResults = model.getTotalResults();
-        totalPages = model.getTotalPages();
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.search.domain.ProductSearchResult,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(ProductSearchResult model, HttpServletRequest request) {
+    page         = model.getPage();
+    pageSize     = model.getPageSize();
+    totalResults = model.getTotalResults();
+    totalPages   = model.getTotalPages();
 
-        if (model.getProducts() != null) {
-            products = new ArrayList<ProductWrapper>();
-            for (Product product : model.getProducts()) {
-                ProductWrapper productSummary = (ProductWrapper) context.getBean(ProductWrapper.class.getName());
-                productSummary.wrapSummary(product, request);
-                this.products.add(productSummary);
-            }
-        }
+    if (model.getProducts() != null) {
+      products = new ArrayList<ProductWrapper>();
 
-        if (model.getFacets() != null) {
-            this.searchFacets = new ArrayList<SearchFacetWrapper>();
-            for (SearchFacetDTO facet : model.getFacets()) {
-                SearchFacetWrapper facetWrapper = (SearchFacetWrapper) context.getBean(SearchFacetWrapper.class.getName());
-                facetWrapper.wrapSummary(facet, request);
-                this.searchFacets.add(facetWrapper);
-            }
-        }
+      for (Product product : model.getProducts()) {
+        ProductWrapper productSummary = (ProductWrapper) context.getBean(ProductWrapper.class.getName());
+        productSummary.wrapSummary(product, request);
+        this.products.add(productSummary);
+      }
     }
 
-    @Override
-    public void wrapSummary(ProductSearchResult model, HttpServletRequest request) {
-        wrapDetails(model, request);
+    if (model.getFacets() != null) {
+      this.searchFacets = new ArrayList<SearchFacetWrapper>();
+
+      for (SearchFacetDTO facet : model.getFacets()) {
+        SearchFacetWrapper facetWrapper = (SearchFacetWrapper) context.getBean(SearchFacetWrapper.class.getName());
+        facetWrapper.wrapSummary(facet, request);
+        this.searchFacets.add(facetWrapper);
+      }
     }
-}
+  } // end method wrapDetails
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.search.domain.ProductSearchResult,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(ProductSearchResult model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class SearchResultsWrapper

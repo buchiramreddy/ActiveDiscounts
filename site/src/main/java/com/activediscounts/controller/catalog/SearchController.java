@@ -16,28 +16,44 @@
 
 package com.activediscounts.controller.catalog;
 
-import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.core.web.controller.catalog.BroadleafSearchController;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
+import org.broadleafcommerce.common.exception.ServiceException;
 
+import org.broadleafcommerce.core.web.controller.catalog.BroadleafSearchController;
+
+import org.springframework.stereotype.Controller;
+
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Controller
 @RequestMapping("/search")
 public class SearchController extends BroadleafSearchController {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    @RequestMapping("")
-    public String search(Model model, HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "q") String q) throws ServletException, IOException, ServiceException {
-        return super.search(model, request,response, q);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.controller.catalog.BroadleafSearchController#search(org.springframework.ui.Model,
+   *       javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
+   */
+  @Override
+  @RequestMapping("")
+  public String search(Model model, HttpServletRequest request, HttpServletResponse response,
+    @RequestParam(value = "q") String q) throws ServletException, IOException, ServiceException {
+    return super.search(model, request, response, q);
+  }
 
 }

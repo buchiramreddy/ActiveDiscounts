@@ -16,14 +16,6 @@
 
 package org.broadleafcommerce.common.web.dialect;
 
-import org.thymeleaf.dialect.AbstractDialect;
-import org.thymeleaf.processor.IProcessor;
-import org.thymeleaf.standard.StandardDialect;
-import org.thymeleaf.standard.expression.IStandardVariableExpressionEvaluator;
-import org.thymeleaf.standard.expression.StandardExpressionExecutor;
-import org.thymeleaf.standard.expression.StandardExpressionParser;
-import org.thymeleaf.standard.expression.StandardExpressionProcessor;
-
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,42 +23,85 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.thymeleaf.dialect.AbstractDialect;
+
+import org.thymeleaf.processor.IProcessor;
+
+import org.thymeleaf.standard.StandardDialect;
+import org.thymeleaf.standard.expression.IStandardVariableExpressionEvaluator;
+import org.thymeleaf.standard.expression.StandardExpressionExecutor;
+import org.thymeleaf.standard.expression.StandardExpressionParser;
+import org.thymeleaf.standard.expression.StandardExpressionProcessor;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class BLCDialect extends AbstractDialect {
-    
-    private Set<IProcessor> processors = new HashSet<IProcessor>();
-    
-    @Resource(name = "blVariableExpressionEvaluator")
-    private IStandardVariableExpressionEvaluator expressionEvaluator;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getPrefix() {
-        return "blc";
-    }
+  @Resource(name = "blVariableExpressionEvaluator")
+  private IStandardVariableExpressionEvaluator expressionEvaluator;
 
-    @Override
-    public boolean isLenient() {
-        return true;
-    }
-    
-    @Override 
-    public Set<IProcessor> getProcessors() {        
-        return processors; 
-    } 
-    
-    public void setProcessors(Set<IProcessor> processors) {
-        this.processors = processors;
-    }
-    
-    @Override
-    public Map<String, Object> getExecutionAttributes() {
-        final StandardExpressionExecutor executor = StandardExpressionProcessor.createStandardExpressionExecutor(expressionEvaluator);
-        final StandardExpressionParser parser = StandardExpressionProcessor.createStandardExpressionParser(executor);
-        
-        final Map<String,Object> executionAttributes = new LinkedHashMap<String, Object>();
-        executionAttributes.put(StandardDialect.EXPRESSION_EVALUATOR_EXECUTION_ATTRIBUTE, expressionEvaluator);
-        executionAttributes.put(StandardExpressionProcessor.STANDARD_EXPRESSION_EXECUTOR_ATTRIBUTE_NAME, executor);
-        executionAttributes.put(StandardExpressionProcessor.STANDARD_EXPRESSION_PARSER_ATTRIBUTE_NAME, parser);
-        return executionAttributes;
-    }
+  private Set<IProcessor> processors = new HashSet<IProcessor>();
 
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.dialect.AbstractDialect#getExecutionAttributes()
+   */
+  @Override public Map<String, Object> getExecutionAttributes() {
+    final StandardExpressionExecutor executor = StandardExpressionProcessor.createStandardExpressionExecutor(
+        expressionEvaluator);
+    final StandardExpressionParser   parser   = StandardExpressionProcessor.createStandardExpressionParser(executor);
+
+    final Map<String, Object> executionAttributes = new LinkedHashMap<String, Object>();
+    executionAttributes.put(StandardDialect.EXPRESSION_EVALUATOR_EXECUTION_ATTRIBUTE, expressionEvaluator);
+    executionAttributes.put(StandardExpressionProcessor.STANDARD_EXPRESSION_EXECUTOR_ATTRIBUTE_NAME, executor);
+    executionAttributes.put(StandardExpressionProcessor.STANDARD_EXPRESSION_PARSER_ATTRIBUTE_NAME, parser);
+
+    return executionAttributes;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.dialect.IDialect#getPrefix()
+   */
+  @Override public String getPrefix() {
+    return "blc";
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.dialect.AbstractDialect#getProcessors()
+   */
+  @Override public Set<IProcessor> getProcessors() {
+    return processors;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.dialect.IDialect#isLenient()
+   */
+  @Override public boolean isLenient() {
+    return true;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  processors  DOCUMENT ME!
+   */
+  public void setProcessors(Set<IProcessor> processors) {
+    this.processors = processors;
+  }
+
+} // end class BLCDialect

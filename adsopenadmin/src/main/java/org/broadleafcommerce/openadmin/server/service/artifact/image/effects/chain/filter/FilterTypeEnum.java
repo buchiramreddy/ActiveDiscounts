@@ -17,19 +17,14 @@
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/10/11
- * Time: 1:08 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/10/11 Time: 1:08 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public enum FilterTypeEnum {
-    ALTERHSB,
-    ALTERRGB,
-    AUTOLEVELSRGB,
-    CROP,
-    GAUSSIANBLUR,
-    RESIZE,
-    ROTATE,
-    UNSHARPMASK
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  ALTERHSB, ALTERRGB, AUTOLEVELSRGB, CROP, GAUSSIANBLUR, RESIZE, ROTATE, UNSHARPMASK
 }

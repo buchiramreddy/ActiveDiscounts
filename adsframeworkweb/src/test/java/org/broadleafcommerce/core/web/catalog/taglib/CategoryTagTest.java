@@ -16,41 +16,62 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.easymock.classextension.EasyMock;
-
 import javax.servlet.jsp.JspException;
 
+import org.broadleafcommerce.core.catalog.domain.Category;
+
+import org.easymock.classextension.EasyMock;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CategoryTagTest extends BaseTagLibTest {
-    
-    private CategoryTag categoryTag;
-    private Category category;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void test_categoryTag() throws JspException {
-        categoryTag.setJspContext(pageContext);
-        categoryTag.setVar("categoryVar");
-        categoryTag.setCatalogService(catalogService);
+  private Category category;
 
-        pageContext.setAttribute("categoryVar", category);
-        EasyMock.expect(pageContext.getAttribute("categoryVar")).andReturn(category);
+  private CategoryTag categoryTag;
 
-        categoryTag.setCategoryId(0L);
-        EasyMock.expect(catalogService.findCategoryById(0L)).andReturn(category);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        super.replayAdditionalMockObjects(category);
+  /**
+   * @see  org.broadleafcommerce.core.web.catalog.taglib.BaseTagLibTest#setup()
+   */
+  @Override public void setup() {
+    categoryTag = new CategoryTag();
+    category    = EasyMock.createMock(Category.class);
+  }
 
-        categoryTag.doTag();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        Category ret = (Category) pageContext.getAttribute("categoryVar");
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  JspException  DOCUMENT ME!
+   */
+  public void test_categoryTag() throws JspException {
+    categoryTag.setJspContext(pageContext);
+    categoryTag.setVar("categoryVar");
+    categoryTag.setCatalogService(catalogService);
 
-        assert(category.equals(ret));
+    pageContext.setAttribute("categoryVar", category);
+    EasyMock.expect(pageContext.getAttribute("categoryVar")).andReturn(category);
 
-        super.verifyBaseMockObjects(category);
-    }
+    categoryTag.setCategoryId(0L);
+    EasyMock.expect(catalogService.findCategoryById(0L)).andReturn(category);
 
-    @Override
-    public void setup() {
-        categoryTag = new CategoryTag();
-        category = EasyMock.createMock(Category.class);
-    }
-}
+    super.replayAdditionalMockObjects(category);
+
+    categoryTag.doTag();
+
+    Category ret = (Category) pageContext.getAttribute("categoryVar");
+
+    assert (category.equals(ret));
+
+    super.verifyBaseMockObjects(category);
+  }
+} // end class CategoryTagTest

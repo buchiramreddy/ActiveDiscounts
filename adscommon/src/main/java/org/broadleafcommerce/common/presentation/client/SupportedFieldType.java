@@ -17,38 +17,16 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public enum SupportedFieldType {
-    UNKNOWN,
-    ID,
-    BOOLEAN,
-    DATE,
-    INTEGER,
-    DECIMAL,
-    STRING,
-    PASSWORD,
-    PASSWORD_CONFIRM,
-    EMAIL,
-    FOREIGN_KEY,
-    ADDITIONAL_FOREIGN_KEY,
-    MONEY,
-    BROADLEAF_ENUMERATION,
-    EXPLICIT_ENUMERATION,
-    EMPTY_ENUMERATION,
-    DATA_DRIVEN_ENUMERATION,
-    HTML,
-    HTML_BASIC,
-    UPLOAD,
-    HIDDEN,
-    ASSET_URL,
-    ASSET_LOOKUP,
-    MEDIA,
-    RULE_SIMPLE,
-    RULE_WITH_QUANTITY,
-    STRING_LIST,
-    IMAGE,
-    COLOR
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  UNKNOWN, ID, BOOLEAN, DATE, INTEGER, DECIMAL, STRING, PASSWORD, PASSWORD_CONFIRM, EMAIL, FOREIGN_KEY,
+  ADDITIONAL_FOREIGN_KEY, MONEY, BROADLEAF_ENUMERATION, EXPLICIT_ENUMERATION, EMPTY_ENUMERATION,
+  DATA_DRIVEN_ENUMERATION, HTML, HTML_BASIC, UPLOAD, HIDDEN, ASSET_URL, ASSET_LOOKUP, MEDIA, RULE_SIMPLE,
+  RULE_WITH_QUANTITY, STRING_LIST, IMAGE, COLOR
 }

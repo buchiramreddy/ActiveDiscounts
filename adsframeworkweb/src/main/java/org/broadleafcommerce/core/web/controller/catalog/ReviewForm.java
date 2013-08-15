@@ -16,35 +16,97 @@
 
 package org.broadleafcommerce.core.web.controller.catalog;
 
-import org.broadleafcommerce.core.catalog.domain.Product;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.core.catalog.domain.Product;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ReviewForm implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected Product product;
-    protected Double rating;
-    protected String reviewText;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Product getProduct() {
-        return product;
-    }
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    public Double getRating() {
-        return rating;
-    }
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-    public String getReviewText() {
-        return reviewText;
-    }
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-    
-}
+  /** DOCUMENT ME! */
+  protected Product product;
+
+  /** DOCUMENT ME! */
+  protected Double  rating;
+
+  /** DOCUMENT ME! */
+  protected String  reviewText;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Product getProduct() {
+    return product;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Double getRating() {
+    return rating;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getReviewText() {
+    return reviewText;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  product  DOCUMENT ME!
+   */
+  public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  rating  DOCUMENT ME!
+   */
+  public void setRating(Double rating) {
+    this.rating = rating;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  reviewText  DOCUMENT ME!
+   */
+  public void setReviewText(String reviewText) {
+    this.reviewText = reviewText;
+  }
+
+} // end class ReviewForm

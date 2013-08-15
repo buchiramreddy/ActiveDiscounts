@@ -16,10 +16,33 @@
 
 package org.broadleafcommerce.common.encryption;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface EncryptionModule {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String encrypt(String plainText);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   cipherText  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String decrypt(String cipherText);
 
-    public String decrypt(String cipherText);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   plainText  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String encrypt(String plainText);
 
 }

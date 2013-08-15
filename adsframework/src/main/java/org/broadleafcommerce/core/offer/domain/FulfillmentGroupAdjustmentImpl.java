@@ -16,26 +16,6 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
-import org.broadleafcommerce.common.currency.util.CurrencyCodeIdentifiable;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.AdminPresentationToOneLookup;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides;
-import org.broadleafcommerce.common.presentation.override.PropertyType;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -48,182 +28,333 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "BLC_FG_ADJUSTMENT")
-@Inheritance(strategy=InheritanceType.JOINED)
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
-@AdminPresentationMergeOverrides(
-    {
-        @AdminPresentationMergeOverride(name = "", mergeEntries =
-            @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
-                                            booleanOverrideValue = true))
-    }
+import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
+import org.broadleafcommerce.common.currency.util.CurrencyCodeIdentifiable;
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.AdminPresentationToOneLookup;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides;
+import org.broadleafcommerce.common.presentation.override.PropertyType;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(
+  populateToOneFields = PopulateToOneFieldsEnum.TRUE,
+  friendlyName        = "FulfillmentGroupAdjustmentImpl_baseFulfillmentGroupAdjustment"
 )
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE, friendlyName = "FulfillmentGroupAdjustmentImpl_baseFulfillmentGroupAdjustment")
-public class FulfillmentGroupAdjustmentImpl implements FulfillmentGroupAdjustment, CurrencyCodeIdentifiable {
-
-    public static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(generator= "FGAdjustmentId")
-    @GenericGenerator(
-        name="FGAdjustmentId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FulfillmentGroupAdjustmentImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl")
-        }
+@AdminPresentationMergeOverrides(
+  {
+    @AdminPresentationMergeOverride(
+      name = "",
+      mergeEntries =
+        @AdminPresentationMergeEntry(
+          propertyType         = PropertyType.AdminPresentation.READONLY,
+          booleanOverrideValue = true
+        )
     )
-    @Column(name = "FG_ADJUSTMENT_ID")
-    protected Long id;
+  }
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blOrderElements"
+)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "BLC_FG_ADJUSTMENT")
+public class FulfillmentGroupAdjustmentImpl implements FulfillmentGroupAdjustment, CurrencyCodeIdentifiable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @ManyToOne(targetEntity = FulfillmentGroupImpl.class)
-    @JoinColumn(name = "FULFILLMENT_GROUP_ID")
-    @Index(name="FGADJUSTMENT_INDEX", columnNames={"FULFILLMENT_GROUP_ID"})
-    @AdminPresentation(excluded = true)
-    protected FulfillmentGroup fulfillmentGroup;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    @ManyToOne(targetEntity = OfferImpl.class, optional=false)
-    @JoinColumn(name = "OFFER_ID")
-    @Index(name="FGADJUSTMENT_OFFER_INDEX", columnNames={"OFFER_ID"})
-    @AdminPresentation(friendlyName = "FulfillmentGroupAdjustmentImpl_Offer", order=1000,
-            prominent = true, gridOrder = 1000)
-    @AdminPresentationToOneLookup()
-    protected Offer offer;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "ADJUSTMENT_REASON", nullable=false)
-    @AdminPresentation(friendlyName = "FulfillmentGroupAdjustmentImpl_FG_Adjustment_Reason", order=2000)
-    protected String reason;
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @Index(
+    name        = "FGADJUSTMENT_INDEX",
+    columnNames = { "FULFILLMENT_GROUP_ID" }
+  )
+  @JoinColumn(name = "FULFILLMENT_GROUP_ID")
+  @ManyToOne(targetEntity = FulfillmentGroupImpl.class)
+  protected FulfillmentGroup fulfillmentGroup;
 
-    @Column(name = "ADJUSTMENT_VALUE", nullable=false, precision=19, scale=5)
-    @AdminPresentation(friendlyName = "FulfillmentGroupAdjustmentImpl_FG_Adjustment_Value", order=3000,
-            fieldType = SupportedFieldType.MONEY, prominent = true,
-            gridOrder = 2000)
-    protected BigDecimal value = Money.ZERO.getAmount();
+  /** DOCUMENT ME! */
+  @Column(name = "FG_ADJUSTMENT_ID")
+  @GeneratedValue(generator = "FGAdjustmentId")
+  @GenericGenerator(
+    name       = "FGAdjustmentId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "FulfillmentGroupAdjustmentImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void init(FulfillmentGroup fulfillmentGroup, Offer offer, String reason){
-        this.fulfillmentGroup = fulfillmentGroup;
-        this.offer = offer;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "FulfillmentGroupAdjustmentImpl_Offer",
+    order        = 1000,
+    prominent    = true,
+    gridOrder    = 1000
+  )
+  @AdminPresentationToOneLookup
+  @Index(
+    name        = "FGADJUSTMENT_OFFER_INDEX",
+    columnNames = { "OFFER_ID" }
+  )
+  @JoinColumn(name = "OFFER_ID")
+  @ManyToOne(
+    targetEntity = OfferImpl.class,
+    optional     = false
+  )
+  protected Offer                               offer;
 
-        if (reason == null) {
-            this.reason = offer.getName();
-        } else {
-            this.reason = reason;
-        }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "FulfillmentGroupAdjustmentImpl_FG_Adjustment_Reason",
+    order        = 2000
+  )
+  @Column(
+    name     = "ADJUSTMENT_REASON",
+    nullable = false
+  )
+  protected String reason;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "FulfillmentGroupAdjustmentImpl_FG_Adjustment_Value",
+    order        = 3000,
+    fieldType    = SupportedFieldType.MONEY,
+    prominent    = true,
+    gridOrder    = 2000
+  )
+  @Column(
+    name      = "ADJUSTMENT_VALUE",
+    nullable  = false,
+    precision = 19,
+    scale     = 5
+  )
+  protected BigDecimal value = Money.ZERO.getAmount();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public Long getId() {
-        return id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public FulfillmentGroup getFulfillmentGroup() {
-        return fulfillmentGroup;
+    FulfillmentGroupAdjustmentImpl other = (FulfillmentGroupAdjustmentImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
-        this.fulfillmentGroup = fulfillmentGroup;
+    if (fulfillmentGroup == null) {
+      if (other.fulfillmentGroup != null) {
+        return false;
+      }
+    } else if (!fulfillmentGroup.equals(other.fulfillmentGroup)) {
+      return false;
     }
 
-    @Override
-    public Offer getOffer() {
-        return offer;
+    if (offer == null) {
+      if (other.offer != null) {
+        return false;
+      }
+    } else if (!offer.equals(other.offer)) {
+      return false;
     }
 
-    public void setOffer(Offer offer) {
-        this.offer = offer;
+    if (reason == null) {
+      if (other.reason != null) {
+        return false;
+      }
+    } else if (!reason.equals(other.reason)) {
+      return false;
     }
 
-    @Override
-    public String getReason() {
-        return reason;
+    if (value == null) {
+      if (other.value != null) {
+        return false;
+      }
+    } else if (!value.equals(other.value)) {
+      return false;
     }
 
-    @Override
-    public void setReason(String reason) {
-        this.reason = reason;
+    return true;
+  } // end method equals
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.util.CurrencyCodeIdentifiable#getCurrencyCode()
+   */
+  @Override public String getCurrencyCode() {
+    return ((CurrencyCodeIdentifiable) fulfillmentGroup).getCurrencyCode();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustment#getFulfillmentGroup()
+   */
+  @Override public FulfillmentGroup getFulfillmentGroup() {
+    return fulfillmentGroup;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.Adjustment#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.Adjustment#getOffer()
+   */
+  @Override public Offer getOffer() {
+    return offer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.Adjustment#getReason()
+   */
+  @Override public String getReason() {
+    return reason;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.Adjustment#getValue()
+   */
+  @Override public Money getValue() {
+    return (value == null) ? null
+                           : BroadleafCurrencyUtils.getMoney(value, getFulfillmentGroup().getOrder().getCurrency());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((fulfillmentGroup == null) ? 0 : fulfillmentGroup.hashCode());
+    result = (prime * result) + ((offer == null) ? 0 : offer.hashCode());
+    result = (prime * result) + ((reason == null) ? 0 : reason.hashCode());
+    result = (prime * result) + ((value == null) ? 0 : value.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustment#init(org.broadleafcommerce.core.order.domain.FulfillmentGroup,
+   *       org.broadleafcommerce.core.offer.domain.Offer, java.lang.String)
+   */
+  @Override public void init(FulfillmentGroup fulfillmentGroup, Offer offer, String reason) {
+    this.fulfillmentGroup = fulfillmentGroup;
+    this.offer            = offer;
+
+    if (reason == null) {
+      this.reason = offer.getName();
+    } else {
+      this.reason = reason;
     }
+  }
 
-    @Override
-    public Money getValue() {
-        return value == null ? null : BroadleafCurrencyUtils.getMoney(value, getFulfillmentGroup().getOrder().getCurrency());
-    }
-    
-    @Override
-    public void setValue(Money value) {
-        this.value = value.getAmount();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getCurrencyCode() {
-        return ((CurrencyCodeIdentifiable) fulfillmentGroup).getCurrencyCode();
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustment#setFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
+    this.fulfillmentGroup = fulfillmentGroup;
+  }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((fulfillmentGroup == null) ? 0 : fulfillmentGroup.hashCode());
-        result = prime * result + ((offer == null) ? 0 : offer.hashCode());
-        result = prime * result + ((reason == null) ? 0 : reason.hashCode());
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
-        return result;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        FulfillmentGroupAdjustmentImpl other = (FulfillmentGroupAdjustmentImpl) obj;
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.Adjustment#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (fulfillmentGroup == null) {
-            if (other.fulfillmentGroup != null) {
-                return false;
-            }
-        } else if (!fulfillmentGroup.equals(other.fulfillmentGroup)) {
-            return false;
-        }
-        if (offer == null) {
-            if (other.offer != null) {
-                return false;
-            }
-        } else if (!offer.equals(other.offer)) {
-            return false;
-        }
-        if (reason == null) {
-            if (other.reason != null) {
-                return false;
-            }
-        } else if (!reason.equals(other.reason)) {
-            return false;
-        }
-        if (value == null) {
-            if (other.value != null) {
-                return false;
-            }
-        } else if (!value.equals(other.value)) {
-            return false;
-        }
-        return true;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  public void setOffer(Offer offer) {
+    this.offer = offer;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.Adjustment#setReason(java.lang.String)
+   */
+  @Override public void setReason(String reason) {
+    this.reason = reason;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustment#setValue(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setValue(Money value) {
+    this.value = value.getAmount();
+  }
+
+} // end class FulfillmentGroupAdjustmentImpl

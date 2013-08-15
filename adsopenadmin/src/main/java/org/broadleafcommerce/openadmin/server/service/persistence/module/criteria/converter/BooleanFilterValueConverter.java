@@ -18,14 +18,21 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 
 import org.springframework.stereotype.Component;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blBooleanFilterValueConverter")
 public class BooleanFilterValueConverter implements FilterValueConverter<Boolean> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Boolean convert(String stringValue) {
-        return Boolean.valueOf(stringValue);
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter#convert(java.lang.String)
+   */
+  @Override public Boolean convert(String stringValue) {
+    return Boolean.valueOf(stringValue);
+  }
 }

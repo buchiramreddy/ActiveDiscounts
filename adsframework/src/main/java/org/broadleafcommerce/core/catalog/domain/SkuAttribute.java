@@ -20,61 +20,59 @@ import org.broadleafcommerce.common.value.Searchable;
 
 
 /**
- * Implementations of this interface are used to hold data about a SKU's Attributes.
- * A SKU Attribute is a designator on a SKU that differentiates it from other similar SKUs
- * (for example: Blue attribute for hat).
+ * Implementations of this interface are used to hold data about a SKU's Attributes. A SKU Attribute is a designator on
+ * a SKU that differentiates it from other similar SKUs (for example: Blue attribute for hat).<br>
  * <br>
- * <br>
- * You should implement this class if you want to make significant changes to how the
- * class is persisted.  If you just want to add additional fields then you should
- * extend {@link org.broadleafcommerce.core.catalog.domain.SkuAttributeImpl}.
+ * You should implement this class if you want to make significant changes to how the class is persisted. If you just
+ * want to add additional fields then you should extend
+ * {@link org.broadleafcommerce.core.catalog.domain.SkuAttributeImpl}.
  *
- * @see {@link org.broadleafcommerce.core.catalog.domain.SkuAttributeImpl}, {@link org.broadleafcommerce.core.catalog.domain.Sku}
- * @author btaylor
- *
+ * @see      {@link org.broadleafcommerce.core.catalog.domain.SkuAttributeImpl},
+ *           {@link org.broadleafcommerce.core.catalog.domain.Sku}
+ * @author   btaylor
+ * @version  $Revision$, $Date$
  */
 public interface SkuAttribute extends Searchable<String> {
+  /**
+   * Gets the id.
+   *
+   * @return  the id
+   */
+  Long getId();
 
-    /**
-     * Gets the id.
-     *
-     * @return the id
-     */
-    public Long getId();
+  /**
+   * Sets the id.
+   *
+   * @param  id  the new id
+   */
+  void setId(Long id);
 
-    /**
-     * Sets the id.
-     *
-     * @param id the new id
-     */
-    public void setId(Long id);
+  /**
+   * Gets the sku.
+   *
+   * @return  the sku
+   */
+  Sku getSku();
 
-    /**
-     * Gets the sku.
-     *
-     * @return the sku
-     */
-    public Sku getSku();
+  /**
+   * Sets the sku.
+   *
+   * @param  sku  the new sku
+   */
+  void setSku(Sku sku);
 
-    /**
-     * Sets the sku.
-     *
-     * @param sku the new sku
-     */
-    public void setSku(Sku sku);
+  /**
+   * Gets the name.
+   *
+   * @return  the name
+   */
+  @Override String getName();
 
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    public String getName();
+  /**
+   * Sets the name.
+   *
+   * @param  name  the new name
+   */
+  @Override void setName(String name);
 
-    /**
-     * Sets the name.
-     *
-     * @param name the new name
-     */
-    public void setName(String name);
-
-}
+} // end interface SkuAttribute

@@ -17,23 +17,47 @@
 package org.broadleafcommerce.common.cache.engine;
 
 import java.io.Serializable;
+
 import java.util.Hashtable;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-@Deprecated
-public class HydratedCacheElement extends Hashtable<String, Object> {
+@Deprecated public class HydratedCacheElement extends Hashtable<String, Object> {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public Object getCacheElementItem(String elementItemName, Serializable parentKey) {
-        return get(elementItemName + "_" + parentKey);
-    }
-    
-    public Object putCacheElementItem(String elementItemName, Serializable parentKey, Object value) {
-        return put(elementItemName +"_"+parentKey, value);
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   elementItemName  DOCUMENT ME!
+   * @param   parentKey        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Object getCacheElementItem(String elementItemName, Serializable parentKey) {
+    return get(elementItemName + "_" + parentKey);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   elementItemName  DOCUMENT ME!
+   * @param   parentKey        DOCUMENT ME!
+   * @param   value            DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Object putCacheElementItem(String elementItemName, Serializable parentKey, Object value) {
+    return put(elementItemName + "_" + parentKey, value);
+  }
+} // end class HydratedCacheElement

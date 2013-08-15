@@ -17,8 +17,13 @@
 package org.broadleafcommerce.openadmin.server.dao;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum OverrideType {
-    BASIC,COLLECTION,ADORNEDTARGETCOLLECTION,MAP
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  BASIC, COLLECTION, ADORNEDTARGETCOLLECTION, MAP
 }

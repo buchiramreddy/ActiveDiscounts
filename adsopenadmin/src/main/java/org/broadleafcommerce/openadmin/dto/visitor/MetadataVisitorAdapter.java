@@ -16,35 +16,54 @@
 
 package org.broadleafcommerce.openadmin.dto.visitor;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.MapMetadata;
 
-import java.io.Serializable;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class MetadataVisitorAdapter implements MetadataVisitor, Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void visit(AdornedTargetCollectionMetadata metadata) {
-        throw new IllegalArgumentException("Not supported in this context");
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor#visit(org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata)
+   */
+  @Override public void visit(AdornedTargetCollectionMetadata metadata) {
+    throw new IllegalArgumentException("Not supported in this context");
+  }
 
-    @Override
-    public void visit(BasicFieldMetadata metadata) {
-        throw new IllegalArgumentException("Not supported in this context");
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void visit(BasicCollectionMetadata metadata) {
-        throw new IllegalArgumentException("Not supported in this context");
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor#visit(org.broadleafcommerce.openadmin.dto.BasicFieldMetadata)
+   */
+  @Override public void visit(BasicFieldMetadata metadata) {
+    throw new IllegalArgumentException("Not supported in this context");
+  }
 
-    @Override
-    public void visit(MapMetadata metadata) {
-        throw new IllegalArgumentException("Not supported in this context");
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor#visit(org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata)
+   */
+  @Override public void visit(BasicCollectionMetadata metadata) {
+    throw new IllegalArgumentException("Not supported in this context");
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor#visit(org.broadleafcommerce.openadmin.dto.MapMetadata)
+   */
+  @Override public void visit(MapMetadata metadata) {
+    throw new IllegalArgumentException("Not supported in this context");
+  }
+} // end class MetadataVisitorAdapter

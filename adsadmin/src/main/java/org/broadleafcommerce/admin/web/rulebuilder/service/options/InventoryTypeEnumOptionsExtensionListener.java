@@ -16,31 +16,38 @@
 
 package org.broadleafcommerce.admin.web.rulebuilder.service.options;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-import org.broadleafcommerce.common.time.HourOfDayType;
-import org.broadleafcommerce.core.inventory.service.type.InventoryType;
-import org.broadleafcommerce.openadmin.web.rulebuilder.enums.AbstractRuleBuilderEnumOptionsExtensionListener;
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+import org.broadleafcommerce.core.inventory.service.type.InventoryType;
+
+import org.broadleafcommerce.openadmin.web.rulebuilder.enums.AbstractRuleBuilderEnumOptionsExtensionListener;
+
+import org.springframework.stereotype.Component;
+
+
 /**
- * Rule Builder enum options provider for {@link org.broadleafcommerce.common.time.HourOfDayType}
- * 
- * @author Andre Azzolini (apazzolini)
+ * Rule Builder enum options provider for {@link org.broadleafcommerce.common.time.HourOfDayType}.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Component("blInventoryTypeOptionsExtensionListener")
 public class InventoryTypeEnumOptionsExtensionListener extends AbstractRuleBuilderEnumOptionsExtensionListener {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    protected Map<String, Class<? extends BroadleafEnumerationType>> getValuesToGenerate() {
-        Map<String, Class<? extends BroadleafEnumerationType>> map = 
-                new HashMap<String, Class<? extends BroadleafEnumerationType>>();
-        
-        map.put("blcOptions_InventoryType", InventoryType.class);
-        
-        return map;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.enums.AbstractRuleBuilderEnumOptionsExtensionListener#getValuesToGenerate()
+   */
+  @Override protected Map<String, Class<? extends BroadleafEnumerationType>> getValuesToGenerate() {
+    Map<String, Class<? extends BroadleafEnumerationType>> map =
+      new HashMap<String, Class<? extends BroadleafEnumerationType>>();
+
+    map.put("blcOptions_InventoryType", InventoryType.class);
+
+    return map;
+  }
 
 }

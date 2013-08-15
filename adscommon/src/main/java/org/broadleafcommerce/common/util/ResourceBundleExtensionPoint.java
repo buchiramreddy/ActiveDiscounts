@@ -17,19 +17,36 @@
 package org.broadleafcommerce.common.util;
 
 /**
- * 
- * @deprecated instead, use {@link org.broadleafcommerce.common.util.BroadleafMergeResourceBundleMessageSource}
+ * DOCUMENT ME!
+ *
+ * @deprecated  instead, use {@link org.broadleafcommerce.common.util.BroadleafMergeResourceBundleMessageSource}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public class ResourceBundleExtensionPoint {
+@Deprecated public class ResourceBundleExtensionPoint {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private String[] basenameExtensions = new String[0];
+  private String[] basenameExtensions = new String[0];
 
-    public String[] getBasenameExtensions() {
-        return basenameExtensions;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setBasenameExtensions(String[] basenameExtensions) {
-        this.basenameExtensions = basenameExtensions;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String[] getBasenameExtensions() {
+    return basenameExtensions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  basenameExtensions  DOCUMENT ME!
+   */
+  public void setBasenameExtensions(String[] basenameExtensions) {
+    this.basenameExtensions = basenameExtensions;
+  }
+} // end class ResourceBundleExtensionPoint

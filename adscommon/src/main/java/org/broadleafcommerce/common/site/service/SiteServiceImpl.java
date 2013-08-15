@@ -16,74 +16,124 @@
 
 package org.broadleafcommerce.common.site.service;
 
-import org.broadleafcommerce.common.site.dao.SiteDao;
-import org.broadleafcommerce.common.site.domain.Site;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.common.site.dao.SiteDao;
+import org.broadleafcommerce.common.site.domain.Site;
+
+import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blSiteService")
 public class SiteServiceImpl implements SiteService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blSiteDao")
-    protected SiteDao siteDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blSiteDao")
+  protected SiteDao siteDao;
 
-    @Override
-    public Site retrieveSiteById(Long id) {
-        Site response = siteDao.retrieve(id);
-        if (response != null) {
-            response = response.clone();
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        return response;
+  /**
+   * @see  org.broadleafcommerce.common.site.service.SiteService#findAllActiveSites()
+   */
+  @Override
+  @Transactional(
+    value    = "blTransactionManager",
+    readOnly = true
+  )
+  public List<Site> findAllActiveSites() {
+    List<Site> response = new ArrayList<Site>();
+    List<Site> sites    = siteDao.readAllActiveSites();
+
+    for (Site site : sites) {
+      response.add(site.clone());
     }
 
-    @Override
-    @Transactional(value = "blTransactionManager", readOnly = true)
-    public Site retrieveSiteByDomainName(String domainName) {
-        String domainPrefix = null;
-        if (domainName != null) {
-            int pos = domainName.indexOf('.');
-            if (pos >= 0) {
-                domainPrefix = domainName.substring(0, pos);
-            } else {
-                domainPrefix = domainName;
-            }
-        }
+    return response;
+  }
 
-        Site response = siteDao.retrieveSiteByDomainOrDomainPrefix(domainName, domainPrefix);
-        if (response != null) {
-            response = response.clone();
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return response;
+  /**
+   * @see  org.broadleafcommerce.common.site.service.SiteService#retrieveDefaultSite()
+   */
+  @Override
+  @Transactional(
+    value    = "blTransactionManager",
+    readOnly = true
+  )
+  public Site retrieveDefaultSite() {
+    return siteDao.retrieveDefaultSite().clone();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.site.service.SiteService#retrieveSiteByDomainName(java.lang.String)
+   */
+  @Override
+  @Transactional(
+    value    = "blTransactionManager",
+    readOnly = true
+  )
+  public Site retrieveSiteByDomainName(String domainName) {
+    String domainPrefix = null;
+
+    if (domainName != null) {
+      int pos = domainName.indexOf('.');
+
+      if (pos >= 0) {
+        domainPrefix = domainName.substring(0, pos);
+      } else {
+        domainPrefix = domainName;
+      }
     }
 
-    @Override
-    @Transactional("blTransactionManager")
-    public Site save(Site site) {
-        return siteDao.save(site).clone();
+    Site response = siteDao.retrieveSiteByDomainOrDomainPrefix(domainName, domainPrefix);
+
+    if (response != null) {
+      response = response.clone();
     }
 
-    @Override
-    @Transactional(value = "blTransactionManager", readOnly = true)
-    public Site retrieveDefaultSite() {
-        return siteDao.retrieveDefaultSite().clone();
-    }
-    
-    @Override
-    @Transactional(value = "blTransactionManager", readOnly = true)
-    public List<Site> findAllActiveSites() {
-        List<Site> response = new ArrayList<Site>();
-        List<Site> sites = siteDao.readAllActiveSites();
-        for (Site site : sites) {
-            response.add(site.clone());
-        }
-        return response;
+    return response;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.site.service.SiteService#retrieveSiteById(java.lang.Long)
+   */
+  @Override public Site retrieveSiteById(Long id) {
+    Site response = siteDao.retrieve(id);
+
+    if (response != null) {
+      response = response.clone();
     }
 
-}
+    return response;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.site.service.SiteService#save(org.broadleafcommerce.common.site.domain.Site)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Site save(Site site) {
+    return siteDao.save(site).clone();
+  }
+
+} // end class SiteServiceImpl

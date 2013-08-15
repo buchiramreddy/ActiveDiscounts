@@ -16,13 +16,6 @@
 
 package org.broadleafcommerce.core.search.domain;
 
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -35,66 +28,101 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CAT_SEARCH_FACET_EXCL_XREF")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
 public class CategoryExcludedSearchFacetImpl implements CategoryExcludedSearchFacet, Serializable {
+  /** DOCUMENT ME! */
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(generator = "CategoryExcludedSearchFacetId")
-    @GenericGenerator(
-        name="CategoryExcludedSearchFacetId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CategoryExcludedSearchFacetImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacetImpl")
-        }
-    )
-    @Column(name = "CAT_EXCL_SEARCH_FACET_ID")
-    protected Long id;
-
-    @ManyToOne(targetEntity = CategoryImpl.class)
-    @JoinColumn(name = "CATEGORY_ID")
-    protected Category category;
-
-    @ManyToOne(targetEntity = SearchFacetImpl.class)
-    @JoinColumn(name = "SEARCH_FACET_ID")
-    protected SearchFacet searchFacet;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "CAT_EXCL_SEARCH_FACET_ID")
+  @GeneratedValue(generator = "CategoryExcludedSearchFacetId")
+  @GenericGenerator(
+    name       = "CategoryExcludedSearchFacetId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CategoryExcludedSearchFacetImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacetImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "CATEGORY_ID")
+  @ManyToOne(targetEntity = CategoryImpl.class)
+  protected Category category;
 
-    @Override
-    public Category getCategory() {
-        return category;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "SEARCH_FACET_ID")
+  @ManyToOne(targetEntity = SearchFacetImpl.class)
+  protected SearchFacet searchFacet;
 
-    @Override
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacet#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public SearchFacet getSearchFacet() {
-        return searchFacet;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacet#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public void setSearchFacet(SearchFacet searchFacet) {
-        this.searchFacet = searchFacet;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacet#getCategory()
+   */
+  @Override public Category getCategory() {
+    return category;
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacet#setCategory(org.broadleafcommerce.core.catalog.domain.Category)
+   */
+  @Override public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacet#getSearchFacet()
+   */
+  @Override public SearchFacet getSearchFacet() {
+    return searchFacet;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategoryExcludedSearchFacet#setSearchFacet(org.broadleafcommerce.core.search.domain.SearchFacet)
+   */
+  @Override public void setSearchFacet(SearchFacet searchFacet) {
+    this.searchFacet = searchFacet;
+  }
+
+} // end class CategoryExcludedSearchFacetImpl

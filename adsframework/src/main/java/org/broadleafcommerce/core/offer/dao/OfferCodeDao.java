@@ -18,16 +18,63 @@ package org.broadleafcommerce.core.offer.dao;
 
 import org.broadleafcommerce.core.offer.domain.OfferCode;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OfferCodeDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public OfferCode readOfferCodeById(Long offerCode);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferCode create();
 
-    public OfferCode readOfferCodeByCode(String code);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public OfferCode save(OfferCode offerCode);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offerCodeId  DOCUMENT ME!
+   */
+  void delete(OfferCode offerCodeId);
 
-    public void delete(OfferCode offerCodeId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public OfferCode create();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   code  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferCode readOfferCodeByCode(String code);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   offerCode  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferCode readOfferCodeById(Long offerCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   offerCode  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferCode save(OfferCode offerCode);
+
+} // end interface OfferCodeDao

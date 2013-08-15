@@ -21,22 +21,76 @@ import org.broadleafcommerce.core.payment.domain.CreditCardPaymentInfo;
 import org.broadleafcommerce.core.payment.domain.GiftCardPaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SecurePaymentInfoDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BankAccountPaymentInfo findBankAccountInfo(String referenceNumber);
 
-    public BankAccountPaymentInfo findBankAccountInfo(String referenceNumber);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CreditCardPaymentInfo findCreditCardInfo(String referenceNumber);
 
-    public CreditCardPaymentInfo findCreditCardInfo(String referenceNumber);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  GiftCardPaymentInfo findGiftCardInfo(String referenceNumber);
 
-    public GiftCardPaymentInfo findGiftCardInfo(String referenceNumber);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   securePaymentInfo  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Referenced save(Referenced securePaymentInfo);
 
-    public Referenced save(Referenced securePaymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BankAccountPaymentInfo createBankAccountPaymentInfo();
 
-    public BankAccountPaymentInfo createBankAccountPaymentInfo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  GiftCardPaymentInfo createGiftCardPaymentInfo();
 
-    public GiftCardPaymentInfo createGiftCardPaymentInfo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CreditCardPaymentInfo createCreditCardPaymentInfo();
 
-    public CreditCardPaymentInfo createCreditCardPaymentInfo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  securePaymentInfo  DOCUMENT ME!
+   */
+  void delete(Referenced securePaymentInfo);
 
-    public void delete(Referenced securePaymentInfo);
-
-}
+} // end interface SecurePaymentInfoDao

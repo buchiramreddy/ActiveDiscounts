@@ -16,10 +16,6 @@
 
 package org.broadleafcommerce.cms.file.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.sql.Blob;
 
 import javax.persistence.Column;
@@ -31,64 +27,115 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_STATIC_ASSET_STRG")
 public class StaticAssetStorageImpl implements StaticAssetStorage {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "StaticAssetStorageId")
-    @GenericGenerator(
-        name="StaticAssetStorageId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="StaticAssetStorageImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.file.domain.StaticAssetStorageImpl")
-        }
-    )
-    @Column(name = "STATIC_ASSET_STRG_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name ="STATIC_ASSET_ID", nullable = false)
-    @Index(name="STATIC_ASSET_ID_INDEX", columnNames={"STATIC_ASSET_ID"})
-    protected Long staticAssetId;
+  /** DOCUMENT ME! */
+  @Column(
+    name   = "FILE_DATA",
+    length = Integer.MAX_VALUE - 1
+  )
+  @Lob protected Blob fileData;
 
-    @Column (name = "FILE_DATA", length = Integer.MAX_VALUE - 1)
-    @Lob
-    protected Blob fileData;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "STATIC_ASSET_STRG_ID")
+  @GeneratedValue(generator = "StaticAssetStorageId")
+  @GenericGenerator(
+    name       = "StaticAssetStorageId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "StaticAssetStorageImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.file.domain.StaticAssetStorageImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "STATIC_ASSET_ID",
+    nullable = false
+  )
+  @Index(
+    name        = "STATIC_ASSET_ID_INDEX",
+    columnNames = { "STATIC_ASSET_ID" }
+  )
+  protected Long staticAssetId;
 
-    @Override
-    public Blob getFileData() {
-        return fileData;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setFileData(Blob fileData) {
-        this.fileData = fileData;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.file.domain.StaticAssetStorage#getFileData()
+   */
+  @Override public Blob getFileData() {
+    return fileData;
+  }
 
-    @Override
-    public Long getStaticAssetId() {
-        return staticAssetId;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setStaticAssetId(Long staticAssetId) {
-        this.staticAssetId = staticAssetId;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.cms.file.domain.StaticAssetStorage#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.domain.StaticAssetStorage#getStaticAssetId()
+   */
+  @Override public Long getStaticAssetId() {
+    return staticAssetId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.domain.StaticAssetStorage#setFileData(java.sql.Blob)
+   */
+  @Override public void setFileData(Blob fileData) {
+    this.fileData = fileData;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.domain.StaticAssetStorage#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.domain.StaticAssetStorage#setStaticAssetId(java.lang.Long)
+   */
+  @Override public void setStaticAssetId(Long staticAssetId) {
+    this.staticAssetId = staticAssetId;
+  }
+} // end class StaticAssetStorageImpl

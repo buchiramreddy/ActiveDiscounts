@@ -18,15 +18,41 @@ package org.broadleafcommerce.common.cache.engine;
 
 import java.io.Serializable;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface HydratedCacheManager {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Object getHydratedCacheElementItem(String cacheRegion, String cacheName, Serializable elementKey, String elementItemName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cacheRegion      DOCUMENT ME!
+   * @param  cacheName        DOCUMENT ME!
+   * @param  elementKey       DOCUMENT ME!
+   * @param  elementItemName  DOCUMENT ME!
+   * @param  elementValue     DOCUMENT ME!
+   */
+  void addHydratedCacheElementItem(String cacheRegion, String cacheName, Serializable elementKey,
+    String elementItemName, Object elementValue);
 
-    public void addHydratedCacheElementItem(String cacheRegion, String cacheName, Serializable elementKey, String elementItemName, Object elementValue);
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   cacheRegion      DOCUMENT ME!
+   * @param   cacheName        DOCUMENT ME!
+   * @param   elementKey       DOCUMENT ME!
+   * @param   elementItemName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Object getHydratedCacheElementItem(String cacheRegion, String cacheName, Serializable elementKey,
+    String elementItemName);
+
+} // end interface HydratedCacheManager

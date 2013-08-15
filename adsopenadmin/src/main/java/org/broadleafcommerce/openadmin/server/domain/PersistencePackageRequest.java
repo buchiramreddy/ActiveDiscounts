@@ -16,9 +16,15 @@
 
 package org.broadleafcommerce.openadmin.server.domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
+
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
@@ -33,345 +39,747 @@ import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A DTO class used to seed a persistence package.
- * 
- * @author Andre Azzolini (apazzolini)
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class PersistencePackageRequest {
+  //~ Enums ------------------------------------------------------------------------------------------------------------
 
-    protected Type type;
-    protected String ceilingEntityClassname;
-    protected String configKey;
-    protected AdornedTargetList adornedList;
-    protected MapStructure mapStructure;
-    protected Entity entity;
-    protected ForeignKey foreignKey;
-    protected Integer startIndex;
-    protected Integer maxIndex;
+  /**
+   * DOCUMENT ME!
+   *
+   * @author   $author$
+   * @version  $Revision$, $Date$
+   */
+  public enum Type {
+    //~ Enum constants -------------------------------------------------------------------------------------------------
 
-    protected OperationTypes operationTypesOverride = null;
+    STANDARD, ADORNED, MAP
+  }
 
-    // These properties are accessed via getters and setters that operate on arrays.
-    // We back them with a list so that we can have the convenience .add methods
-    protected List<ForeignKey> additionalForeignKeys = new ArrayList<ForeignKey>();
-    protected List<String> customCriteria = new ArrayList<String>();
-    protected List<FilterAndSortCriteria> filterAndSortCriteria = new ArrayList<FilterAndSortCriteria>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public enum Type {
-        STANDARD,
-        ADORNED,
-        MAP
-    }
+  // These properties are accessed via getters and setters that operate on arrays.
+  // We back them with a list so that we can have the convenience .add methods
+  /** DOCUMENT ME! */
+  protected List<ForeignKey>            additionalForeignKeys  = new ArrayList<ForeignKey>();
 
-    /* ******************* */
-    /* STATIC INITIALIZERS */
-    /* ******************* */
+  /** DOCUMENT ME! */
+  protected AdornedTargetList           adornedList;
 
-    public static PersistencePackageRequest standard() {
-        return new PersistencePackageRequest(Type.STANDARD);
-    }
+  /** DOCUMENT ME! */
+  protected String                      ceilingEntityClassname;
 
-    public static PersistencePackageRequest adorned() {
-        return new PersistencePackageRequest(Type.ADORNED);
-    }
+  /** DOCUMENT ME! */
+  protected String                      configKey;
 
-    public static PersistencePackageRequest map() {
-        return new PersistencePackageRequest(Type.MAP);
-    }
+  /** DOCUMENT ME! */
+  protected List<String>                customCriteria        = new ArrayList<String>();
 
-    /**
-     * Creates a semi-populate PersistencePacakageRequest based on the specified FieldMetadata. This initializer
-     * will copy over persistence perspective items from the metadata as well as set the appropriate OperationTypes
-     * as specified in the annotation/xml configuration for the field.
-     * 
-     * @param md
-     * @return the newly created PersistencePackageRequest
-     */
-    public static PersistencePackageRequest fromMetadata(FieldMetadata md) {
-        final PersistencePackageRequest request = new PersistencePackageRequest();
+  /** DOCUMENT ME! */
+  protected Entity                      entity;
 
-        md.accept(new MetadataVisitor() {
+  /** DOCUMENT ME! */
+  protected List<FilterAndSortCriteria> filterAndSortCriteria = new ArrayList<FilterAndSortCriteria>();
 
-            @Override
-            public void visit(BasicFieldMetadata fmd) {
-                request.setType(Type.STANDARD);
-                request.setCeilingEntityClassname(fmd.getForeignKeyClass());
-            }
+  /** DOCUMENT ME! */
+  protected ForeignKey                  foreignKey;
 
-            @Override
-            public void visit(BasicCollectionMetadata fmd) {
-                ForeignKey foreignKey = (ForeignKey) fmd.getPersistencePerspective()
-                        .getPersistencePerspectiveItems().get(PersistencePerspectiveItemType.FOREIGNKEY);
+  /** DOCUMENT ME! */
+  protected MapStructure                mapStructure;
 
-                request.setType(Type.STANDARD);
-                request.setCeilingEntityClassname(fmd.getCollectionCeilingEntity());
-                request.setOperationTypesOverride(fmd.getPersistencePerspective().getOperationTypes());
-                request.setForeignKey(foreignKey);
-            }
+  /** DOCUMENT ME! */
+  protected Integer                     maxIndex;
 
-            @Override
-            public void visit(AdornedTargetCollectionMetadata fmd) {
-                AdornedTargetList adornedList = (AdornedTargetList) fmd.getPersistencePerspective()
-                        .getPersistencePerspectiveItems().get(PersistencePerspectiveItemType.ADORNEDTARGETLIST);
+  /** DOCUMENT ME! */
+  protected OperationTypes operationTypesOverride = null;
 
-                request.setType(Type.ADORNED);
-                request.setCeilingEntityClassname(fmd.getCollectionCeilingEntity());
-                request.setOperationTypesOverride(fmd.getPersistencePerspective().getOperationTypes());
-                request.setAdornedList(adornedList);
-            }
+  /** DOCUMENT ME! */
+  protected Integer        startIndex;
 
-            @Override
-            public void visit(MapMetadata fmd) {
-                MapStructure mapStructure = (MapStructure) fmd.getPersistencePerspective()
-                        .getPersistencePerspectiveItems().get(PersistencePerspectiveItemType.MAPSTRUCTURE);
+  /** DOCUMENT ME! */
+  protected Type type;
 
-                ForeignKey foreignKey = (ForeignKey) fmd.getPersistencePerspective().
-                        getPersistencePerspectiveItems().get(PersistencePerspectiveItemType.FOREIGNKEY);
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-                request.setType(Type.MAP);
-                request.setCeilingEntityClassname(foreignKey.getForeignKeyClass());
-                request.setOperationTypesOverride(fmd.getPersistencePerspective().getOperationTypes());
-                request.setMapStructure(mapStructure);
-                request.setForeignKey(foreignKey);
-            }
-        });
-        
-        if (md instanceof CollectionMetadata) {
-            request.setCustomCriteria(((CollectionMetadata) md).getCustomCriteria());
+  /* ************ */
+  /* CONSTRUCTORS */
+  /* ************ */
+
+  /**
+   * Creates a new PersistencePackageRequest object.
+   */
+  public PersistencePackageRequest() { }
+
+  /**
+   * Creates a new PersistencePackageRequest object.
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  public PersistencePackageRequest(Type type) {
+    this.type = type;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static PersistencePackageRequest adorned() {
+    return new PersistencePackageRequest(Type.ADORNED);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a semi-populate PersistencePacakageRequest based on the specified FieldMetadata. This initializer will copy
+   * over persistence perspective items from the metadata as well as set the appropriate OperationTypes as specified in
+   * the annotation/xml configuration for the field.
+   *
+   * @param   md  DOCUMENT ME!
+   *
+   * @return  the newly created PersistencePackageRequest
+   */
+  public static PersistencePackageRequest fromMetadata(FieldMetadata md) {
+    final PersistencePackageRequest request = new PersistencePackageRequest();
+
+    md.accept(new MetadataVisitor() {
+        @Override public void visit(BasicFieldMetadata fmd) {
+          request.setType(Type.STANDARD);
+          request.setCeilingEntityClassname(fmd.getForeignKeyClass());
         }
 
-        return request;
-    }
+        @Override public void visit(BasicCollectionMetadata fmd) {
+          ForeignKey foreignKey = (ForeignKey) fmd.getPersistencePerspective().getPersistencePerspectiveItems().get(
+              PersistencePerspectiveItemType.FOREIGNKEY);
 
-    /* ************ */
-    /* CONSTRUCTORS */
-    /* ************ */
-
-    public PersistencePackageRequest() {
-
-    }
-
-    public PersistencePackageRequest(Type type) {
-        this.type = type;
-    }
-
-    /* ************ */
-    /* WITH METHODS */
-    /* ************ */
-
-    public PersistencePackageRequest withType(Type type) {
-        setType(type);
-        return this;
-    }
-
-    public PersistencePackageRequest withCeilingEntityClassname(String className) {
-        setCeilingEntityClassname(className);
-        return this;
-    }
-
-    public PersistencePackageRequest withForeignKey(ForeignKey foreignKey) {
-        setForeignKey(foreignKey);
-        return this;
-    }
-
-    public PersistencePackageRequest withConfigKey(String configKey) {
-        setConfigKey(configKey);
-        return this;
-    }
-
-    public PersistencePackageRequest withFilterAndSortCriteria(FilterAndSortCriteria[] filterAndSortCriteria) {
-        if (ArrayUtils.isNotEmpty(filterAndSortCriteria)) {
-            setFilterAndSortCriteria(filterAndSortCriteria);
+          request.setType(Type.STANDARD);
+          request.setCeilingEntityClassname(fmd.getCollectionCeilingEntity());
+          request.setOperationTypesOverride(fmd.getPersistencePerspective().getOperationTypes());
+          request.setForeignKey(foreignKey);
         }
-        return this;
-    }
 
-    public PersistencePackageRequest withAdornedList(AdornedTargetList adornedList) {
-        setAdornedList(adornedList);
-        return this;
-    }
+        @Override public void visit(AdornedTargetCollectionMetadata fmd) {
+          AdornedTargetList adornedList = (AdornedTargetList) fmd.getPersistencePerspective()
+            .getPersistencePerspectiveItems().get(PersistencePerspectiveItemType.ADORNEDTARGETLIST);
 
-    public PersistencePackageRequest withMapStructure(MapStructure mapStructure) {
-        setMapStructure(mapStructure);
-        return this;
-    }
-
-    public PersistencePackageRequest withCustomCriteria(String[] customCriteria) {
-        if (ArrayUtils.isNotEmpty(customCriteria)) {
-            setCustomCriteria(customCriteria);
+          request.setType(Type.ADORNED);
+          request.setCeilingEntityClassname(fmd.getCollectionCeilingEntity());
+          request.setOperationTypesOverride(fmd.getPersistencePerspective().getOperationTypes());
+          request.setAdornedList(adornedList);
         }
-        return this;
-    }
 
-    public PersistencePackageRequest withEntity(Entity entity) {
-        setEntity(entity);
-        return this;
-    }
-    
-    public PersistencePackageRequest withStartIndex(Integer startIndex) {
-        setStartIndex(startIndex);
-        return this;
-    }
-    
-    public PersistencePackageRequest withMaxIndex(Integer maxIndex) {
-        setMaxIndex(maxIndex);
-        return this;
-    }
+        @Override public void visit(MapMetadata fmd) {
+          MapStructure mapStructure = (MapStructure) fmd.getPersistencePerspective().getPersistencePerspectiveItems()
+            .get(PersistencePerspectiveItemType.MAPSTRUCTURE);
 
-    /* *********** */
-    /* ADD METHODS */
-    /* *********** */
+          ForeignKey foreignKey = (ForeignKey) fmd.getPersistencePerspective().getPersistencePerspectiveItems().get(
+              PersistencePerspectiveItemType.FOREIGNKEY);
 
-    public PersistencePackageRequest addAdditionalForeignKey(ForeignKey foreignKey) {
-        additionalForeignKeys.add(foreignKey);
-        return this;
-    }
-
-    public PersistencePackageRequest addCustomCriteria(String customCriteria) {
-        if (StringUtils.isNotBlank(customCriteria)) {
-            this.customCriteria.add(customCriteria);
+          request.setType(Type.MAP);
+          request.setCeilingEntityClassname(foreignKey.getForeignKeyClass());
+          request.setOperationTypesOverride(fmd.getPersistencePerspective().getOperationTypes());
+          request.setMapStructure(mapStructure);
+          request.setForeignKey(foreignKey);
         }
-        return this;
+      });
+
+    if (md instanceof CollectionMetadata) {
+      request.setCustomCriteria(((CollectionMetadata) md).getCustomCriteria());
     }
 
-    public PersistencePackageRequest addFilterAndSortCriteria(FilterAndSortCriteria filterAndSortCriteria) {
-        this.filterAndSortCriteria.add(filterAndSortCriteria);
-        return this;
-    }
-    
-    public PersistencePackageRequest addFilterAndSortCriteria(FilterAndSortCriteria[] filterAndSortCriteria) {
-        if (filterAndSortCriteria != null) {
-            this.filterAndSortCriteria.addAll(Arrays.asList(filterAndSortCriteria));
-        }
-        return this;
-    }
-    
-    public PersistencePackageRequest addFilterAndSortCriteria(List<FilterAndSortCriteria> filterAndSortCriteria) {
-        this.filterAndSortCriteria.addAll(filterAndSortCriteria);
-        return this;
+    return request;
+  } // end method fromMetadata
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static PersistencePackageRequest map() {
+    return new PersistencePackageRequest(Type.MAP);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* ******************* */
+  /* STATIC INITIALIZERS */
+  /* ******************* */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static PersistencePackageRequest standard() {
+    return new PersistencePackageRequest(Type.STANDARD);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* *********** */
+  /* ADD METHODS */
+  /* *********** */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   foreignKey  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest addAdditionalForeignKey(ForeignKey foreignKey) {
+    additionalForeignKeys.add(foreignKey);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customCriteria  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest addCustomCriteria(String customCriteria) {
+    if (StringUtils.isNotBlank(customCriteria)) {
+      this.customCriteria.add(customCriteria);
     }
 
-    /* ************************ */
-    /* CUSTOM GETTERS / SETTERS */
-    /* ************************ */
+    return this;
+  }
 
-    public String[] getCustomCriteria() {
-        String[] arr = new String[this.customCriteria.size()];
-        arr = this.customCriteria.toArray(arr);
-        return arr;
-    }
-    
-    public ForeignKey[] getAdditionalForeignKeys() {
-        ForeignKey[] arr = new ForeignKey[this.additionalForeignKeys.size()];
-        arr = this.additionalForeignKeys.toArray(arr);
-        return arr;
-    }
-    
-    public void setAdditionalForeignKeys(ForeignKey[] additionalForeignKeys) {
-        this.additionalForeignKeys = Arrays.asList(additionalForeignKeys);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCustomCriteria(String[] customCriteria) {
-        this.customCriteria = Arrays.asList(customCriteria);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   filterAndSortCriteria  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest addFilterAndSortCriteria(FilterAndSortCriteria filterAndSortCriteria) {
+    this.filterAndSortCriteria.add(filterAndSortCriteria);
 
-    public FilterAndSortCriteria[] getFilterAndSortCriteria() {
-        FilterAndSortCriteria[] arr = new FilterAndSortCriteria[this.filterAndSortCriteria.size()];
-        arr = this.filterAndSortCriteria.toArray(arr);
-        return arr;
-    }
+    return this;
+  }
 
-    public void setFilterAndSortCriteria(FilterAndSortCriteria[] filterAndSortCriteria) {
-        this.filterAndSortCriteria.addAll(Arrays.asList(filterAndSortCriteria));
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   filterAndSortCriteria  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest addFilterAndSortCriteria(FilterAndSortCriteria[] filterAndSortCriteria) {
+    if (filterAndSortCriteria != null) {
+      this.filterAndSortCriteria.addAll(Arrays.asList(filterAndSortCriteria));
     }
 
-    /* ************************** */
-    /* STANDARD GETTERS / SETTERS */
-    /* ************************** */
+    return this;
+  }
 
-    public ForeignKey getForeignKey() {
-        return foreignKey;
-    }
-    
-    public void setForeignKey(ForeignKey foreignKey) {
-        this.foreignKey = foreignKey;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   filterAndSortCriteria  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest addFilterAndSortCriteria(List<FilterAndSortCriteria> filterAndSortCriteria) {
+    this.filterAndSortCriteria.addAll(filterAndSortCriteria);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ForeignKey[] getAdditionalForeignKeys() {
+    ForeignKey[] arr = new ForeignKey[this.additionalForeignKeys.size()];
+    arr = this.additionalForeignKeys.toArray(arr);
+
+    return arr;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public AdornedTargetList getAdornedList() {
+    return adornedList;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCeilingEntityClassname() {
+    return ceilingEntityClassname;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getConfigKey() {
+    return configKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* ************************ */
+  /* CUSTOM GETTERS / SETTERS */
+  /* ************************ */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String[] getCustomCriteria() {
+    String[] arr = new String[this.customCriteria.size()];
+    arr = this.customCriteria.toArray(arr);
+
+    return arr;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Entity getEntity() {
+    return entity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FilterAndSortCriteria[] getFilterAndSortCriteria() {
+    FilterAndSortCriteria[] arr = new FilterAndSortCriteria[this.filterAndSortCriteria.size()];
+    arr = this.filterAndSortCriteria.toArray(arr);
+
+    return arr;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* ************************** */
+  /* STANDARD GETTERS / SETTERS */
+  /* ************************** */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ForeignKey getForeignKey() {
+    return foreignKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public MapStructure getMapStructure() {
+    return mapStructure;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getMaxIndex() {
+    return maxIndex;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public OperationTypes getOperationTypesOverride() {
+    return operationTypesOverride;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getStartIndex() {
+    return startIndex;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Type getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  additionalForeignKeys  DOCUMENT ME!
+   */
+  public void setAdditionalForeignKeys(ForeignKey[] additionalForeignKeys) {
+    this.additionalForeignKeys = Arrays.asList(additionalForeignKeys);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  adornedList  DOCUMENT ME!
+   */
+  public void setAdornedList(AdornedTargetList adornedList) {
+    this.adornedList = adornedList;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ceilingEntityClassname  DOCUMENT ME!
+   */
+  public void setCeilingEntityClassname(String ceilingEntityClassname) {
+    this.ceilingEntityClassname = ceilingEntityClassname;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  configKey  DOCUMENT ME!
+   */
+  public void setConfigKey(String configKey) {
+    this.configKey = configKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customCriteria  DOCUMENT ME!
+   */
+  public void setCustomCriteria(String[] customCriteria) {
+    this.customCriteria = Arrays.asList(customCriteria);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entity  DOCUMENT ME!
+   */
+  public void setEntity(Entity entity) {
+    this.entity = entity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  filterAndSortCriteria  DOCUMENT ME!
+   */
+  public void setFilterAndSortCriteria(FilterAndSortCriteria[] filterAndSortCriteria) {
+    this.filterAndSortCriteria.addAll(Arrays.asList(filterAndSortCriteria));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  foreignKey  DOCUMENT ME!
+   */
+  public void setForeignKey(ForeignKey foreignKey) {
+    this.foreignKey = foreignKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  mapStructure  DOCUMENT ME!
+   */
+  public void setMapStructure(MapStructure mapStructure) {
+    this.mapStructure = mapStructure;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  maxIndex  DOCUMENT ME!
+   */
+  public void setMaxIndex(Integer maxIndex) {
+    this.maxIndex = maxIndex;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  operationTypesOverride  DOCUMENT ME!
+   */
+  public void setOperationTypesOverride(OperationTypes operationTypesOverride) {
+    this.operationTypesOverride = operationTypesOverride;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  startIndex  DOCUMENT ME!
+   */
+  public void setStartIndex(Integer startIndex) {
+    this.startIndex = startIndex;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  public void setType(Type type) {
+    this.type = type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   adornedList  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withAdornedList(AdornedTargetList adornedList) {
+    setAdornedList(adornedList);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   className  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withCeilingEntityClassname(String className) {
+    setCeilingEntityClassname(className);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   configKey  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withConfigKey(String configKey) {
+    setConfigKey(configKey);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customCriteria  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withCustomCriteria(String[] customCriteria) {
+    if (ArrayUtils.isNotEmpty(customCriteria)) {
+      setCustomCriteria(customCriteria);
     }
 
-    public Type getType() {
-        return type;
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entity  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withEntity(Entity entity) {
+    setEntity(entity);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   filterAndSortCriteria  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withFilterAndSortCriteria(FilterAndSortCriteria[] filterAndSortCriteria) {
+    if (ArrayUtils.isNotEmpty(filterAndSortCriteria)) {
+      setFilterAndSortCriteria(filterAndSortCriteria);
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-    
-    public String getCeilingEntityClassname() {
-        return ceilingEntityClassname;
-    }
-    
-    public void setCeilingEntityClassname(String ceilingEntityClassname) {
-        this.ceilingEntityClassname = ceilingEntityClassname;
-    }
+    return this;
+  }
 
-    public String getConfigKey() {
-        return configKey;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setConfigKey(String configKey) {
-        this.configKey = configKey;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   foreignKey  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withForeignKey(ForeignKey foreignKey) {
+    setForeignKey(foreignKey);
 
-    public AdornedTargetList getAdornedList() {
-        return adornedList;
-    }
+    return this;
+  }
 
-    public void setAdornedList(AdornedTargetList adornedList) {
-        this.adornedList = adornedList;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public MapStructure getMapStructure() {
-        return mapStructure;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   mapStructure  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withMapStructure(MapStructure mapStructure) {
+    setMapStructure(mapStructure);
 
-    public void setMapStructure(MapStructure mapStructure) {
-        this.mapStructure = mapStructure;
-    }
+    return this;
+  }
 
-    public Entity getEntity() {
-        return entity;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   maxIndex  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withMaxIndex(Integer maxIndex) {
+    setMaxIndex(maxIndex);
 
-    public OperationTypes getOperationTypesOverride() {
-        return operationTypesOverride;
-    }
+    return this;
+  }
 
-    public void setOperationTypesOverride(OperationTypes operationTypesOverride) {
-        this.operationTypesOverride = operationTypesOverride;
-    }
-    
-    public Integer getStartIndex() {
-        return startIndex;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   startIndex  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withStartIndex(Integer startIndex) {
+    setStartIndex(startIndex);
 
-    public Integer getMaxIndex() {
-        return maxIndex;
-    }
+    return this;
+  }
 
-    public void setMaxIndex(Integer maxIndex) {
-        this.maxIndex = maxIndex;
-    }
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* ************ */
+  /* WITH METHODS */
+  /* ************ */
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackageRequest withType(Type type) {
+    setType(type);
+
+    return this;
+  }
+
+} // end class PersistencePackageRequest

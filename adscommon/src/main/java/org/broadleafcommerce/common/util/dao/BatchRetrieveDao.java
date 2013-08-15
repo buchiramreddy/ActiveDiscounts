@@ -16,39 +16,72 @@
 
 package org.broadleafcommerce.common.util.dao;
 
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Query;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class BatchRetrieveDao {
-    
-    //Default batch read size
-    private int inClauseBatchSize = 300;
-    
-    @SuppressWarnings("unchecked")
-    public <T> List<T> batchExecuteReadQuery(Query query, List<?> params, String parameterName) {
-        List<T> response = new ArrayList<T>();
-        int start = 0;
-        while (start < params.size()) {
-            List<?> batchParams = params.subList(start, params.size() < inClauseBatchSize ? params.size() : inClauseBatchSize);
-            query.setParameter(parameterName, batchParams);
-            response.addAll(query.getResultList());
-            start += inClauseBatchSize;
-        }
-        return response;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  // Default batch read size
+  private int inClauseBatchSize = 300;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   <T>            DOCUMENT ME!
+   * @param   query          DOCUMENT ME!
+   * @param   params         DOCUMENT ME!
+   * @param   parameterName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @SuppressWarnings("unchecked")
+  public <T> List<T> batchExecuteReadQuery(Query query, List<?> params, String parameterName) {
+    List<T> response = new ArrayList<T>();
+    int     start    = 0;
+
+    while (start < params.size()) {
+      List<?> batchParams = params.subList(start,
+          (params.size() < inClauseBatchSize) ? params.size() : inClauseBatchSize);
+      query.setParameter(parameterName, batchParams);
+      response.addAll(query.getResultList());
+      start += inClauseBatchSize;
     }
 
-    public int getInClauseBatchSize() {
-        return inClauseBatchSize;
-    }
+    return response;
+  }
 
-    public void setInClauseBatchSize(int inClauseBatchSize) {
-        this.inClauseBatchSize = inClauseBatchSize;
-    }
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getInClauseBatchSize() {
+    return inClauseBatchSize;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  inClauseBatchSize  DOCUMENT ME!
+   */
+  public void setInClauseBatchSize(int inClauseBatchSize) {
+    this.inClauseBatchSize = inClauseBatchSize;
+  }
+
+} // end class BatchRetrieveDao

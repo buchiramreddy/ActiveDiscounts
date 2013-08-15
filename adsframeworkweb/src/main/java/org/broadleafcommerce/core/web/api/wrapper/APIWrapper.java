@@ -18,19 +18,38 @@ package org.broadleafcommerce.core.web.api.wrapper;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 /**
- * This interface is the super interface for all classes that will provide a JAXB wrapper
- * around classes.  Any class that will be exposed via JAXB annotations to the JAXRS API
- * may implement this as a convenience to provide a standard method to populate data objects.
+ * This interface is the super interface for all classes that will provide a JAXB wrapper around classes. Any class that
+ * will be exposed via JAXB annotations to the JAXRS API may implement this as a convenience to provide a standard
+ * method to populate data objects.
  *
- * This is not a requirement as objects will not generally be passed using a reference to this
- * interface.
- * @param <T>
+ * <p>This is not a requirement as objects will not generally be passed using a reference to this interface.</p>
+ *
+ * @param    <T>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface APIWrapper<T> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void wrapDetails(T model, HttpServletRequest request);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  model    DOCUMENT ME!
+   * @param  request  DOCUMENT ME!
+   */
+  void wrapDetails(T model, HttpServletRequest request);
 
-    public void wrapSummary(T model, HttpServletRequest request);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  model    DOCUMENT ME!
+   * @param  request  DOCUMENT ME!
+   */
+  void wrapSummary(T model, HttpServletRequest request);
 
 }

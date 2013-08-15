@@ -17,39 +17,55 @@
 package org.broadleafcommerce.profile.web.core.util;
 
 import org.apache.commons.lang.StringUtils;
+
 import org.broadleafcommerce.profile.core.domain.Phone;
+
 import org.springframework.stereotype.Service;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blPhoneFormatter")
 public class PhoneFormatterImpl implements PhoneFormatter {
-    public void formatPhoneNumber(Phone phone) {
-        if(phone != null && !StringUtils.isEmpty(phone.getPhoneNumber())){
-            phone.setPhoneNumber(formatTelephoneNumber(phone.getPhoneNumber()));
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.web.core.util.PhoneFormatter#formatPhoneNumber(org.broadleafcommerce.profile.core.domain.Phone)
+   */
+  @Override public void formatPhoneNumber(Phone phone) {
+    if ((phone != null) && !StringUtils.isEmpty(phone.getPhoneNumber())) {
+      phone.setPhoneNumber(formatTelephoneNumber(phone.getPhoneNumber()));
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private String formatTelephoneNumber(String pNumber) {
+    if (pNumber == null) {
+      return null;
     }
 
-    private String formatTelephoneNumber(String pNumber) {
-        if (pNumber == null) {
-            return null;
-        }
+    String number = pNumber.replaceAll("\\D", "");
 
-        String number = pNumber.replaceAll("\\D", "");
-
-        if (number.length() == 0) {
-            return null;
-        }
-
-        if (number.length() > 10) {
-            number = number.substring(0, 10);
-        }
-
-        StringBuffer newNumber = new StringBuffer(number);
-
-        if (newNumber.length() == 10) {
-            newNumber.insert(6, "-");
-            newNumber.insert(3, "-");
-        }
-
-        return newNumber.toString();
+    if (number.length() == 0) {
+      return null;
     }
-}
+
+    if (number.length() > 10) {
+      number = number.substring(0, 10);
+    }
+
+    StringBuffer newNumber = new StringBuffer(number);
+
+    if (newNumber.length() == 10) {
+      newNumber.insert(6, "-");
+      newNumber.insert(3, "-");
+    }
+
+    return newNumber.toString();
+  }
+} // end class PhoneFormatterImpl

@@ -16,40 +16,74 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.profile.core.domain.Address;
-import org.broadleafcommerce.profile.core.domain.AddressImpl;
-import org.springframework.stereotype.Repository;
-
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blAddressDao")
 public class AddressDaoImpl implements AddressDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    public Address save(Address address) {
-        return em.merge(address);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.AddressDao#create()
+   */
+  @Override public Address create() {
+    return (Address) entityConfiguration.createEntityInstance(Address.class.getName());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.AddressDao#delete(org.broadleafcommerce.profile.core.domain.Address)
+   */
+  @Override public void delete(Address address) {
+    if (!em.contains(address)) {
+      address = readAddressById(address.getId());
     }
 
-    public Address readAddressById(Long id) {
-        return (Address) em.find(AddressImpl.class, id);
-    }
+    em.remove(address);
+  }
 
-    public Address create() {
-        return (Address) entityConfiguration.createEntityInstance(Address.class.getName());
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void delete(Address address) {
-        if (!em.contains(address)) {
-            address = readAddressById(address.getId());
-        }
-        em.remove(address);
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.AddressDao#readAddressById(java.lang.Long)
+   */
+  @Override public Address readAddressById(Long id) {
+    return (Address) em.find(AddressImpl.class, id);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.AddressDao#save(org.broadleafcommerce.profile.core.domain.Address)
+   */
+  @Override public Address save(Address address) {
+    return em.merge(address);
+  }
+} // end class AddressDaoImpl

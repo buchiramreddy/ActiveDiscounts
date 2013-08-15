@@ -17,15 +17,13 @@
 package org.broadleafcommerce.common.logging;
 
 /**
- * Enumeration describes the type of event that is being logged in the
- * SupportLogger.lifecycle method.
+ * Enumeration describes the type of event that is being logged in the SupportLogger.lifecycle method.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum LifeCycleEvent {
-    START,
-    END,
-    TRANSFORM,
-    LOADING,
-    CONFIG
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  START, END, TRANSFORM, LOADING, CONFIG
 }

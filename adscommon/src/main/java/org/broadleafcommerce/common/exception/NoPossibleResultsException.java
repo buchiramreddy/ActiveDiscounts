@@ -17,30 +17,53 @@
 package org.broadleafcommerce.common.exception;
 
 /**
- * The admin will throw this exception when a query is attempted across multiple class hierarchies
- * because it is impossible for such a query to produce any results.
- * 
- * @author Andre Azzolini (apazzolini)
+ * The admin will throw this exception when a query is attempted across multiple class hierarchies because it is
+ * impossible for such a query to produce any results.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class NoPossibleResultsException extends RuntimeException {
-    
-    private static final long serialVersionUID = 2422275745139590462L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    // for serialization purposes
-    protected NoPossibleResultsException() {
-        super();
-    }
-    
-    public NoPossibleResultsException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    
-    public NoPossibleResultsException(String message) {
-        super(message);
-    }
-    
-    public NoPossibleResultsException(Throwable cause) {
-        super(cause);
-    }
+  private static final long serialVersionUID = 2422275745139590462L;
 
-}
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new NoPossibleResultsException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public NoPossibleResultsException(String message) {
+    super(message);
+  }
+
+  /**
+   * Creates a new NoPossibleResultsException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public NoPossibleResultsException(Throwable cause) {
+    super(cause);
+  }
+
+  /**
+   * Creates a new NoPossibleResultsException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public NoPossibleResultsException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  // for serialization purposes
+  /**
+   * Creates a new NoPossibleResultsException object.
+   */
+  protected NoPossibleResultsException() {
+    super();
+  }
+
+} // end class NoPossibleResultsException

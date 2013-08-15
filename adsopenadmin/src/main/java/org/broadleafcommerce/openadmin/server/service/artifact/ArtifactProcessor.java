@@ -16,24 +16,59 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact;
 
-import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
-
 import java.io.InputStream;
+
 import java.util.Map;
 
+import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
+
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/10/11
- * Time: 12:23 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/10/11 Time: 12:23 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface ArtifactProcessor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean isSupported(InputStream artifactStream, String mimeType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   parameterMap    DOCUMENT ME!
+   * @param   artifactStream  DOCUMENT ME!
+   * @param   mimeType        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Operation[] buildOperations(Map<String, String> parameterMap, InputStream artifactStream, String mimeType);
 
-    public InputStream convert(InputStream artifactStream, Operation[] operations, String mimeType) throws Exception;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Operation[] buildOperations(Map<String, String> parameterMap, InputStream artifactStream, String mimeType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   artifactStream  DOCUMENT ME!
+   * @param   operations      DOCUMENT ME!
+   * @param   mimeType        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  InputStream convert(InputStream artifactStream, Operation[] operations, String mimeType) throws Exception;
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   artifactStream  DOCUMENT ME!
+   * @param   mimeType        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isSupported(InputStream artifactStream, String mimeType);
+
+} // end interface ArtifactProcessor

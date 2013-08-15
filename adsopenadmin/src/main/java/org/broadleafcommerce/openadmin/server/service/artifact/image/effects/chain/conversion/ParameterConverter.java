@@ -16,8 +16,26 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ParameterConverter {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Parameter convert(String value, Double factor, boolean applyFactor) throws ConversionException;
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   value        DOCUMENT ME!
+   * @param   factor       DOCUMENT ME!
+   * @param   applyFactor  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ConversionException  DOCUMENT ME!
+   */
+  Parameter convert(String value, Double factor, boolean applyFactor) throws ConversionException;
+
 }

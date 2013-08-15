@@ -16,14 +16,6 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,107 +26,179 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name="BLC_PRODUCT_CROSS_SALE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
+@Table(name = "BLC_PRODUCT_CROSS_SALE")
 public class CrossSaleProductImpl implements RelatedProduct {
+  /** DOCUMENT ME! */
+  protected static final long serialVersionUID = 1L;
 
-    protected static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @Column(name = "CROSS_SALE_PRODUCT_ID")
+  @GeneratedValue(generator = "CrossSaleProductId")
+  @GenericGenerator(
+    name       = "CrossSaleProductId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CrossSaleProductImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.catalog.domain.CrossSaleProductImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Id
-    @GeneratedValue(generator= "CrossSaleProductId")
-    @GenericGenerator(
-        name="CrossSaleProductId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CrossSaleProductImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.catalog.domain.CrossSaleProductImpl")
-        }
-    )
-    @Column(name = "CROSS_SALE_PRODUCT_ID")
-    protected Long id;
-    
-    @Column(name = "PROMOTION_MESSAGE")
-    @AdminPresentation(friendlyName = "CrossSaleProductImpl_Cross_Sale_Promotion_Message", largeEntry=true)
-    protected String promotionMessage;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "CrossSaleProductImpl_Cross_Sale_Promotion_Message",
+    largeEntry   = true
+  )
+  @Column(name = "PROMOTION_MESSAGE")
+  protected String promotionMessage;
 
-    @Column(name = "SEQUENCE")
-    @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Long sequence;
-    
-    @ManyToOne(targetEntity = ProductImpl.class)
-    @JoinColumn(name = "PRODUCT_ID")
-    @Index(name="CROSSSALE_INDEX", columnNames={"PRODUCT_ID"})
-    protected Product product;
-    
-    @ManyToOne(targetEntity = CategoryImpl.class)
-    @JoinColumn(name = "CATEGORY_ID")
-    @Index(name="CROSSSALE_CATEGORY_INDEX", columnNames={"CATEGORY_ID"})
-    protected Category category;
+  /** DOCUMENT ME! */
+  @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
+  @Column(name = "SEQUENCE")
+  protected Long sequence;
 
-    @ManyToOne(targetEntity = ProductImpl.class, optional=false)
-    @JoinColumn(name = "RELATED_SALE_PRODUCT_ID", referencedColumnName = "PRODUCT_ID")
-    @Index(name="CROSSSALE_RELATED_INDEX", columnNames={"RELATED_SALE_PRODUCT_ID"})
-    protected Product relatedSaleProduct = new ProductImpl();
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CROSSSALE_INDEX",
+    columnNames = { "PRODUCT_ID" }
+  )
+  @JoinColumn(name = "PRODUCT_ID")
+  @ManyToOne(targetEntity = ProductImpl.class)
+  protected Product product;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-    
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CROSSSALE_CATEGORY_INDEX",
+    columnNames = { "CATEGORY_ID" }
+  )
+  @JoinColumn(name = "CATEGORY_ID")
+  @ManyToOne(targetEntity = CategoryImpl.class)
+  protected Category category;
 
-    @Override
-    public String getPromotionMessage() {
-        return promotionMessage;
-    }
-    
-    @Override
-    public void setPromotionMessage(String promotionMessage) {
-        this.promotionMessage = promotionMessage;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CROSSSALE_RELATED_INDEX",
+    columnNames = { "RELATED_SALE_PRODUCT_ID" }
+  )
+  @JoinColumn(
+    name                 = "RELATED_SALE_PRODUCT_ID",
+    referencedColumnName = "PRODUCT_ID"
+  )
+  @ManyToOne(
+    targetEntity = ProductImpl.class,
+    optional     = false
+  )
+  protected Product relatedSaleProduct = new ProductImpl();
 
-    @Override
-    public Long getSequence() {
-        return sequence;
-    }
-    
-    @Override
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public Product getProduct() {
-        return product;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    
-    @Override
-    public Category getCategory() {
-        return category;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#getPromotionMessage()
+   */
+  @Override public String getPromotionMessage() {
+    return promotionMessage;
+  }
 
-    @Override
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#setPromotionMessage(java.lang.String)
+   */
+  @Override public void setPromotionMessage(String promotionMessage) {
+    this.promotionMessage = promotionMessage;
+  }
 
-    @Override
-    public Product getRelatedProduct() {
-        return relatedSaleProduct;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#getSequence()
+   */
+  @Override public Long getSequence() {
+    return sequence;
+  }
 
-    @Override
-    public void setRelatedProduct(Product relatedSaleProduct) {
-        this.relatedSaleProduct = relatedSaleProduct;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#setSequence(java.lang.Long)
+   */
+  @Override public void setSequence(Long sequence) {
+    this.sequence = sequence;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#getProduct()
+   */
+  @Override public Product getProduct() {
+    return product;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#setProduct(org.broadleafcommerce.core.catalog.domain.Product)
+   */
+  @Override public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#getCategory()
+   */
+  @Override public Category getCategory() {
+    return category;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#setCategory(org.broadleafcommerce.core.catalog.domain.Category)
+   */
+  @Override public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#getRelatedProduct()
+   */
+  @Override public Product getRelatedProduct() {
+    return relatedSaleProduct;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.RelatedProduct#setRelatedProduct(org.broadleafcommerce.core.catalog.domain.Product)
+   */
+  @Override public void setRelatedProduct(Product relatedSaleProduct) {
+    this.relatedSaleProduct = relatedSaleProduct;
+  }
+} // end class CrossSaleProductImpl

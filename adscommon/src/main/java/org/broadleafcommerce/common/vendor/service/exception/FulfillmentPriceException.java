@@ -18,33 +18,80 @@ package org.broadleafcommerce.common.vendor.service.exception;
 
 import org.broadleafcommerce.common.vendor.service.message.FulfillmentPriceExceptionResponse;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FulfillmentPriceException extends Exception {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected FulfillmentPriceExceptionResponse fulfillmentPriceExceptionResponse;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public FulfillmentPriceException() {
-        super();
-    }
+  /** DOCUMENT ME! */
+  protected FulfillmentPriceExceptionResponse fulfillmentPriceExceptionResponse;
 
-    public FulfillmentPriceException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public FulfillmentPriceException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new FulfillmentPriceException object.
+   */
+  public FulfillmentPriceException() {
+    super();
+  }
 
-    public FulfillmentPriceException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new FulfillmentPriceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public FulfillmentPriceException(String message) {
+    super(message);
+  }
 
-    public FulfillmentPriceExceptionResponse getFulfillmentPriceExceptionResponse() {
-        return fulfillmentPriceExceptionResponse;
-    }
+  /**
+   * Creates a new FulfillmentPriceException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public FulfillmentPriceException(Throwable cause) {
+    super(cause);
+  }
 
-    public void setFulfillmentPriceExceptionResponse(FulfillmentPriceExceptionResponse fulfillmentPriceExceptionResponse) {
-        this.fulfillmentPriceExceptionResponse = fulfillmentPriceExceptionResponse;
-    }
-}
+  /**
+   * Creates a new FulfillmentPriceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public FulfillmentPriceException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FulfillmentPriceExceptionResponse getFulfillmentPriceExceptionResponse() {
+    return fulfillmentPriceExceptionResponse;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentPriceExceptionResponse  DOCUMENT ME!
+   */
+  public void setFulfillmentPriceExceptionResponse(
+    FulfillmentPriceExceptionResponse fulfillmentPriceExceptionResponse) {
+    this.fulfillmentPriceExceptionResponse = fulfillmentPriceExceptionResponse;
+  }
+} // end class FulfillmentPriceException

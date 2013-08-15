@@ -15,103 +15,206 @@
  */
 package org.broadleafcommerce.core.web.controller.account;
 
+import java.io.IOException;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.exception.AddToCartException;
 import org.broadleafcommerce.core.order.service.exception.RemoveFromCartException;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.web.order.model.AddToCartItem;
+
 import org.broadleafcommerce.profile.web.core.CustomerState;
+
 import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
 /**
- * The controller responsible for wishlist management activities, including
- * viewing a wishlist, moving items from the wishlist to the cart, and
- * removing items from the wishlist
+ * The controller responsible for wishlist management activities, including viewing a wishlist, moving items from the
+ * wishlist to the cart, and removing items from the wishlist.
  *
- *
- * @author jfridye
+ * @author   jfridye
+ * @version  $Revision$, $Date$
  */
 public class BroadleafManageWishlistController extends AbstractAccountController {
-    
-    protected static String accountWishlistView = "account/manageWishlist";
-    protected static String accountWishlistRedirect = "redirect:/account/wishlist";
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public String add(HttpServletRequest request, HttpServletResponse response, Model model,
-            AddToCartItem itemRequest, String wishlistName) throws IOException, AddToCartException, PricingException  {
-        Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer(request));
+  /** DOCUMENT ME! */
+  protected static String accountWishlistView     = "account/manageWishlist";
 
-        if (wishlist == null) {
-            wishlist = orderService.createNamedOrderForCustomer(wishlistName, CustomerState.getCustomer(request));
-        }
-        
-        wishlist = orderService.addItem(wishlist.getId(), itemRequest, true);
-        
-        return getAccountWishlistRedirect();
-    }
-    
-    public String viewWishlist(HttpServletRequest request, HttpServletResponse response, Model model,
-            String wishlistName) {
-        Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
-        model.addAttribute("wishlist", wishlist);
-        return getAccountWishlistView();
-    }
+  /** DOCUMENT ME! */
+  protected static String accountWishlistRedirect = "redirect:/account/wishlist";
 
-    public String removeItemFromWishlist(HttpServletRequest request, HttpServletResponse response, Model model,
-            String wishlistName, Long itemId) throws RemoveFromCartException {
-        Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
-        
-        orderService.removeItem(wishlist.getId(), itemId, false);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        model.addAttribute("wishlist", wishlist);
-        return getAccountWishlistRedirect();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request       DOCUMENT ME!
+   * @param   response      DOCUMENT ME!
+   * @param   model         DOCUMENT ME!
+   * @param   itemRequest   DOCUMENT ME!
+   * @param   wishlistName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  IOException         DOCUMENT ME!
+   * @throws  AddToCartException  DOCUMENT ME!
+   * @throws  PricingException    DOCUMENT ME!
+   */
+  public String add(HttpServletRequest request, HttpServletResponse response, Model model,
+    AddToCartItem itemRequest, String wishlistName) throws IOException, AddToCartException, PricingException {
+    Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer(request));
 
-    public String moveItemToCart(HttpServletRequest request, HttpServletResponse response, Model model, 
-            String wishlistName, Long orderItemId) throws RemoveFromCartException, AddToCartException {
-        Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
-        List<OrderItem> orderItems = wishlist.getOrderItems();
-
-        OrderItem orderItem = null;
-        for (OrderItem item : orderItems) {
-            if (orderItemId.equals(item.getId())) {
-                orderItem = item;
-                break;
-            }
-        }
-
-        if (orderItem != null) {
-            orderService.addItemFromNamedOrder(wishlist, orderItem, true);
-        } else {
-            throw new IllegalArgumentException("The item id provided was not found in the wishlist");
-        }
-
-        model.addAttribute("wishlist", wishlist);
-
-        return getAccountWishlistRedirect();
-    }
-    
-    public String moveListToCart(HttpServletRequest request, HttpServletResponse response, Model model, 
-            String wishlistName) throws RemoveFromCartException, AddToCartException {
-        Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
-        
-        orderService.addAllItemsFromNamedOrder(wishlist, true);
-        
-        model.addAttribute("wishlist", wishlist);
-        return getAccountWishlistRedirect();
+    if (wishlist == null) {
+      wishlist = orderService.createNamedOrderForCustomer(wishlistName, CustomerState.getCustomer(request));
     }
 
-    public String getAccountWishlistView() {
-        return accountWishlistView;
-    }
-    
-    public String getAccountWishlistRedirect() {
-        return accountWishlistRedirect;
+    wishlist = orderService.addItem(wishlist.getId(), itemRequest, true);
+
+    return getAccountWishlistRedirect();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getAccountWishlistRedirect() {
+    return accountWishlistRedirect;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getAccountWishlistView() {
+    return accountWishlistView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request       DOCUMENT ME!
+   * @param   response      DOCUMENT ME!
+   * @param   model         DOCUMENT ME!
+   * @param   wishlistName  DOCUMENT ME!
+   * @param   orderItemId   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  RemoveFromCartException   DOCUMENT ME!
+   * @throws  AddToCartException        DOCUMENT ME!
+   * @throws  IllegalArgumentException  DOCUMENT ME!
+   */
+  public String moveItemToCart(HttpServletRequest request, HttpServletResponse response, Model model,
+    String wishlistName, Long orderItemId) throws RemoveFromCartException, AddToCartException {
+    Order           wishlist   = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
+    List<OrderItem> orderItems = wishlist.getOrderItems();
+
+    OrderItem orderItem = null;
+
+    for (OrderItem item : orderItems) {
+      if (orderItemId.equals(item.getId())) {
+        orderItem = item;
+
+        break;
+      }
     }
 
-}
+    if (orderItem != null) {
+      orderService.addItemFromNamedOrder(wishlist, orderItem, true);
+    } else {
+      throw new IllegalArgumentException("The item id provided was not found in the wishlist");
+    }
+
+    model.addAttribute("wishlist", wishlist);
+
+    return getAccountWishlistRedirect();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request       DOCUMENT ME!
+   * @param   response      DOCUMENT ME!
+   * @param   model         DOCUMENT ME!
+   * @param   wishlistName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  RemoveFromCartException  DOCUMENT ME!
+   * @throws  AddToCartException       DOCUMENT ME!
+   */
+  public String moveListToCart(HttpServletRequest request, HttpServletResponse response, Model model,
+    String wishlistName) throws RemoveFromCartException, AddToCartException {
+    Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
+
+    orderService.addAllItemsFromNamedOrder(wishlist, true);
+
+    model.addAttribute("wishlist", wishlist);
+
+    return getAccountWishlistRedirect();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request       DOCUMENT ME!
+   * @param   response      DOCUMENT ME!
+   * @param   model         DOCUMENT ME!
+   * @param   wishlistName  DOCUMENT ME!
+   * @param   itemId        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  RemoveFromCartException  DOCUMENT ME!
+   */
+  public String removeItemFromWishlist(HttpServletRequest request, HttpServletResponse response, Model model,
+    String wishlistName, Long itemId) throws RemoveFromCartException {
+    Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
+
+    orderService.removeItem(wishlist.getId(), itemId, false);
+
+    model.addAttribute("wishlist", wishlist);
+
+    return getAccountWishlistRedirect();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request       DOCUMENT ME!
+   * @param   response      DOCUMENT ME!
+   * @param   model         DOCUMENT ME!
+   * @param   wishlistName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String viewWishlist(HttpServletRequest request, HttpServletResponse response, Model model,
+    String wishlistName) {
+    Order wishlist = orderService.findNamedOrderForCustomer(wishlistName, CustomerState.getCustomer());
+    model.addAttribute("wishlist", wishlist);
+
+    return getAccountWishlistView();
+  }
+
+} // end class BroadleafManageWishlistController

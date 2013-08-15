@@ -16,74 +16,135 @@
 
 package org.broadleafcommerce.core.media.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Entity
 @Table(name = "BLC_CATEGORY_MEDIA_MAP")
 public class CategoryMediaMap implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  /** The Constant serialVersionUID. */
+  private static final long serialVersionUID = 1L;
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @EmbeddedId CategoryMediaMapPK categoryMediaMapPK;
+
+  @Column(
+    name     = "KEY",
+    nullable = false
+  )
+  private String key;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public CategoryMediaMapPK getCategoryMediaMapPK() {
+    return categoryMediaMapPK;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getKey() {
+    return key;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key  DOCUMENT ME!
+   */
+  public void setKey(String key) {
+    this.key = key;
+  }
+
+  //~ Inner Classes ----------------------------------------------------------------------------------------------------
+
+  public static class CategoryMediaMapPK implements Serializable {
+    //~ Static fields/initializers -------------------------------------------------------------------------------------
+
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    CategoryMediaMapPK categoryMediaMapPK;
+    //~ Instance fields ------------------------------------------------------------------------------------------------
 
-    @Column(name = "KEY", nullable = false)
-    private String key;
+    @Column(
+      name     = "CATEGORY_ID",
+      nullable = false
+    )
+    private Long categoryId;
 
-    public void setKey(String key) {
-        this.key = key;
+    @Column(
+      name     = "MEDIA_ID",
+      nullable = false
+    )
+    private Long mediaId;
+
+    //~ Methods --------------------------------------------------------------------------------------------------------
+
+    @Override public boolean equals(Object obj) {
+      if (obj == null) {
+        return false;
+      } else if (!(obj instanceof CategoryMediaMapPK)) {
+        return false;
+      }
+
+      return categoryId.equals(((CategoryMediaMapPK) obj).getCategoryId())
+        && mediaId.equals(((CategoryMediaMapPK) obj).getMediaId());
     }
 
-    public String getKey() {
-        return key;
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public Long getCategoryId() {
+      return categoryId;
     }
 
-    public CategoryMediaMapPK getCategoryMediaMapPK() {
-        return categoryMediaMapPK;
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public Long getMediaId() {
+      return mediaId;
     }
 
-    public static class CategoryMediaMapPK implements Serializable {
-        /** The Constant serialVersionUID. */
-        private static final long serialVersionUID = 1L;
+    //~ ----------------------------------------------------------------------------------------------------------------
 
-        @Column(name = "CATEGORY_ID", nullable = false)
-        private Long categoryId;
-
-        @Column(name = "MEDIA_ID", nullable = false)
-        private Long mediaId;
-
-        public Long getCategoryId() {
-            return categoryId;
-        }
-
-        public void setCategoryId(Long categoryId) {
-            this.categoryId = categoryId;
-        }
-
-        public Long getMediaId() {
-            return mediaId;
-        }
-
-        public void setMediaId(Long mediaId) {
-            this.mediaId = mediaId;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) return false;
-            else if (!(obj instanceof CategoryMediaMapPK)) return false;
-
-            return categoryId.equals(((CategoryMediaMapPK) obj).getCategoryId()) &&
-            mediaId.equals(((CategoryMediaMapPK) obj).getMediaId());
-        }
-
-        @Override
-        public int hashCode() {
-            return categoryId.hashCode() + mediaId.hashCode();
-        }
+    @Override public int hashCode() {
+      return categoryId.hashCode() + mediaId.hashCode();
     }
-}
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public void setCategoryId(Long categoryId) {
+      this.categoryId = categoryId;
+    }
+
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public void setMediaId(Long mediaId) {
+      this.mediaId = mediaId;
+    }
+  } // end class CategoryMediaMapPK
+} // end class CategoryMediaMap

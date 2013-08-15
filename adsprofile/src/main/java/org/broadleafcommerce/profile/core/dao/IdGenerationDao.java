@@ -16,12 +16,30 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.profile.core.domain.IdGeneration;
-
 import javax.persistence.OptimisticLockException;
 
-public interface IdGenerationDao {
+import org.broadleafcommerce.profile.core.domain.IdGeneration;
 
-    public IdGeneration findNextId(String idType) throws OptimisticLockException, Exception;
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface IdGenerationDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   idType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  OptimisticLockException  DOCUMENT ME!
+   * @throws  Exception                DOCUMENT ME!
+   */
+  IdGeneration findNextId(String idType) throws OptimisticLockException, Exception;
 
 }

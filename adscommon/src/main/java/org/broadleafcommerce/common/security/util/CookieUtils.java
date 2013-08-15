@@ -19,16 +19,65 @@ package org.broadleafcommerce.common.security.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CookieUtils {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public final static String CUSTOMER_COOKIE_NAME = "customerId";
+  /** DOCUMENT ME! */
+  String CUSTOMER_COOKIE_NAME = "customerId";
 
-    public abstract String getCookieValue(HttpServletRequest request, String cookieName);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public abstract void setCookieValue(HttpServletResponse response, String cookieName, String cookieValue, String path, Integer maxAge, Boolean isSecure);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request     DOCUMENT ME!
+   * @param   cookieName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCookieValue(HttpServletRequest request, String cookieName);
 
-    public abstract void setCookieValue(HttpServletResponse response, String cookieName, String cookieValue);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract void invalidateCookie(HttpServletResponse response, String cookieName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  response    DOCUMENT ME!
+   * @param  cookieName  DOCUMENT ME!
+   */
+  void invalidateCookie(HttpServletResponse response, String cookieName);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  response     DOCUMENT ME!
+   * @param  cookieName   DOCUMENT ME!
+   * @param  cookieValue  DOCUMENT ME!
+   */
+  void setCookieValue(HttpServletResponse response, String cookieName, String cookieValue);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  response     DOCUMENT ME!
+   * @param  cookieName   DOCUMENT ME!
+   * @param  cookieValue  DOCUMENT ME!
+   * @param  path         DOCUMENT ME!
+   * @param  maxAge       DOCUMENT ME!
+   * @param  isSecure     DOCUMENT ME!
+   */
+  void setCookieValue(HttpServletResponse response, String cookieName, String cookieValue, String path, Integer maxAge,
+    Boolean isSecure);
+
+} // end interface CookieUtils

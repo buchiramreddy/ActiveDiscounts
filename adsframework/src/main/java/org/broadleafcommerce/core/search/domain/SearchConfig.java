@@ -18,9 +18,9 @@ package org.broadleafcommerce.core.search.domain;
 
 
 /**
- * 
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
-public interface SearchConfig {
-
-}
+public interface SearchConfig { }

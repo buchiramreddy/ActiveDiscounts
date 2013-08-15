@@ -16,6 +16,11 @@
 
 package org.broadleafcommerce.core.order.service.legacy;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.Sku;
@@ -28,336 +33,513 @@ import org.broadleafcommerce.core.order.service.call.BundleOrderItemRequest;
 import org.broadleafcommerce.core.order.service.call.DiscreteOrderItemRequest;
 import org.broadleafcommerce.core.order.service.call.GiftWrapOrderItemRequest;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
+
 import org.broadleafcommerce.test.legacy.LegacyCommonSetupBaseTest;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @SuppressWarnings("deprecation")
 public class LegacyOrderBaseTest extends LegacyCommonSetupBaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blOrderService")
-    protected LegacyCartService cartService;
-    
-    private int bundleCount = 0;
-    
-    protected Customer createNamedCustomer() {
-        Customer customer = customerService.createCustomerFromId(null);
-        customer.setUsername(String.valueOf(customer.getId()));
-        return customer;
-    }
-    
-    public Order setUpNamedOrder() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected LegacyCartService cartService;
 
-        Order order = cartService.createNamedOrderForCustomer("Boxes Named Order", customer);
-        
-        Product newProduct = addTestProduct("Cube Box", "Boxes");        
-        Category newCategory = newProduct.getDefaultCategory();
+  private int bundleCount = 0;
 
-        cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2);
-        
-        return order;
-    }
-    
-    public Order setUpAnonymousCartWithInactiveSku() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        Order order = cartService.createNewCartForCustomer(customer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BundleOrderItemRequest createBundleOrderItemRequest() {
+    Product  screwProduct    = addTestProduct("Bookshelf", "Components");
+    Product  shelfProduct    = addTestProduct("Bookshelf", "Components");
+    Product  bracketsProduct = addTestProduct("Bookshelf", "Components");
+    Category category        = screwProduct.getDefaultCategory();
 
-        Product newProduct = addTestProduct("Plastic Crate", "Crates");
-        Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
-        
-        Category newCategory = newProduct.getDefaultCategory();
+    List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
+    discreteOrderItems.add(createDiscreteOrderItemRequest(screwProduct, screwProduct.getDefaultSku(), 20));
+    discreteOrderItems.add(createDiscreteOrderItemRequest(shelfProduct, shelfProduct.getDefaultSku(), 3));
+    discreteOrderItems.add(createDiscreteOrderItemRequest(bracketsProduct, bracketsProduct.getDefaultSku(), 6));
 
-        cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2);
-        cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2);
-        
-        cartService.addBundleItemToOrder(order, createBundleOrderItemRequest());
-        cartService.addBundleItemToOrder(order, createBundleOrderItemRequestWithInactiveSku());
-        
-        return order;
-    }
+    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
+    itemRequest.setCategory(category);
+    itemRequest.setName("test bundle " + bundleCount++);
+    itemRequest.setQuantity(1);
+    itemRequest.setDiscreteOrderItems(discreteOrderItems);
 
-    public Order setUpAnonymousCartWithGiftWrap() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+    return itemRequest;
+  }
 
-        Order order = cartService.createNewCartForCustomer(customer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        Product newProduct = addTestProduct("Plastic Crate", "Crates");
-        Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates");
-        Product giftWrapProduct = addTestProduct("Gift Box", "Gift Wraps");
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BundleOrderItemRequest createBundleOrderItemRequestWithInactiveSku() {
+    Product  drawerProduct = addTestProduct("Drawer System", "Systems");
+    Product  nailsProduct  = addTestProduct("Drawer System", "Systems");
+    Product  tracksProduct = addTestProduct("Drawer System", "Systems", false);
+    Category category      = drawerProduct.getDefaultCategory();
 
-        Category newCategory = newProduct.getDefaultCategory();
+    List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
+    discreteOrderItems.add(createDiscreteOrderItemRequest(drawerProduct, drawerProduct.getDefaultSku(), 20));
+    discreteOrderItems.add(createDiscreteOrderItemRequest(nailsProduct, nailsProduct.getDefaultSku(), 3));
+    discreteOrderItems.add(createDiscreteOrderItemRequest(tracksProduct, tracksProduct.getDefaultSku(), 6));
 
-        List<OrderItem> addedItems = new ArrayList<OrderItem>();
-        addedItems.add(cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2));
-        addedItems.add(cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2));
+    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
+    itemRequest.setCategory(category);
+    itemRequest.setName("test bundle " + bundleCount++);
+    itemRequest.setQuantity(1);
+    itemRequest.setDiscreteOrderItems(discreteOrderItems);
 
-        cartService.addGiftWrapItemToOrder(order, createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1, addedItems));
+    return itemRequest;
+  }
 
-        return order;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Order setUpAnonymousCartWithInactiveGiftWrap() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   product   DOCUMENT ME!
+   * @param   sku       DOCUMENT ME!
+   * @param   quantity  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DiscreteOrderItemRequest createDiscreteOrderItemRequest(Product product, Sku sku, int quantity) {
+    DiscreteOrderItemRequest request = new DiscreteOrderItemRequest();
+    request.setSku(sku);
+    request.setQuantity(quantity);
+    request.setProduct(product);
+    request.setCategory(product.getDefaultCategory());
 
-        Order order = cartService.createNewCartForCustomer(customer);
+    return request;
+  }
 
-        Product newProduct = addTestProduct("Plastic Crate", "Crates");
-        Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
-        Product giftWrapProduct = addTestProduct("Gift Box", "Gift Wraps");
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        Category newCategory = newProduct.getDefaultCategory();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   product       DOCUMENT ME!
+   * @param   sku           DOCUMENT ME!
+   * @param   quantity      DOCUMENT ME!
+   * @param   wrappedItems  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public GiftWrapOrderItemRequest createGiftWrapOrderItemRequest(Product product, Sku sku, int quantity,
+    List<OrderItem> wrappedItems) {
+    GiftWrapOrderItemRequest request = new GiftWrapOrderItemRequest();
+    request.setSku(sku);
+    request.setQuantity(quantity);
+    request.setProduct(product);
+    request.setCategory(product.getDefaultCategory());
+    request.setWrappedItems(wrappedItems);
 
-        List<OrderItem> addedItems = new ArrayList<OrderItem>();
-        addedItems.add(cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2));
-        addedItems.add(cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2));
+    return request;
+  }
 
-        cartService.addGiftWrapItemToOrder(order, createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1, addedItems));
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return order;
-    }
-    
-    public Order initializeExistingCartWithInactiveSkuAndInactiveBundle(Customer customer) throws PricingException {
-        Product newProduct = addTestProduct("Plastic Crate", "Crates");
-        Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
-        
-        Category newCategory = newProduct.getDefaultCategory();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order initializeExistingCart(Customer customer) throws PricingException {
+    Product newProduct      = addTestProduct("Plastic Crate", "Crates");
+    Product newOtherProduct = addTestProduct("Plastic Crate", "Crates");
 
-        Order order = cartService.createNewCartForCustomer(customer);
+    Category newCategory = newProduct.getDefaultCategory();
 
-        cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2);
-        cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2);
-        
-        cartService.addBundleItemToOrder(order, createBundleOrderItemRequest());
-        cartService.addBundleItemToOrder(order, createBundleOrderItemRequestWithInactiveSku());
+    Order order = cartService.createNewCartForCustomer(customer);
 
-        return order;
-    }
+    cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
+      newProduct.getId(), newCategory.getId(), 2);
+    cartService.addSkuToOrder(order.getId(), newOtherProduct.getDefaultSku().getId(),
+      newProduct.getId(), newCategory.getId(), 2);
 
-    public Order initializeExistingCart(Customer customer) throws PricingException {
-        Product newProduct = addTestProduct("Plastic Crate", "Crates");
-        Product newOtherProduct = addTestProduct("Plastic Crate", "Crates");
-        
-        Category newCategory = newProduct.getDefaultCategory();
-        
-        Order order = cartService.createNewCartForCustomer(customer);
-        
-        cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2);
-        cartService.addSkuToOrder(order.getId(), newOtherProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2);
-        
-        return order;
-    }
-    
-    public BundleOrderItemRequest createBundleOrderItemRequest() {
-        Product screwProduct = addTestProduct("Bookshelf", "Components");
-        Product shelfProduct = addTestProduct("Bookshelf", "Components");
-        Product bracketsProduct = addTestProduct("Bookshelf", "Components");
-        Category category = screwProduct.getDefaultCategory();
-        
-        List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
-        discreteOrderItems.add(createDiscreteOrderItemRequest(screwProduct, screwProduct.getDefaultSku(), 20));
-        discreteOrderItems.add(createDiscreteOrderItemRequest(shelfProduct, shelfProduct.getDefaultSku(), 3));
-        discreteOrderItems.add(createDiscreteOrderItemRequest(bracketsProduct, bracketsProduct.getDefaultSku(), 6));
-        
-        BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
-        itemRequest.setCategory(category);
-        itemRequest.setName("test bundle " + bundleCount++);
-        itemRequest.setQuantity(1);
-        itemRequest.setDiscreteOrderItems(discreteOrderItems);
-        return itemRequest;
-    }
-    
-    public BundleOrderItemRequest createBundleOrderItemRequestWithInactiveSku() {
-        Product drawerProduct = addTestProduct("Drawer System", "Systems");
-        Product nailsProduct = addTestProduct("Drawer System", "Systems");
-        Product tracksProduct = addTestProduct("Drawer System", "Systems", false);
-        Category category = drawerProduct.getDefaultCategory();
-        
-        List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
-        discreteOrderItems.add(createDiscreteOrderItemRequest(drawerProduct, drawerProduct.getDefaultSku(), 20));
-        discreteOrderItems.add(createDiscreteOrderItemRequest(nailsProduct, nailsProduct.getDefaultSku(), 3));
-        discreteOrderItems.add(createDiscreteOrderItemRequest(tracksProduct, tracksProduct.getDefaultSku(), 6));
-        
-        BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
-        itemRequest.setCategory(category);
-        itemRequest.setName("test bundle " + bundleCount++);
-        itemRequest.setQuantity(1);
-        itemRequest.setDiscreteOrderItems(discreteOrderItems);
-        return itemRequest;
-    }
-    
-    public DiscreteOrderItemRequest createDiscreteOrderItemRequest(Product product, Sku sku, int quantity) {
-        DiscreteOrderItemRequest request = new DiscreteOrderItemRequest();
-        request.setSku(sku);
-        request.setQuantity(quantity);
-        request.setProduct(product);
-        request.setCategory(product.getDefaultCategory());
-        return request;
-    }
+    return order;
+  }
 
-    public GiftWrapOrderItemRequest createGiftWrapOrderItemRequest(Product product, Sku sku, int quantity, List<OrderItem> wrappedItems) {
-        GiftWrapOrderItemRequest request = new GiftWrapOrderItemRequest();
-        request.setSku(sku);
-        request.setQuantity(quantity);
-        request.setProduct(product);
-        request.setCategory(product.getDefaultCategory());
-        request.setWrappedItems(wrappedItems);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return request;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order initializeExistingCartWithInactiveSkuAndInactiveBundle(Customer customer) throws PricingException {
+    Product newProduct         = addTestProduct("Plastic Crate", "Crates");
+    Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
 
-    public Order setUpAnonymousCartWithInactiveBundleGiftWrap() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+    Category newCategory = newProduct.getDefaultCategory();
 
-        Order order = cartService.createNewCartForCustomer(customer);
+    Order order = cartService.createNewCartForCustomer(customer);
 
-        Product newProduct = addTestProduct("Plastic Crate", "Crates");
-        Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
-        Product giftWrapProduct = addTestProduct("Gift Box", "Gift Wraps");
-        Category category = newProduct.getDefaultCategory();
+    cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
+      newProduct.getId(), newCategory.getId(), 2);
+    cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
+      newProduct.getId(), newCategory.getId(), 2);
 
-        List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
-        discreteOrderItems.add(createDiscreteOrderItemRequest(newProduct, newProduct.getDefaultSku(), 1));
-        discreteOrderItems.add(createDiscreteOrderItemRequest(newInactiveProduct, newInactiveProduct.getDefaultSku(), 1));
-        discreteOrderItems.add(createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1, new ArrayList<OrderItem>()));
+    cartService.addBundleItemToOrder(order, createBundleOrderItemRequest());
+    cartService.addBundleItemToOrder(order, createBundleOrderItemRequestWithInactiveSku());
 
-        BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
-        itemRequest.setCategory(category);
-        itemRequest.setName("test bundle " + bundleCount++);
-        itemRequest.setQuantity(1);
-        itemRequest.setDiscreteOrderItems(discreteOrderItems);
+    return order;
+  }
 
-        BundleOrderItem newBundle = (BundleOrderItem) cartService.addBundleItemToOrder(order, itemRequest);
-        List<OrderItem> addedItems = new ArrayList<OrderItem>();
-        GiftWrapOrderItem giftItem = null;
-        for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
-            if (addedItem instanceof GiftWrapOrderItem) {
-                giftItem = (GiftWrapOrderItem) addedItem;
-            } else {
-                addedItems.add(addedItem);
-            }
-        }
-        for (OrderItem addedItem : addedItems) {
-            addedItem.setGiftWrapOrderItem(giftItem);
-        }
-        giftItem.getWrappedItems().addAll(addedItems);
-        order = cartService.save(order, false);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return order;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpAnonymousCartWithBundleGiftWrap() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNewCartForCustomer(customer);
+
+    BundleOrderItemRequest itemRequest = createBundleOrderItemRequestWithGiftWrap();
+
+    BundleOrderItem   newBundle  = (BundleOrderItem) cartService.addBundleItemToOrder(order, itemRequest);
+    List<OrderItem>   addedItems = new ArrayList<OrderItem>();
+    GiftWrapOrderItem giftItem   = null;
+
+    for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
+      if (addedItem instanceof GiftWrapOrderItem) {
+        giftItem = (GiftWrapOrderItem) addedItem;
+      } else {
+        addedItems.add(addedItem);
+      }
     }
 
-    public Order setUpAnonymousCartWithBundleGiftWrap() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
-
-        Order order = cartService.createNewCartForCustomer(customer);
-
-        BundleOrderItemRequest itemRequest = createBundleOrderItemRequestWithGiftWrap();
-
-        BundleOrderItem newBundle = (BundleOrderItem) cartService.addBundleItemToOrder(order, itemRequest);
-        List<OrderItem> addedItems = new ArrayList<OrderItem>();
-        GiftWrapOrderItem giftItem = null;
-        for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
-            if (addedItem instanceof GiftWrapOrderItem) {
-                giftItem = (GiftWrapOrderItem) addedItem;
-            } else {
-                addedItems.add(addedItem);
-            }
-        }
-        for (OrderItem addedItem : addedItems) {
-            addedItem.setGiftWrapOrderItem(giftItem);
-        }
-        giftItem.getWrappedItems().addAll(addedItems);
-        order = cartService.save(order, false);
-
-        return order;
+    for (OrderItem addedItem : addedItems) {
+      addedItem.setGiftWrapOrderItem(giftItem);
     }
 
-    protected BundleOrderItemRequest createBundleOrderItemRequestWithGiftWrap() {
-        Product newProduct = addTestProduct("Plastic Crate", "Crates");
-        Product newActiveProduct = addTestProduct("Plastic Crate", "Crates");
-        Product giftWrapProduct = addTestProduct("Gift Box", "Gift Wraps");
-        Category category = newProduct.getDefaultCategory();
+    giftItem.getWrappedItems().addAll(addedItems);
+    order = cartService.save(order, false);
 
-        List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
-        discreteOrderItems.add(createDiscreteOrderItemRequest(newProduct, newProduct.getDefaultSku(), 1));
-        discreteOrderItems.add(createDiscreteOrderItemRequest(newActiveProduct, newActiveProduct.getDefaultSku(), 1));
-        discreteOrderItems.add(createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1, new ArrayList<OrderItem>()));
+    return order;
+  } // end method setUpAnonymousCartWithBundleGiftWrap
 
-        BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
-        itemRequest.setCategory(category);
-        itemRequest.setName("test bundle " + bundleCount++);
-        itemRequest.setQuantity(1);
-        itemRequest.setDiscreteOrderItems(discreteOrderItems);
-        return itemRequest;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpAnonymousCartWithBundleGiftWrapReferringItemsInAnotherBundle() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNewCartForCustomer(customer);
+
+    BundleOrderItem   newBundle  = (BundleOrderItem) cartService.addBundleItemToOrder(order,
+        createBundleOrderItemRequest());
+    BundleOrderItem   newBundle2 = (BundleOrderItem) cartService.addBundleItemToOrder(order,
+        createBundleOrderItemRequestWithGiftWrap());
+    GiftWrapOrderItem giftItem   = null;
+
+    for (DiscreteOrderItem addedItem : newBundle2.getDiscreteOrderItems()) {
+      if (addedItem instanceof GiftWrapOrderItem) {
+        giftItem = (GiftWrapOrderItem) addedItem;
+      }
     }
 
-    public Order setUpAnonymousCartWithBundleGiftWrapReferringToRootItems() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
-
-        Order order = cartService.createNewCartForCustomer(customer);
-
-        Product newProduct = addTestProduct("Plastic Bowl", "Bowls");
-        Product newActiveProduct = addTestProduct("Plastic Bowl", "Bowls");
-
-        Category newCategory = newProduct.getDefaultCategory();
-
-        List<OrderItem> addedItems = new ArrayList<OrderItem>();
-        addedItems.add(cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2));
-        addedItems.add(cartService.addSkuToOrder(order.getId(), newActiveProduct.getDefaultSku().getId(),
-                newProduct.getId(), newCategory.getId(), 2));
-
-        BundleOrderItem newBundle = (BundleOrderItem) cartService.addBundleItemToOrder(order, createBundleOrderItemRequestWithGiftWrap());
-        GiftWrapOrderItem giftItem = null;
-        for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
-            if (addedItem instanceof GiftWrapOrderItem) {
-                giftItem = (GiftWrapOrderItem) addedItem;
-            }
-        }
-        for (OrderItem addedItem : addedItems) {
-            addedItem.setGiftWrapOrderItem(giftItem);
-        }
-        giftItem.getWrappedItems().addAll(addedItems);
-        order = cartService.save(order, false);
-
-        return order;
+    for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
+      addedItem.setGiftWrapOrderItem(giftItem);
     }
 
-    public Order setUpAnonymousCartWithBundleGiftWrapReferringItemsInAnotherBundle() throws PricingException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+    giftItem.getWrappedItems().addAll(newBundle.getDiscreteOrderItems());
+    order = cartService.save(order, false);
 
-        Order order = cartService.createNewCartForCustomer(customer);
+    return order;
+  } // end method setUpAnonymousCartWithBundleGiftWrapReferringItemsInAnotherBundle
 
-        BundleOrderItem newBundle = (BundleOrderItem) cartService.addBundleItemToOrder(order, createBundleOrderItemRequest());
-        BundleOrderItem newBundle2 = (BundleOrderItem) cartService.addBundleItemToOrder(order, createBundleOrderItemRequestWithGiftWrap());
-        GiftWrapOrderItem giftItem = null;
-        for (DiscreteOrderItem addedItem : newBundle2.getDiscreteOrderItems()) {
-            if (addedItem instanceof GiftWrapOrderItem) {
-                giftItem = (GiftWrapOrderItem) addedItem;
-            }
-        }
-        for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
-            addedItem.setGiftWrapOrderItem(giftItem);
-        }
-        giftItem.getWrappedItems().addAll(newBundle.getDiscreteOrderItems());
-        order = cartService.save(order, false);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return order;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpAnonymousCartWithBundleGiftWrapReferringToRootItems() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNewCartForCustomer(customer);
+
+    Product newProduct       = addTestProduct("Plastic Bowl", "Bowls");
+    Product newActiveProduct = addTestProduct("Plastic Bowl", "Bowls");
+
+    Category newCategory = newProduct.getDefaultCategory();
+
+    List<OrderItem> addedItems = new ArrayList<OrderItem>();
+    addedItems.add(cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
+        newProduct.getId(), newCategory.getId(), 2));
+    addedItems.add(cartService.addSkuToOrder(order.getId(), newActiveProduct.getDefaultSku().getId(),
+        newProduct.getId(), newCategory.getId(), 2));
+
+    BundleOrderItem   newBundle = (BundleOrderItem) cartService.addBundleItemToOrder(order,
+        createBundleOrderItemRequestWithGiftWrap());
+    GiftWrapOrderItem giftItem  = null;
+
+    for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
+      if (addedItem instanceof GiftWrapOrderItem) {
+        giftItem = (GiftWrapOrderItem) addedItem;
+      }
     }
 
-}
+    for (OrderItem addedItem : addedItems) {
+      addedItem.setGiftWrapOrderItem(giftItem);
+    }
+
+    giftItem.getWrappedItems().addAll(addedItems);
+    order = cartService.save(order, false);
+
+    return order;
+  } // end method setUpAnonymousCartWithBundleGiftWrapReferringToRootItems
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpAnonymousCartWithGiftWrap() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNewCartForCustomer(customer);
+
+    Product newProduct         = addTestProduct("Plastic Crate", "Crates");
+    Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates");
+    Product giftWrapProduct    = addTestProduct("Gift Box", "Gift Wraps");
+
+    Category newCategory = newProduct.getDefaultCategory();
+
+    List<OrderItem> addedItems = new ArrayList<OrderItem>();
+    addedItems.add(cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
+        newProduct.getId(), newCategory.getId(), 2));
+    addedItems.add(cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
+        newProduct.getId(), newCategory.getId(), 2));
+
+    cartService.addGiftWrapItemToOrder(order,
+      createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1, addedItems));
+
+    return order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpAnonymousCartWithInactiveBundleGiftWrap() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNewCartForCustomer(customer);
+
+    Product  newProduct         = addTestProduct("Plastic Crate", "Crates");
+    Product  newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
+    Product  giftWrapProduct    = addTestProduct("Gift Box", "Gift Wraps");
+    Category category           = newProduct.getDefaultCategory();
+
+    List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
+    discreteOrderItems.add(createDiscreteOrderItemRequest(newProduct, newProduct.getDefaultSku(), 1));
+    discreteOrderItems.add(createDiscreteOrderItemRequest(newInactiveProduct, newInactiveProduct.getDefaultSku(), 1));
+    discreteOrderItems.add(createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1,
+        new ArrayList<OrderItem>()));
+
+    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
+    itemRequest.setCategory(category);
+    itemRequest.setName("test bundle " + bundleCount++);
+    itemRequest.setQuantity(1);
+    itemRequest.setDiscreteOrderItems(discreteOrderItems);
+
+    BundleOrderItem   newBundle  = (BundleOrderItem) cartService.addBundleItemToOrder(order, itemRequest);
+    List<OrderItem>   addedItems = new ArrayList<OrderItem>();
+    GiftWrapOrderItem giftItem   = null;
+
+    for (DiscreteOrderItem addedItem : newBundle.getDiscreteOrderItems()) {
+      if (addedItem instanceof GiftWrapOrderItem) {
+        giftItem = (GiftWrapOrderItem) addedItem;
+      } else {
+        addedItems.add(addedItem);
+      }
+    }
+
+    for (OrderItem addedItem : addedItems) {
+      addedItem.setGiftWrapOrderItem(giftItem);
+    }
+
+    giftItem.getWrappedItems().addAll(addedItems);
+    order = cartService.save(order, false);
+
+    return order;
+  } // end method setUpAnonymousCartWithInactiveBundleGiftWrap
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpAnonymousCartWithInactiveGiftWrap() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNewCartForCustomer(customer);
+
+    Product newProduct         = addTestProduct("Plastic Crate", "Crates");
+    Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
+    Product giftWrapProduct    = addTestProduct("Gift Box", "Gift Wraps");
+
+    Category newCategory = newProduct.getDefaultCategory();
+
+    List<OrderItem> addedItems = new ArrayList<OrderItem>();
+    addedItems.add(cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
+        newProduct.getId(), newCategory.getId(), 2));
+    addedItems.add(cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
+        newProduct.getId(), newCategory.getId(), 2));
+
+    cartService.addGiftWrapItemToOrder(order,
+      createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1, addedItems));
+
+    return order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpAnonymousCartWithInactiveSku() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNewCartForCustomer(customer);
+
+    Product newProduct         = addTestProduct("Plastic Crate", "Crates");
+    Product newInactiveProduct = addTestProduct("Plastic Crate", "Crates", false);
+
+    Category newCategory = newProduct.getDefaultCategory();
+
+    cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
+      newProduct.getId(), newCategory.getId(), 2);
+    cartService.addSkuToOrder(order.getId(), newInactiveProduct.getDefaultSku().getId(),
+      newProduct.getId(), newCategory.getId(), 2);
+
+    cartService.addBundleItemToOrder(order, createBundleOrderItemRequest());
+    cartService.addBundleItemToOrder(order, createBundleOrderItemRequestWithInactiveSku());
+
+    return order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  public Order setUpNamedOrder() throws PricingException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = cartService.createNamedOrderForCustomer("Boxes Named Order", customer);
+
+    Product  newProduct  = addTestProduct("Cube Box", "Boxes");
+    Category newCategory = newProduct.getDefaultCategory();
+
+    cartService.addSkuToOrder(order.getId(), newProduct.getDefaultSku().getId(),
+      newProduct.getId(), newCategory.getId(), 2);
+
+    return order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected BundleOrderItemRequest createBundleOrderItemRequestWithGiftWrap() {
+    Product  newProduct       = addTestProduct("Plastic Crate", "Crates");
+    Product  newActiveProduct = addTestProduct("Plastic Crate", "Crates");
+    Product  giftWrapProduct  = addTestProduct("Gift Box", "Gift Wraps");
+    Category category         = newProduct.getDefaultCategory();
+
+    List<DiscreteOrderItemRequest> discreteOrderItems = new ArrayList<DiscreteOrderItemRequest>();
+    discreteOrderItems.add(createDiscreteOrderItemRequest(newProduct, newProduct.getDefaultSku(), 1));
+    discreteOrderItems.add(createDiscreteOrderItemRequest(newActiveProduct, newActiveProduct.getDefaultSku(), 1));
+    discreteOrderItems.add(createGiftWrapOrderItemRequest(giftWrapProduct, giftWrapProduct.getDefaultSku(), 1,
+        new ArrayList<OrderItem>()));
+
+    BundleOrderItemRequest itemRequest = new BundleOrderItemRequest();
+    itemRequest.setCategory(category);
+    itemRequest.setName("test bundle " + bundleCount++);
+    itemRequest.setQuantity(1);
+    itemRequest.setDiscreteOrderItems(discreteOrderItems);
+
+    return itemRequest;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Customer createNamedCustomer() {
+    Customer customer = customerService.createCustomerFromId(null);
+    customer.setUsername(String.valueOf(customer.getId()));
+
+    return customer;
+  }
+
+} // end class LegacyOrderBaseTest

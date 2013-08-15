@@ -17,26 +17,50 @@
 package org.broadleafcommerce.common.email.service.exception;
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class EmailException extends RuntimeException {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public EmailException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public EmailException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
-    }
+  /**
+   * Creates a new EmailException object.
+   */
+  public EmailException() {
+    super();
+  }
 
-    public EmailException(String arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new EmailException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public EmailException(String arg0) {
+    super(arg0);
+  }
 
-    public EmailException(Throwable arg0) {
-        super(arg0);
-    }
-}
+  /**
+   * Creates a new EmailException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public EmailException(Throwable arg0) {
+    super(arg0);
+  }
+
+  /**
+   * Creates a new EmailException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   */
+  public EmailException(String arg0, Throwable arg1) {
+    super(arg0, arg1);
+  }
+} // end class EmailException

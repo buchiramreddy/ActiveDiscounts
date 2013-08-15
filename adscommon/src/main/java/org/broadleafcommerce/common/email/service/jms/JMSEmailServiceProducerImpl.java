@@ -16,65 +16,95 @@
 
 package org.broadleafcommerce.common.email.service.jms;
 
-import org.broadleafcommerce.common.email.service.info.EmailInfo;
-import org.broadleafcommerce.common.email.service.message.EmailPropertyType;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
+import java.util.HashMap;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import java.util.HashMap;
+
+import org.broadleafcommerce.common.email.service.info.EmailInfo;
+import org.broadleafcommerce.common.email.service.message.EmailPropertyType;
+
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class JMSEmailServiceProducerImpl implements JMSEmailServiceProducer {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private JmsTemplate emailServiceTemplate;
+  private Destination emailServiceDestination;
 
-    private Destination emailServiceDestination;
+  private JmsTemplate emailServiceTemplate;
 
-    public void send(@SuppressWarnings("rawtypes") final HashMap props) {
-        emailServiceTemplate.send(emailServiceDestination, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                ObjectMessage message = session.createObjectMessage(props);
-                EmailInfo info = (EmailInfo) props.get(EmailPropertyType.INFO.getType());
-                message.setJMSPriority(Integer.parseInt(info.getSendAsyncPriority()));
-                return message;
-            }
-        });
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailServiceTemplate
-     */
-    public JmsTemplate getEmailServiceTemplate() {
-        return emailServiceTemplate;
-    }
+  /**
+   * The emailServiceDestination.
+   *
+   * @return  the emailServiceDestination
+   */
+  @Override public Destination getEmailServiceDestination() {
+    return emailServiceDestination;
+  }
 
-    /**
-     * @param emailServiceTemplate the emailServiceTemplate to set
-     */
-    public void setEmailServiceTemplate(JmsTemplate emailServiceTemplate) {
-        this.emailServiceTemplate = emailServiceTemplate;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailServiceDestination
-     */
-    public Destination getEmailServiceDestination() {
-        return emailServiceDestination;
-    }
+  /**
+   * The emailServiceTemplate.
+   *
+   * @return  the emailServiceTemplate
+   */
+  @Override public JmsTemplate getEmailServiceTemplate() {
+    return emailServiceTemplate;
+  }
 
-    /**
-     * @param emailServiceDestination the emailServiceDestination to set
-     */
-    public void setEmailServiceDestination(Destination emailServiceDestination) {
-        this.emailServiceDestination = emailServiceDestination;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.common.email.service.message.EmailServiceProducer#send(java.util.HashMap)
+   */
+  @Override public void send(@SuppressWarnings("rawtypes") final HashMap props) {
+    emailServiceTemplate.send(emailServiceDestination, new MessageCreator() {
+        @Override public Message createMessage(Session session) throws JMSException {
+          ObjectMessage message = session.createObjectMessage(props);
+          EmailInfo     info    = (EmailInfo) props.get(EmailPropertyType.INFO.getType());
+          message.setJMSPriority(Integer.parseInt(info.getSendAsyncPriority()));
+
+          return message;
+        }
+      });
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailServiceDestination  the emailServiceDestination to set
+   */
+  @Override public void setEmailServiceDestination(Destination emailServiceDestination) {
+    this.emailServiceDestination = emailServiceDestination;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailServiceTemplate  the emailServiceTemplate to set
+   */
+  @Override public void setEmailServiceTemplate(JmsTemplate emailServiceTemplate) {
+    this.emailServiceTemplate = emailServiceTemplate;
+  }
+
+} // end class JMSEmailServiceProducerImpl

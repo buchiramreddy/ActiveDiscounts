@@ -16,62 +16,101 @@
 
 package org.broadleafcommerce.common.extensibility.cache.ehcache;
 
-import org.broadleafcommerce.common.extensibility.context.ResourceInputStream;
-import org.broadleafcommerce.common.extensibility.context.merge.MergeXmlConfigResource;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.FatalBeanException;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.io.Resource;
-
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
+import org.broadleafcommerce.common.extensibility.context.ResourceInputStream;
+import org.broadleafcommerce.common.extensibility.context.merge.MergeXmlConfigResource;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.FatalBeanException;
+
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+import org.springframework.core.io.Resource;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class MergeEhCacheManagerFactoryBean extends EhCacheManagerFactoryBean implements ApplicationContextAware {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private ApplicationContext applicationContext;
+  /** DOCUMENT ME! */
+  protected List<Resource> configLocations;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+  /** DOCUMENT ME! */
+  @javax.annotation.Resource(name = "blMergedCacheConfigLocations")
+  protected Set<String> mergedCacheConfigLocations;
+
+  private ApplicationContext applicationContext;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  FatalBeanException  DOCUMENT ME!
+   */
+  @PostConstruct public void configureMergedItems() {
+    List<Resource> temp = new ArrayList<Resource>();
+
+    if ((mergedCacheConfigLocations != null) && !mergedCacheConfigLocations.isEmpty()) {
+      for (String location : mergedCacheConfigLocations) {
+        temp.add(applicationContext.getResource(location));
+      }
     }
 
-    @javax.annotation.Resource(name="blMergedCacheConfigLocations")
-    protected Set<String> mergedCacheConfigLocations;
-
-    protected List<Resource> configLocations;
-
-    @PostConstruct
-    public void configureMergedItems() {
-        List<Resource> temp = new ArrayList<Resource>();
-        if (mergedCacheConfigLocations != null && !mergedCacheConfigLocations.isEmpty()) {
-            for (String location : mergedCacheConfigLocations) {
-                temp.add(applicationContext.getResource(location));
-            }
-        }
-        if (configLocations != null && !configLocations.isEmpty()) {
-            for (Resource resource : configLocations) {
-                temp.add(resource);
-            }
-        }
-        try {
-            MergeXmlConfigResource merge = new MergeXmlConfigResource();
-            ResourceInputStream[] sources = new ResourceInputStream[temp.size()];
-            int j=0;
-            for (Resource resource : temp) {
-                sources[j] = new ResourceInputStream(resource.getInputStream(), resource.getURL().toString());
-                j++;
-            }
-            setConfigLocation(merge.getMergedConfigResource(sources));
-        } catch (Exception e) {
-            throw new FatalBeanException("Unable to merge cache locations", e);
-        }
+    if ((configLocations != null) && !configLocations.isEmpty()) {
+      for (Resource resource : configLocations) {
+        temp.add(resource);
+      }
     }
 
-    public void setConfigLocations(List<Resource> configLocations) throws BeansException {
-        this.configLocations = configLocations;
+    try {
+      MergeXmlConfigResource merge   = new MergeXmlConfigResource();
+      ResourceInputStream[]  sources = new ResourceInputStream[temp.size()];
+      int                    j       = 0;
+
+      for (Resource resource : temp) {
+        sources[j] = new ResourceInputStream(resource.getInputStream(), resource.getURL().toString());
+        j++;
+      }
+
+      setConfigLocation(merge.getMergedConfigResource(sources));
+    } catch (Exception e) {
+      throw new FatalBeanException("Unable to merge cache locations", e);
     }
-}
+  } // end method configureMergedItems
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+   */
+  @Override public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   configLocations  DOCUMENT ME!
+   *
+   * @throws  BeansException  DOCUMENT ME!
+   */
+  public void setConfigLocations(List<Resource> configLocations) throws BeansException {
+    this.configLocations = configLocations;
+  }
+} // end class MergeEhCacheManagerFactoryBean

@@ -19,20 +19,32 @@ package org.broadleafcommerce.core.order.domain;
 import java.util.List;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OrderItemContainer {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<? extends OrderItem> getOrderItems();
 
-    List<? extends OrderItem> getOrderItems();
+  /**
+   * Returns true if the contained items can be discounted.
+   *
+   * @return  true if the contained items can be discounted.
+   */
+  boolean getAllowDiscountsOnChildItems();
 
-    /**
-     * Returns true if the contained items can be discounted.
-     * @return
-     */
-    boolean getAllowDiscountsOnChildItems();
-
-    /**
-     * Returns true if pricing operations are at the container level (as opposed to being
-     * the sum of the contained items) 
-     * @return
-     */
-    boolean isPricingAtContainerLevel();
+  /**
+   * Returns true if pricing operations are at the container level (as opposed to being the sum of the contained items).
+   *
+   * @return  true if pricing operations are at the container level (as opposed to being the sum of the contained
+   *          items).
+   */
+  boolean isPricingAtContainerLevel();
 }

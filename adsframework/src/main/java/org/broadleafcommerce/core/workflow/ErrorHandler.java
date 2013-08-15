@@ -18,8 +18,24 @@ package org.broadleafcommerce.core.workflow;
 
 import org.springframework.beans.factory.BeanNameAware;
 
-public interface ErrorHandler extends BeanNameAware{
 
-    public void handleError(ProcessContext context, Throwable th) throws WorkflowException;
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface ErrorHandler extends BeanNameAware {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   context  DOCUMENT ME!
+   * @param   th       DOCUMENT ME!
+   *
+   * @throws  WorkflowException  DOCUMENT ME!
+   */
+  void handleError(ProcessContext context, Throwable th) throws WorkflowException;
 
 }

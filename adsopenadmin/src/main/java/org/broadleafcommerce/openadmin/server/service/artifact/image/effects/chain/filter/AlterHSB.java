@@ -16,170 +16,224 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
-import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
-import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.UnmarshalledParameter;
-import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.ParameterTypeEnum;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
+
 import java.io.InputStream;
+
 import java.util.Map;
 
+import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
+import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.UnmarshalledParameter;
+import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.ParameterTypeEnum;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AlterHSB extends BaseFilter {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private RenderingHints hints;
-    private float hue;
-    private float saturation;
-    private float brightness;
+  private float brightness;
 
-    public AlterHSB() {
-        //do nothing
-    }
-    
-    public AlterHSB(float hue, float saturation, float brightness, RenderingHints hints) {
-        this.hints = hints;
-        this.hue = hue;
-        this.saturation = saturation;
-        this.brightness = brightness;
-    }
+  private RenderingHints hints;
+  private float          hue;
+  private float          saturation;
 
-    @Override
-    public Operation buildOperation(Map<String, String> parameterMap, InputStream artifactStream, String mimeType) {
-        String key = FilterTypeEnum.ALTERHSB.toString().toLowerCase();
-        if (!containsMyFilterParams(key, parameterMap)) {
-            return null;
-        }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-        Operation operation = new Operation();
-        operation.setName(key);
-        String factor = parameterMap.get(key + "-factor");
-        operation.setFactor(factor==null?null:Double.valueOf(factor));
+  /**
+   * Creates a new AlterHSB object.
+   */
+  public AlterHSB() {
+    // do nothing
+  }
 
-        UnmarshalledParameter hue = new UnmarshalledParameter();
-        String hueApplyFactor = parameterMap.get(key + "-hue-apply-factor");
-        hue.setApplyFactor(hueApplyFactor==null?false:Boolean.valueOf(hueApplyFactor));
-        hue.setName("hue");
-        hue.setType(ParameterTypeEnum.FLOAT.toString());
-        hue.setValue(parameterMap.get(key + "-hue-amount"));
+  /**
+   * Creates a new AlterHSB object.
+   *
+   * @param  hue         DOCUMENT ME!
+   * @param  saturation  DOCUMENT ME!
+   * @param  brightness  DOCUMENT ME!
+   * @param  hints       DOCUMENT ME!
+   */
+  public AlterHSB(float hue, float saturation, float brightness, RenderingHints hints) {
+    this.hints      = hints;
+    this.hue        = hue;
+    this.saturation = saturation;
+    this.brightness = brightness;
+  }
 
-        UnmarshalledParameter saturation = new UnmarshalledParameter();
-        String saturationApplyFactor = parameterMap.get(key + "-saturation-apply-factor");
-        saturation.setApplyFactor(saturationApplyFactor == null ? false : Boolean.valueOf(saturationApplyFactor));
-        saturation.setName("saturation");
-        saturation.setType(ParameterTypeEnum.FLOAT.toString());
-        saturation.setValue(parameterMap.get(key + "-saturation-amount"));
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        UnmarshalledParameter brightness = new UnmarshalledParameter();
-        String brightnessApplyFactor = parameterMap.get(key + "-brightness-apply-factor");
-        brightness.setApplyFactor(brightnessApplyFactor == null ? false : Boolean.valueOf(brightnessApplyFactor));
-        brightness.setName("brightness");
-        brightness.setType(ParameterTypeEnum.FLOAT.toString());
-        brightness.setValue(parameterMap.get(key + "-brightness-amount"));
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.artifact.OperationBuilder#buildOperation(java.util.Map,java.io.InputStream,
+   *       java.lang.String)
+   */
+  @Override public Operation buildOperation(Map<String, String> parameterMap, InputStream artifactStream,
+    String mimeType) {
+    String key = FilterTypeEnum.ALTERHSB.toString().toLowerCase();
 
-        operation.setParameters(new UnmarshalledParameter[]{hue, saturation, brightness});
-        return operation;
+    if (!containsMyFilterParams(key, parameterMap)) {
+      return null;
     }
 
-    /* (non-Javadoc)
-     * @see java.awt.image.BufferedImageOp#filter(java.awt.image.BufferedImage, java.awt.image.BufferedImage)
-     */
-    public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        if (src == null) {
-            throw new NullPointerException("src image is null");
-        }
-        if (src == dst) {
-            throw new IllegalArgumentException("src image cannot be the "+
-                                               "same as the dst image");
-        }
-        
-        boolean needToConvert = false;
-        ColorModel srcCM = src.getColorModel();
-        ColorModel dstCM;
-        BufferedImage origDst = dst;
-        
-        if (srcCM instanceof IndexColorModel) {
-            IndexColorModel icm = (IndexColorModel) srcCM;
-            src = icm.convertToIntDiscrete(src.getRaster(), false);
-            srcCM = src.getColorModel();
-        }
-        
-        if (dst == null) {
-            dst = createCompatibleDestImage(src, null);
-            dstCM = srcCM;
-            origDst = dst;
-        }
-        else {
-            dstCM = dst.getColorModel();
-            if (srcCM.getColorSpace().getType() !=
-                dstCM.getColorSpace().getType())
-            {
-                needToConvert = true;
-                dst = createCompatibleDestImage(src, null);
-                dstCM = dst.getColorModel();
-            }
-            else if (dstCM instanceof IndexColorModel) {
-                dst = createCompatibleDestImage(src, null);
-                dstCM = dst.getColorModel();
-            }
-        }
-        
-        int[] originalPixels = ImageConverter.getPixels(src);
-        int imageWidth = dst.getWidth();
-        int imageHeight = dst.getHeight();
-        
-        int r=0;
-        int g=0;
-        int b=0;
-        
-        int index=0;
-        for (int y=0;y<imageHeight;y++){
-            for (int x=0;x<imageWidth;x++){
-                r = (originalPixels[index] >> 16) & 0xff;
-                g = (originalPixels[index] >> 8) & 0xff;
-                b = (originalPixels[index] >> 0) & 0xff;
+    Operation operation = new Operation();
+    operation.setName(key);
 
-                float[] hsb = Color.RGBtoHSB(r, g, b, null);
-                float h = hsb[0] * hue;
-                float s = hsb[1] * saturation;
-                float br = hsb[2] * brightness;
+    String factor = parameterMap.get(key + "-factor");
+    operation.setFactor((factor == null) ? null : Double.valueOf(factor));
 
-                // fix overflows
-                if (h > 360) h = 360;
-                if (h < 0) h = 0;
-                if (s > 1) s = 1;
-                if (s < 0) s = 0;
-                if (br > 1) br = 1;
-                if (br < 0) br = 0;
-                
-                Color rgb = new Color(Color.HSBtoRGB(h, s, br));
-                r = rgb.getRed();
-                g = rgb.getGreen();
-                b = rgb.getBlue();
+    UnmarshalledParameter hue            = new UnmarshalledParameter();
+    String                hueApplyFactor = parameterMap.get(key + "-hue-apply-factor");
+    hue.setApplyFactor((hueApplyFactor == null) ? false : Boolean.valueOf(hueApplyFactor));
+    hue.setName("hue");
+    hue.setType(ParameterTypeEnum.FLOAT.toString());
+    hue.setValue(parameterMap.get(key + "-hue-amount"));
 
-                originalPixels[index] = (originalPixels[index] & 0xff000000)  | (r << 16) | (g << 8) | (b << 0);
-                index++;
-            }
-        }
-        
-        dst = ImageConverter.getImage(originalPixels, imageWidth, imageHeight);
-         
-        if (needToConvert) {
-            ColorConvertOp ccop = new ColorConvertOp(hints);
-            ccop.filter(dst, origDst);
-        }
-        else if (origDst != dst) {
-            Graphics2D g2 = origDst.createGraphics();
-        try {
-            g2.drawImage(dst, 0, 0, null);
-        } finally {
-            g2.dispose();
-        }
-        }
+    UnmarshalledParameter saturation            = new UnmarshalledParameter();
+    String                saturationApplyFactor = parameterMap.get(key + "-saturation-apply-factor");
+    saturation.setApplyFactor((saturationApplyFactor == null) ? false : Boolean.valueOf(saturationApplyFactor));
+    saturation.setName("saturation");
+    saturation.setType(ParameterTypeEnum.FLOAT.toString());
+    saturation.setValue(parameterMap.get(key + "-saturation-amount"));
 
-        return origDst;
+    UnmarshalledParameter brightness            = new UnmarshalledParameter();
+    String                brightnessApplyFactor = parameterMap.get(key + "-brightness-apply-factor");
+    brightness.setApplyFactor((brightnessApplyFactor == null) ? false : Boolean.valueOf(brightnessApplyFactor));
+    brightness.setName("brightness");
+    brightness.setType(ParameterTypeEnum.FLOAT.toString());
+    brightness.setValue(parameterMap.get(key + "-brightness-amount"));
+
+    operation.setParameters(new UnmarshalledParameter[] { hue, saturation, brightness });
+
+    return operation;
+  } // end method buildOperation
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* (non-Javadoc)
+   * @see java.awt.image.BufferedImageOp#filter(java.awt.image.BufferedImage, java.awt.image.BufferedImage)
+   */
+  @Override public BufferedImage filter(BufferedImage src, BufferedImage dst) {
+    if (src == null) {
+      throw new NullPointerException("src image is null");
     }
 
-}
+    if (src == dst) {
+      throw new IllegalArgumentException("src image cannot be the "
+        + "same as the dst image");
+    }
+
+    boolean       needToConvert = false;
+    ColorModel    srcCM         = src.getColorModel();
+    ColorModel    dstCM;
+    BufferedImage origDst       = dst;
+
+    if (srcCM instanceof IndexColorModel) {
+      IndexColorModel icm = (IndexColorModel) srcCM;
+      src   = icm.convertToIntDiscrete(src.getRaster(), false);
+      srcCM = src.getColorModel();
+    }
+
+    if (dst == null) {
+      dst     = createCompatibleDestImage(src, null);
+      dstCM   = srcCM;
+      origDst = dst;
+    } else {
+      dstCM = dst.getColorModel();
+
+      if (srcCM.getColorSpace().getType()
+            != dstCM.getColorSpace().getType()) {
+        needToConvert = true;
+        dst           = createCompatibleDestImage(src, null);
+        dstCM         = dst.getColorModel();
+      } else if (dstCM instanceof IndexColorModel) {
+        dst   = createCompatibleDestImage(src, null);
+        dstCM = dst.getColorModel();
+      }
+    }
+
+    int[] originalPixels = ImageConverter.getPixels(src);
+    int   imageWidth     = dst.getWidth();
+    int   imageHeight    = dst.getHeight();
+
+    int r = 0;
+    int g = 0;
+    int b = 0;
+
+    int index = 0;
+
+    for (int y = 0; y < imageHeight; y++) {
+      for (int x = 0; x < imageWidth; x++) {
+        r = (originalPixels[index] >> 16) & 0xff;
+        g = (originalPixels[index] >> 8) & 0xff;
+        b = (originalPixels[index] >> 0) & 0xff;
+
+        float[] hsb = Color.RGBtoHSB(r, g, b, null);
+        float   h   = hsb[0] * hue;
+        float   s   = hsb[1] * saturation;
+        float   br  = hsb[2] * brightness;
+
+        // fix overflows
+        if (h > 360) {
+          h = 360;
+        }
+
+        if (h < 0) {
+          h = 0;
+        }
+
+        if (s > 1) {
+          s = 1;
+        }
+
+        if (s < 0) {
+          s = 0;
+        }
+
+        if (br > 1) {
+          br = 1;
+        }
+
+        if (br < 0) {
+          br = 0;
+        }
+
+        Color rgb = new Color(Color.HSBtoRGB(h, s, br));
+        r = rgb.getRed();
+        g = rgb.getGreen();
+        b = rgb.getBlue();
+
+        originalPixels[index] = (originalPixels[index] & 0xff000000) | (r << 16) | (g << 8) | (b << 0);
+        index++;
+      } // end for
+    } // end for
+
+    dst = ImageConverter.getImage(originalPixels, imageWidth, imageHeight);
+
+    if (needToConvert) {
+      ColorConvertOp ccop = new ColorConvertOp(hints);
+      ccop.filter(dst, origDst);
+    } else if (origDst != dst) {
+      Graphics2D g2 = origDst.createGraphics();
+
+      try {
+        g2.drawImage(dst, 0, 0, null);
+      } finally {
+        g2.dispose();
+      }
+    }
+
+    return origDst;
+  } // end method filter
+
+} // end class AlterHSB

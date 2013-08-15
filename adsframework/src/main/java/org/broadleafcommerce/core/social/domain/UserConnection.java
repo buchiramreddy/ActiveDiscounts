@@ -17,42 +17,137 @@
 package org.broadleafcommerce.core.social.domain;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface UserConnection {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  UserConnectionImpl.UserConnectionPK getUserConnectionPK();
 
-    UserConnectionImpl.UserConnectionPK getUserConnectionPK();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  userConnectionPK  DOCUMENT ME!
+   */
+  void setUserConnectionPK(UserConnectionImpl.UserConnectionPK userConnectionPK);
 
-    void setUserConnectionPK(UserConnectionImpl.UserConnectionPK userConnectionPK);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getRank();
 
-    Integer getRank();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  rank  DOCUMENT ME!
+   */
+  void setRank(Integer rank);
 
-    void setRank(Integer rank);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDisplayName();
 
-    String getDisplayName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayName  DOCUMENT ME!
+   */
+  void setDisplayName(String displayName);
 
-    void setDisplayName(String displayName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getProfileUrl();
 
-    String getProfileUrl();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  profileUrl  DOCUMENT ME!
+   */
+  void setProfileUrl(String profileUrl);
 
-    void setProfileUrl(String profileUrl);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getImageUrl();
 
-    String getImageUrl();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  imageUrl  DOCUMENT ME!
+   */
+  void setImageUrl(String imageUrl);
 
-    void setImageUrl(String imageUrl);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAccessToken();
 
-    String getAccessToken();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  accessToken  DOCUMENT ME!
+   */
+  void setAccessToken(String accessToken);
 
-    void setAccessToken(String accessToken);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getSecret();
 
-    String getSecret();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  secret  DOCUMENT ME!
+   */
+  void setSecret(String secret);
 
-    void setSecret(String secret);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getRefreshToken();
 
-    String getRefreshToken();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  refreshToken  DOCUMENT ME!
+   */
+  void setRefreshToken(String refreshToken);
 
-    void setRefreshToken(String refreshToken);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getExpireTime();
 
-    Long getExpireTime();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  expireTime  DOCUMENT ME!
+   */
+  void setExpireTime(Long expireTime);
 
-    void setExpireTime(Long expireTime);
-
-}
+} // end interface UserConnection

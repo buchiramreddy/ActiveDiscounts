@@ -18,36 +18,89 @@ package org.broadleafcommerce.common.email.service.message;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class Attachment implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String filename;
-    private byte[] data;
-    private String mimeType;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getFilename() {
-        return filename;
-    }
+  private byte[] data;
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
+  private String filename;
+  private String mimeType;
 
-    public byte[] getData() {
-        return data;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setData(byte[] data) {
-        this.data = data;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public byte[] getData() {
+    return data;
+  }
 
-    public String getMimeType() {
-        return mimeType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFilename() {
+    return filename;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getMimeType() {
+    return mimeType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  data  DOCUMENT ME!
+   */
+  public void setData(byte[] data) {
+    this.data = data;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  filename  DOCUMENT ME!
+   */
+  public void setFilename(String filename) {
+    this.filename = filename;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  mimeType  DOCUMENT ME!
+   */
+  public void setMimeType(String mimeType) {
+    this.mimeType = mimeType;
+  }
+
+} // end class Attachment

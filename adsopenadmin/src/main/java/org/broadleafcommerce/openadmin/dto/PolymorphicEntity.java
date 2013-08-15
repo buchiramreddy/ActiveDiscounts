@@ -18,32 +18,65 @@ package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class PolymorphicEntity implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
-    
-    private String name;
-    private String type;
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getType() {
-        return type;
-    }
-    
-    public void setType(String type) {
-        this.type = type;
-    }
-    
-}
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  private static final long serialVersionUID = 1L;
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String name;
+  private String type;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  public void setType(String type) {
+    this.type = type;
+  }
+
+} // end class PolymorphicEntity

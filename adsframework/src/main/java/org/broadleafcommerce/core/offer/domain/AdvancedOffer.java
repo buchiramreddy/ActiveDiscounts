@@ -17,28 +17,71 @@
 package org.broadleafcommerce.core.offer.domain;
 
 
-import org.broadleafcommerce.core.offer.service.type.OfferTimeZoneType;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.offer.service.type.OfferTimeZoneType;
+
+
 /**
- * Add advanced offer support to an Offer
- * 
- * @author Priyesh Patel
+ * Add advanced offer support to an Offer.
+ *
+ * @author   Priyesh Patel
+ * @version  $Revision$, $Date$
  */
 public interface AdvancedOffer {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    List<OfferTier> getOfferTiers();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferTimeZoneType getOfferTimeZoneType();
 
-    void setOfferTiers(List<OfferTier> offerTiers);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    boolean isTieredOffer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offerTimeZoneType  DOCUMENT ME!
+   */
+  void setOfferTimeZoneType(OfferTimeZoneType offerTimeZoneType);
 
-    void setTieredOffer(boolean isTieredOffer);
-    
-    public OfferTimeZoneType getOfferTimeZoneType();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOfferTimeZoneType(OfferTimeZoneType offerTimeZoneType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<OfferTier> getOfferTiers();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isTieredOffer();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offerTiers  DOCUMENT ME!
+   */
+  void setOfferTiers(List<OfferTier> offerTiers);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isTieredOffer  DOCUMENT ME!
+   */
+  void setTieredOffer(boolean isTieredOffer);
 
 
-}
+} // end interface AdvancedOffer

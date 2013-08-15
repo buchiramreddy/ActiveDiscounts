@@ -16,59 +16,99 @@
 
 package org.broadleafcommerce.core.payment.domain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CreditCardPaymentInfo extends Referenced {
+  /**
+   * The id.
+   *
+   * @return  the id
+   */
+  @Override Long getId();
 
-    /**
-     * @return the id
-     */
-    public Long getId();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  id  the id to set
+   */
+  @Override void setId(Long id);
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id);
+  /**
+   * The pan.
+   *
+   * @return  the pan
+   */
+  String getPan();
 
-    /**
-     * @return the pan
-     */
-    public String getPan();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  pan  the pan to set
+   */
+  void setPan(String pan);
 
-    /**
-     * @param pan the pan to set
-     */
-    public void setPan(String pan);
+  /**
+   * The expirationMonth.
+   *
+   * @return  the expirationMonth
+   */
+  Integer getExpirationMonth();
 
-    /**
-     * @return the expirationMonth
-     */
-    public Integer getExpirationMonth();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  expirationMonth  the expirationMonth to set
+   */
+  void setExpirationMonth(Integer expirationMonth);
 
-    /**
-     * @param expirationMonth the expirationMonth to set
-     */
-    public void setExpirationMonth(Integer expirationMonth);
+  /**
+   * The expirationYear.
+   *
+   * @return  the expirationYear
+   */
+  Integer getExpirationYear();
 
-    /**
-     * @return the expirationYear
-     */
-    public Integer getExpirationYear();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  expirationYear  the expirationYear to set
+   */
+  void setExpirationYear(Integer expirationYear);
 
-    /**
-     * @param expirationYear the expirationYear to set
-     */
-    public void setExpirationYear(Integer expirationYear);
+  /**
+   * The nameOnCard.
+   *
+   * @return  the nameOnCard
+   */
+  String getNameOnCard();
 
-    /**
-     * @return the nameOnCard
-     */
-    public String getNameOnCard();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  nameOnCard  the name on the card to set
+   */
+  void setNameOnCard(String nameOnCard);
 
-    /**
-     * @param nameOnCard the name on the card to set
-     */
-    public void setNameOnCard(String nameOnCard);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCvvCode();
 
-    public String getCvvCode();
-
-    public void setCvvCode(String cvvCode);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cvvCode  DOCUMENT ME!
+   */
+  void setCvvCode(String cvvCode);
+} // end interface CreditCardPaymentInfo

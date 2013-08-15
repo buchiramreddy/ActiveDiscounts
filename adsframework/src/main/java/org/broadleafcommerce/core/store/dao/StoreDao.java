@@ -16,14 +16,32 @@
 
 package org.broadleafcommerce.core.store.dao;
 
-import org.broadleafcommerce.core.store.domain.Store;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.store.domain.Store;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface StoreDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   storeCode  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Store readStoreByStoreCode(final String storeCode);
 
-    public Store readStoreByStoreCode(final String storeCode);
-
-    public List<Store> readAllStores();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Store> readAllStores();
 
 }

@@ -16,23 +16,34 @@
 
 package org.broadleafcommerce.core.offer.service.processor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
-import org.broadleafcommerce.core.offer.domain.Offer;
-import org.springframework.stereotype.Service;
-
 import java.util.TimeZone;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
+import org.broadleafcommerce.core.offer.domain.Offer;
+
+import org.springframework.stereotype.Service;
+
+
 /**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Service("blOfferTimeZoneProcessor")
 public class OfferTimeZoneProcessorImpl implements OfferTimeZoneProcessor {
+  private static final Log LOG = LogFactory.getLog(OfferTimeZoneProcessorImpl.class);
 
-    private static final Log LOG = LogFactory.getLog(OfferTimeZoneProcessorImpl.class);
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.processor.OfferTimeZoneProcessor#getTimeZone(org.broadleafcommerce.core.offer.domain.Offer)
+   */
+  @Override public TimeZone getTimeZone(Offer offer) {
+    TimeZone appTimeZone = BroadleafRequestContext.getBroadleafRequestContext().getTimeZone();
 
-    public TimeZone getTimeZone(Offer offer) {
-        TimeZone appTimeZone = BroadleafRequestContext.getBroadleafRequestContext().getTimeZone();
-        return appTimeZone;
-    }
+    return appTimeZone;
+  }
 }

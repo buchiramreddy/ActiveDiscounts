@@ -22,9 +22,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(value={ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = { ElementType.FIELD })
 public @interface AutoPopulate {
-    boolean autoUpdateValue() default false;
+  boolean autoUpdateValue() default false;
 }

@@ -16,68 +16,104 @@
 
 package org.broadleafcommerce.profile.web.core.controller;
 
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.ServerSetup;
+import javax.annotation.Resource;
+
 import org.apache.struts.mock.MockHttpServletResponse;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.web.controller.RegisterCustomerController;
 import org.broadleafcommerce.profile.web.core.controller.dataprovider.RegisterCustomerDataProvider;
 import org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.mock.web.MockHttpServletRequest;
+
 import org.springframework.test.annotation.Rollback;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class RegisterCustomerControllerTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource
-    private RegisterCustomerController registerCustomerController;
+  @Resource private CustomerService customerService;
 
-    @Resource
-    private CustomerService customerService;
+  private GreenMail greenMail;
 
-    private GreenMail greenMail;
+  @Resource private RegisterCustomerController registerCustomerController;
 
-    @BeforeClass
-    protected void setupControllerTest() {
-        greenMail = new GreenMail(
-                new ServerSetup[] {
-                        new ServerSetup(30000, "127.0.0.1", ServerSetup.PROTOCOL_SMTP)
-                }
-        );
-        greenMail.start();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @AfterClass
-    protected void tearDownControllerTest() {
-        greenMail.stop();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  registerCustomer  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = "createCustomerFromController",
+    dataProvider      = "setupCustomerControllerData",
+    dataProviderClass = RegisterCustomerDataProvider.class,
+    enabled           = false
+  )
+  @Transactional public void createCustomerFromController(RegisterCustomerForm registerCustomer) {
+    BindingResult           errors   = new BeanPropertyBindingResult(registerCustomer, "registerCustomer");
+    MockHttpServletRequest  request  = new MockHttpServletRequest();
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    registerCustomerController.registerCustomer(registerCustomer, errors, request, response);
+    assert (errors.getErrorCount() == 0);
 
-    @Test(groups = "createCustomerFromController", dataProvider = "setupCustomerControllerData", dataProviderClass = RegisterCustomerDataProvider.class, enabled=false)
-    @Transactional
-    @Rollback(false)
-    public void createCustomerFromController(RegisterCustomerForm registerCustomer) {
-        BindingResult errors = new BeanPropertyBindingResult(registerCustomer, "registerCustomer");
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        registerCustomerController.registerCustomer(registerCustomer, errors, request, response);
-        assert(errors.getErrorCount() == 0);
-        Customer customerFromDb = customerService.readCustomerByUsername(registerCustomer.getCustomer().getUsername());
-        assert(customerFromDb != null);
-    }
+    Customer customerFromDb = customerService.readCustomerByUsername(registerCustomer.getCustomer().getUsername());
+    assert (customerFromDb != null);
+  }
 
-    @Test(groups = "viewRegisterCustomerFromController")
-    public void viewRegisterCustomerFromController() {
-        String view = registerCustomerController.registerCustomer();
-        assert (view.equals("/account/registration/registerCustomer"));
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(groups = "viewRegisterCustomerFromController")
+  public void viewRegisterCustomerFromController() {
+    String view = registerCustomerController.registerCustomer();
+    assert (view.equals("/account/registration/registerCustomer"));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @BeforeClass protected void setupControllerTest() {
+    greenMail = new GreenMail(
+        new ServerSetup[] { new ServerSetup(30000, "127.0.0.1", ServerSetup.PROTOCOL_SMTP) });
+    greenMail.start();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @AfterClass protected void tearDownControllerTest() {
+    greenMail.stop();
+  }
+
+} // end class RegisterCustomerControllerTest

@@ -16,39 +16,61 @@
 
 package org.broadleafcommerce.openadmin.web.rulebuilder.enums;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.resource.GeneratedResource;
 import org.broadleafcommerce.common.web.resource.AbstractGeneratedResourceHandler;
+
 import org.springframework.core.io.Resource;
+
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 /**
  * Generated resource handler for blc-rulebuilder-options.js.
- * 
- * Delegates to all registered {@link org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsExtensionListener} to create the resource
- * 
- * @author Andre Azzolini (apazzolini)
+ *
+ * <p>Delegates to all registered
+ * {@link org.broadleafcommerce.openadmin.web.rulebuilder.enums.RuleBuilderEnumOptionsExtensionListener} to create the
+ * resource</p>
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Component("blRuleBuilderEnumOptionsResourceHandler")
 public class RuleBuilderEnumOptionsResourceHandler extends AbstractGeneratedResourceHandler {
-    
-    @javax.annotation.Resource(name = "blRuleBuilderEnumOptionsExtensionManager")
-    protected RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptions;
-    
-    @Override
-    public boolean canHandle(String path) {
-        return "admin/components/ruleBuilder-options.js".equals(path);
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public Resource getFileContents(String path, List<Resource> locations) {
-        return new GeneratedResource(ruleBuilderEnumOptions.getOptionValues().getBytes(), path);
-    }
+  /** DOCUMENT ME! */
+  @javax.annotation.Resource(name = "blRuleBuilderEnumOptionsExtensionManager")
+  protected RuleBuilderEnumOptionsExtensionManager ruleBuilderEnumOptions;
 
-    @Override
-    public boolean isCachedResourceExpired(GeneratedResource cachedResource, String path, List<Resource> locations) {
-        return false;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.common.web.resource.AbstractGeneratedResourceHandler#canHandle(java.lang.String)
+   */
+  @Override public boolean canHandle(String path) {
+    return "admin/components/ruleBuilder-options.js".equals(path);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.resource.AbstractGeneratedResourceHandler#getFileContents(java.lang.String, java.util.List)
+   */
+  @Override public Resource getFileContents(String path, List<Resource> locations) {
+    return new GeneratedResource(ruleBuilderEnumOptions.getOptionValues().getBytes(), path);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.resource.AbstractGeneratedResourceHandler#isCachedResourceExpired(org.broadleafcommerce.common.resource.GeneratedResource,
+   *       java.lang.String, java.util.List)
+   */
+  @Override public boolean isCachedResourceExpired(GeneratedResource cachedResource, String path,
+    List<Resource> locations) {
+    return false;
+  }
+
+} // end class RuleBuilderEnumOptionsResourceHandler

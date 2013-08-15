@@ -16,66 +16,108 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
+import java.util.List;
+
+import javax.servlet.jsp.JspException;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.time.SystemTime;
+
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.Product;
 
-import javax.servlet.jsp.JspException;
-import java.util.List;
 
 /**
- * This class is for demonstration purposes only. It contains a call to
- * catalogService.findActiveProductsByCategory, which may return a large list. A
- * more performant solution would be to utilize data paging techniques.
+ * This class is for demonstration purposes only. It contains a call to catalogService.findActiveProductsByCategory,
+ * which may return a large list. A more performant solution would be to utilize data paging techniques.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class GetProductsByCategoryIdTag extends AbstractCatalogTag {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(GetProductsByCategoryIdTag.class);
-    private static final long serialVersionUID = 1L;
-    private String var;
-    private long categoryId;
+  private static final Log  LOG              = LogFactory.getLog(GetProductsByCategoryIdTag.class);
+  private static final long serialVersionUID = 1L;
 
-    @Override
-    public void doTag() throws JspException {
-        catalogService = super.getCatalogService();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-        Category c = catalogService.findCategoryById(categoryId);
+  private long   categoryId;
+  private String var;
 
-        if(c == null){
-            getJspContext().setAttribute(var, null);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-            if(LOG.isDebugEnabled()){
-                LOG.debug("The category returned was null for categoryId: " + categoryId);
-            }
-        }
+  /**
+   * @see  javax.servlet.jsp.tagext.SimpleTagSupport#doTag()
+   */
+  @Override public void doTag() throws JspException {
+    catalogService = super.getCatalogService();
 
-        List<Product> productList = catalogService.findActiveProductsByCategory(c, SystemTime.asDate());
+    Category c = catalogService.findCategoryById(categoryId);
 
-        if(CollectionUtils.isEmpty(productList) && LOG.isDebugEnabled()){
-            LOG.debug("The productList returned was null for categoryId: " + categoryId);
-        }
+    if (c == null) {
+      getJspContext().setAttribute(var, null);
 
-        getJspContext().setAttribute(var, productList);
-
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("The category returned was null for categoryId: " + categoryId);
+      }
     }
 
-    public String getVar() {
-        return var;
+    List<Product> productList = catalogService.findActiveProductsByCategory(c, SystemTime.asDate());
+
+    if (CollectionUtils.isEmpty(productList) && LOG.isDebugEnabled()) {
+      LOG.debug("The productList returned was null for categoryId: " + categoryId);
     }
 
-    public void setVar(String var) {
-        this.var = var;
-    }
+    getJspContext().setAttribute(var, productList);
 
-    public long getCategoryId() {
-        return categoryId;
-    }
+  }
 
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public long getCategoryId() {
+    return categoryId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getVar() {
+    return var;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  categoryId  DOCUMENT ME!
+   */
+  public void setCategoryId(long categoryId) {
+    this.categoryId = categoryId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  var  DOCUMENT ME!
+   */
+  public void setVar(String var) {
+    this.var = var;
+  }
+
+} // end class GetProductsByCategoryIdTag

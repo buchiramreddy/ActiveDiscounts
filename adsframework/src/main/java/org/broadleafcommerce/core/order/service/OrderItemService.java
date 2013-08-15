@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.order.service;
 
+import java.util.HashMap;
+
 import org.broadleafcommerce.core.order.domain.BundleOrderItem;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItem;
@@ -27,46 +29,103 @@ import org.broadleafcommerce.core.order.service.call.GiftWrapOrderItemRequest;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.call.ProductBundleOrderItemRequest;
 
-import java.util.HashMap;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OrderItemService {
-    
-    public OrderItem readOrderItemById(Long orderItemId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItemId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem readOrderItemById(Long orderItemId);
 
-    public OrderItem saveOrderItem(OrderItem orderItem);
-    
-    public void delete(OrderItem item);
-    
-    public PersonalMessage createPersonalMessage();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItem  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem saveOrderItem(OrderItem orderItem);
 
-    public DiscreteOrderItem createDiscreteOrderItem(DiscreteOrderItemRequest itemRequest);
-    
-    public DiscreteOrderItem createDynamicPriceDiscreteOrderItem(final DiscreteOrderItemRequest itemRequest, @SuppressWarnings("rawtypes") HashMap skuPricingConsiderations);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  item  DOCUMENT ME!
+   */
+  void delete(OrderItem item);
 
-    public GiftWrapOrderItem createGiftWrapOrderItem(GiftWrapOrderItemRequest itemRequest);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PersonalMessage createPersonalMessage();
 
-    /**
-     * Used to create "manual" product bundles.   Manual product bundles are primarily designed
-     * for grouping items in the cart display.    Typically ProductBundle will be used to
-     * achieve non programmer related bundles.
-     *
-     *
-     * @param itemRequest
-     * @return
-     */
-    public BundleOrderItem createBundleOrderItem(BundleOrderItemRequest itemRequest);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemRequest  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  DiscreteOrderItem createDiscreteOrderItem(DiscreteOrderItemRequest itemRequest);
 
-    public BundleOrderItem createBundleOrderItem(ProductBundleOrderItemRequest itemRequest);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemRequest               DOCUMENT ME!
+   * @param   skuPricingConsiderations  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  DiscreteOrderItem createDynamicPriceDiscreteOrderItem(final DiscreteOrderItemRequest itemRequest,
+    @SuppressWarnings("rawtypes") HashMap skuPricingConsiderations);
 
-    /**
-     * Creates an OrderItemRequestDTO object that most closely resembles the given OrderItem.
-     * That is, it will copy the SKU and quantity and attempt to copy the product and category
-     * if they exist.
-     * 
-     * @param item the item to copy
-     * @return the OrderItemRequestDTO that mirrors the item
-     */
-    public OrderItemRequestDTO buildOrderItemRequestDTOFromOrderItem(OrderItem item);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemRequest  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  GiftWrapOrderItem createGiftWrapOrderItem(GiftWrapOrderItemRequest itemRequest);
+
+  /**
+   * Used to create "manual" product bundles. Manual product bundles are primarily designed for grouping items in the
+   * cart display. Typically ProductBundle will be used to achieve non programmer related bundles.
+   *
+   * @param   itemRequest  DOCUMENT ME!
+   *
+   * @return  used to create "manual" product bundles.
+   */
+  BundleOrderItem createBundleOrderItem(BundleOrderItemRequest itemRequest);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemRequest  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BundleOrderItem createBundleOrderItem(ProductBundleOrderItemRequest itemRequest);
+
+  /**
+   * Creates an OrderItemRequestDTO object that most closely resembles the given OrderItem. That is, it will copy the
+   * SKU and quantity and attempt to copy the product and category if they exist.
+   *
+   * @param   item  the item to copy
+   *
+   * @return  the OrderItemRequestDTO that mirrors the item
+   */
+  OrderItemRequestDTO buildOrderItemRequestDTOFromOrderItem(OrderItem item);
 
 
-}
+} // end interface OrderItemService

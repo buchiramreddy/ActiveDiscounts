@@ -16,34 +16,66 @@
 
 package org.broadleafcommerce.core.order.service.call;
 
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderItem;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class UpdateCartResponse implements Serializable {
-    protected static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  protected static final long serialVersionUID = 1L;
 
-    protected Order order;
+  /** DOCUMENT ME! */
+  protected Order order;
 
-    protected List<OrderItem> removedItems = new ArrayList<OrderItem>();;
+  /** DOCUMENT ME! */
+  protected List<OrderItem> removedItems = new ArrayList<OrderItem>();
+  ;
 
-    public Order getOrder() {
-        return order;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Order getOrder() {
+    return order;
+  }
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    public List<OrderItem> getRemovedItems() {
-        return removedItems;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<OrderItem> getRemovedItems() {
+    return removedItems;
+  }
 
-    public void setRemovedItems(List<OrderItem> removedItems) {
-        this.removedItems = removedItems;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  removedItems  DOCUMENT ME!
+   */
+  public void setRemovedItems(List<OrderItem> removedItems) {
+    this.removedItems = removedItems;
+  }
 
-}
+} // end class UpdateCartResponse

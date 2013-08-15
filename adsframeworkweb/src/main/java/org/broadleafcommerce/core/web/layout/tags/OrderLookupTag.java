@@ -16,87 +16,167 @@
 
 package org.broadleafcommerce.core.web.layout.tags;
 
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-import org.broadleafcommerce.core.order.service.legacy.LegacyCartService;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.web.core.CustomerState;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderItem;
+import org.broadleafcommerce.core.order.service.legacy.LegacyCartService;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.web.core.CustomerState;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OrderLookupTag extends BodyTagSupport {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    private Long orderId;
-    private String orderName;
-    private String orderVar;
-    private String totalQuantityVar;
+  private static final long serialVersionUID = 1L;
 
-    @Override
-    public int doStartTag() throws JspException {
-        WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext());
-        Customer customer = CustomerState.getCustomer((HttpServletRequest) pageContext.getRequest());
-        LegacyCartService cartService = (LegacyCartService) applicationContext.getBean("blOrderService");
-        Order order = null;
-        if (orderName != null && orderId != null) {
-            throw new IllegalArgumentException("Only orderName or orderId attribute may be specified on orderLookup tag");
-        } else if (orderId != null) {
-            order = cartService.findOrderById(orderId);
-        } else if (orderName != null) {
-            order = cartService.findNamedOrderForCustomer(orderName, customer);
-        } else if (customer != null){
-            order = cartService.findCartForCustomer(customer);
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private Long   orderId;
+  private String orderName;
+  private String orderVar;
+  private String totalQuantityVar;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
+   */
+  @Override public int doStartTag() throws JspException {
+    WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(
+        pageContext.getServletContext());
+    Customer              customer           = CustomerState.getCustomer((HttpServletRequest) pageContext.getRequest());
+    LegacyCartService     cartService        = (LegacyCartService) applicationContext.getBean("blOrderService");
+    Order                 order              = null;
+
+    if ((orderName != null) && (orderId != null)) {
+      throw new IllegalArgumentException("Only orderName or orderId attribute may be specified on orderLookup tag");
+    } else if (orderId != null) {
+      order = cartService.findOrderById(orderId);
+    } else if (orderName != null) {
+      order = cartService.findNamedOrderForCustomer(orderName, customer);
+    } else if (customer != null) {
+      order = cartService.findCartForCustomer(customer);
+    }
+
+    if (orderVar != null) {
+      pageContext.setAttribute(orderVar, order);
+    }
+
+    if (totalQuantityVar != null) {
+      int orderItemsCount = 0;
+
+      if ((order != null) && (order.getOrderItems() != null)) {
+        for (OrderItem orderItem : order.getOrderItems()) {
+          orderItemsCount += orderItem.getQuantity();
         }
-        if (orderVar != null) {
-            pageContext.setAttribute(orderVar, order);
-        }
-        if (totalQuantityVar != null) {
-            int orderItemsCount = 0;
-            if (order != null && order.getOrderItems() != null) {
-                for (OrderItem orderItem : order.getOrderItems()) {
-                    orderItemsCount += orderItem.getQuantity();
-                }
-            }
-            pageContext.setAttribute(totalQuantityVar, orderItemsCount);
-        } else if (totalQuantityVar != null) {
-            pageContext.setAttribute(totalQuantityVar, 0);
-        }
-        return EVAL_PAGE;
+      }
+
+      pageContext.setAttribute(totalQuantityVar, orderItemsCount);
+    } else if (totalQuantityVar != null) {
+      pageContext.setAttribute(totalQuantityVar, 0);
     }
 
-    public String getOrderVar() {
-        return orderVar;
-    }
+    return EVAL_PAGE;
+  } // end method doStartTag
 
-    public void setOrderVar(String orderVar) {
-        this.orderVar = orderVar;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getTotalQuantityVar() {
-        return totalQuantityVar;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getOrderId() {
+    return orderId;
+  }
 
-    public void setTotalQuantityVar(String totalQuantityVar) {
-        this.totalQuantityVar = totalQuantityVar;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getOrderName() {
-        return orderName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOrderName() {
+    return orderName;
+  }
 
-    public void setOrderName(String orderName) {
-        this.orderName = orderName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getOrderId() {
-        return orderId;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOrderVar() {
+    return orderVar;
+  }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getTotalQuantityVar() {
+    return totalQuantityVar;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderId  DOCUMENT ME!
+   */
+  public void setOrderId(Long orderId) {
+    this.orderId = orderId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderName  DOCUMENT ME!
+   */
+  public void setOrderName(String orderName) {
+    this.orderName = orderName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderVar  DOCUMENT ME!
+   */
+  public void setOrderVar(String orderVar) {
+    this.orderVar = orderVar;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  totalQuantityVar  DOCUMENT ME!
+   */
+  public void setTotalQuantityVar(String totalQuantityVar) {
+    this.totalQuantityVar = totalQuantityVar;
+  }
+} // end class OrderLookupTag

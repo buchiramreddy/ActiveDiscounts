@@ -19,13 +19,32 @@ package org.broadleafcommerce.profile.core.dao;
 import org.broadleafcommerce.profile.core.domain.CustomerForgotPasswordSecurityToken;
 
 
-
 /**
- * 
- * @author bpolster
+ * DOCUMENT ME!
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface CustomerForgotPasswordSecurityTokenDao {
-    public CustomerForgotPasswordSecurityToken readToken(String token);
-    public CustomerForgotPasswordSecurityToken saveToken(CustomerForgotPasswordSecurityToken token);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   token  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerForgotPasswordSecurityToken readToken(String token);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   token  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerForgotPasswordSecurityToken saveToken(CustomerForgotPasswordSecurityToken token);
 }

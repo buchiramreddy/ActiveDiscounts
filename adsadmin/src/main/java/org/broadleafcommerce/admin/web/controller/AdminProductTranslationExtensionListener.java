@@ -16,39 +16,54 @@
 
 package org.broadleafcommerce.admin.web.controller;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
+
 import org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionListener;
 import org.broadleafcommerce.openadmin.web.form.TranslationForm;
+
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Component("blAdminProductTranslationExtensionListener")
 public class AdminProductTranslationExtensionListener implements AdminTranslationControllerExtensionListener {
-    
-    @Resource(name = "blCatalogService")
-    protected CatalogService catalogService;
-    
-    /**
-     * If we are trying to translate a field on Product that starts with "defaultSku.", we really want to associate the
-     * translation with Sku, its associated id, and the property name without "defaultSku."
-     */
-    @Override
-    public boolean applyTransformation(TranslationForm form) {
-        if (form.getCeilingEntity().equals(Product.class.getName()) && form.getPropertyName().startsWith("defaultSku.")) {
-            Product p = catalogService.findProductById(Long.parseLong(form.getEntityId()));
-            form.setCeilingEntity(Sku.class.getName());
-            form.setEntityId(String.valueOf(p.getDefaultSku().getId()));
-            form.setPropertyName(form.getPropertyName().substring("defaultSku.".length()));
-            return true;
-        }
-        
-        return false;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blCatalogService")
+  protected CatalogService catalogService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * If we are trying to translate a field on Product that starts with "defaultSku.", we really want to associate the
+   * translation with Sku, its associated id, and the property name without "defaultSku."
+   *
+   * @param   form  DOCUMENT ME!
+   *
+   * @return  if we are trying to translate a field on Product that starts with "defaultSku.", we really want to
+   *          associate the translation with Sku, its associated id, and the property name without "defaultSku."
+   */
+  @Override public boolean applyTransformation(TranslationForm form) {
+    if (form.getCeilingEntity().equals(Product.class.getName()) && form.getPropertyName().startsWith("defaultSku.")) {
+      Product p = catalogService.findProductById(Long.parseLong(form.getEntityId()));
+      form.setCeilingEntity(Sku.class.getName());
+      form.setEntityId(String.valueOf(p.getDefaultSku().getId()));
+      form.setPropertyName(form.getPropertyName().substring("defaultSku.".length()));
+
+      return true;
     }
-    
-}
+
+    return false;
+  }
+
+} // end class AdminProductTranslationExtensionListener

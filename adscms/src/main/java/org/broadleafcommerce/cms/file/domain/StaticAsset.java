@@ -16,187 +16,370 @@
 
 package org.broadleafcommerce.cms.file.domain;
 
+import java.io.Serializable;
+
+import java.util.Map;
+
 import org.broadleafcommerce.cms.field.type.StorageType;
-import org.broadleafcommerce.cms.file.service.StaticAssetService;
+
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.site.domain.Site;
+
 import org.broadleafcommerce.openadmin.audit.AdminAuditable;
 
-import java.io.Serializable;
-import java.util.Map;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface StaticAsset extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the id of the static asset.
-     * @return
-     */
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAsset cloneEntity();
 
-    /**
-     * Sets the id of the static asset.    
-     * @param id
-     */
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
+  /**
+   * Returns the altText of this asset.
+   *
+   * @return  the altText of this asset.
+   */
+  String getAltText();
 
-    /**
-     * The name of the static asset.
-     * @return
-     */
-    public String getName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the name of the static asset.   Used primarily for 
-     * @param name
-     */
-    public void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getArchivedFlag();
 
-    /**
-     * Returns the altText of this asset.
-     * 
-     * @return
-     */
-    public String getAltText();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Set the altText of the static asset.
-     * @param title
-     */
-    public void setAltText(String altText);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminAuditable getAuditable();
 
-    /**
-     * Returns the title of this asset.
-     * 
-     * @return
-     */
-    public String getTitle();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Set the title of the static asset.
-     * @param title
-     */
-    public void setTitle(String title);
+  /**
+   * DOCUMENT ME!
+   *
+   * @deprecated  - Use {@link #getTitle()} or {@link #getAltText()}getAltText() instead.
+   *
+   * @return      DOCUMENT ME!
+   */
+  Map<String, StaticAssetDescription> getContentMessageValues();
 
-    /**
-     * URL used to retrieve this asset.
-     * @return
-     */
-    public String getFullUrl();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the URL for the asset
-     * @param fullUrl
-     */
-    public void setFullUrl(String fullUrl);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getDeletedFlag();
 
-    /**
-     * Filesize of the asset.
-     * @return
-     */
-    public Long getFileSize();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the filesize of the asset
-     * @param fileSize
-     */
-    public void setFileSize(Long fileSize);
+  /**
+   * Returns the file extension of the asset.
+   *
+   * @return  the file extension of the asset.
+   */
+  String getFileExtension();
 
-    /**
-     * @deprecated - Use {@link #getTitle()} or {@link #getAltText()}getAltText() instead.
-     * @return
-     */
-    public Map<String, StaticAssetDescription> getContentMessageValues();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @deprecated - Use {@link #setTitle(String)} or {@link #setAltText(String)} instead.
-     * @param contentMessageValues
-     */
-    public void setContentMessageValues(Map<String, StaticAssetDescription> contentMessageValues);
+  /**
+   * Filesize of the asset.
+   *
+   * @return  filesize of the asset.
+   */
+  Long getFileSize();
 
-    /**
-     * Returns the mimeType of the asset.
-     * @return
-     */
-    public String getMimeType();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the mimeType of the asset.
-     * @return
-     */
-    public void setMimeType(String mimeType);
+  /**
+   * URL used to retrieve this asset.
+   *
+   * @return  uRL used to retrieve this asset.
+   */
+  String getFullUrl();
 
-    /**
-     * Returns the file extension of the asset.
-     * @return
-     */
-    public String getFileExtension();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the fileExtension of the asset.
-     * @param fileExtension
-     */
-    public void setFileExtension(String fileExtension);
+  /**
+   * Returns the id of the static asset.
+   *
+   * @return  the id of the static asset.
+   */
+  Long getId();
 
-    /**
-     * Returns how the underlying asset is stored.  Typically on the FileSystem or the Database.
-     * 
-     * If null, this method returns <code>StorageType.DATABASE</code> for backwards compatibility.
-     * 
-     * @see {@link org.broadleafcommerce.cms.file.service.StaticAssetService}
-     * @return
-     */
-    public StorageType getStorageType();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns how the asset was stored in the backend (e.g. DATABASE or FILESYSTEM)
-     * @param storageType
-     */
-    public void setStorageType(StorageType storageType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getLockedFlag();
 
-    /**
-     * @deprecated - not currently used
-     * @return
-     */
-    public Site getSite();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @deprecated - not currently used
-     * @param site
-     */
-    public void setSite(Site site);
+  /**
+   * Returns the mimeType of the asset.
+   *
+   * @return  the mimeType of the asset.
+   */
+  String getMimeType();
 
-    public SandBox getOriginalSandBox();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOriginalSandBox(SandBox originalSandBox);
+  /**
+   * The name of the static asset.
+   *
+   * @return  the name of the static asset.
+   */
+  String getName();
 
-    public AdminAuditable getAuditable();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAuditable(AdminAuditable auditable);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getOriginalAssetId();
 
-    public Boolean getLockedFlag();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setLockedFlag(Boolean lockedFlag);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox getOriginalSandBox();
 
-    public Boolean getDeletedFlag();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setDeletedFlag(Boolean deletedFlag);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox getSandbox();
 
-    public Boolean getArchivedFlag();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setArchivedFlag(Boolean archivedFlag);
+  /**
+   * DOCUMENT ME!
+   *
+   * @deprecated  - not currently used
+   *
+   * @return      DOCUMENT ME!
+   */
+  Site getSite();
 
-    public Long getOriginalAssetId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOriginalAssetId(Long originalPageId);
+  /**
+   * Returns how the underlying asset is stored. Typically on the FileSystem or the Database.
+   *
+   * <p>If null, this method returns <code>StorageType.DATABASE</code> for backwards compatibility.</p>
+   *
+   * @see     {@link org.broadleafcommerce.cms.file.service.StaticAssetService}
+   *
+   * @return  how the underlying asset is stored.
+   */
+  StorageType getStorageType();
 
-    public SandBox getSandbox();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSandbox(SandBox sandbox);
+  /**
+   * Returns the title of this asset.
+   *
+   * @return  the title of this asset.
+   */
+  String getTitle();
 
-    public StaticAsset cloneEntity();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * Set the altText of the static asset.
+   *
+   * @param  altText  title
+   */
+  void setAltText(String altText);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archivedFlag  DOCUMENT ME!
+   */
+  void setArchivedFlag(Boolean archivedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(AdminAuditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @deprecated  - Use {@link #setTitle(String)} or {@link #setAltText(String)} instead.
+   *
+   * @param       contentMessageValues  DOCUMENT ME!
+   */
+  void setContentMessageValues(Map<String, StaticAssetDescription> contentMessageValues);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  deletedFlag  DOCUMENT ME!
+   */
+  void setDeletedFlag(Boolean deletedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the fileExtension of the asset.
+   *
+   * @param  fileExtension  DOCUMENT ME!
+   */
+  void setFileExtension(String fileExtension);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the filesize of the asset.
+   *
+   * @param  fileSize  DOCUMENT ME!
+   */
+  void setFileSize(Long fileSize);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the URL for the asset.
+   *
+   * @param  fullUrl  DOCUMENT ME!
+   */
+  void setFullUrl(String fullUrl);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the id of the static asset.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  lockedFlag  DOCUMENT ME!
+   */
+  void setLockedFlag(Boolean lockedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the mimeType of the asset.
+   *
+   * @param  mimeType  DOCUMENT ME!
+   */
+  void setMimeType(String mimeType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the name of the static asset. Used primarily for
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  originalPageId  DOCUMENT ME!
+   */
+  void setOriginalAssetId(Long originalPageId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  originalSandBox  DOCUMENT ME!
+   */
+  void setOriginalSandBox(SandBox originalSandBox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandbox  DOCUMENT ME!
+   */
+  void setSandbox(SandBox sandbox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @deprecated  - not currently used
+   *
+   * @param       site  DOCUMENT ME!
+   */
+  void setSite(Site site);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns how the asset was stored in the backend (e.g. DATABASE or FILESYSTEM)
+   *
+   * @param  storageType  DOCUMENT ME!
+   */
+  void setStorageType(StorageType storageType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Set the title of the static asset.
+   *
+   * @param  title  DOCUMENT ME!
+   */
+  void setTitle(String title);
+
+} // end interface StaticAsset

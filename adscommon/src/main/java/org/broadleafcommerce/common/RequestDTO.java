@@ -19,21 +19,35 @@ package org.broadleafcommerce.common;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface RequestDTO {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return  returns the request not including the protocol, domain, or query string
-     */
-    public String getRequestURI();
+  /**
+   * Returns the URL and parameters.
+   *
+   * @return  Returns the URL and parameters.
+   */
+  String getFullUrLWithQueryString();
 
-    /**
-     * @return Returns the URL and parameters.
-     */
-    public String getFullUrLWithQueryString();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return true if this request came in through HTTPS
-     */
-    public Boolean isSecure();
-}
+  /**
+   * Returns the request not including the protocol, domain, or query string.
+   *
+   * @return  returns the request not including the protocol, domain, or query string
+   */
+  String getRequestURI();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * True if this request came in through HTTPS.
+   *
+   * @return  true if this request came in through HTTPS
+   */
+  Boolean isSecure();
+} // end interface RequestDTO

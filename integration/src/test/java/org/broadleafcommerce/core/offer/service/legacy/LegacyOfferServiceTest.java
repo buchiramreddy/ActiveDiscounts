@@ -16,15 +16,17 @@
 
 package org.broadleafcommerce.core.offer.service.legacy;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
-import org.broadleafcommerce.core.offer.domain.Offer;
-import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
-import org.broadleafcommerce.core.offer.service.OfferDataItemProvider;
 import org.broadleafcommerce.core.offer.service.OfferService;
-import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
@@ -40,208 +42,235 @@ import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.pricing.service.workflow.type.ShippingServiceType;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.service.CustomerService;
+
 import org.broadleafcommerce.test.legacy.LegacyCommonSetupBaseTest;
-import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class LegacyOfferServiceTest extends LegacyCommonSetupBaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource
-    protected OfferService offerService;
+  /** DOCUMENT ME! */
+  @Resource protected CatalogService catalogService;
 
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
+  /** DOCUMENT ME! */
+  @Resource protected CustomerService customerService;
 
-    @Resource
-    protected CustomerService customerService;
+  /** DOCUMENT ME! */
+  @Resource protected OfferService offerService;
 
-    @Resource
-    protected CatalogService catalogService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderItemService")
+  protected OrderItemService orderItemService;
 
-    @Resource(name = "blOrderItemService")
-    protected OrderItemService orderItemService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    private Order createTestOrderWithOfferAndGiftWrap() throws PricingException {
-        Customer customer = customerService.createCustomerFromId(null);
-        Order order = orderService.createNewCartForCustomer(customer);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        customerService.saveCustomer(order.getCustomer());
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int countPriceDetails(Order order) {
+    int count = 0;
 
-        createCountry();
-        createState();
-
-        Address address = new AddressImpl();
-        address.setAddressLine1("123 Test Rd");
-        address.setCity("Dallas");
-        address.setFirstName("Jeff");
-        address.setLastName("Fischer");
-        address.setPostalCode("75240");
-        address.setPrimaryPhone("972-978-9067");
-        address.setState(stateService.findStateByAbbreviation("KY"));
-        address.setCountry(countryService.findCountryByAbbreviation("US"));
-
-        FulfillmentGroup group = new FulfillmentGroupImpl();
-        group.setAddress(address);
-        group.setIsShippingPriceTaxable(true);
-        List<FulfillmentGroup> groups = new ArrayList<FulfillmentGroup>();
-        group.setMethod("standard");
-        group.setService(ShippingServiceType.BANDED_SHIPPING.getType());
-        group.setShippingPrice(new Money("0"));
-        group.setOrder(order);
-        groups.add(group);
-        group.setTotal(new Money(0));
-        order.setFulfillmentGroups(groups);
-        Money total = new Money(5D);
-        group.setRetailShippingPrice(total);
-        group.setShippingPrice(total);
-
-        DiscreteOrderItem item1;
-        {
-        item1 = new DiscreteOrderItemImpl();
-        Sku sku = new SkuImpl();
-        sku.setName("Test Sku");
-        sku.setRetailPrice(new Money(10D));
-        sku.setDiscountable(true);
-
-        sku = catalogService.saveSku(sku);
-
-        item1.setSku(sku);
-        item1.setQuantity(2);
-        item1.setOrder(order);
-        item1.setOrderItemType(OrderItemType.DISCRETE);
-
-        item1 = (DiscreteOrderItem) orderItemService.saveOrderItem(item1);
-
-        order.addOrderItem(item1);
-        FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
-        fgItem.setFulfillmentGroup(group);
-        fgItem.setOrderItem(item1);
-        fgItem.setQuantity(2);
-        //fgItem.setPrice(new Money(0D));
-        group.addFulfillmentGroupItem(fgItem);
-        }
-
-        {
-        DiscreteOrderItem item = new DiscreteOrderItemImpl();
-        Sku sku = new SkuImpl();
-        sku.setName("Test Product 2");
-        sku.setRetailPrice(new Money(20D));
-        sku.setDiscountable(true);
-
-        sku = catalogService.saveSku(sku);
-
-        item.setSku(sku);
-        item.setQuantity(1);
-        item.setOrder(order);
-        item.setOrderItemType(OrderItemType.DISCRETE);
-
-        item = (DiscreteOrderItem) orderItemService.saveOrderItem(item);
-
-        order.addOrderItem(item);
-
-        FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
-        fgItem.setFulfillmentGroup(group);
-        fgItem.setOrderItem(item);
-        fgItem.setQuantity(1);
-        //fgItem.setPrice(new Money(0D));
-        group.addFulfillmentGroupItem(fgItem);
-        }
-
-        {
-        GiftWrapOrderItem item = new GiftWrapOrderItemImpl();
-        Sku sku = new SkuImpl();
-        sku.setName("Test GiftWrap");
-        sku.setRetailPrice(new Money(1D));
-        sku.setDiscountable(true);
-
-        sku = catalogService.saveSku(sku);
-
-        item.setSku(sku);
-        item.setQuantity(1);
-        item.setOrder(order);
-        item.getWrappedItems().add(item1);
-        item.setOrderItemType(OrderItemType.GIFTWRAP);
-
-        item = (GiftWrapOrderItem) orderItemService.saveOrderItem(item);
-
-        order.addOrderItem(item);
-
-        FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
-        fgItem.setFulfillmentGroup(group);
-        fgItem.setOrderItem(item);
-        fgItem.setQuantity(1);
-        //fgItem.setPrice(new Money(0D));
-        group.addFulfillmentGroupItem(fgItem);
-        }
-
-        return order;
+    for (OrderItem orderItem : order.getOrderItems()) {
+      if (orderItem.getOrderItemPriceDetails().isEmpty()) {
+        count += 1;
+      } else {
+        count += orderItem.getOrderItemPriceDetails().size();
+      }
     }
 
-    public int countPriceDetails(Order order) {
-        int count = 0;
-        for (OrderItem orderItem : order.getOrderItems()) {
-            if (orderItem.getOrderItemPriceDetails().isEmpty()) {
-                count += 1;
-            } else {
-                count += orderItem.getOrderItemPriceDetails().size();
-            }
-        }
-        return count;
+    return count;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private Order createTestOrderWithOfferAndGiftWrap() throws PricingException {
+    Customer customer = customerService.createCustomerFromId(null);
+    Order    order    = orderService.createNewCartForCustomer(customer);
+
+    customerService.saveCustomer(order.getCustomer());
+
+    createCountry();
+    createState();
+
+    Address address = new AddressImpl();
+    address.setAddressLine1("123 Test Rd");
+    address.setCity("Dallas");
+    address.setFirstName("Jeff");
+    address.setLastName("Fischer");
+    address.setPostalCode("75240");
+    address.setPrimaryPhone("972-978-9067");
+    address.setState(stateService.findStateByAbbreviation("KY"));
+    address.setCountry(countryService.findCountryByAbbreviation("US"));
+
+    FulfillmentGroup group = new FulfillmentGroupImpl();
+    group.setAddress(address);
+    group.setIsShippingPriceTaxable(true);
+
+    List<FulfillmentGroup> groups = new ArrayList<FulfillmentGroup>();
+    group.setMethod("standard");
+    group.setService(ShippingServiceType.BANDED_SHIPPING.getType());
+    group.setShippingPrice(new Money("0"));
+    group.setOrder(order);
+    groups.add(group);
+    group.setTotal(new Money(0));
+    order.setFulfillmentGroups(groups);
+
+    Money total = new Money(5D);
+    group.setRetailShippingPrice(total);
+    group.setShippingPrice(total);
+
+    DiscreteOrderItem item1;
+
+    {
+      item1 = new DiscreteOrderItemImpl();
+
+      Sku sku = new SkuImpl();
+      sku.setName("Test Sku");
+      sku.setRetailPrice(new Money(10D));
+      sku.setDiscountable(true);
+
+      sku = catalogService.saveSku(sku);
+
+      item1.setSku(sku);
+      item1.setQuantity(2);
+      item1.setOrder(order);
+      item1.setOrderItemType(OrderItemType.DISCRETE);
+
+      item1 = (DiscreteOrderItem) orderItemService.saveOrderItem(item1);
+
+      order.addOrderItem(item1);
+
+      FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
+      fgItem.setFulfillmentGroup(group);
+      fgItem.setOrderItem(item1);
+      fgItem.setQuantity(2);
+
+      // fgItem.setPrice(new Money(0D));
+      group.addFulfillmentGroupItem(fgItem);
     }
 
-    /*
-    The offer portion of this test was commented to support price lists - without this the test is not valid
-    TODO fix test if GiftWrapOrderItems will continue to be supported by offers
-     */
-    /*@Test(groups =  {"testOffersWithGiftWrapLegacy"}, dependsOnGroups = { "testShippingInsertLegacy"})
-    @Transactional
-    public void testOrderItemOfferWithGiftWrap() throws PricingException {
-        Order order = createTestOrderWithOfferAndGiftWrap();
-        OfferDataItemProvider dataProvider = new OfferDataItemProvider();
-        List<Offer> offers = dataProvider.createItemBasedOfferWithItemCriteria(
-            "order.subTotal.getAmount()>20",
-            OfferDiscountType.PERCENT_OFF,
-            "([MVEL.eval(\"toUpperCase()\",\"Test Sku\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.sku.name))",
-            "([MVEL.eval(\"toUpperCase()\",\"Test Sku\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.sku.name))"
-        );
-        for (Offer offer : offers) {
-            offer.setName("testOffer");
-            //reset the offer is the targets and qualifiers, otherwise the reference is incorrect
-            for (OfferItemCriteria criteria : offer.getTargetItemCriteria()) {
-                criteria.setTargetOffer(null);
-            }
-            for (OfferItemCriteria criteria : offer.getQualifyingItemCriteria()) {
-                criteria.setQualifyingOffer(null);
-            }
+    {
+      DiscreteOrderItem item = new DiscreteOrderItemImpl();
+      Sku               sku  = new SkuImpl();
+      sku.setName("Test Product 2");
+      sku.setRetailPrice(new Money(20D));
+      sku.setDiscountable(true);
 
-            offerService.save(offer);
-        }
-        order = orderService.save(order, true);
+      sku = catalogService.saveSku(sku);
 
-        assert order.getTotalTax().equals(new Money("2.05"));
-        assert order.getTotalShipping().equals(new Money("0"));
-        assert order.getSubTotal().equals(new Money("41.00"));
-        assert order.getTotal().equals(new Money("43.05"));
-        assert countPriceDetails(order) == 3;
+      item.setSku(sku);
+      item.setQuantity(1);
+      item.setOrder(order);
+      item.setOrderItemType(OrderItemType.DISCRETE);
 
-        boolean foundGiftItemAndCorrectQuantity = false;
+      item = (DiscreteOrderItem) orderItemService.saveOrderItem(item);
 
-        for (OrderItem orderItem : order.getOrderItems()) {
-            if (orderItem instanceof GiftWrapOrderItem && ((GiftWrapOrderItem) orderItem).getWrappedItems().size() == 1) {
-                foundGiftItemAndCorrectQuantity = true;
-                break;
-            }
-        }
+      order.addOrderItem(item);
 
-        assert foundGiftItemAndCorrectQuantity;
-    }*/
+      FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
+      fgItem.setFulfillmentGroup(group);
+      fgItem.setOrderItem(item);
+      fgItem.setQuantity(1);
 
-}
+      // fgItem.setPrice(new Money(0D));
+      group.addFulfillmentGroupItem(fgItem);
+    }
+
+    {
+      GiftWrapOrderItem item = new GiftWrapOrderItemImpl();
+      Sku               sku  = new SkuImpl();
+      sku.setName("Test GiftWrap");
+      sku.setRetailPrice(new Money(1D));
+      sku.setDiscountable(true);
+
+      sku = catalogService.saveSku(sku);
+
+      item.setSku(sku);
+      item.setQuantity(1);
+      item.setOrder(order);
+      item.getWrappedItems().add(item1);
+      item.setOrderItemType(OrderItemType.GIFTWRAP);
+
+      item = (GiftWrapOrderItem) orderItemService.saveOrderItem(item);
+
+      order.addOrderItem(item);
+
+      FulfillmentGroupItem fgItem = new FulfillmentGroupItemImpl();
+      fgItem.setFulfillmentGroup(group);
+      fgItem.setOrderItem(item);
+      fgItem.setQuantity(1);
+
+      // fgItem.setPrice(new Money(0D));
+      group.addFulfillmentGroupItem(fgItem);
+    }
+
+    return order;
+  } // end method createTestOrderWithOfferAndGiftWrap
+
+  /*
+  The offer portion of this test was commented to support price lists - without this the test is not valid
+  TODO fix test if GiftWrapOrderItems will continue to be supported by offers
+   */
+  /*@Test(groups =  {"testOffersWithGiftWrapLegacy"}, dependsOnGroups = { "testShippingInsertLegacy"})
+  @Transactional
+  public void testOrderItemOfferWithGiftWrap() throws PricingException {
+      Order order = createTestOrderWithOfferAndGiftWrap();
+      OfferDataItemProvider dataProvider = new OfferDataItemProvider();
+      List<Offer> offers = dataProvider.createItemBasedOfferWithItemCriteria(
+          "order.subTotal.getAmount()>20",
+          OfferDiscountType.PERCENT_OFF,
+          "([MVEL.eval(\"toUpperCase()\",\"Test Sku\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.sku.name))",
+          "([MVEL.eval(\"toUpperCase()\",\"Test Sku\")] contains MVEL.eval(\"toUpperCase()\", discreteOrderItem.sku.name))"
+      );
+      for (Offer offer : offers) {
+          offer.setName("testOffer");
+          //reset the offer is the targets and qualifiers, otherwise the reference is incorrect
+          for (OfferItemCriteria criteria : offer.getTargetItemCriteria()) {
+              criteria.setTargetOffer(null);
+          }
+          for (OfferItemCriteria criteria : offer.getQualifyingItemCriteria()) {
+              criteria.setQualifyingOffer(null);
+          }
+
+          offerService.save(offer);
+      }
+      order = orderService.save(order, true);
+
+      assert order.getTotalTax().equals(new Money("2.05"));
+      assert order.getTotalShipping().equals(new Money("0"));
+      assert order.getSubTotal().equals(new Money("41.00"));
+      assert order.getTotal().equals(new Money("43.05"));
+      assert countPriceDetails(order) == 3;
+
+      boolean foundGiftItemAndCorrectQuantity = false;
+
+      for (OrderItem orderItem : order.getOrderItems()) {
+          if (orderItem instanceof GiftWrapOrderItem && ((GiftWrapOrderItem) orderItem).getWrappedItems().size() == 1) {
+              foundGiftItemAndCorrectQuantity = true;
+              break;
+          }
+      }
+
+      assert foundGiftItemAndCorrectQuantity;
+  }*/
+
+} // end class LegacyOfferServiceTest

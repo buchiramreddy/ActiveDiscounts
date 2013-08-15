@@ -16,46 +16,59 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.order.domain.OrderAttribute;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * API wrapper to wrap Order  Attributes.
- * @author Priyesh Patel
- *
- */
-@XmlRootElement(name = "orderAttribute")
-@XmlAccessorType(value = XmlAccessType.FIELD)
-public class OrderAttributeWrapper extends BaseWrapper implements
-        APIWrapper<OrderAttribute> {
-    
-    @XmlElement
-    protected Long id;
-    
-    @XmlElement
-    protected String name;
-    
-    @XmlElement
-    protected String value;
-    
-    @XmlElement
-    protected Long orderId;
+import org.broadleafcommerce.core.order.domain.OrderAttribute;
 
-    @Override
-    public void wrapDetails(OrderAttribute model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.name = model.getName();
-        this.value = model.getValue();
-        this.orderId = model.getOrder().getId();
-    }
-    
-    @Override
-    public void wrapSummary(OrderAttribute model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+
+/**
+ * API wrapper to wrap Order Attributes.
+ *
+ * @author   Priyesh Patel
+ * @version  $Revision$, $Date$
+ */
+@XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "orderAttribute")
+public class OrderAttributeWrapper extends BaseWrapper implements APIWrapper<OrderAttribute> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected String name;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Long orderId;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected String value;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.order.domain.OrderAttribute,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(OrderAttribute model, HttpServletRequest request) {
+    this.id      = model.getId();
+    this.name    = model.getName();
+    this.value   = model.getValue();
+    this.orderId = model.getOrder().getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.order.domain.OrderAttribute,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(OrderAttribute model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class OrderAttributeWrapper

@@ -20,42 +20,49 @@ import org.broadleafcommerce.common.value.ValueAssignable;
 
 
 /**
- * Implementations of this interface are used to hold data about a Customers Attributes.
- * <br>
- * For high volume sites, you should consider extending the BLC Customer entity instead of
- * relying on custom attributes as the extension mechanism is more performant under load.
+ * Implementations of this interface are used to hold data about a Customers Attributes.<br>
+ * For high volume sites, you should consider extending the BLC Customer entity instead of relying on custom attributes
+ * as the extension mechanism is more performant under load.
  *
- * @see {@link org.broadleafcommerce.profile.core.domain.CustomerAttributeImpl}, {@link org.broadleafcommerce.profile.core.domain.Customer}
- * @author bpolster
- *
+ * @see      {@link org.broadleafcommerce.profile.core.domain.CustomerAttributeImpl},
+ *           {@link org.broadleafcommerce.profile.core.domain.Customer}
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface CustomerAttribute extends ValueAssignable<String> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Gets the id.
-     *
-     * @return the id
-     */
-    public Long getId();
+  /**
+   * Gets the associated customer.
+   *
+   * @return  the customer
+   */
+  Customer getCustomer();
 
-    /**
-     * Sets the id.
-     *
-     * @param id the new id
-     */
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Gets the associated customer.
-     *
-     * @return the customer
-     */
-    public Customer getCustomer();
+  /**
+   * Gets the id.
+   *
+   * @return  the id
+   */
+  Long getId();
 
-    /**
-     * Sets the associated customer.
-     *
-     * @param customer
-     */
-    public void setCustomer(Customer customer);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the associated customer.
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  void setCustomer(Customer customer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the id.
+   *
+   * @param  id  the new id
+   */
+  void setId(Long id);
+} // end interface CustomerAttribute

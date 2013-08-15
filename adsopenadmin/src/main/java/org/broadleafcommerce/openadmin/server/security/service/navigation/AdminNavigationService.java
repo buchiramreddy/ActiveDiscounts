@@ -21,21 +21,92 @@ import org.broadleafcommerce.openadmin.server.security.domain.AdminModule;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface AdminNavigationService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public AdminMenu buildMenu(AdminUser adminUser);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   adminUser  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminMenu buildMenu(AdminUser adminUser);
 
-    public boolean isUserAuthorizedToViewSection(AdminUser adminUser, AdminSection section);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isUserAuthorizedToViewModule(AdminUser adminUser, AdminModule module);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   className  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminSection findAdminSectionByClass(String className);
 
-    public AdminSection findAdminSectionByURI(String uri);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public AdminSection findAdminSectionBySectionKey(String sectionKey);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   clazz  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminSection findAdminSectionByClass(Class<?> clazz);
 
-    public AdminSection findAdminSectionByClass(String className);
-    public AdminSection findAdminSectionByClass(Class<?> clazz);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sectionKey  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminSection findAdminSectionBySectionKey(String sectionKey);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   uri  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminSection findAdminSectionByURI(String uri);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   adminUser  DOCUMENT ME!
+   * @param   module     DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isUserAuthorizedToViewModule(AdminUser adminUser, AdminModule module);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   adminUser  DOCUMENT ME!
+   * @param   section    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isUserAuthorizedToViewSection(AdminUser adminUser, AdminSection section);
 
 
-
-}
+} // end interface AdminNavigationService

@@ -20,24 +20,109 @@ import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
 import org.broadleafcommerce.core.payment.service.exception.PaymentException;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PaymentService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean isValidCandidate(PaymentInfoType paymentType);
 
-    public Boolean isValidCandidate(PaymentInfoType paymentType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem authorize(PaymentContext paymentContext) throws PaymentException;
 
-    public PaymentResponseItem authorize(PaymentContext paymentContext) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem debit(PaymentContext paymentContext) throws PaymentException;
 
-    public PaymentResponseItem debit(PaymentContext paymentContext) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem authorizeAndDebit(PaymentContext paymentContext) throws PaymentException;
 
-    public PaymentResponseItem authorizeAndDebit(PaymentContext paymentContext) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem credit(PaymentContext paymentContext) throws PaymentException;
 
-    public PaymentResponseItem credit(PaymentContext paymentContext) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem voidPayment(PaymentContext paymentContext) throws PaymentException;
 
-    public PaymentResponseItem voidPayment(PaymentContext paymentContext) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem balance(PaymentContext paymentContext) throws PaymentException;
 
-    public PaymentResponseItem balance(PaymentContext paymentContext) throws PaymentException;
-    
-    public PaymentResponseItem reverseAuthorize(PaymentContext paymentContext) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem reverseAuthorize(PaymentContext paymentContext) throws PaymentException;
 
-    public PaymentResponseItem partialPayment(PaymentContext paymentContext) throws PaymentException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentContext  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PaymentException  DOCUMENT ME!
+   */
+  PaymentResponseItem partialPayment(PaymentContext paymentContext) throws PaymentException;
 
-}
+} // end interface PaymentService

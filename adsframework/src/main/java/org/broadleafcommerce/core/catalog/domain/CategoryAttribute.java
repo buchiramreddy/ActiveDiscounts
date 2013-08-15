@@ -20,65 +20,66 @@ import org.broadleafcommerce.common.value.Searchable;
 
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public interface CategoryAttribute extends Searchable<String> {
+  /**
+   * Gets the id.
+   *
+   * @return  the id
+   */
+  Long getId();
 
-    /**
-     * Gets the id.
-     * 
-     * @return the id
-     */
-    public Long getId();
+  /**
+   * Sets the id.
+   *
+   * @param  id  the new id
+   */
+  void setId(Long id);
 
-    /**
-     * Sets the id.
-     * 
-     * @param id the new id
-     */
-    public void setId(Long id);
+  /**
+   * Gets the value.
+   *
+   * @return  the value
+   */
+  @Override String getValue();
 
-    /**
-     * Gets the value.
-     * 
-     * @return the value
-     */
-    public String getValue();
+  /**
+   * Sets the value.
+   *
+   * @param  value  the new value
+   */
+  @Override void setValue(String value);
 
-    /**
-     * Sets the value.
-     * 
-     * @param value the new value
-     */
-    public void setValue(String value);
+  /**
+   * Gets the {@link org.broadleafcommerce.core.catalog.domain.Category}.
+   *
+   * @return  the {@link org.broadleafcommerce.core.catalog.domain.Category}
+   */
+  Category getCategory();
 
-    /**
-     * Gets the {@link org.broadleafcommerce.core.catalog.domain.Category}.
-     * 
-     * @return the {@link org.broadleafcommerce.core.catalog.domain.Category}
-     */
-    public Category getCategory();
+  /**
+   * Sets the {@link org.broadleafcommerce.core.catalog.domain.Category}.
+   *
+   * @param  category  the new {@link org.broadleafcommerce.core.catalog.domain.Category}
+   */
+  void setCategory(Category category);
 
-    /**
-     * Sets the {@link org.broadleafcommerce.core.catalog.domain.Category}.
-     * 
-     * @param category the new {@link org.broadleafcommerce.core.catalog.domain.Category}
-     */
-    public void setCategory(Category category);
+  /**
+   * Gets the name.
+   *
+   * @return  the name
+   */
+  @Override String getName();
 
-    /**
-     * Gets the name.
-     * 
-     * @return the name
-     */
-    public String getName();
+  /**
+   * Sets the name.
+   *
+   * @param  name  the new name
+   */
+  @Override void setName(String name);
 
-    /**
-     * Sets the name.
-     * 
-     * @param name the new name
-     */
-    public void setName(String name);
-
-}
+} // end interface CategoryAttribute

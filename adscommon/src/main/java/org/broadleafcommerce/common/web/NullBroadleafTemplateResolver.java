@@ -17,35 +17,51 @@
 package org.broadleafcommerce.common.web;
 
 import org.thymeleaf.TemplateProcessingParameters;
+
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolution;
 
+
 /**
  * Placeholder component to support a custom TemplateResolver.
- * 
- * Utilized by the Broadleaf Commerce CustomTemplate extension to introduce themes at the DB level.
  *
- * @author bpolster
+ * <p>Utilized by the Broadleaf Commerce CustomTemplate extension to introduce themes at the DB level.</p>
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class NullBroadleafTemplateResolver implements ITemplateResolver {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getName() {
-        return "NullBroadleafTemplateResolver";
-    }
+  /**
+   * @see  org.thymeleaf.templateresolver.ITemplateResolver#getName()
+   */
+  @Override public String getName() {
+    return "NullBroadleafTemplateResolver";
+  }
 
-    @Override
-    public Integer getOrder() {
-        return 9999;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public TemplateResolution resolveTemplate(TemplateProcessingParameters templateProcessingParameters) {
-        return null;
-    }
+  /**
+   * @see  org.thymeleaf.templateresolver.ITemplateResolver#getOrder()
+   */
+  @Override public Integer getOrder() {
+    return 9999;
+  }
 
-    @Override
-    public void initialize() {
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    }
-}
+  /**
+   * @see  org.thymeleaf.templateresolver.ITemplateResolver#initialize()
+   */
+  @Override public void initialize() { }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.templateresolver.ITemplateResolver#resolveTemplate(org.thymeleaf.TemplateProcessingParameters)
+   */
+  @Override public TemplateResolution resolveTemplate(TemplateProcessingParameters templateProcessingParameters) {
+    return null;
+  }
+} // end class NullBroadleafTemplateResolver

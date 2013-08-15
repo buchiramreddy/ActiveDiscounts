@@ -17,36 +17,73 @@
 package org.broadleafcommerce.common.site.domain;
 
 /**
- * Stores the path to the theme.
- * Created by bpolster.
+ * Stores the path to the theme. Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class ThemeDTO implements Theme {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String path = "";
-    public String name = "";
-    
-    public ThemeDTO() {
-        // empty constructor
-    }
-    
-    public ThemeDTO(String name, String path) {
-        this.name = name;
-        this.path = path;
-    }
+  /** DOCUMENT ME! */
+  public String name = "";
 
-    public String getPath() {
-        return path;
-    }
+  /** DOCUMENT ME! */
+  public String path = "";
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public String getName() {
-        return name;
-    }
+  /**
+   * Creates a new ThemeDTO object.
+   */
+  public ThemeDTO() {
+    // empty constructor
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-}
+  /**
+   * Creates a new ThemeDTO object.
+   *
+   * @param  name  DOCUMENT ME!
+   * @param  path  DOCUMENT ME!
+   */
+  public ThemeDTO(String name, String path) {
+    this.name = name;
+    this.path = path;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.site.domain.Theme#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.site.domain.Theme#getPath()
+   */
+  @Override public String getPath() {
+    return path;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.site.domain.Theme#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.site.domain.Theme#setPath(java.lang.String)
+   */
+  @Override public void setPath(String path) {
+    this.path = path;
+  }
+} // end class ThemeDTO

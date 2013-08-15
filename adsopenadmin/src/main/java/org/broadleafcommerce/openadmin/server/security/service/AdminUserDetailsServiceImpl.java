@@ -16,10 +16,17 @@
 
 package org.broadleafcommerce.openadmin.server.security.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+
 import org.springframework.dao.DataAccessException;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.User;
@@ -27,34 +34,45 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class AdminUserDetailsServiceImpl implements UserDetailsService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blAdminSecurityService")
-    protected AdminSecurityService adminSecurityService;
-    
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-        AdminUser adminUser = adminSecurityService.readAdminUserByUserName(username);
-        if (adminUser == null || adminUser.getActiveStatusFlag() == null || !adminUser.getActiveStatusFlag()) {
-            throw new UsernameNotFoundException("The user was not found");
-        }
+  /** DOCUMENT ME! */
+  @Resource(name = "blAdminSecurityService")
+  protected AdminSecurityService adminSecurityService;
 
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (AdminRole role : adminUser.getAllRoles()) {
-            for (AdminPermission permission : role.getAllPermissions()) {
-                authorities.add(new GrantedAuthorityImpl(permission.getName()));
-            }
-        }
-        for (AdminPermission permission : adminUser.getAllPermissions()) {
-            authorities.add(new GrantedAuthorityImpl(permission.getName()));
-        }
-        return new User(username, adminUser.getPassword(), true, true, true, true, authorities);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
+   */
+  @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException,
+    DataAccessException {
+    AdminUser adminUser = adminSecurityService.readAdminUserByUserName(username);
+
+    if ((adminUser == null) || (adminUser.getActiveStatusFlag() == null) || !adminUser.getActiveStatusFlag()) {
+      throw new UsernameNotFoundException("The user was not found");
     }
-}
+
+    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+    for (AdminRole role : adminUser.getAllRoles()) {
+      for (AdminPermission permission : role.getAllPermissions()) {
+        authorities.add(new GrantedAuthorityImpl(permission.getName()));
+      }
+    }
+
+    for (AdminPermission permission : adminUser.getAllPermissions()) {
+      authorities.add(new GrantedAuthorityImpl(permission.getName()));
+    }
+
+    return new User(username, adminUser.getPassword(), true, true, true, true, authorities);
+  }
+} // end class AdminUserDetailsServiceImpl

@@ -16,46 +16,53 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
-import org.broadleafcommerce.common.presentation.ValidationConfiguration;
+import java.io.Serializable;
+
+import java.util.Map;
+
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule;
-
-import java.io.Serializable;
-import java.util.Map;
 
 
 /**
- * Analagous to {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} except this does not attempt to use any {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} from an
+ * Analagous to {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} except
+ * this does not attempt to use any {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} from an
  * {@link AdminPresentation} annotation. These global validators will execute on every field of every entity that is
  * attempted to be populated by the admin
  *
- * @author Phillip Verheyden (phillipuniverse)
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator}
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService#getGlobalEntityValidators()}
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @see      {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator}
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService#getGlobalEntityValidators()}
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
+ * @version  $Revision$, $Date$
  */
 public interface GlobalPropertyValidator {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Validates a property for an entity
-     * 
-     * @param entity Entity DTO of the entity attempting to save
-     * @param instance actual object representation of <b>entity</b>. This can be cast to entity interfaces (like Sku or
-     * Product)
-     * @param entityFieldMetadata complete field metadata for all properties in <b>entity</b>
-     * @param propertyMetadata {@link org.broadleafcommerce.openadmin.dto.BasicFieldMetadata} corresponding to the property that is being valid
-     * @param propertyName the property name of the value attempting to be saved (could be a sub-entity obtained via dot
-     * notation like 'defaultSku.name')
-     * @param value the value attempted to be saved
-     * @return <b>true</b> if this passes validation, <b>false</b> otherwise.
-     */
-    public PropertyValidationResult validate(Entity entity,
-                                             Serializable instance,
-                                             Map<String, FieldMetadata> entityFieldMetadata,
-                                             BasicFieldMetadata propertyMetadata,
-                                             String propertyName,
-                                             String value);
+  /**
+   * Validates a property for an entity.
+   *
+   * @param   entity               Entity DTO of the entity attempting to save
+   * @param   instance             actual object representation of <b>entity</b>. This can be cast to entity interfaces
+   *                               (like Sku or Product)
+   * @param   entityFieldMetadata  complete field metadata for all properties in <b>entity</b>
+   * @param   propertyMetadata {@link org.broadleafcommerce.openadmin.dto.BasicFieldMetadata} corresponding to the
+   *                               property that is being valid
+   * @param   propertyName         the property name of the value attempting to be saved (could be a sub-entity obtained
+   *                               via dot notation like 'defaultSku.name')
+   * @param   value                the value attempted to be saved
+   *
+   * @return  <b>true</b> if this passes validation, <b>false</b> otherwise.
+   */
+  PropertyValidationResult validate(Entity entity,
+    Serializable instance, Map<String, FieldMetadata> entityFieldMetadata,
+    BasicFieldMetadata propertyMetadata,
+    String propertyName,
+    String value);
 
-}
+} // end interface GlobalPropertyValidator

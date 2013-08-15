@@ -16,28 +16,50 @@
 
 package org.broadleafcommerce.common.web;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.springframework.web.context.request.WebRequest;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+
+import org.springframework.web.context.request.WebRequest;
+
+
 /**
- * Author: jerryocanas
- * Date: 9/6/12
+ * Author: jerryocanas Date: 9/6/12
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 
 /**
  * Responsible for returning the currency to use for the current request.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafCurrencyResolver {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * 
-     * @deprecated use {@link #resolveCurrency(org.springframework.web.context.request.WebRequest)} instead
-     */
-    @Deprecated
-    public BroadleafCurrency resolveCurrency(HttpServletRequest request);
-    
-    public BroadleafCurrency resolveCurrency(WebRequest request);
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       request  DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  use {@link #resolveCurrency(org.springframework.web.context.request.WebRequest)} instead
+   */
+  @Deprecated BroadleafCurrency resolveCurrency(HttpServletRequest request);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency resolveCurrency(WebRequest request);
+
+} // end interface BroadleafCurrencyResolver

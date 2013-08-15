@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008-2013 the original author or authors.
  *
@@ -17,15 +16,7 @@
 
 package org.broadleafcommerce.common.i18n.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Table;
-import org.hibernate.annotations.Type;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,117 +25,212 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
-import java.io.Serializable;
 
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Table;
+import org.hibernate.annotations.Type;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(
+  populateToOneFields = PopulateToOneFieldsEnum.TRUE,
+  friendlyName        = "baseProduct"
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@javax.persistence.Table(name = "BLC_TRANSLATION")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE, friendlyName = "baseProduct")
-//multi-column indexes don't appear to get exported correctly when declared at the field level, so declaring here as a workaround
-@Table(appliesTo = "BLC_TRANSLATION", indexes = {
-        @Index(name = "TRANSLATION_INDEX", columnNames = {"ENTITY_TYPE","ENTITY_ID","FIELD_NAME","LOCALE_CODE"})
-})
-public class TranslationImpl implements Serializable, Translation {
 
-    private static final long serialVersionUID = -122818474469147685L;
-
-    @Id
-    @GeneratedValue(generator = "TranslationId")
-    @GenericGenerator(
-        name = "TranslationId",
-        strategy = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-                @Parameter(name = "segment_value", value = "TranslationImpl"),
-                @Parameter(name = "entity_name", value = "org.broadleafcommerce.common.i18n.domain.TranslationImpl")
-        }
+// multi-column indexes don't appear to get exported correctly when declared at the field level, so declaring here as a workaround
+@Table(
+  appliesTo = "BLC_TRANSLATION",
+  indexes   = {
+    @Index(
+      name  = "TRANSLATION_INDEX",
+      columnNames = { "ENTITY_TYPE", "ENTITY_ID", "FIELD_NAME", "LOCALE_CODE" }
     )
-    @Column(name = "TRANSLATION_ID")
-    protected Long id;
+  }
+)
+@javax.persistence.Table(name = "BLC_TRANSLATION")
+public class TranslationImpl implements Serializable, Translation {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Column(name = "ENTITY_TYPE")
-    protected String entityType;
+  private static final long serialVersionUID = -122818474469147685L;
 
-    @Column(name = "ENTITY_ID")
-    protected String entityId;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "FIELD_NAME")
-    protected String fieldName;
+  /** DOCUMENT ME! */
+  @Column(name = "ENTITY_ID")
+  protected String entityId;
 
-    @Column(name = "LOCALE_CODE")
-    protected String localeCode;
+  /** DOCUMENT ME! */
+  @Column(name = "ENTITY_TYPE")
+  protected String entityType;
 
-    @Column(name = "TRANSLATED_VALUE", length = Integer.MAX_VALUE - 1)
-    @Lob
-    @Type(type = "org.hibernate.type.StringClobType")
-    protected String translatedValue;
+  /** DOCUMENT ME! */
+  @Column(name = "FIELD_NAME")
+  protected String fieldName;
 
-    /* ************************ */
-    /* CUSTOM GETTERS / SETTERS */
-    /* ************************ */
-
-    @Override
-    public TranslatedEntity getEntityType() {
-        return TranslatedEntity.getInstanceFromFriendlyType(entityType);
+  /** DOCUMENT ME! */
+  @Column(name = "TRANSLATION_ID")
+  @GeneratedValue(generator = "TranslationId")
+  @GenericGenerator(
+    name       = "TranslationId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "TranslationImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.common.i18n.domain.TranslationImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setEntityType(TranslatedEntity entityType) {
-        this.entityType = entityType.getFriendlyType();
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "LOCALE_CODE")
+  protected String localeCode;
 
-    /* ************************** */
-    /* STANDARD GETTERS / SETTERS */
-    /* ************************** */
-    
-    @Override
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name   = "TRANSLATED_VALUE",
+    length = Integer.MAX_VALUE - 1
+  )
+  @Lob
+  @Type(type = "org.hibernate.type.StringClobType")
+  protected String translatedValue;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    @Override
-    public String getEntityId() {
-        return entityId;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#getEntityId()
+   */
+  @Override public String getEntityId() {
+    return entityId;
+  }
 
-    @Override
-    public String getFieldName() {
-        return fieldName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
+  /* ************************ */
+  /* CUSTOM GETTERS / SETTERS */
+  /* ************************ */
 
-    @Override
-    public String getLocaleCode() {
-        return localeCode;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#getEntityType()
+   */
+  @Override public TranslatedEntity getEntityType() {
+    return TranslatedEntity.getInstanceFromFriendlyType(entityType);
+  }
 
-    @Override
-    public void setLocaleCode(String localeCode) {
-        this.localeCode = localeCode;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getTranslatedValue() {
-        return translatedValue;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#getFieldName()
+   */
+  @Override public String getFieldName() {
+    return fieldName;
+  }
 
-    @Override
-    public void setTranslatedValue(String translatedValue) {
-        this.translatedValue = translatedValue;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /* ************************** */
+  /* STANDARD GETTERS / SETTERS */
+  /* ************************** */
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#getLocaleCode()
+   */
+  @Override public String getLocaleCode() {
+    return localeCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#getTranslatedValue()
+   */
+  @Override public String getTranslatedValue() {
+    return translatedValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#setEntityId(java.lang.String)
+   */
+  @Override public void setEntityId(String entityId) {
+    this.entityId = entityId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#setEntityType(org.broadleafcommerce.common.i18n.domain.TranslatedEntity)
+   */
+  @Override public void setEntityType(TranslatedEntity entityType) {
+    this.entityType = entityType.getFriendlyType();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#setFieldName(java.lang.String)
+   */
+  @Override public void setFieldName(String fieldName) {
+    this.fieldName = fieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#setLocaleCode(java.lang.String)
+   */
+  @Override public void setLocaleCode(String localeCode) {
+    this.localeCode = localeCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.i18n.domain.Translation#setTranslatedValue(java.lang.String)
+   */
+  @Override public void setTranslatedValue(String translatedValue) {
+    this.translatedValue = translatedValue;
+  }
+
+} // end class TranslationImpl

@@ -16,28 +16,41 @@
 
 package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.pricing.service.FulfillmentPricingService;
-
 import java.util.Map;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+
+
 /**
- * DTO to allow FulfillmentProcessors to respond to estimation requests for a particular FulfillmentGroup
- * for a particular FulfillmentOptions
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * DTO to allow FulfillmentProcessors to respond to estimation requests for a particular FulfillmentGroup for a
+ * particular FulfillmentOptions.
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider},
+ *           {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * @version  $Revision$, $Date$
  */
 public class FulfillmentEstimationResponse {
+  /** DOCUMENT ME! */
+  protected Map<? extends FulfillmentOption, Money> fulfillmentOptionPrices;
 
-    protected Map<? extends FulfillmentOption, Money> fulfillmentOptionPrices;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<? extends FulfillmentOption, Money> getFulfillmentOptionPrices() {
+    return fulfillmentOptionPrices;
+  }
 
-    public Map<? extends FulfillmentOption, Money> getFulfillmentOptionPrices() {
-        return fulfillmentOptionPrices;
-    }
-
-    public void setFulfillmentOptionPrices(Map<? extends FulfillmentOption, Money> fulfillmentOptionPrices) {
-        this.fulfillmentOptionPrices = fulfillmentOptionPrices;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentOptionPrices  DOCUMENT ME!
+   */
+  public void setFulfillmentOptionPrices(Map<? extends FulfillmentOption, Money> fulfillmentOptionPrices) {
+    this.fulfillmentOptionPrices = fulfillmentOptionPrices;
+  }
 }

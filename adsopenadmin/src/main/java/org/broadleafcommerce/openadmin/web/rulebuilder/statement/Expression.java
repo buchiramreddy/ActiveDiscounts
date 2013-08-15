@@ -18,36 +18,89 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.statement;
 
 import org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator;
 
+
 /**
- * @author jfischer
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   jfischer
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class Expression {
-    protected String field;
-    protected BLCOperator operator;
-    protected String value;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getField() {
-        return field;
-    }
+  /** DOCUMENT ME! */
+  protected String      field;
 
-    public void setField(String field) {
-        this.field = field.trim();
-    }
+  /** DOCUMENT ME! */
+  protected BLCOperator operator;
 
-    public BLCOperator getOperator() {
-        return operator;
-    }
+  /** DOCUMENT ME! */
+  protected String      value;
 
-    public void setOperator(BLCOperator operator) {
-        this.operator = operator;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getValue() {
-        return value;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getField() {
+    return field;
+  }
 
-    public void setValue(String value) {
-        this.value = value.trim();
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BLCOperator getOperator() {
+    return operator;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValue() {
+    return value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  field  DOCUMENT ME!
+   */
+  public void setField(String field) {
+    this.field = field.trim();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  operator  DOCUMENT ME!
+   */
+  public void setOperator(BLCOperator operator) {
+    this.operator = operator;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  public void setValue(String value) {
+    this.value = value.trim();
+  }
+} // end class Expression

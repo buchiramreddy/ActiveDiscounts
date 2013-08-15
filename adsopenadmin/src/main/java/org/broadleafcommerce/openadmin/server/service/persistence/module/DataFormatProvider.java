@@ -19,25 +19,44 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
+
 /**
- * 
- * @author Jeff Fischer
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule}
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @see      {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule}
+ * @version  $Revision$, $Date$
  */
 public interface DataFormatProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public SimpleDateFormat getSimpleDateFormatter();
+  /**
+   * Formats a aw value from an entity into its string representation used by the system. For instance, this might use
+   * the {@link #getDecimalFormatter()} to ensure that BigDecimals only show 2 decimal places or dates are formatted a
+   * certain way.
+   *
+   * @param   value  DOCUMENT ME!
+   *
+   * @return  formats a aw value from an entity into its string representation used by the system.
+   */
+  String formatValue(Object value);
 
-    public DecimalFormat getDecimalFormatter();
-    
-    /**
-     * Formats a aw value from an entity into its string representation used by the system. For instance, this might use
-     * the {@link #getDecimalFormatter()} to ensure that BigDecimals only show 2 decimal places or dates are formatted
-     * a certain way.
-     * 
-     * @param value
-     * @return
-     */
-    public String formatValue(Object value);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  DecimalFormat getDecimalFormatter();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SimpleDateFormat getSimpleDateFormatter();
+
+} // end interface DataFormatProvider

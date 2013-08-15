@@ -18,87 +18,200 @@ package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class DynamicResultSet implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private ClassMetadata classMetaData;
-    private Entity[] records;
-    private Integer pageSize;
-    private Integer startIndex;
-    private Integer totalRecords;
-    private Integer batchId;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public DynamicResultSet() {
-        //do nothing
-    }
+  private Integer batchId;
 
-    public DynamicResultSet(ClassMetadata classMetaData, Entity[] records, Integer totalRecords) {
-        this.records = records;
-        this.classMetaData = classMetaData;
-        this.totalRecords = totalRecords;
-    }
+  private ClassMetadata classMetaData;
+  private Integer       pageSize;
+  private Entity[]      records;
+  private Integer       startIndex;
+  private Integer       totalRecords;
 
-    public DynamicResultSet(Entity[] records, Integer totalRecords) {
-        this.records = records;
-        this.totalRecords = totalRecords;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public DynamicResultSet(ClassMetadata classMetaData) {
-        this.classMetaData = classMetaData;
-    }
+  /**
+   * Creates a new DynamicResultSet object.
+   */
+  public DynamicResultSet() {
+    // do nothing
+  }
 
-    public ClassMetadata getClassMetaData() {
-        return classMetaData;
-    }
+  /**
+   * Creates a new DynamicResultSet object.
+   *
+   * @param  classMetaData  DOCUMENT ME!
+   */
+  public DynamicResultSet(ClassMetadata classMetaData) {
+    this.classMetaData = classMetaData;
+  }
 
-    public void setClassMetaData(ClassMetadata classMetaData) {
-        this.classMetaData = classMetaData;
-    }
+  /**
+   * Creates a new DynamicResultSet object.
+   *
+   * @param  records       DOCUMENT ME!
+   * @param  totalRecords  DOCUMENT ME!
+   */
+  public DynamicResultSet(Entity[] records, Integer totalRecords) {
+    this.records      = records;
+    this.totalRecords = totalRecords;
+  }
 
-    public Integer getTotalRecords() {
-        return totalRecords;
-    }
+  /**
+   * Creates a new DynamicResultSet object.
+   *
+   * @param  classMetaData  DOCUMENT ME!
+   * @param  records        DOCUMENT ME!
+   * @param  totalRecords   DOCUMENT ME!
+   */
+  public DynamicResultSet(ClassMetadata classMetaData, Entity[] records, Integer totalRecords) {
+    this.records       = records;
+    this.classMetaData = classMetaData;
+    this.totalRecords  = totalRecords;
+  }
 
-    public void setTotalRecords(Integer totalRecords) {
-        this.totalRecords = totalRecords;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Entity[] getRecords() {
-        return records;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getBatchId() {
+    return batchId;
+  }
 
-    public void setRecords(Entity[] records) {
-        this.records = records;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Integer getBatchId() {
-        return batchId;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ClassMetadata getClassMetaData() {
+    return classMetaData;
+  }
 
-    public void setBatchId(Integer batchId) {
-        this.batchId = batchId;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Integer getStartIndex() {
-        return startIndex;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPageSize() {
+    return pageSize;
+  }
 
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Integer getPageSize() {
-        return pageSize;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Entity[] getRecords() {
+    return records;
+  }
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getStartIndex() {
+    return startIndex;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getTotalRecords() {
+    return totalRecords;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  batchId  DOCUMENT ME!
+   */
+  public void setBatchId(Integer batchId) {
+    this.batchId = batchId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  classMetaData  DOCUMENT ME!
+   */
+  public void setClassMetaData(ClassMetadata classMetaData) {
+    this.classMetaData = classMetaData;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  pageSize  DOCUMENT ME!
+   */
+  public void setPageSize(Integer pageSize) {
+    this.pageSize = pageSize;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  records  DOCUMENT ME!
+   */
+  public void setRecords(Entity[] records) {
+    this.records = records;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  startIndex  DOCUMENT ME!
+   */
+  public void setStartIndex(Integer startIndex) {
+    this.startIndex = startIndex;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  totalRecords  DOCUMENT ME!
+   */
+  public void setTotalRecords(Integer totalRecords) {
+    this.totalRecords = totalRecords;
+  }
+
+} // end class DynamicResultSet

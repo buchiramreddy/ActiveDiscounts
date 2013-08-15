@@ -17,16 +17,51 @@
 package org.broadleafcommerce.core.offer.domain;
 
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface FulfillmentGroupAdjustment extends Adjustment {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public FulfillmentGroup getFulfillmentGroup();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroup getFulfillmentGroup();
 
-    public void init(FulfillmentGroup fulfillmentGroup, Offer offer, String reason);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setValue(Money value);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   * @param  offer             DOCUMENT ME!
+   * @param  reason            DOCUMENT ME!
+   */
+  void init(FulfillmentGroup fulfillmentGroup, Offer offer, String reason);
 
-    public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.Adjustment#setValue(org.broadleafcommerce.common.money.Money)
+   */
+  @Override void setValue(Money value);
+
+} // end interface FulfillmentGroupAdjustment

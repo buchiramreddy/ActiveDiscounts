@@ -16,9 +16,6 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
 
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate.PredicateProvider;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,103 +25,218 @@ import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter;
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate.PredicateProvider;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class Restriction {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected PredicateProvider predicateProvider;
-    protected FilterValueConverter filterValueConverter;
-    protected FieldPathBuilder fieldPathBuilder = new FieldPathBuilder();
+  /** DOCUMENT ME! */
+  protected FieldPathBuilder     fieldPathBuilder     = new FieldPathBuilder();
 
-    public Restriction withPredicateProvider(PredicateProvider predicateProvider) {
-        setPredicateProvider(predicateProvider);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  protected FilterValueConverter filterValueConverter;
 
-    public Restriction withFilterValueConverter(FilterValueConverter filterValueConverter) {
-        setFilterValueConverter(filterValueConverter);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  protected PredicateProvider predicateProvider;
 
-    public Restriction withFieldPathBuilder(FieldPathBuilder fieldPathBuilder) {
-        setFieldPathBuilder(fieldPathBuilder);
-        return this;
-    }
-    
-    /**
-     * This method differs from buildRestriction in that it will return a FieldPathBuilder that could be used by the caller
-     * to establish any additional Roots that might be necessary due to the path living inside of a polymorphic version
-     * of the ceiling entity. The Predicate object that {@link #buildRestriction(...)} returns is also available inside
-     * of the FieldPathBuilder object for the caller's use.
-     */
-    public Predicate buildPolymorphicRestriction(CriteriaBuilder builder, From root, String ceilingEntity, String targetPropertyName, 
-            Path explicitPath, List directValues, boolean shouldConvert, CriteriaQuery criteria, List<Predicate> restrictions) {
-        fieldPathBuilder.setCriteria(criteria);
-        fieldPathBuilder.setRestrictions(restrictions);
-        return buildRestriction(builder, root, ceilingEntity, targetPropertyName, explicitPath, directValues, shouldConvert);
-    }
-    
-    /**
-     * This method is deprecated in favor of {@link #buildPolymorphicRestriction(javax.persistence.criteria.CriteriaBuilder, javax.persistence.criteria.From, String, String, 
-     * javax.persistence.criteria.Path, java.util.List, boolean, javax.persistence.criteria.CriteriaQuery, java.util.List)}
-     * 
-     * It will be removed in Broadleaf version 3.1.0 and buildPolymorphicRestriction will be renamed to buildRestriction
-     * 
-     * @param builder
-     * @param root
-     * @param ceilingEntity
-     * @param targetPropertyName
-     * @param explicitPath
-     * @param directValues
-     * @param shouldConvert
-     * @return
-     */
-    @Deprecated
-    public Predicate buildRestriction(CriteriaBuilder builder, From root, String ceilingEntity, String targetPropertyName, 
-            Path explicitPath, List directValues, boolean shouldConvert) {
-        List<Object> convertedValues = new ArrayList<Object>();
-        if (shouldConvert && filterValueConverter != null) {
-            for (Object item : directValues) {
-                String stringItem = (String) item;
-                convertedValues.add(filterValueConverter.convert(stringItem));
-            }
-        } else {
-            convertedValues.addAll(directValues);
-        }
-        
-        return predicateProvider.buildPredicate(builder, fieldPathBuilder, root, ceilingEntity, targetPropertyName,
-                explicitPath, convertedValues);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public FilterValueConverter getFilterValueConverter() {
-        return filterValueConverter;
-    }
+  /**
+   * This method differs from buildRestriction in that it will return a FieldPathBuilder that could be used by the
+   * caller to establish any additional Roots that might be necessary due to the path living inside of a polymorphic
+   * version of the ceiling entity. The Predicate object that {@link #buildRestriction(...)} returns is also available
+   * inside of the FieldPathBuilder object for the caller's use.
+   *
+   * @param   builder             DOCUMENT ME!
+   * @param   root                DOCUMENT ME!
+   * @param   ceilingEntity       DOCUMENT ME!
+   * @param   targetPropertyName  DOCUMENT ME!
+   * @param   explicitPath        DOCUMENT ME!
+   * @param   directValues        DOCUMENT ME!
+   * @param   shouldConvert       DOCUMENT ME!
+   * @param   criteria            DOCUMENT ME!
+   * @param   restrictions        DOCUMENT ME!
+   *
+   * @return  this method differs from buildRestriction in that it will return a FieldPathBuilder that could be used by
+   *          the caller to establish any additional Roots that might be necessary due to the path living inside of a
+   *          polymorphic version of the ceiling entity.
+   */
+  public Predicate buildPolymorphicRestriction(CriteriaBuilder builder, From root, String ceilingEntity,
+    String targetPropertyName,
+    Path explicitPath, List directValues, boolean shouldConvert, CriteriaQuery criteria, List<Predicate> restrictions) {
+    fieldPathBuilder.setCriteria(criteria);
+    fieldPathBuilder.setRestrictions(restrictions);
 
-    public void setFilterValueConverter(FilterValueConverter filterValueConverter) {
-        this.filterValueConverter = filterValueConverter;
-    }
+    return buildRestriction(builder, root, ceilingEntity, targetPropertyName, explicitPath, directValues,
+        shouldConvert);
+  }
 
-    public PredicateProvider getPredicateProvider() {
-        return predicateProvider;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPredicateProvider(PredicateProvider predicateProvider) {
-        this.predicateProvider = predicateProvider;
+  /**
+   * This method is deprecated in favor of
+   * {@link #buildPolymorphicRestriction(javax.persistence.criteria.CriteriaBuilder, javax.persistence.criteria.From, String, String, javax.persistence.criteria.Path, java.util.List, boolean, javax.persistence.criteria.CriteriaQuery, java.util.List)}.
+   *
+   * <p>It will be removed in Broadleaf version 3.1.0 and buildPolymorphicRestriction will be renamed to
+   * buildRestriction</p>
+   *
+   * @param   builder             DOCUMENT ME!
+   * @param   root                DOCUMENT ME!
+   * @param   ceilingEntity       DOCUMENT ME!
+   * @param   targetPropertyName  DOCUMENT ME!
+   * @param   explicitPath        DOCUMENT ME!
+   * @param   directValues        DOCUMENT ME!
+   * @param   shouldConvert       DOCUMENT ME!
+   *
+   * @return  this method is deprecated in favor of
+   *          {@link #buildPolymorphicRestriction(javax.persistence.criteria.CriteriaBuilder, javax.persistence.criteria.From, String, String, javax.persistence.criteria.Path, java.util.List, boolean, javax.persistence.criteria.CriteriaQuery, java.util.List)}.
+   */
+  @Deprecated public Predicate buildRestriction(CriteriaBuilder builder, From root, String ceilingEntity,
+    String targetPropertyName,
+    Path explicitPath, List directValues, boolean shouldConvert) {
+    List<Object> convertedValues = new ArrayList<Object>();
+
+    if (shouldConvert && (filterValueConverter != null)) {
+      for (Object item : directValues) {
+        String stringItem = (String) item;
+        convertedValues.add(filterValueConverter.convert(stringItem));
+      }
+    } else {
+      convertedValues.addAll(directValues);
     }
 
-    public FieldPathBuilder getFieldPathBuilder() {
-        return fieldPathBuilder;
-    }
+    return predicateProvider.buildPredicate(builder, fieldPathBuilder, root, ceilingEntity, targetPropertyName,
+        explicitPath, convertedValues);
+  }
 
-    public void setFieldPathBuilder(FieldPathBuilder fieldPathBuilder) {
-        this.fieldPathBuilder = fieldPathBuilder;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Restriction clone() {
-        Restriction temp = new Restriction().withFilterValueConverter(getFilterValueConverter())
-                .withPredicateProvider(getPredicateProvider())
-                .withFieldPathBuilder(getFieldPathBuilder());
-        return temp;
-    }
-}
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override public Restriction clone() {
+    Restriction temp = new Restriction().withFilterValueConverter(getFilterValueConverter()).withPredicateProvider(
+        getPredicateProvider()).withFieldPathBuilder(getFieldPathBuilder());
+
+    return temp;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldPathBuilder getFieldPathBuilder() {
+    return fieldPathBuilder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FilterValueConverter getFilterValueConverter() {
+    return filterValueConverter;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PredicateProvider getPredicateProvider() {
+    return predicateProvider;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldPathBuilder  DOCUMENT ME!
+   */
+  public void setFieldPathBuilder(FieldPathBuilder fieldPathBuilder) {
+    this.fieldPathBuilder = fieldPathBuilder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  filterValueConverter  DOCUMENT ME!
+   */
+  public void setFilterValueConverter(FilterValueConverter filterValueConverter) {
+    this.filterValueConverter = filterValueConverter;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  predicateProvider  DOCUMENT ME!
+   */
+  public void setPredicateProvider(PredicateProvider predicateProvider) {
+    this.predicateProvider = predicateProvider;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fieldPathBuilder  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Restriction withFieldPathBuilder(FieldPathBuilder fieldPathBuilder) {
+    setFieldPathBuilder(fieldPathBuilder);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   filterValueConverter  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Restriction withFilterValueConverter(FilterValueConverter filterValueConverter) {
+    setFilterValueConverter(filterValueConverter);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   predicateProvider  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Restriction withPredicateProvider(PredicateProvider predicateProvider) {
+    setPredicateProvider(predicateProvider);
+
+    return this;
+  }
+} // end class Restriction

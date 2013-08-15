@@ -17,15 +17,29 @@
 package org.broadleafcommerce.common;
 
 /**
- * In order for the Broadleaf Administration to display enumerated values with meaningful labels,
- * enumerations should implement this interface.
+ * In order for the Broadleaf Administration to display enumerated values with meaningful labels, enumerations should
+ * implement this interface.
  *
- * @author jfischer
- *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafEnumerationType {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getType();
-    public String getFriendlyType();
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFriendlyType();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getType();
+
 }

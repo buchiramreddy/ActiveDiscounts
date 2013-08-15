@@ -18,29 +18,111 @@ package org.broadleafcommerce.core.util.domain;
 
 import java.io.Serializable;
 
-@Deprecated
-public interface CodeType extends Serializable {
 
-    public void setId(Long id);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Deprecated public interface CodeType extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCodeType();
 
-    public void setCodeType(String type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getCodeType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDescription();
 
-    public void setKey(String key);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getKey();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setDescription(String description);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getKey();
 
-    public void setModifiable(Boolean modifiable);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getModifiable();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getModifiable();
 
-    public Boolean isModifiable();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean isModifiable();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setCodeType(String type);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  void setDescription(String description);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key  DOCUMENT ME!
+   */
+  void setKey(String key);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  modifiable  DOCUMENT ME!
+   */
+  void setModifiable(Boolean modifiable);
+
+} // end interface CodeType

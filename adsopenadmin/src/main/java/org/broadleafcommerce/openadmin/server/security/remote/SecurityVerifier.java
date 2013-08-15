@@ -17,15 +17,36 @@
 package org.broadleafcommerce.openadmin.server.security.remote;
 
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface SecurityVerifier {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    AdminUser getPersistentAdminUser();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminUser getPersistentAdminUser();
 
-    void securityCheck(String ceilingEntityFullyQualifiedName, EntityOperationType operationType) throws ServiceException;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   ceilingEntityFullyQualifiedName  DOCUMENT ME!
+   * @param   operationType                    DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  void securityCheck(String ceilingEntityFullyQualifiedName, EntityOperationType operationType) throws ServiceException;
 
 }

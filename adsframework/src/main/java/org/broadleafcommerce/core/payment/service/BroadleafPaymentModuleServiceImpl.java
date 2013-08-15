@@ -18,25 +18,35 @@ package org.broadleafcommerce.core.payment.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.core.payment.service.workflow.PaymentSeed;
+
 import org.springframework.stereotype.Service;
 
+
 /**
- * @author Jerry Ocanas (jocanas)
+ * DOCUMENT ME!
+ *
+ * @author   Jerry Ocanas (jocanas)
+ * @version  $Revision$, $Date$
  */
 @Service("blPaymentModuleService")
 public class BroadleafPaymentModuleServiceImpl implements BroadleafPaymentModuleService {
+  private static final Log LOG = LogFactory.getLog(BroadleafPaymentModuleServiceImpl.class);
 
-    private static final Log LOG = LogFactory.getLog(BroadleafPaymentModuleServiceImpl.class);
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.BroadleafPaymentModuleService#validateResponse(org.broadleafcommerce.core.payment.service.workflow.PaymentSeed)
+   */
+  @Override public void validateResponse(PaymentSeed paymentSeed) throws Exception {
+    LOG.warn("Validate response has not been implemented.");
+  }
 
-    @Override
-    public void validateResponse(PaymentSeed paymentSeed) throws Exception {
-        LOG.warn("Validate response has not been implemented.");
-    }
-
-    @Override
-    public void manualPayment(PaymentSeed paymentSeed, String transactionID) {
-        LOG.warn("Manual payment has not been implemented.");
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.BroadleafPaymentModuleService#manualPayment(org.broadleafcommerce.core.payment.service.workflow.PaymentSeed,
+   *       java.lang.String)
+   */
+  @Override public void manualPayment(PaymentSeed paymentSeed, String transactionID) {
+    LOG.warn("Manual payment has not been implemented.");
+  }
 
 }

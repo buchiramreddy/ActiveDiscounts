@@ -18,24 +18,27 @@ package org.broadleafcommerce.common.web.extensibility;
 
 import org.springframework.web.context.ContextLoaderListener;
 
+
 /**
- * Bootstrap listener to start up BroadleafCommerce's rootId {@link MergeWebApplicationContext}.
- * Simply delegates to {@link org.broadleafcommerce.common.web.extensibility.MergeContextLoader}.
+ * Bootstrap listener to start up BroadleafCommerce's rootId {@link MergeWebApplicationContext}. Simply delegates to
+ * {@link org.broadleafcommerce.common.web.extensibility.MergeContextLoader}.
  *
- * <p>This listener should be registered after
- * {@link org.springframework.web.util.Log4jConfigListener}
- * in <code>web.xml</code>, if the latter is used.
+ * <p>This listener should be registered after {@link org.springframework.web.util.Log4jConfigListener} in <code>
+ * web.xml</code>, if the latter is used.</p>
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class MergeContextLoaderListener extends ContextLoaderListener {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Create the ContextLoader to use. Can be overridden in subclasses.
-     * @return the new ContextLoader
-     */
-    protected MergeContextLoader createContextLoader() {
-        return new MergeContextLoader();
-    }
+  /**
+   * Create the ContextLoader to use. Can be overridden in subclasses.
+   *
+   * @return  the new ContextLoader
+   */
+  @Override protected MergeContextLoader createContextLoader() {
+    return new MergeContextLoader();
+  }
 
 }

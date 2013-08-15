@@ -16,60 +16,99 @@
 
 package org.broadleafcommerce.cms.structure.message.jms;
 
-import org.broadleafcommerce.cms.structure.domain.StructuredContent;
-import org.broadleafcommerce.cms.structure.message.ArchivedStructuredContentPublisher;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
+import java.util.HashMap;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-import java.util.HashMap;
+
+import org.broadleafcommerce.cms.structure.domain.StructuredContent;
+import org.broadleafcommerce.cms.structure.message.ArchivedStructuredContentPublisher;
+
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+
 
 /**
- * JMS implementation of ArchivedPagePublisher.
- * Intended usage is to notify other VMs that a pageDTO needs to be
- * evicted from cache.   This occurs when the page is marked as
- * archived - typically because a replacemet page has been
- * promoted to production.
+ * JMS implementation of ArchivedPagePublisher. Intended usage is to notify other VMs that a pageDTO needs to be evicted
+ * from cache. This occurs when the page is marked as archived - typically because a replacemet page has been promoted
+ * to production.
  *
- * Utilizes Spring JMS template pattern where template and destination
- * are configured via Spring.
+ * <p>Utilizes Spring JMS template pattern where template and destination are configured via Spring.</p>
  *
- * Created by bpolster.
+ * <p>Created by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class JMSArchivedStructuredContentPublisher implements ArchivedStructuredContentPublisher {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private JmsTemplate archiveStructuredContentTemplate;
+  private Destination archiveStructuredContentDestination;
 
-    private Destination archiveStructuredContentDestination;
+  private JmsTemplate archiveStructuredContentTemplate;
 
-    @Override
-    public void processStructuredContentArchive(final StructuredContent sc, final String baseNameKey, final String baseTypeKey) {
-        archiveStructuredContentTemplate.send(archiveStructuredContentDestination, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                HashMap<String, String> objectMap = new HashMap<String,String>(2);
-                objectMap.put("nameKey", baseNameKey);
-                objectMap.put("typeKey", baseTypeKey);
-                return session.createObjectMessage(objectMap);
-            }
-        });
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public JmsTemplate getArchiveStructuredContentTemplate() {
-        return archiveStructuredContentTemplate;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Destination getArchiveStructuredContentDestination() {
+    return archiveStructuredContentDestination;
+  }
 
-    public void setArchiveStructuredContentTemplate(JmsTemplate archiveStructuredContentTemplate) {
-        this.archiveStructuredContentTemplate = archiveStructuredContentTemplate;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Destination getArchiveStructuredContentDestination() {
-        return archiveStructuredContentDestination;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public JmsTemplate getArchiveStructuredContentTemplate() {
+    return archiveStructuredContentTemplate;
+  }
 
-    public void setArchiveStructuredContentDestination(Destination archiveStructuredContentDestination) {
-        this.archiveStructuredContentDestination = archiveStructuredContentDestination;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.message.ArchivedStructuredContentPublisher#processStructuredContentArchive(org.broadleafcommerce.cms.structure.domain.StructuredContent,
+   *       java.lang.String, java.lang.String)
+   */
+  @Override public void processStructuredContentArchive(final StructuredContent sc, final String baseNameKey,
+    final String baseTypeKey) {
+    archiveStructuredContentTemplate.send(archiveStructuredContentDestination, new MessageCreator() {
+        @Override public Message createMessage(Session session) throws JMSException {
+          HashMap<String, String> objectMap = new HashMap<String, String>(2);
+          objectMap.put("nameKey", baseNameKey);
+          objectMap.put("typeKey", baseTypeKey);
+
+          return session.createObjectMessage(objectMap);
+        }
+      });
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archiveStructuredContentDestination  DOCUMENT ME!
+   */
+  public void setArchiveStructuredContentDestination(Destination archiveStructuredContentDestination) {
+    this.archiveStructuredContentDestination = archiveStructuredContentDestination;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archiveStructuredContentTemplate  DOCUMENT ME!
+   */
+  public void setArchiveStructuredContentTemplate(JmsTemplate archiveStructuredContentTemplate) {
+    this.archiveStructuredContentTemplate = archiveStructuredContentTemplate;
+  }
+} // end class JMSArchivedStructuredContentPublisher

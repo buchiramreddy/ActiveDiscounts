@@ -18,40 +18,55 @@ package org.broadleafcommerce.core.payment.domain;
 
 import org.broadleafcommerce.common.encryption.EncryptionModule;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class EmptyReferenced implements Referenced {
-    
-    private String referenceNumber;
-    
-    @Override
-    public EncryptionModule getEncryptionModule() {
-        return null;
-    }
+  private String referenceNumber;
 
-    @Override
-    public String getReferenceNumber() {
-        return referenceNumber;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.domain.Referenced#getEncryptionModule()
+   */
+  @Override public EncryptionModule getEncryptionModule() {
+    return null;
+  }
 
-    @Override
-    public void setReferenceNumber(String referenceNumber) {
-        this.referenceNumber = referenceNumber;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.domain.Referenced#getReferenceNumber()
+   */
+  @Override public String getReferenceNumber() {
+    return referenceNumber;
+  }
 
-    @Override
-    public void setEncryptionModule(EncryptionModule encryptionModule) {
-        //do nothing
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.domain.Referenced#setReferenceNumber(java.lang.String)
+   */
+  @Override public void setReferenceNumber(String referenceNumber) {
+    this.referenceNumber = referenceNumber;
+  }
 
-    @Override
-    public Long getId() {
-        return null;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.domain.Referenced#setEncryptionModule(org.broadleafcommerce.common.encryption.EncryptionModule)
+   */
+  @Override public void setEncryptionModule(EncryptionModule encryptionModule) {
+    // do nothing
+  }
 
-    @Override
-    public void setId(Long id) {
-        //do nothing
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.payment.domain.Referenced#getId()
+   */
+  @Override public Long getId() {
+    return null;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.domain.Referenced#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    // do nothing
+  }
+} // end class EmptyReferenced

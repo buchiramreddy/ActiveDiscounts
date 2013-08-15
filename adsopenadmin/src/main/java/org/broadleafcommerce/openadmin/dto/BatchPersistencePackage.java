@@ -17,37 +17,73 @@
 package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
+
 import java.util.Arrays;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class BatchPersistencePackage implements Serializable {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected PersistencePackage[] persistencePackages;
+  /** DOCUMENT ME! */
+  protected PersistencePackage[] persistencePackages;
 
-    public PersistencePackage[] getPersistencePackages() {
-        return persistencePackages;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    public void setPersistencePackages(PersistencePackage[] persistencePackages) {
-        this.persistencePackages = persistencePackages;
+    if (!(o instanceof BatchPersistencePackage)) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BatchPersistencePackage)) return false;
+    BatchPersistencePackage that = (BatchPersistencePackage) o;
 
-        BatchPersistencePackage that = (BatchPersistencePackage) o;
-
-        if (!Arrays.equals(persistencePackages, that.persistencePackages)) return false;
-
-        return true;
+    if (!Arrays.equals(persistencePackages, that.persistencePackages)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        return persistencePackages != null ? Arrays.hashCode(persistencePackages) : 0;
-    }
-}
+    return true;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePackage[] getPersistencePackages() {
+    return persistencePackages;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    return (persistencePackages != null) ? Arrays.hashCode(persistencePackages) : 0;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  persistencePackages  DOCUMENT ME!
+   */
+  public void setPersistencePackages(PersistencePackage[] persistencePackages) {
+    this.persistencePackages = persistencePackages;
+  }
+} // end class BatchPersistencePackage

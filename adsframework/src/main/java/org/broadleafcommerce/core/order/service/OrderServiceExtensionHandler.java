@@ -19,14 +19,25 @@ package org.broadleafcommerce.core.order.service;
 import org.broadleafcommerce.core.extension.ExtensionHandler;
 import org.broadleafcommerce.core.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.order.domain.Order;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 public interface OrderServiceExtensionHandler extends ExtensionHandler {
-    
-    public ExtensionResultStatusType attachAdditionalDataToNewNamedCart(Customer customer, Order cart);
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   * @param   cart      DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ExtensionResultStatusType attachAdditionalDataToNewNamedCart(Customer customer, Order cart);
+
 }

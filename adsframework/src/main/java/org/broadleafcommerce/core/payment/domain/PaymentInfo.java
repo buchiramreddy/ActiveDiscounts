@@ -16,83 +16,257 @@
 
 package org.broadleafcommerce.core.payment.domain;
 
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
+
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.Phone;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PaymentInfo extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Order getOrder();
 
-    public Order getOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  void setOrder(Order order);
 
-    public void setOrder(Order order);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address getAddress();
 
-    public Address getAddress();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  void setAddress(Address address);
 
-    public void setAddress(Address address);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone getPhone();
 
-    public Phone getPhone();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  void setPhone(Phone phone);
 
-    public void setPhone(Phone phone);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getAmount();
 
-    public Money getAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(Money amount);
 
-    public void setAmount(Money amount);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getReferenceNumber();
 
-    public String getReferenceNumber();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  referenceNumber  DOCUMENT ME!
+   */
+  void setReferenceNumber(String referenceNumber);
 
-    public void setReferenceNumber(String referenceNumber);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfoType getType();
 
-    public PaymentInfoType getType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setType(PaymentInfoType type);
 
-    public void setType(PaymentInfoType type);
-    
-    public void setAmountItems(List<AmountItem> amountItems);
-    
-    public List<AmountItem> getAmountItems();
-    
-    public String getCustomerIpAddress();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amountItems  DOCUMENT ME!
+   */
+  void setAmountItems(List<AmountItem> amountItems);
 
-    public void setCustomerIpAddress(String customerIpAddress);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AmountItem> getAmountItems();
 
-    public Map<String, String> getAdditionalFields();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCustomerIpAddress();
 
-    public void setAdditionalFields(Map<String, String> additionalFields);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerIpAddress  DOCUMENT ME!
+   */
+  void setCustomerIpAddress(String customerIpAddress);
 
-    public Map<String, String[]> getRequestParameterMap();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, String> getAdditionalFields();
 
-    public void setRequestParameterMap(Map<String, String[]> requestParameterMap);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  additionalFields  DOCUMENT ME!
+   */
+  void setAdditionalFields(Map<String, String> additionalFields);
 
-    public Referenced createEmptyReferenced();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, String[]> getRequestParameterMap();
 
-    public List<PaymentInfoDetail> getPaymentInfoDetails();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  requestParameterMap  DOCUMENT ME!
+   */
+  void setRequestParameterMap(Map<String, String[]> requestParameterMap);
 
-    public void setPaymentInfoDetails(List<PaymentInfoDetail> details);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Referenced createEmptyReferenced();
 
-    public Money getPaymentCapturedAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<PaymentInfoDetail> getPaymentInfoDetails();
 
-    public Money getPaymentCreditedAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  details  DOCUMENT ME!
+   */
+  void setPaymentInfoDetails(List<PaymentInfoDetail> details);
 
-    public Money getReverseAuthAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getPaymentCapturedAmount();
 
-    public BroadleafCurrency getCurrency();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getPaymentCreditedAmount();
 
-    public CustomerPayment getCustomerPayment();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getReverseAuthAmount();
 
-    public void setCustomerPayment(CustomerPayment customerPayment);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency getCurrency();
 
-    public List<PaymentResponseItem> getPaymentResponseItems();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPayment getCustomerPayment();
 
-    public void setPaymentResponseItems(List<PaymentResponseItem> paymentResponseItems);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPayment  DOCUMENT ME!
+   */
+  void setCustomerPayment(CustomerPayment customerPayment);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<PaymentResponseItem> getPaymentResponseItems();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentResponseItems  DOCUMENT ME!
+   */
+  void setPaymentResponseItems(List<PaymentResponseItem> paymentResponseItems);
+} // end interface PaymentInfo

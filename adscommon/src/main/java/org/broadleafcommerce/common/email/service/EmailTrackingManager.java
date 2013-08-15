@@ -20,13 +20,45 @@ import java.util.Map;
 
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface EmailTrackingManager {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long createTrackedEmail(String emailAddress, String type, String extraValue);
-    public void recordOpen(Long emailId, Map<String, String> extraValues);
-    public void recordClick(Long emailId, Map<String, String> parameterMap, String customerId, Map<String, String> extraValues);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailAddress  DOCUMENT ME!
+   * @param   type          DOCUMENT ME!
+   * @param   extraValue    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long createTrackedEmail(String emailAddress, String type, String extraValue);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailId       DOCUMENT ME!
+   * @param  parameterMap  DOCUMENT ME!
+   * @param  customerId    DOCUMENT ME!
+   * @param  extraValues   DOCUMENT ME!
+   */
+  void recordClick(Long emailId, Map<String, String> parameterMap, String customerId, Map<String, String> extraValues);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailId      DOCUMENT ME!
+   * @param  extraValues  DOCUMENT ME!
+   */
+  void recordOpen(Long emailId, Map<String, String> extraValues);
+
+} // end interface EmailTrackingManager

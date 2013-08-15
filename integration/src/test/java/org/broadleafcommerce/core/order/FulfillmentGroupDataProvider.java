@@ -17,30 +17,59 @@
 package org.broadleafcommerce.core.order;
 
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOption;
 import org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOptionImpl;
 import org.broadleafcommerce.core.pricing.service.workflow.type.ShippingServiceType;
+
 import org.testng.annotations.DataProvider;
 
-public class FulfillmentGroupDataProvider {
 
-    @DataProvider(name = "basicFulfillmentGroup")
-    public static Object[][] provideBasicSalesFulfillmentGroup() {
-        FulfillmentGroupImpl sos = new FulfillmentGroupImpl();
-        sos.setReferenceNumber("123456789");
-        FixedPriceFulfillmentOption option = new FixedPriceFulfillmentOptionImpl();
-        option.setPrice(new Money(0));
-        sos.setFulfillmentOption(option);
-        return new Object[][] { { sos } };
-    }
-    
-    @DataProvider(name = "basicFulfillmentGroupLegacy")
-    public static Object[][] provideBasicSalesFulfillmentGroupLegacy() {
-        FulfillmentGroupImpl sos = new FulfillmentGroupImpl();
-        sos.setReferenceNumber("123456789");
-        sos.setMethod("standard");
-        sos.setService(ShippingServiceType.BANDED_SHIPPING.getType());
-        return new Object[][] { { sos } };
-    }
-}
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class FulfillmentGroupDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicFulfillmentGroup")
+  public static Object[][] provideBasicSalesFulfillmentGroup() {
+    FulfillmentGroupImpl sos = new FulfillmentGroupImpl();
+    sos.setReferenceNumber("123456789");
+
+    FixedPriceFulfillmentOption option = new FixedPriceFulfillmentOptionImpl();
+    option.setPrice(new Money(0));
+    sos.setFulfillmentOption(option);
+
+    return new Object[][] {
+        { sos }
+      };
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicFulfillmentGroupLegacy")
+  public static Object[][] provideBasicSalesFulfillmentGroupLegacy() {
+    FulfillmentGroupImpl sos = new FulfillmentGroupImpl();
+    sos.setReferenceNumber("123456789");
+    sos.setMethod("standard");
+    sos.setService(ShippingServiceType.BANDED_SHIPPING.getType());
+
+    return new Object[][] {
+        { sos }
+      };
+  }
+} // end class FulfillmentGroupDataProvider

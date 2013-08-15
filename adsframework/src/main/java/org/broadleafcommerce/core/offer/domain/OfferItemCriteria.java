@@ -18,13 +18,14 @@ package org.broadleafcommerce.core.offer.domain;
 
 import org.broadleafcommerce.common.rule.QuantityBasedRule;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface OfferItemCriteria extends QuantityBasedRule {
+  // place abstract method definitions here
 
-    //place abstract method definitions here
-    
 }

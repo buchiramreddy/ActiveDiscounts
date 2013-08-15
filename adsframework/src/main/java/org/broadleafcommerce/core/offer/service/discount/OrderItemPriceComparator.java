@@ -16,31 +16,40 @@
 
 package org.broadleafcommerce.core.offer.service.discount;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem;
-
 import java.util.Comparator;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class OrderItemPriceComparator implements Comparator<PromotableOrderItem> {
-    
-    private boolean applyToSalePrice = false;
-    
-    public OrderItemPriceComparator(boolean applyToSalePrice) {
-        this.applyToSalePrice = applyToSalePrice;
-    }
+  private boolean applyToSalePrice = false;
 
-    public int compare(PromotableOrderItem c1, PromotableOrderItem c2) {
-        
-        Money price = c1.getPriceBeforeAdjustments(applyToSalePrice);
-        Money price2 = c2.getPriceBeforeAdjustments(applyToSalePrice);
-        
-        // highest amount first
-        return price2.compareTo(price);
-    }
+  /**
+   * Creates a new OrderItemPriceComparator object.
+   *
+   * @param  applyToSalePrice  DOCUMENT ME!
+   */
+  public OrderItemPriceComparator(boolean applyToSalePrice) {
+    this.applyToSalePrice = applyToSalePrice;
+  }
+
+  /**
+   * @see  java.util.Comparator#compare(org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem, org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem)
+   */
+  @Override public int compare(PromotableOrderItem c1, PromotableOrderItem c2) {
+    Money price  = c1.getPriceBeforeAdjustments(applyToSalePrice);
+    Money price2 = c2.getPriceBeforeAdjustments(applyToSalePrice);
+
+    // highest amount first
+    return price2.compareTo(price);
+  }
 
 }

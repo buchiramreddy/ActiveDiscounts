@@ -16,63 +16,85 @@
 
 package org.broadleafcommerce.core.pricing.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption;
-import org.broadleafcommerce.core.pricing.domain.ShippingRate;
-import org.broadleafcommerce.core.pricing.domain.ShippingRateImpl;
-import org.broadleafcommerce.core.pricing.service.FulfillmentPricingService;
-import org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider;
-import org.springframework.stereotype.Repository;
+import java.math.BigDecimal;
+
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.math.BigDecimal;
-import java.util.List;
+
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.core.pricing.domain.ShippingRate;
+import org.broadleafcommerce.core.pricing.domain.ShippingRateImpl;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
- * @deprecated Superceded in functionality by {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Superceded in functionality by
+ *              {@link org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption} and
+ *              {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider}
+ * @see         {@link org.broadleafcommerce.core.order.domain.FulfillmentOption},
+ *              {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Repository("blShippingRatesDao")
 @Deprecated
+@Repository("blShippingRatesDao")
 public class ShippingRateDaoImpl implements ShippingRateDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Resource(name = "blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /**
+   * @see  org.broadleafcommerce.core.pricing.dao.ShippingRateDao#save(org.broadleafcommerce.core.pricing.domain.ShippingRate)
+   */
+  @Override public ShippingRate save(ShippingRate shippingRate) {
+    return em.merge(shippingRate);
+  }
 
-    @Override
-    public ShippingRate save(ShippingRate shippingRate) {
-        return em.merge(shippingRate);
+  /**
+   * @see  org.broadleafcommerce.core.pricing.dao.ShippingRateDao#readShippingRateById(java.lang.Long)
+   */
+  @Override public ShippingRate readShippingRateById(Long id) {
+    return em.find(ShippingRateImpl.class, id);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.dao.ShippingRateDao#readShippingRateByFeeTypesUnityQty(java.lang.String,java.lang.String,
+   *       java.math.BigDecimal)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public ShippingRate readShippingRateByFeeTypesUnityQty(String feeType, String feeSubType, BigDecimal unitQuantity) {
+    Query query = em.createNamedQuery("BC_READ_FIRST_SHIPPING_RATE_BY_FEE_TYPES");
+    query.setParameter("feeType", feeType);
+    query.setParameter("feeSubType", feeSubType);
+    query.setParameter("bandUnitQuantity", unitQuantity);
+
+    List<ShippingRate> returnedRates = query.getResultList();
+
+    if (returnedRates.size() > 0) {
+      return returnedRates.get(0);
+    } else {
+      return null;
     }
+  }
 
-    @Override
-    public ShippingRate readShippingRateById(Long id) {
-        return em.find(ShippingRateImpl.class, id);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public ShippingRate readShippingRateByFeeTypesUnityQty(String feeType, String feeSubType, BigDecimal unitQuantity) {
-        Query query = em.createNamedQuery("BC_READ_FIRST_SHIPPING_RATE_BY_FEE_TYPES");
-        query.setParameter("feeType", feeType);
-        query.setParameter("feeSubType", feeSubType);
-        query.setParameter("bandUnitQuantity", unitQuantity);
-        List<ShippingRate> returnedRates = query.getResultList();
-        if (returnedRates.size() > 0) {
-            return returnedRates.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public ShippingRate create() {
-        return (ShippingRate) entityConfiguration.createEntityInstance(ShippingRate.class.getName());
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.pricing.dao.ShippingRateDao#create()
+   */
+  @Override public ShippingRate create() {
+    return (ShippingRate) entityConfiguration.createEntityInstance(ShippingRate.class.getName());
+  }
+} // end class ShippingRateDaoImpl

@@ -16,30 +16,41 @@
 
 package org.broadleafcommerce.core.pricing.service;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.pricing.service.workflow.PricingContext;
 import org.broadleafcommerce.core.workflow.SequenceProcessor;
 import org.broadleafcommerce.core.workflow.WorkflowException;
+
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blPricingService")
 public class PricingServiceImpl implements PricingService {
+  /** DOCUMENT ME! */
+  @Resource(name = "blPricingWorkflow")
+  protected SequenceProcessor pricingWorkflow;
 
-    @Resource(name="blPricingWorkflow")
-    protected SequenceProcessor pricingWorkflow;
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.PricingService#executePricing(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order executePricing(Order order) throws PricingException {
+    try {
+      PricingContext context  = (PricingContext) pricingWorkflow.doActivities(order);
+      Order          response = context.getSeedData();
 
-    public Order executePricing(Order order) throws PricingException {
-        try {
-            PricingContext context = (PricingContext) pricingWorkflow.doActivities(order);
-            Order response = context.getSeedData();
-
-            return response;
-        } catch (WorkflowException e) {
-            throw new PricingException("Unable to execute pricing for order -- id: " + order.getId(), e);
-        }
+      return response;
+    } catch (WorkflowException e) {
+      throw new PricingException("Unable to execute pricing for order -- id: " + order.getId(), e);
     }
+  }
 
 }

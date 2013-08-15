@@ -16,45 +16,46 @@
 
 package org.broadleafcommerce.cms.page.domain;
 
-import org.broadleafcommerce.common.rule.QuantityBasedRule;
-
 import javax.annotation.Nonnull;
 
+import org.broadleafcommerce.common.rule.QuantityBasedRule;
+
+
 /**
- * Implementations of this interface contain item rule data that is used for targeting
- * <code>Page</code>s.
+ * Implementations of this interface contain item rule data that is used for targeting <code>Page</code>s.<br>
  * <br>
- * <br>
- * For example, a <code>Page</code>  could be setup to only show to user's
- * who have a particular product in their cart.
+ * For example, a <code>Page</code> could be setup to only show to user's who have a particular product in their cart.
  *
- * @see org.broadleafcommerce.core.order.service.PageCartRuleProcessor
- * @author bpolster
+ * @see      org.broadleafcommerce.core.order.service.PageCartRuleProcessor
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface PageItemCriteria extends QuantityBasedRule {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the parent <code>Page</code> to which this
-     * field belongs.
-     *
-     * @return
-     */
-    @Nonnull
-    public Page getPage();
+  /**
+   * Builds a copy of this item. Used by the content management system when an item is edited.
+   *
+   * @return  a copy of this item
+   */
+  @Nonnull PageItemCriteria cloneEntity();
 
-    /**
-     * Sets the parent <code>Page</code>.
-     * @param page
-     */
-    public void setPage(@Nonnull Page page);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Builds a copy of this item.   Used by the content management system when an
-     * item is edited.
-     *
-     * @return a copy of this item
-     */
-    @Nonnull
-    public PageItemCriteria cloneEntity();
-    
-}
+  /**
+   * Returns the parent <code>Page</code> to which this field belongs.
+   *
+   * @return  the parent <code>Page</code> to which this field belongs.
+   */
+  @Nonnull Page getPage();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the parent <code>Page</code>.
+   *
+   * @param  page  DOCUMENT ME!
+   */
+  void setPage(@Nonnull Page page);
+
+} // end interface PageItemCriteria

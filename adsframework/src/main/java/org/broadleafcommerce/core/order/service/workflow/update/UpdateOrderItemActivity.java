@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.order.service.workflow.update;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.OrderService;
@@ -25,40 +27,50 @@ import org.broadleafcommerce.core.order.service.workflow.CartOperationContext;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class UpdateOrderItemActivity extends BaseActivity<CartOperationContext> {
-    
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    @Override
-    public CartOperationContext execute(CartOperationContext context) throws Exception {
-        CartOperationRequest request = context.getSeedData();
-        OrderItemRequestDTO orderItemRequestDTO = request.getItemRequest();
-        Order order = request.getOrder();
-        
-        OrderItem orderItem = null;
-        for (OrderItem oi : order.getOrderItems()) {
-            if (oi.getId().equals(orderItemRequestDTO.getOrderItemId())) {
-                orderItem = oi;
-            }
-        }
-        
-        if (orderItem == null || !order.getOrderItems().contains(orderItem)) {
-            throw new ItemNotFoundException("Order Item (" + orderItem.getId() + ") not found in Order (" + order.getId() + ")");
-        }
-        
-        OrderItem itemFromOrder = order.getOrderItems().get(order.getOrderItems().indexOf(orderItem));
-        if (orderItemRequestDTO.getQuantity() >= 0) {
-            request.setOrderItemQuantityDelta(orderItemRequestDTO.getQuantity() - itemFromOrder.getQuantity());
-            itemFromOrder.setQuantity(orderItemRequestDTO.getQuantity());
-            order = orderService.save(order, false);
-            request.setAddedOrderItem(itemFromOrder);
-            request.setOrder(order);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.order.service.workflow.CartOperationContext)
+   */
+  @Override public CartOperationContext execute(CartOperationContext context) throws Exception {
+    CartOperationRequest request             = context.getSeedData();
+    OrderItemRequestDTO  orderItemRequestDTO = request.getItemRequest();
+    Order                order               = request.getOrder();
 
-        return context;
+    OrderItem orderItem = null;
+
+    for (OrderItem oi : order.getOrderItems()) {
+      if (oi.getId().equals(orderItemRequestDTO.getOrderItemId())) {
+        orderItem = oi;
+      }
     }
 
-}
+    if ((orderItem == null) || !order.getOrderItems().contains(orderItem)) {
+      throw new ItemNotFoundException("Order Item (" + orderItem.getId() + ") not found in Order (" + order.getId()
+        + ")");
+    }
+
+    OrderItem itemFromOrder = order.getOrderItems().get(order.getOrderItems().indexOf(orderItem));
+
+    if (orderItemRequestDTO.getQuantity() >= 0) {
+      request.setOrderItemQuantityDelta(orderItemRequestDTO.getQuantity() - itemFromOrder.getQuantity());
+      itemFromOrder.setQuantity(orderItemRequestDTO.getQuantity());
+      order = orderService.save(order, false);
+      request.setAddedOrderItem(itemFromOrder);
+      request.setOrder(order);
+    }
+
+    return context;
+  } // end method execute
+
+} // end class UpdateOrderItemActivity

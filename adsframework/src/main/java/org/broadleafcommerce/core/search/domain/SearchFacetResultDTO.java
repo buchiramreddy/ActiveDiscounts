@@ -18,78 +18,153 @@ package org.broadleafcommerce.core.search.domain;
 
 import java.math.BigDecimal;
 
+
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class SearchFacetResultDTO {
-    
-    protected SearchFacet facet;
-    
-    protected String value;
-    
-    protected BigDecimal minValue;
-    protected BigDecimal maxValue;
-    
-    protected Integer quantity;
-    
-    protected boolean active;
-    
-    public SearchFacet getFacet() {
-        return facet;
+  /** DOCUMENT ME! */
+  protected SearchFacet facet;
+
+  /** DOCUMENT ME! */
+  protected String value;
+
+  /** DOCUMENT ME! */
+  protected BigDecimal minValue;
+
+  /** DOCUMENT ME! */
+  protected BigDecimal maxValue;
+
+  /** DOCUMENT ME! */
+  protected Integer quantity;
+
+  /** DOCUMENT ME! */
+  protected boolean active;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SearchFacet getFacet() {
+    return facet;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  facet  DOCUMENT ME!
+   */
+  public void setFacet(SearchFacet facet) {
+    this.facet = facet;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValue() {
+    return value;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BigDecimal getMinValue() {
+    return minValue;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  minValue  DOCUMENT ME!
+   */
+  public void setMinValue(BigDecimal minValue) {
+    this.minValue = minValue;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BigDecimal getMaxValue() {
+    return maxValue;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  maxValue  DOCUMENT ME!
+   */
+  public void setMaxValue(BigDecimal maxValue) {
+    this.maxValue = maxValue;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getQuantity() {
+    return quantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isActive() {
+    return active;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  active  DOCUMENT ME!
+   */
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getValueKey() {
+    String value = getValue();
+
+    if (value == null) {
+      value = "range[" + getMinValue() + ":" + getMaxValue() + "]";
     }
 
-    public void setFacet(SearchFacet facet) {
-        this.facet = facet;
-    }
+    return value;
+  }
 
-    public String getValue() {
-        return value;
-    }
-    
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public BigDecimal getMinValue() {
-        return minValue;
-    }
-
-    public void setMinValue(BigDecimal minValue) {
-        this.minValue = minValue;
-    }
-
-    public BigDecimal getMaxValue() {
-        return maxValue;
-    }
-
-    public void setMaxValue(BigDecimal maxValue) {
-        this.maxValue = maxValue;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-    
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-    
-    public String getValueKey() {
-        String value = getValue();
-        
-        if (value == null) {
-            value = "range[" + getMinValue() + ":" + getMaxValue() + "]";
-        }
-        
-        return value;
-    }
-    
-}
+} // end class SearchFacetResultDTO

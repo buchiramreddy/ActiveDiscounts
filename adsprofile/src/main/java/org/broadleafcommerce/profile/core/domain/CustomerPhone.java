@@ -18,22 +18,84 @@ package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerPhone extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer getCustomer();
 
-    public Long getId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPhoneName(String phoneName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public String getPhoneName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Customer getCustomer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone getPhone();
 
-    public void setCustomer(Customer customer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Phone getPhone();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPhoneName();
 
-    public void setPhone(Phone phone);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  void setCustomer(Customer customer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  void setPhone(Phone phone);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phoneName  DOCUMENT ME!
+   */
+  void setPhoneName(String phoneName);
+
+} // end interface CustomerPhone

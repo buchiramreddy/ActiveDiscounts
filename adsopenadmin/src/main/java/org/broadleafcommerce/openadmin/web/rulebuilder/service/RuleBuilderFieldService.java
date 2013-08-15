@@ -16,31 +16,95 @@
 
 package org.broadleafcommerce.openadmin.web.rulebuilder.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldDTO;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldWrapper;
 
-import java.util.List;
 
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public interface RuleBuilderFieldService extends Cloneable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FieldWrapper buildFields();
 
-    public FieldWrapper buildFields();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public FieldDTO getField(String fieldName);
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override RuleBuilderFieldService clone() throws CloneNotSupportedException;
 
-    public SupportedFieldType getSupportedFieldType(String fieldName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SupportedFieldType getSecondaryFieldType(String fieldName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fieldName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FieldDTO getField(String fieldName);
 
-    public List<FieldData> getFields();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setFields(List<FieldData> fields);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FieldData> getFields();
 
-    public RuleBuilderFieldService clone() throws CloneNotSupportedException;
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fieldName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SupportedFieldType getSecondaryFieldType(String fieldName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fieldName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SupportedFieldType getSupportedFieldType(String fieldName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fields  DOCUMENT ME!
+   */
+  void setFields(List<FieldData> fields);
+} // end interface RuleBuilderFieldService

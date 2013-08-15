@@ -16,17 +16,41 @@
 
 package org.broadleafcommerce.core.payment.service.module;
 
+import java.util.Map;
+
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
 
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PaymentResponse {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfo          DOCUMENT ME!
+   * @param  paymentResponseItem  DOCUMENT ME!
+   */
+  void addPaymentResponseItem(PaymentInfo paymentInfo, PaymentResponseItem paymentResponseItem);
 
-    public void addPaymentResponseItem(PaymentInfo paymentInfo, PaymentResponseItem paymentResponseItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentInfo  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentResponseItem getPaymentResponseItem(PaymentInfo paymentInfo);
 
-    public PaymentResponseItem getPaymentResponseItem(PaymentInfo paymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<PaymentInfo, PaymentResponseItem> getResponseItems();
 
-    public Map<PaymentInfo, PaymentResponseItem> getResponseItems();
-
-}
+} // end interface PaymentResponse

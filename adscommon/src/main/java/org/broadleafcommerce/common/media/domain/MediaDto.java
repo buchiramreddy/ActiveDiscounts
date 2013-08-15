@@ -18,56 +18,111 @@ package org.broadleafcommerce.common.media.domain;
 
 /**
  * A null safe media object.
- * @author bpolster
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class MediaDto implements Media {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private long id;
-    private String url = "";
-    private String title = "";
-    private String altText = "";
-    private String tags = "";
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Long getId() {
-        return id;
-    }
+  private String altText = "";
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  private long   id;
+  private String tags  = "";
+  private String title = "";
+  private String url   = "";
 
-    public String getUrl() {
-        return url;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#getAltText()
+   */
+  @Override public String getAltText() {
+    return altText;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    public String getAltText() {
-        return altText;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAltText(String altText) {
-        this.altText = altText;
-    }
-    
-    public String getTags() {
-        return tags;
-    }
-    
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#getTags()
+   */
+  @Override public String getTags() {
+    return tags;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#getTitle()
+   */
+  @Override public String getTitle() {
+    return title;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#getUrl()
+   */
+  @Override public String getUrl() {
+    return url;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#setAltText(java.lang.String)
+   */
+  @Override public void setAltText(String altText) {
+    this.altText = altText;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#setTags(java.lang.String)
+   */
+  @Override public void setTags(String tags) {
+    this.tags = tags;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#setTitle(java.lang.String)
+   */
+  @Override public void setTitle(String title) {
+    this.title = title;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.media.domain.Media#setUrl(java.lang.String)
+   */
+  @Override public void setUrl(String url) {
+    this.url = url;
+  }
+} // end class MediaDto

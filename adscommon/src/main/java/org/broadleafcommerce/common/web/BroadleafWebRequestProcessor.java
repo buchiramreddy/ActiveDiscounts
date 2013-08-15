@@ -16,56 +16,57 @@
 
 package org.broadleafcommerce.common.web;
 
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
  * Generic interface that should be used for processing requests from Servlet Filters, Spring interceptors or Portlet
- * filters. Note that the actual type of the request passed in should be something that extends {@link org.springframework.web.context.request.NativeWebRequest}.
- * 
- * Example usage by a Servlet Filter:
- * 
+ * filters. Note that the actual type of the request passed in should be something that extends
+ * {@link org.springframework.web.context.request.NativeWebRequest}.
+ *
+ * <p>Example usage by a Servlet Filter:</p>
+ *
  * <pre>
- *   public class SomeServletFilter extends GenericFilterBean {
- *      &#064;Resource(name="blCustomerStateRequestProcessor")
- *      protected BroadleafWebRequestProcessor processor;
- *      
- *      public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
- *          processor.process(new ServletWebRequest(request, response));
- *      }
- *   }
+     public class SomeServletFilter extends GenericFilterBean {
+        &#064;Resource(name="blCustomerStateRequestProcessor")
+        protected BroadleafWebRequestProcessor processor;
+
+        public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+            processor.process(new ServletWebRequest(request, response));
+        }
+     }
  * </pre>
- * 
- * <p>Also note that you should always instantiate the {@link org.springframework.web.context.request.WebRequest} with as much information available. In the above
- * example, this means using both the {@link javax.servlet.http.HttpServletRequest} and {@link javax.servlet.http.HttpServletResponse} when instantiating the
- * {@link org.springframework.web.context.request.ServletWebRequest}</p>
- * 
- * @author Phillip Verheyden
- * @see {@link org.springframework.web.context.request.NativeWebRequest}
- * @see {@link org.springframework.web.context.request.ServletWebRequest}
- * @see {@link org.springframework.web.portlet.context.PortletWebRequest}
- * @see {@link org.broadleafcommerce.common.web.BroadleafRequestFilter}
+ *
+ * <p>Also note that you should always instantiate the {@link org.springframework.web.context.request.WebRequest} with
+ * as much information available. In the above example, this means using both the
+ * {@link javax.servlet.http.HttpServletRequest} and {@link javax.servlet.http.HttpServletResponse} when instantiating
+ * the {@link org.springframework.web.context.request.ServletWebRequest}</p>
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.springframework.web.context.request.NativeWebRequest}
+ * @see      {@link org.springframework.web.context.request.ServletWebRequest}
+ * @see      {@link org.springframework.web.portlet.context.PortletWebRequest}
+ * @see      {@link org.broadleafcommerce.common.web.BroadleafRequestFilter}
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafWebRequestProcessor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Process the current request. Examples would be setting the currently logged in customer on the request or handling
-     * anonymous customers in session
-     * 
-     * @param request
-     */
-    public void process(WebRequest request);
-    
-    /**
-     * Should be called if work needs to be done after the request has been processed.
-     * 
-     * @param request
-     */
-    public void postProcess(WebRequest request);
+  /**
+   * Should be called if work needs to be done after the request has been processed.
+   *
+   * @param  request  DOCUMENT ME!
+   */
+  void postProcess(WebRequest request);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Process the current request. Examples would be setting the currently logged in customer on the request or handling
+   * anonymous customers in session
+   *
+   * @param  request  DOCUMENT ME!
+   */
+  void process(WebRequest request);
 
 }

@@ -17,14 +17,37 @@
 package org.broadleafcommerce.common.persistence;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface Status {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setArchived(Character archived);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Character getArchived();
 
-    public Character getArchived();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isActive();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isActive();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archived  DOCUMENT ME!
+   */
+  void setArchived(Character archived);
+
+} // end interface Status

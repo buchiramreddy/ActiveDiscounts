@@ -17,11 +17,19 @@
 package org.broadleafcommerce.common.vendor.service.cache;
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface CacheItemRequest {
-    
-    public int key();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int key();
 
 }

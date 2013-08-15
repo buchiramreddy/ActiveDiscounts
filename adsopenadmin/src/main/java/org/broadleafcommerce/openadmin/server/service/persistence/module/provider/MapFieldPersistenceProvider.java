@@ -16,8 +16,15 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
+import java.io.Serializable;
+
+import java.lang.reflect.Field;
+
+import java.util.List;
+
 import org.broadleafcommerce.common.value.Searchable;
 import org.broadleafcommerce.common.value.ValueAssignable;
+
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.dao.FieldInfo;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceException;
@@ -28,123 +35,182 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.provide
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.FieldProviderResponse;
+
 import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.List;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blMapFieldPersistenceProvider")
 @Scope("prototype")
 public class MapFieldPersistenceProvider extends BasicFieldPersistenceProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    protected boolean canHandlePersistence(PopulateValueRequest populateValueRequest, Serializable instance) {
-        return populateValueRequest.getProperty().getName().contains(FieldManager.MAPFIELDSEPARATOR);
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider#addSearchMapping(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.AddSearchMappingRequest,
+   *       java.util.List)
+   */
+  @Override public FieldProviderResponse addSearchMapping(AddSearchMappingRequest addSearchMappingRequest,
+    List<FilterMapping> filterMappings) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
 
-    @Override
-    protected boolean canHandleExtraction(ExtractValueRequest extractValueRequest, Property property) {
-        return property.getName().contains(FieldManager.MAPFIELDSEPARATOR);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public FieldProviderResponse populateValue(PopulateValueRequest populateValueRequest, Serializable instance) {
-        try {
-            //handle some additional field settings (if applicable)
-            Class<?> valueType = null;
-            String valueClassName = populateValueRequest.getMetadata().getMapFieldValueClass();
-            if (valueClassName != null) {
-                valueType = Class.forName(valueClassName);
-            }
-            if (valueType == null) {
-                valueType = populateValueRequest.getReturnType();
-            }
-            if (valueType == null) {
-                throw new IllegalAccessException("Unable to determine the valueType for the rule field (" + populateValueRequest.getProperty().getName() + ")");
-            }
-            if (ValueAssignable.class.isAssignableFrom(valueType)) {
-                ValueAssignable assignableValue;
-                try {
-                    assignableValue = (ValueAssignable) populateValueRequest.getFieldManager().getFieldValue(instance, populateValueRequest.getProperty().getName());
-                } catch (FieldNotAvailableException e) {
-                    throw new IllegalArgumentException(e);
-                }
-                String key = populateValueRequest.getProperty().getName().substring(populateValueRequest.getProperty().getName().indexOf(FieldManager.MAPFIELDSEPARATOR) + FieldManager.MAPFIELDSEPARATOR.length(), populateValueRequest.getProperty().getName().length());
-                boolean persistValue = false;
-                if (assignableValue == null) {
-                    assignableValue = (ValueAssignable) valueType.newInstance();
-                    persistValue = true;
-                }
-                assignableValue.setName(key);
-                assignableValue.setValue(populateValueRequest.getProperty().getValue());
-                String fieldName = populateValueRequest.getProperty().getName().substring(0, populateValueRequest.getProperty().getName().indexOf(FieldManager.MAPFIELDSEPARATOR));
-                Field field = populateValueRequest.getFieldManager().getField(instance.getClass(), fieldName);
-                FieldInfo fieldInfo = buildFieldInfo(field);
-                String manyToField = null;
-                if (populateValueRequest.getMetadata().getManyToField() != null) {
-                    manyToField = populateValueRequest.getMetadata().getManyToField();
-                }
-                if (manyToField == null) {
-                    manyToField = fieldInfo.getManyToManyMappedBy();
-                }
-                if (manyToField == null) {
-                    manyToField = fieldInfo.getOneToManyMappedBy();
-                }
-                if (manyToField != null) {
-                    String propertyName = populateValueRequest.getProperty().getName();
-                    Object middleInstance = instance;
-                    if (propertyName.contains(".")) {
-                        propertyName = propertyName.substring(0, propertyName.lastIndexOf("."));
-                        middleInstance = populateValueRequest.getFieldManager().getFieldValue(instance, propertyName);
-                    }
-                    populateValueRequest.getFieldManager().setFieldValue(assignableValue, manyToField, middleInstance);
-                }
-                if (Searchable.class.isAssignableFrom(valueType)) {
-                    ((Searchable) assignableValue).setSearchable(populateValueRequest.getMetadata().getSearchable());
-                }
-                if (persistValue) {
-                    populateValueRequest.getPersistenceManager().getDynamicEntityDao().persist(assignableValue);
-                    populateValueRequest.getFieldManager().setFieldValue(instance, populateValueRequest.getProperty().getName(), assignableValue);
-                }
-            } else {
-                //handle the map value set itself
-                if (FieldProviderResponse.NOT_HANDLED==super.populateValue(populateValueRequest, instance)) {
-                    return FieldProviderResponse.NOT_HANDLED;
-                }
-            }
-        } catch (Exception e) {
-            throw new PersistenceException(e);
-        }
-        return FieldProviderResponse.HANDLED;
-    }
-
-    @Override
-    public FieldProviderResponse extractValue(ExtractValueRequest extractValueRequest, Property property) throws PersistenceException {
-        if (extractValueRequest.getRequestedValue() != null && extractValueRequest.getRequestedValue() instanceof ValueAssignable) {
-            ValueAssignable assignableValue = (ValueAssignable) extractValueRequest.getRequestedValue();
-            String val = (String) assignableValue.getValue();
-            property.setValue(val);
-            property.setDisplayValue(extractValueRequest.getDisplayVal());
-        } else {
-            if (FieldProviderResponse.NOT_HANDLED==super.extractValue(extractValueRequest, property)) {
-                return FieldProviderResponse.NOT_HANDLED;
-            }
-        }
-        return FieldProviderResponse.HANDLED;
-    }
-
-    @Override
-    public FieldProviderResponse addSearchMapping(AddSearchMappingRequest addSearchMappingRequest, List<FilterMapping> filterMappings) {
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider#extractValue(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest,
+   *       org.broadleafcommerce.openadmin.dto.Property)
+   */
+  @Override public FieldProviderResponse extractValue(ExtractValueRequest extractValueRequest, Property property)
+    throws PersistenceException {
+    if ((extractValueRequest.getRequestedValue() != null)
+          && (extractValueRequest.getRequestedValue() instanceof ValueAssignable)) {
+      ValueAssignable assignableValue = (ValueAssignable) extractValueRequest.getRequestedValue();
+      String          val             = (String) assignableValue.getValue();
+      property.setValue(val);
+      property.setDisplayValue(extractValueRequest.getDisplayVal());
+    } else {
+      if (FieldProviderResponse.NOT_HANDLED == super.extractValue(extractValueRequest, property)) {
         return FieldProviderResponse.NOT_HANDLED;
+      }
     }
 
-    @Override
-    public int getOrder() {
-        return FieldPersistenceProvider.MAP_FIELD;
-    }
-}
+    return FieldProviderResponse.HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider#getOrder()
+   */
+  @Override public int getOrder() {
+    return FieldPersistenceProvider.MAP_FIELD;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider#populateValue(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest,
+   *       java.io.Serializable)
+   */
+  @Override public FieldProviderResponse populateValue(PopulateValueRequest populateValueRequest,
+    Serializable instance) {
+    try {
+      // handle some additional field settings (if applicable)
+      Class<?> valueType      = null;
+      String   valueClassName = populateValueRequest.getMetadata().getMapFieldValueClass();
+
+      if (valueClassName != null) {
+        valueType = Class.forName(valueClassName);
+      }
+
+      if (valueType == null) {
+        valueType = populateValueRequest.getReturnType();
+      }
+
+      if (valueType == null) {
+        throw new IllegalAccessException("Unable to determine the valueType for the rule field ("
+          + populateValueRequest.getProperty().getName() + ")");
+      }
+
+      if (ValueAssignable.class.isAssignableFrom(valueType)) {
+        ValueAssignable assignableValue;
+
+        try {
+          assignableValue = (ValueAssignable) populateValueRequest.getFieldManager().getFieldValue(instance,
+              populateValueRequest.getProperty().getName());
+        } catch (FieldNotAvailableException e) {
+          throw new IllegalArgumentException(e);
+        }
+
+        String  key          = populateValueRequest.getProperty().getName().substring(populateValueRequest.getProperty()
+            .getName().indexOf(FieldManager.MAPFIELDSEPARATOR) + FieldManager.MAPFIELDSEPARATOR.length(),
+            populateValueRequest.getProperty().getName().length());
+        boolean persistValue = false;
+
+        if (assignableValue == null) {
+          assignableValue = (ValueAssignable) valueType.newInstance();
+          persistValue    = true;
+        }
+
+        assignableValue.setName(key);
+        assignableValue.setValue(populateValueRequest.getProperty().getValue());
+
+        String    fieldName   = populateValueRequest.getProperty().getName().substring(0,
+            populateValueRequest.getProperty().getName().indexOf(FieldManager.MAPFIELDSEPARATOR));
+        Field     field       = populateValueRequest.getFieldManager().getField(instance.getClass(), fieldName);
+        FieldInfo fieldInfo   = buildFieldInfo(field);
+        String    manyToField = null;
+
+        if (populateValueRequest.getMetadata().getManyToField() != null) {
+          manyToField = populateValueRequest.getMetadata().getManyToField();
+        }
+
+        if (manyToField == null) {
+          manyToField = fieldInfo.getManyToManyMappedBy();
+        }
+
+        if (manyToField == null) {
+          manyToField = fieldInfo.getOneToManyMappedBy();
+        }
+
+        if (manyToField != null) {
+          String propertyName   = populateValueRequest.getProperty().getName();
+          Object middleInstance = instance;
+
+          if (propertyName.contains(".")) {
+            propertyName   = propertyName.substring(0, propertyName.lastIndexOf("."));
+            middleInstance = populateValueRequest.getFieldManager().getFieldValue(instance, propertyName);
+          }
+
+          populateValueRequest.getFieldManager().setFieldValue(assignableValue, manyToField, middleInstance);
+        }
+
+        if (Searchable.class.isAssignableFrom(valueType)) {
+          ((Searchable) assignableValue).setSearchable(populateValueRequest.getMetadata().getSearchable());
+        }
+
+        if (persistValue) {
+          populateValueRequest.getPersistenceManager().getDynamicEntityDao().persist(assignableValue);
+          populateValueRequest.getFieldManager().setFieldValue(instance, populateValueRequest.getProperty().getName(),
+            assignableValue);
+        }
+      } else {
+        // handle the map value set itself
+        if (FieldProviderResponse.NOT_HANDLED == super.populateValue(populateValueRequest, instance)) {
+          return FieldProviderResponse.NOT_HANDLED;
+        }
+      } // end if-else
+    } catch (Exception e) {
+      throw new PersistenceException(e);
+    } // end try-catch
+
+    return FieldProviderResponse.HANDLED;
+  } // end method populateValue
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider#canHandleExtraction(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest,
+   *       org.broadleafcommerce.openadmin.dto.Property)
+   */
+  @Override protected boolean canHandleExtraction(ExtractValueRequest extractValueRequest, Property property) {
+    return property.getName().contains(FieldManager.MAPFIELDSEPARATOR);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider#canHandlePersistence(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest,
+   *       java.io.Serializable)
+   */
+  @Override protected boolean canHandlePersistence(PopulateValueRequest populateValueRequest, Serializable instance) {
+    return populateValueRequest.getProperty().getName().contains(FieldManager.MAPFIELDSEPARATOR);
+  }
+} // end class MapFieldPersistenceProvider

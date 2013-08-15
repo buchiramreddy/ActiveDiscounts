@@ -16,81 +16,216 @@
 
 package org.broadleafcommerce.openadmin.server.security.domain;
 
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-
 import java.util.Set;
 
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AdminUser extends AdminSecurityContext {
-    public Long getId();
-    public void setId(Long id);
-    public String getName();
-    public void setName(String name);
-    public String getLogin();
-    public void setLogin(String login);
-    public String getPassword();
-    public void setPassword(String password);
-    public String getEmail();
-    public void setEmail(String email);
-    public Set<AdminRole> getAllRoles();
-    public void setAllRoles(Set<AdminRole> allRoles);
-    public String getUnencodedPassword();
-    public void setUnencodedPassword(String unencodedPassword);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Stores the user's phone number.
-     * @param phone
-     */
-    public void setPhoneNumber(String phone);
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override AdminUser clone();
 
-    /**
-     * Returns the users phone number.
-     * @return
-     */
-    public String getPhoneNumber();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the users active status.   A user whose active status is set to false
-     * will not be able to login.
-     *
-     * @param activeStatus
-     */
-    public void setActiveStatusFlag(Boolean activeStatus);
+  /**
+   * Returns the users active status. A user whose active status is set to false will not be able to login.
+   *
+   * @return  the users active status.
+   */
+  Boolean getActiveStatusFlag();
 
-    /**
-     * Returns the users active status.    A user whose active status is set to
-     * false will not be able to login.
-     *
-     * @return
-     */
-    public Boolean getActiveStatusFlag();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * The current sandbox associated with this user.
-     * This is primarily intended to be used by the BLC-CMS workflow
-     * processes.
-     *
-     * If null, the user is using their own SandBox.
-     *
-     * @return
-     */
-    public SandBox getOverrideSandBox();
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#getAllPermissions()
+   */
+  @Override Set<AdminPermission> getAllPermissions();
 
-    /**
-     * Overrides the user's sandbox.    This could be used
-     * to setup shared sandboxes.  Setting to null will
-     * mean that the user is setup to use the sandbox associated
-     * with their user.
-     *
-     * @param sandbox
-     */
-    public void setOverrideSandBox(SandBox sandbox);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Set<AdminPermission> getAllPermissions();
-    public void setAllPermissions(Set<AdminPermission> allPermissions);
-    public AdminUser clone();
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#getAllRoles()
+   */
+  @Override Set<AdminRole> getAllRoles();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getEmail();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getLogin();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The current sandbox associated with this user. This is primarily intended to be used by the BLC-CMS workflow
+   * processes.
+   *
+   * <p>If null, the user is using their own SandBox.</p>
+   *
+   * @return  the current sandbox associated with this user.
+   */
+  SandBox getOverrideSandBox();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPassword();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the users phone number.
+   *
+   * @return  the users phone number.
+   */
+  String getPhoneNumber();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUnencodedPassword();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the users active status. A user whose active status is set to false will not be able to login.
+   *
+   * @param  activeStatus  DOCUMENT ME!
+   */
+  void setActiveStatusFlag(Boolean activeStatus);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#setAllPermissions(java.util.Set)
+   */
+  @Override void setAllPermissions(Set<AdminPermission> allPermissions);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#setAllRoles(java.util.Set)
+   */
+  @Override void setAllRoles(Set<AdminRole> allRoles);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  email  DOCUMENT ME!
+   */
+  void setEmail(String email);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  login  DOCUMENT ME!
+   */
+  void setLogin(String login);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Overrides the user's sandbox. This could be used to setup shared sandboxes. Setting to null will mean that the user
+   * is setup to use the sandbox associated with their user.
+   *
+   * @param  sandbox  DOCUMENT ME!
+   */
+  void setOverrideSandBox(SandBox sandbox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  password  DOCUMENT ME!
+   */
+  void setPassword(String password);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Stores the user's phone number.
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  void setPhoneNumber(String phone);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  unencodedPassword  DOCUMENT ME!
+   */
+  void setUnencodedPassword(String unencodedPassword);
+} // end interface AdminUser

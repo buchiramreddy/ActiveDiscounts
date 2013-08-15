@@ -18,35 +18,72 @@ package org.broadleafcommerce.cms.structure.dto;
 
 import java.io.Serializable;
 
+
 /**
- * StructuredContent data is converted into a DTO since it requires
- * pre-processing.   The data is fairly static so the desire is
- * to cache the value after it has been processed.
+ * StructuredContent data is converted into a DTO since it requires pre-processing. The data is fairly static so the
+ * desire is to cache the value after it has been processed.
  *
- * This DTO represents a compact version of StructuredContentItemCriteria
+ * <p>This DTO represents a compact version of StructuredContentItemCriteria</p>
  *
- * Created by bpolster.
+ * <p>Created by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class ItemCriteriaDTO implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected Integer qty;
-    protected String matchRule;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Integer getQty() {
-        return qty;
-    }
+  /** DOCUMENT ME! */
+  protected String matchRule;
 
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
+  /** DOCUMENT ME! */
+  protected Integer qty;
 
-    public String getMatchRule() {
-        return matchRule;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setMatchRule(String matchRule) {
-        this.matchRule = matchRule;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getMatchRule() {
+    return matchRule;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getQty() {
+    return qty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  matchRule  DOCUMENT ME!
+   */
+  public void setMatchRule(String matchRule) {
+    this.matchRule = matchRule;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  qty  DOCUMENT ME!
+   */
+  public void setQty(Integer qty) {
+    this.qty = qty;
+  }
+} // end class ItemCriteriaDTO

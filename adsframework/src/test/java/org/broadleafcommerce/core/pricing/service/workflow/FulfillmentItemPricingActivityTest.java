@@ -16,8 +16,10 @@
 
 package org.broadleafcommerce.core.pricing.service.workflow;
 
-import junit.framework.TestCase;
+import java.math.BigDecimal;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.catalog.service.type.ProductBundlePricingModelType;
 import org.broadleafcommerce.core.offer.domain.OrderAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderAdjustmentImpl;
@@ -28,162 +30,232 @@ import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 
-import java.math.BigDecimal;
+import junit.framework.TestCase;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FulfillmentItemPricingActivityTest extends TestCase {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private OfferDataItemProvider dataProvider = new OfferDataItemProvider();
-    private FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
+  private OfferDataItemProvider          dataProvider                   = new OfferDataItemProvider();
+  private FulfillmentItemPricingActivity fulfillmentItemPricingActivity = new FulfillmentItemPricingActivity();
 
-    protected Money sumProratedOfferAdjustments(Order order) {
-        Money returnVal = new Money(order.getCurrency());
-        for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
-            for (FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
-                if (fulfillmentGroupItem.getProratedOrderAdjustmentAmount() != null) {
-                    returnVal = returnVal.add(fulfillmentGroupItem.getProratedOrderAdjustmentAmount());
-                }
-            }
-        }
-        return returnVal;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testBundleDistribution() throws Exception {
+    Order order    = dataProvider.createOrderWithBundle();
+    Money subTotal = new Money(order.getCurrency());
+
+    for (OrderItem orderItem : order.getOrderItems()) {
+      subTotal = subTotal.add(orderItem.getTotalPrice());
     }
 
-    public void testZeroOrderSavings() throws Exception {
-        Order order = dataProvider.createBasicOrder();
-        PricingContext context = new PricingContext();
-        context.setSeedData(order);
+    order.setSubTotal(subTotal);
 
-        fulfillmentItemPricingActivity.execute(context);
-        assertTrue(sumProratedOfferAdjustments(order).getAmount().compareTo(BigDecimal.ZERO) == 0);
+    OrderAdjustment adjustment = new OrderAdjustmentImpl();
+    adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
+    adjustment.setOrder(order);
+    order.getOrderAdjustments().add(adjustment);
+
+    PricingContext context = new PricingContext();
+    context.setSeedData(order);
+
+    fulfillmentItemPricingActivity.execute(context);
+
+    assertTrue(sumProratedOfferAdjustments(order).equals(
+        new Money(new BigDecimal("1"), order.getCurrency())));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testBundleDistributionWithoutItemSum() throws Exception {
+    Order order = dataProvider.createOrderWithBundle();
+
+    Money subTotal = new Money(order.getCurrency());
+
+    for (OrderItem orderItem : order.getOrderItems()) {
+      if (orderItem instanceof BundleOrderItem) {
+        BundleOrderItem bItem = (BundleOrderItem) orderItem;
+        bItem.getProductBundle().setPricingModel(ProductBundlePricingModelType.BUNDLE);
+      }
+
+      subTotal = subTotal.add(orderItem.getTotalPrice());
     }
 
-    public void testDistributeOneDollarAcrossFiveEqualItems() throws Exception {
-        Order order = dataProvider.createBasicOrder();
-        Money subTotal = new Money(order.getCurrency());
-        for (OrderItem orderItem : order.getOrderItems()) {
-            orderItem.setSalePrice(new Money(10D));
-            orderItem.getOrderItemPriceDetails().clear();
-            subTotal = subTotal.add(orderItem.getTotalPrice());
-        }
+    order.setSubTotal(subTotal);
 
-        OrderAdjustment adjustment = new OrderAdjustmentImpl();
-        adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
-        order.getOrderAdjustments().add(adjustment);
-        adjustment.setOrder(order);
-        order.setSubTotal(subTotal);
+    OrderAdjustment adjustment = new OrderAdjustmentImpl();
+    adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
+    adjustment.setOrder(order);
+    order.getOrderAdjustments().add(adjustment);
 
-        PricingContext context = new PricingContext();
-        context.setSeedData(order);
+    PricingContext context = new PricingContext();
+    context.setSeedData(order);
 
-        fulfillmentItemPricingActivity.execute(context);
+    fulfillmentItemPricingActivity.execute(context);
 
-        // Each item is equally priced, so the adjustment should be .20 per item.
-        Money proratedAdjustment = new Money(".20");
-        for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
-            for (FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
-                assertTrue(fulfillmentGroupItem.getProratedOrderAdjustmentAmount().compareTo(
-                        proratedAdjustment.multiply(fulfillmentGroupItem.getQuantity())) == 0);
-            }
-        }
+    assertTrue(sumProratedOfferAdjustments(order).equals(
+        new Money(new BigDecimal("1"), order.getCurrency())));
+  } // end method testBundleDistributionWithoutItemSum
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testDistributeOneDollarAcrossFiveEqualItems() throws Exception {
+    Order order    = dataProvider.createBasicOrder();
+    Money subTotal = new Money(order.getCurrency());
+
+    for (OrderItem orderItem : order.getOrderItems()) {
+      orderItem.setSalePrice(new Money(10D));
+      orderItem.getOrderItemPriceDetails().clear();
+      subTotal = subTotal.add(orderItem.getTotalPrice());
     }
 
-    public void testDistributeOneDollarAcrossFiveItems() throws Exception {
-        Order order = dataProvider.createBasicOrder();
+    OrderAdjustment adjustment = new OrderAdjustmentImpl();
+    adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
+    order.getOrderAdjustments().add(adjustment);
+    adjustment.setOrder(order);
+    order.setSubTotal(subTotal);
 
-        OrderAdjustment adjustment = new OrderAdjustmentImpl();
-        adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
-        adjustment.setOrder(order);
-        order.getOrderAdjustments().add(adjustment);
+    PricingContext context = new PricingContext();
+    context.setSeedData(order);
 
-        PricingContext context = new PricingContext();
-        context.setSeedData(order);
+    fulfillmentItemPricingActivity.execute(context);
 
-        fulfillmentItemPricingActivity.execute(context);
+    // Each item is equally priced, so the adjustment should be .20 per item.
+    Money proratedAdjustment = new Money(".20");
 
-        Money adj1 = new Money(".31");
-        Money adj2 = new Money(".69");
+    for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
+      for (FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
+        assertTrue(fulfillmentGroupItem.getProratedOrderAdjustmentAmount().compareTo(
+            proratedAdjustment.multiply(fulfillmentGroupItem.getQuantity())) == 0);
+      }
+    }
+  } // end method testDistributeOneDollarAcrossFiveEqualItems
 
-        for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
-            for (FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
-                if (fulfillmentGroupItem.getSalePrice().equals(new Money("19.99"))) {
-                    assertTrue(fulfillmentGroupItem.getProratedOrderAdjustmentAmount().equals(adj1));
-                } else {
-                    assertTrue(fulfillmentGroupItem.getProratedOrderAdjustmentAmount().equals(adj2));
-                }
-            }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testDistributeOneDollarAcrossFiveItems() throws Exception {
+    Order order = dataProvider.createBasicOrder();
+
+    OrderAdjustment adjustment = new OrderAdjustmentImpl();
+    adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
+    adjustment.setOrder(order);
+    order.getOrderAdjustments().add(adjustment);
+
+    PricingContext context = new PricingContext();
+    context.setSeedData(order);
+
+    fulfillmentItemPricingActivity.execute(context);
+
+    Money adj1 = new Money(".31");
+    Money adj2 = new Money(".69");
+
+    for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
+      for (FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
+        if (fulfillmentGroupItem.getSalePrice().equals(new Money("19.99"))) {
+          assertTrue(fulfillmentGroupItem.getProratedOrderAdjustmentAmount().equals(adj1));
+        } else {
+          assertTrue(fulfillmentGroupItem.getProratedOrderAdjustmentAmount().equals(adj2));
         }
+      }
+    }
+  } // end method testDistributeOneDollarAcrossFiveItems
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testRoundingRequired() throws Exception {
+    Order order    = dataProvider.createBasicOrder();
+    Money subTotal = new Money(order.getCurrency());
+
+    for (OrderItem orderItem : order.getOrderItems()) {
+      orderItem.getOrderItemPriceDetails().clear();
+      orderItem.setQuantity(2);
+      orderItem.setSalePrice(new Money(10D));
+      subTotal = subTotal.add(orderItem.getTotalPrice());
     }
 
-    public void testRoundingRequired() throws Exception {
-        Order order = dataProvider.createBasicOrder();
-        Money subTotal = new Money(order.getCurrency());
-        for (OrderItem orderItem : order.getOrderItems()) {
-            orderItem.getOrderItemPriceDetails().clear();
-            orderItem.setQuantity(2);
-            orderItem.setSalePrice(new Money(10D));
-            subTotal = subTotal.add(orderItem.getTotalPrice());
+    order.setSubTotal(subTotal);
+
+    OrderAdjustment adjustment = new OrderAdjustmentImpl();
+    adjustment.setValue(new Money(new BigDecimal(".05"), order.getCurrency()));
+    adjustment.setOrder(order);
+    order.getOrderAdjustments().add(adjustment);
+
+    PricingContext context = new PricingContext();
+    context.setSeedData(order);
+
+    fulfillmentItemPricingActivity.execute(context);
+
+    assertTrue(sumProratedOfferAdjustments(order).equals(
+        new Money(new BigDecimal(".05"), order.getCurrency())));
+  } // end method testRoundingRequired
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testZeroOrderSavings() throws Exception {
+    Order          order   = dataProvider.createBasicOrder();
+    PricingContext context = new PricingContext();
+    context.setSeedData(order);
+
+    fulfillmentItemPricingActivity.execute(context);
+    assertTrue(sumProratedOfferAdjustments(order).getAmount().compareTo(BigDecimal.ZERO) == 0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Money sumProratedOfferAdjustments(Order order) {
+    Money returnVal = new Money(order.getCurrency());
+
+    for (FulfillmentGroup fulfillmentGroup : order.getFulfillmentGroups()) {
+      for (FulfillmentGroupItem fulfillmentGroupItem : fulfillmentGroup.getFulfillmentGroupItems()) {
+        if (fulfillmentGroupItem.getProratedOrderAdjustmentAmount() != null) {
+          returnVal = returnVal.add(fulfillmentGroupItem.getProratedOrderAdjustmentAmount());
         }
-        order.setSubTotal(subTotal);
-
-        OrderAdjustment adjustment = new OrderAdjustmentImpl();
-        adjustment.setValue(new Money(new BigDecimal(".05"), order.getCurrency()));
-        adjustment.setOrder(order);
-        order.getOrderAdjustments().add(adjustment);
-
-        PricingContext context = new PricingContext();
-        context.setSeedData(order);
-
-        fulfillmentItemPricingActivity.execute(context);
-
-        assertTrue(sumProratedOfferAdjustments(order).equals(
-                new Money(new BigDecimal(".05"), order.getCurrency())));
+      }
     }
 
-    public void testBundleDistribution() throws Exception {
-        Order order = dataProvider.createOrderWithBundle();
-        Money subTotal = new Money(order.getCurrency());
-        for (OrderItem orderItem : order.getOrderItems()) {
-            subTotal = subTotal.add(orderItem.getTotalPrice());
-        }
-        order.setSubTotal(subTotal);
-
-        OrderAdjustment adjustment = new OrderAdjustmentImpl();
-        adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
-        adjustment.setOrder(order);
-        order.getOrderAdjustments().add(adjustment);
-
-        PricingContext context = new PricingContext();
-        context.setSeedData(order);
-
-        fulfillmentItemPricingActivity.execute(context);
-
-        assertTrue(sumProratedOfferAdjustments(order).equals(
-                new Money(new BigDecimal("1"), order.getCurrency())));
-    }
-
-    public void testBundleDistributionWithoutItemSum() throws Exception {
-        Order order = dataProvider.createOrderWithBundle();
-
-        Money subTotal = new Money(order.getCurrency());
-        for (OrderItem orderItem : order.getOrderItems()) {
-            if (orderItem instanceof BundleOrderItem) {
-                BundleOrderItem bItem = (BundleOrderItem) orderItem;
-                bItem.getProductBundle().setPricingModel(ProductBundlePricingModelType.BUNDLE);
-            }
-            subTotal = subTotal.add(orderItem.getTotalPrice());
-        }
-        order.setSubTotal(subTotal);
-
-        OrderAdjustment adjustment = new OrderAdjustmentImpl();
-        adjustment.setValue(new Money(new BigDecimal("1"), order.getCurrency()));
-        adjustment.setOrder(order);
-        order.getOrderAdjustments().add(adjustment);
-
-        PricingContext context = new PricingContext();
-        context.setSeedData(order);
-
-        fulfillmentItemPricingActivity.execute(context);
-
-        assertTrue(sumProratedOfferAdjustments(order).equals(
-                new Money(new BigDecimal("1"), order.getCurrency())));
-    }
-}
+    return returnVal;
+  }
+} // end class FulfillmentItemPricingActivityTest

@@ -16,39 +16,103 @@
 
 package org.broadleafcommerce.core.payment.domain;
 
+import java.io.Serializable;
+
+import java.util.Date;
+
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.money.Money;
 
-import java.io.Serializable;
-import java.util.Date;
 
 /**
- * @author Jerry Ocanas (jocanas)
+ * DOCUMENT ME!
+ *
+ * @author   Jerry Ocanas (jocanas)
+ * @version  $Revision$, $Date$
  */
 public interface PaymentInfoDetail extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfo getPaymentInfo();
 
-    public PaymentInfo getPaymentInfo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfo  DOCUMENT ME!
+   */
+  void setPaymentInfo(PaymentInfo paymentInfo);
 
-    public void setPaymentInfo(PaymentInfo paymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfoDetailType getType();
 
-    public PaymentInfoDetailType getType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setType(PaymentInfoDetailType type);
 
-    public void setType(PaymentInfoDetailType type);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getAmount();
 
-    public Money getAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(Money amount);
 
-    public void setAmount(Money amount);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency getCurrency();
 
-    public BroadleafCurrency getCurrency();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currency  DOCUMENT ME!
+   */
+  void setCurrency(BroadleafCurrency currency);
 
-    public void setCurrency(BroadleafCurrency currency);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getDate();
 
-    public Date getDate();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  date  DOCUMENT ME!
+   */
+  void setDate(Date date);
 
-    public void setDate(Date date);
-
-}
+} // end interface PaymentInfoDetail

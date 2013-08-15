@@ -16,29 +16,57 @@
 
 package org.broadleafcommerce.core.order;
 
+import java.math.BigDecimal;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.OrderItemImpl;
+
 import org.testng.annotations.DataProvider;
 
-import java.math.BigDecimal;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OrderItemDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "basicDiscreteOrderItem")
-    public static Object[][] provideBasicDiscreteSalesOrderItem() {
-        OrderItemImpl soi = new DiscreteOrderItemImpl();
-        soi.setRetailPrice(new Money(BigDecimal.valueOf(10.25)));
-        soi.setQuantity(3);
-        return new Object[][] { { soi } };
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicDiscreteOrderItem")
+  public static Object[][] provideBasicDiscreteSalesOrderItem() {
+    OrderItemImpl soi = new DiscreteOrderItemImpl();
+    soi.setRetailPrice(new Money(BigDecimal.valueOf(10.25)));
+    soi.setQuantity(3);
 
-    @DataProvider(name = "basicGiftWrapOrderItem")
-    public static Object[][] provideBasicGiftWrapSalesOrderItem() {
-        OrderItemImpl soi = new GiftWrapOrderItemImpl();
-        soi.setRetailPrice(new Money(BigDecimal.valueOf(1.25)));
-        soi.setQuantity(1);
-        return new Object[][] { { soi } };
-    }
-}
+    return new Object[][] {
+        { soi }
+      };
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicGiftWrapOrderItem")
+  public static Object[][] provideBasicGiftWrapSalesOrderItem() {
+    OrderItemImpl soi = new GiftWrapOrderItemImpl();
+    soi.setRetailPrice(new Money(BigDecimal.valueOf(1.25)));
+    soi.setQuantity(1);
+
+    return new Object[][] {
+        { soi }
+      };
+  }
+} // end class OrderItemDataProvider

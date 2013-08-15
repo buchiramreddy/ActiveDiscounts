@@ -18,44 +18,117 @@ package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class SandBoxInfo implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    
-    protected Long sandBox;
-    protected boolean commitImmediately = true;
-    protected Long siteId;
-    protected String name;
+  private static final long serialVersionUID = 1L;
 
-    public Long getSandBox() {
-        return sandBox;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setSandBox(Long sandBox) {
-        this.sandBox = sandBox;
-    }
+  /** DOCUMENT ME! */
+  protected boolean commitImmediately = true;
 
-    public boolean isCommitImmediately() {
-        return commitImmediately;
-    }
-    
-    public void setCommitImmediately(boolean commitImmediately) {
-        this.commitImmediately = commitImmediately;
-    }
+  /** DOCUMENT ME! */
+  protected String  name;
 
-    public Long getSiteId() {
-        return siteId;
-    }
+  /** DOCUMENT ME! */
+  protected Long sandBox;
 
-    public void setSiteId(Long siteId) {
-        this.siteId = siteId;
-    }
+  /** DOCUMENT ME! */
+  protected Long siteId;
 
-    public String getName() {
-        return name;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setName(String name) {
-        this.name = name;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getSandBox() {
+    return sandBox;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getSiteId() {
+    return siteId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isCommitImmediately() {
+    return commitImmediately;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  commitImmediately  DOCUMENT ME!
+   */
+  public void setCommitImmediately(boolean commitImmediately) {
+    this.commitImmediately = commitImmediately;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBox  DOCUMENT ME!
+   */
+  public void setSandBox(Long sandBox) {
+    this.sandBox = sandBox;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  siteId  DOCUMENT ME!
+   */
+  public void setSiteId(Long siteId) {
+    this.siteId = siteId;
+  }
+} // end class SandBoxInfo

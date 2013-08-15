@@ -16,53 +16,107 @@
 
 package org.broadleafcommerce.core.web.controller.checkout;
 
-import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.service.OrderService;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.web.core.CustomerState;
-import org.springframework.ui.Model;
-
 import javax.annotation.Resource;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
+
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.service.OrderService;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.web.core.CustomerState;
+
+import org.springframework.ui.Model;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class BroadleafOrderConfirmationController extends BroadleafAbstractController {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
-    
-    protected static String orderConfirmationView = "checkout/confirmation";
+  /** DOCUMENT ME! */
+  protected static String orderConfirmationView = "checkout/confirmation";
 
-    public String displayOrderConfirmationByOrderNumber(String orderNumber, Model model,
-             HttpServletRequest request, HttpServletResponse response) {
-        Customer customer = CustomerState.getCustomer();
-        if (customer != null) {
-            Order order = orderService.findOrderByOrderNumber(orderNumber);
-            if (order != null && customer.equals(order.getCustomer())) {
-                model.addAttribute("order", order);
-                return getOrderConfirmationView();
-            }
-        }
-        return null;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderId   DOCUMENT ME!
+   * @param   model     DOCUMENT ME!
+   * @param   request   DOCUMENT ME!
+   * @param   response  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String displayOrderConfirmationByOrderId(Long orderId, Model model,
+    HttpServletRequest request, HttpServletResponse response) {
+    Customer customer = CustomerState.getCustomer();
+
+    if (customer != null) {
+      Order order = orderService.findOrderById(orderId);
+
+      if ((order != null) && customer.equals(order.getCustomer())) {
+        model.addAttribute("order", order);
+
+        return getOrderConfirmationView();
+      }
     }
 
-    public String displayOrderConfirmationByOrderId(Long orderId, Model model,
-             HttpServletRequest request, HttpServletResponse response) {
+    return null;
+  }
 
-        Customer customer = CustomerState.getCustomer();
-        if (customer != null) {
-            Order order = orderService.findOrderById(orderId);
-            if (order != null && customer.equals(order.getCustomer())) {
-                model.addAttribute("order", order);
-                return getOrderConfirmationView();
-            }
-        }
-        return null;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderNumber  DOCUMENT ME!
+   * @param   model        DOCUMENT ME!
+   * @param   request      DOCUMENT ME!
+   * @param   response     DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String displayOrderConfirmationByOrderNumber(String orderNumber, Model model,
+    HttpServletRequest request, HttpServletResponse response) {
+    Customer customer = CustomerState.getCustomer();
+
+    if (customer != null) {
+      Order order = orderService.findOrderByOrderNumber(orderNumber);
+
+      if ((order != null) && customer.equals(order.getCustomer())) {
+        model.addAttribute("order", order);
+
+        return getOrderConfirmationView();
+      }
     }
 
-    public String getOrderConfirmationView() {
-        return orderConfirmationView;
-    }
+    return null;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOrderConfirmationView() {
+    return orderConfirmationView;
+  }
+
+} // end class BroadleafOrderConfirmationController

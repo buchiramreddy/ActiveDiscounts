@@ -16,25 +16,60 @@
 
 package org.broadleafcommerce.common.payment;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class UnmaskRange {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final int BEGINNINGTYPE = 0;
-    public static final int ENDTYPE = 1;
+  /** DOCUMENT ME! */
+  public static final int BEGINNINGTYPE = 0;
 
-    private int positionType;
-    private int length;
+  /** DOCUMENT ME! */
+  public static final int ENDTYPE = 1;
 
-    public UnmaskRange(int startPosition, int length) {
-        this.positionType = startPosition;
-        this.length = length;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public int getPositionType() {
-        return positionType;
-    }
+  private int length;
 
-    public int getLength() {
-        return length;
-    }
+  private int positionType;
 
-}
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new UnmaskRange object.
+   *
+   * @param  startPosition  DOCUMENT ME!
+   * @param  length         DOCUMENT ME!
+   */
+  public UnmaskRange(int startPosition, int length) {
+    this.positionType = startPosition;
+    this.length       = length;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getLength() {
+    return length;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getPositionType() {
+    return positionType;
+  }
+
+} // end class UnmaskRange

@@ -16,150 +16,173 @@
 
 package org.broadleafcommerce.core.pricing.service;
 
-import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
-import org.broadleafcommerce.common.config.service.ModuleConfigurationService;
-import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.pricing.service.exception.TaxException;
-import org.broadleafcommerce.core.pricing.service.tax.provider.TaxProvider;
-
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
+import org.broadleafcommerce.common.config.service.ModuleConfigurationService;
+import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
+
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.pricing.service.exception.TaxException;
+import org.broadleafcommerce.core.pricing.service.tax.provider.TaxProvider;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class TaxServiceImpl implements TaxService {
+  /** DOCUMENT ME! */
+  protected boolean mustCalculate = false;
 
-    protected boolean mustCalculate = false;
+  /** DOCUMENT ME! */
+  @Resource(name = "blTaxProviders")
+  protected List<TaxProvider> providers;
 
-    @Resource(name = "blTaxProviders")
-    protected List<TaxProvider> providers;
+  /** DOCUMENT ME! */
+  @Resource(name = "blModuleConfigurationService")
+  protected ModuleConfigurationService moduleConfigService;
 
-    @Resource(name = "blModuleConfigurationService")
-    protected ModuleConfigurationService moduleConfigService;
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.TaxService#calculateTaxForOrder(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order calculateTaxForOrder(Order order) throws TaxException {
+    List<ModuleConfiguration> configurations = moduleConfigService.findActiveConfigurationsByType(
+        ModuleConfigurationType.TAX_CALCULATION);
 
-    @Override
-    public Order calculateTaxForOrder(Order order) throws TaxException {
+    if ((configurations != null) && !configurations.isEmpty()) {
+      // Try to find a default configuration
+      ModuleConfiguration config = null;
 
-        List<ModuleConfiguration> configurations =
-                moduleConfigService.findActiveConfigurationsByType(ModuleConfigurationType.TAX_CALCULATION);
+      for (ModuleConfiguration configuration : configurations) {
+        if (configuration.getIsDefault()) {
+          config = configuration;
 
-        if (configurations != null && !configurations.isEmpty()) {
-
-            //Try to find a default configuration
-            ModuleConfiguration config = null;
-            for (ModuleConfiguration configuration : configurations) {
-                if (configuration.getIsDefault()) {
-                    config = configuration;
-                    break;
-                }
-            }
-
-            if (config == null) {
-                //if there wasn't a default one, use the first active one...
-                config = configurations.get(0);
-            }
-
-            if (providers != null && !providers.isEmpty()) {
-                for (TaxProvider provider : providers) {
-                    if (provider.canRespond(config)) {
-                        return provider.calculateTaxForOrder(order, config);
-                    }
-                }
-            }
+          break;
         }
-        if (!mustCalculate) {
-            return order;
+      }
+
+      if (config == null) {
+        // if there wasn't a default one, use the first active one...
+        config = configurations.get(0);
+      }
+
+      if ((providers != null) && !providers.isEmpty()) {
+        for (TaxProvider provider : providers) {
+          if (provider.canRespond(config)) {
+            return provider.calculateTaxForOrder(order, config);
+          }
         }
-        throw new TaxException("No eligible tax providers were configured.");
+      }
+    } // end if
+
+    if (!mustCalculate) {
+      return order;
     }
 
-    @Override
-    public Order commitTaxForOrder(Order order) throws TaxException {
+    throw new TaxException("No eligible tax providers were configured.");
+  } // end method calculateTaxForOrder
 
-        List<ModuleConfiguration> configurations =
-                moduleConfigService.findActiveConfigurationsByType(ModuleConfigurationType.TAX_CALCULATION);
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.TaxService#commitTaxForOrder(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order commitTaxForOrder(Order order) throws TaxException {
+    List<ModuleConfiguration> configurations = moduleConfigService.findActiveConfigurationsByType(
+        ModuleConfigurationType.TAX_CALCULATION);
 
-        if (configurations != null && !configurations.isEmpty()) {
+    if ((configurations != null) && !configurations.isEmpty()) {
+      // Try to find a default configuration
+      ModuleConfiguration config = null;
 
-            //Try to find a default configuration
-            ModuleConfiguration config = null;
-            for (ModuleConfiguration configuration : configurations) {
-                if (configuration.getIsDefault()) {
-                    config = configuration;
-                    break;
-                }
-            }
+      for (ModuleConfiguration configuration : configurations) {
+        if (configuration.getIsDefault()) {
+          config = configuration;
 
-            if (config == null) {
-                //if there wasn't a default one, use the first active one...
-                config = configurations.get(0);
-            }
-
-            if (providers != null && !providers.isEmpty()) {
-                for (TaxProvider provider : providers) {
-                    if (provider.canRespond(config)) {
-                        return provider.commitTaxForOrder(order, config);
-                    }
-                }
-            }
+          break;
         }
-        if (!mustCalculate) {
-            return order;
+      }
+
+      if (config == null) {
+        // if there wasn't a default one, use the first active one...
+        config = configurations.get(0);
+      }
+
+      if ((providers != null) && !providers.isEmpty()) {
+        for (TaxProvider provider : providers) {
+          if (provider.canRespond(config)) {
+            return provider.commitTaxForOrder(order, config);
+          }
         }
-        throw new TaxException("No eligible tax providers were configured.");
+      }
+    } // end if
+
+    if (!mustCalculate) {
+      return order;
     }
 
-    @Override
-    public void cancelTax(Order order) throws TaxException {
-        List<ModuleConfiguration> configurations =
-                moduleConfigService.findActiveConfigurationsByType(ModuleConfigurationType.TAX_CALCULATION);
+    throw new TaxException("No eligible tax providers were configured.");
+  } // end method commitTaxForOrder
 
-        if (configurations != null && !configurations.isEmpty()) {
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.TaxService#cancelTax(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public void cancelTax(Order order) throws TaxException {
+    List<ModuleConfiguration> configurations = moduleConfigService.findActiveConfigurationsByType(
+        ModuleConfigurationType.TAX_CALCULATION);
 
-            //Try to find a default configuration
-            ModuleConfiguration config = null;
-            for (ModuleConfiguration configuration : configurations) {
-                if (configuration.getIsDefault()) {
-                    config = configuration;
-                    break;
-                }
-            }
+    if ((configurations != null) && !configurations.isEmpty()) {
+      // Try to find a default configuration
+      ModuleConfiguration config = null;
 
-            if (config == null) {
-                //if there wasn't a default one, use the first active one...
-                config = configurations.get(0);
-            }
+      for (ModuleConfiguration configuration : configurations) {
+        if (configuration.getIsDefault()) {
+          config = configuration;
 
-            if (providers != null && !providers.isEmpty()) {
-                for (TaxProvider provider : providers) {
-                    if (provider.canRespond(config)) {
-                        provider.cancelTax(order, config);
-                        return;
-                    }
-                }
-            }
+          break;
         }
-        if (mustCalculate) {
-            throw new TaxException("No eligible tax providers were configured.");
+      }
+
+      if (config == null) {
+        // if there wasn't a default one, use the first active one...
+        config = configurations.get(0);
+      }
+
+      if ((providers != null) && !providers.isEmpty()) {
+        for (TaxProvider provider : providers) {
+          if (provider.canRespond(config)) {
+            provider.cancelTax(order, config);
+
+            return;
+          }
         }
-    }
+      }
+    } // end if
 
-    /**
-     * Sets a list of <code>TaxProvider</code> implementations.
-     * 
-     * @param providers
-     */
-    public void setTaxProviders(List<TaxProvider> providers) {
-        this.providers = providers;
+    if (mustCalculate) {
+      throw new TaxException("No eligible tax providers were configured.");
     }
+  } // end method cancelTax
 
-    /**
-     * Sets whether or not this service is required to delegate to a tax provider. 
-     * Setting this value to true will cause an exception if no tax providers are configured, 
-     * or if none are eligible. 
-     * @param mustCalculate
-     */
-    public void setMustCalculate(boolean mustCalculate) {
-        this.mustCalculate = mustCalculate;
-    }
-}
+  /**
+   * Sets a list of <code>TaxProvider</code> implementations.
+   *
+   * @param  providers  DOCUMENT ME!
+   */
+  public void setTaxProviders(List<TaxProvider> providers) {
+    this.providers = providers;
+  }
+
+  /**
+   * Sets whether or not this service is required to delegate to a tax provider. Setting this value to true will cause
+   * an exception if no tax providers are configured, or if none are eligible.
+   *
+   * @param  mustCalculate  DOCUMENT ME!
+   */
+  public void setMustCalculate(boolean mustCalculate) {
+    this.mustCalculate = mustCalculate;
+  }
+} // end class TaxServiceImpl

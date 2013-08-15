@@ -16,24 +16,88 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.domain.CustomerAddress;
-
 import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.CustomerAddress;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerAddressService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public CustomerAddress saveCustomerAddress(CustomerAddress customerAddress);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerAddress create();
 
-    public List<CustomerAddress> readActiveCustomerAddressesByCustomerId(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerAddress readCustomerAddressById(Long customerAddressId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerAddressId  DOCUMENT ME!
+   */
+  void deleteCustomerAddressById(Long customerAddressId);
 
-    public void makeCustomerAddressDefault(Long customerAddressId, Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void deleteCustomerAddressById(Long customerAddressId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerAddress findDefaultCustomerAddress(Long customerId);
 
-    public CustomerAddress findDefaultCustomerAddress(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerAddress create();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerAddressId  DOCUMENT ME!
+   * @param  customerId         DOCUMENT ME!
+   */
+  void makeCustomerAddressDefault(Long customerAddressId, Long customerId);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerAddress> readActiveCustomerAddressesByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerAddressId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerAddress readCustomerAddressById(Long customerAddressId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerAddress  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerAddress saveCustomerAddress(CustomerAddress customerAddress);
+
+} // end interface CustomerAddressService

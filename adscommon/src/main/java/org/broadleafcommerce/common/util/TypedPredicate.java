@@ -18,14 +18,23 @@ package org.broadleafcommerce.common.util;
 
 
 /**
- * A class that provides for a typed predicat
- * 
- * @author Andre Azzolini (apazzolini)
+ * A class that provides for a typed predicat.
  *
- * @param <T> the type of object the predicate uses
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
+ *
+ * @param    <T>  the type of object the predicate uses
  */
 public interface TypedPredicate<T> {
-    
-    public boolean evaluate(T value);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   value  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean evaluate(T value);
 
 }

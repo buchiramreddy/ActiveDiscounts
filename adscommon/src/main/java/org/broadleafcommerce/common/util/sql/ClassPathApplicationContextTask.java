@@ -18,20 +18,37 @@ package org.broadleafcommerce.common.util.sql;
 
 import org.apache.tools.ant.Task;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class ClassPathApplicationContextTask extends Task {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private String path;
+  private String path;
 
-    public String getPath() {
-        return path;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPath() {
+    return path;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  path  DOCUMENT ME!
+   */
+  public void setPath(String path) {
+    this.path = path;
+  }
+} // end class ClassPathApplicationContextTask

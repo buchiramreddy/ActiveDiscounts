@@ -16,43 +16,62 @@
 
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(friendlyName = "Banded Price Fulfillment Option")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_FULFILLMENT_OPT_BANDED_PRC")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
-@AdminPresentationClass(friendlyName = "Banded Price Fulfillment Option")
 public class BandedPriceFulfillmentOptionImpl extends FulfillmentOptionImpl implements BandedPriceFulfillmentOption {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    
-    @OneToMany(mappedBy="option", targetEntity=FulfillmentPriceBandImpl.class)
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-    protected List<FulfillmentPriceBand> bands;
+  /** DOCUMENT ME! */
+  @Cache(
+    usage  = CacheConcurrencyStrategy.READ_WRITE,
+    region = "blStandardElements"
+  )
+  @OneToMany(
+    mappedBy     = "option",
+    targetEntity = FulfillmentPriceBandImpl.class
+  )
+  protected List<FulfillmentPriceBand> bands;
 
-    @Override
-    public List<FulfillmentPriceBand> getBands() {
-        return bands;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption#getBands()
+   */
+  @Override public List<FulfillmentPriceBand> getBands() {
+    return bands;
+  }
 
-    @Override
-    public void setBands(List<FulfillmentPriceBand> bands) {
-        this.bands = bands;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOption#setBands(java.util.List)
+   */
+  @Override public void setBands(List<FulfillmentPriceBand> bands) {
+    this.bands = bands;
+  }
 
-}
+} // end class BandedPriceFulfillmentOptionImpl

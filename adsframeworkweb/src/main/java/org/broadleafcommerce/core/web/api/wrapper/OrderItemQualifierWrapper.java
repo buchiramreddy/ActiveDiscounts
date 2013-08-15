@@ -15,33 +15,52 @@
  */
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.order.domain.OrderItemQualifier;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "orderItemQualifier")
+import org.broadleafcommerce.core.order.domain.OrderItemQualifier;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "orderItemQualifier")
 public class OrderItemQualifierWrapper extends BaseWrapper implements APIWrapper<OrderItemQualifier> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long offerId;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long offerId;
 
-    @XmlElement
-    protected Long quantity;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long quantity;
 
-    @Override
-    public void wrapDetails(OrderItemQualifier model, HttpServletRequest request) {
-        this.offerId = model.getOffer().getId();
-        this.quantity = model.getQuantity();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void wrapSummary(OrderItemQualifier model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.order.domain.OrderItemQualifier,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(OrderItemQualifier model, HttpServletRequest request) {
+    this.offerId  = model.getOffer().getId();
+    this.quantity = model.getQuantity();
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.order.domain.OrderItemQualifier,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(OrderItemQualifier model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+
+} // end class OrderItemQualifierWrapper

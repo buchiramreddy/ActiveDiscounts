@@ -16,32 +16,62 @@
 
 package com.activediscounts.controller.account;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.core.web.controller.account.BroadleafUpdateAccountController;
 import org.broadleafcommerce.core.web.controller.account.UpdateAccountForm;
+
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Controller
 @RequestMapping("/account")
 public class UpdateAccountController extends BroadleafUpdateAccountController {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String viewUpdateAccount(HttpServletRequest request, Model model, @ModelAttribute("updateAccountForm") UpdateAccountForm form) {
-        return super.viewUpdateAccount(request, model, form);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.controller.account.BroadleafUpdateAccountController#processUpdateAccount(javax.servlet.http.HttpServletRequest,
+   *       org.springframework.ui.Model, org.broadleafcommerce.core.web.controller.account.UpdateAccountForm,
+   *       org.springframework.validation.BindingResult,
+   *       org.springframework.web.servlet.mvc.support.RedirectAttributes)
+   */
+  @Override
+  @RequestMapping(method = RequestMethod.POST)
+  public String processUpdateAccount(HttpServletRequest request, Model model,
+    @ModelAttribute("updateAccountForm") UpdateAccountForm form, BindingResult result,
+    RedirectAttributes redirectAttributes) throws ServiceException {
+    return super.processUpdateAccount(request, model, form, result, redirectAttributes);
+  }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String processUpdateAccount(HttpServletRequest request, Model model, @ModelAttribute("updateAccountForm") UpdateAccountForm form, BindingResult result, RedirectAttributes redirectAttributes) throws ServiceException {
-        return super.processUpdateAccount(request, model, form, result, redirectAttributes);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.controller.account.BroadleafUpdateAccountController#viewUpdateAccount(javax.servlet.http.HttpServletRequest,
+   *       org.springframework.ui.Model, org.broadleafcommerce.core.web.controller.account.UpdateAccountForm)
+   */
+  @Override
+  @RequestMapping(method = RequestMethod.GET)
+  public String viewUpdateAccount(HttpServletRequest request, Model model,
+    @ModelAttribute("updateAccountForm") UpdateAccountForm form) {
+    return super.viewUpdateAccount(request, model, form);
+  }
 
 
-}
+} // end class UpdateAccountController

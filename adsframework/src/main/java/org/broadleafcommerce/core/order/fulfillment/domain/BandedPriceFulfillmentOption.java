@@ -16,18 +16,30 @@
 
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+
+
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public interface BandedPriceFulfillmentOption extends FulfillmentOption {
-    
-    public List<FulfillmentPriceBand> getBands();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FulfillmentPriceBand> getBands();
 
-    public void setBands(List<FulfillmentPriceBand> bands);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bands  DOCUMENT ME!
+   */
+  void setBands(List<FulfillmentPriceBand> bands);
 
 }

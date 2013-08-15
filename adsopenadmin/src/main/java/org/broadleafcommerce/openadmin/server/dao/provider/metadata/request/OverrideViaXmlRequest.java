@@ -18,44 +18,95 @@ package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 
+
 /**
  * Contains the requested config key, ceiling entity, metadata and support classes.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class OverrideViaXmlRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final String requestedConfigKey;
-    private final String requestedCeilingEntity;
-    private final String prefix;
-    private final Boolean parentExcluded;
-    private final DynamicEntityDao dynamicEntityDao;
+  private final DynamicEntityDao dynamicEntityDao;
+  private final Boolean          parentExcluded;
+  private final String           prefix;
+  private final String           requestedCeilingEntity;
 
-    public OverrideViaXmlRequest(String requestedConfigKey, String requestedCeilingEntity, String prefix, Boolean parentExcluded, DynamicEntityDao dynamicEntityDao) {
-        this.requestedConfigKey = requestedConfigKey;
-        this.requestedCeilingEntity = requestedCeilingEntity;
-        this.prefix = prefix;
-        this.parentExcluded = parentExcluded;
-        this.dynamicEntityDao = dynamicEntityDao;
-    }
+  private final String requestedConfigKey;
 
-    public String getRequestedConfigKey() {
-        return requestedConfigKey;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public String getRequestedCeilingEntity() {
-        return requestedCeilingEntity;
-    }
+  /**
+   * Creates a new OverrideViaXmlRequest object.
+   *
+   * @param  requestedConfigKey      DOCUMENT ME!
+   * @param  requestedCeilingEntity  DOCUMENT ME!
+   * @param  prefix                  DOCUMENT ME!
+   * @param  parentExcluded          DOCUMENT ME!
+   * @param  dynamicEntityDao        DOCUMENT ME!
+   */
+  public OverrideViaXmlRequest(String requestedConfigKey, String requestedCeilingEntity, String prefix,
+    Boolean parentExcluded, DynamicEntityDao dynamicEntityDao) {
+    this.requestedConfigKey     = requestedConfigKey;
+    this.requestedCeilingEntity = requestedCeilingEntity;
+    this.prefix                 = prefix;
+    this.parentExcluded         = parentExcluded;
+    this.dynamicEntityDao       = dynamicEntityDao;
+  }
 
-    public String getPrefix() {
-        return prefix;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Boolean getParentExcluded() {
-        return parentExcluded;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityDao getDynamicEntityDao() {
+    return dynamicEntityDao;
+  }
 
-    public DynamicEntityDao getDynamicEntityDao() {
-        return dynamicEntityDao;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getParentExcluded() {
+    return parentExcluded;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPrefix() {
+    return prefix;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRequestedCeilingEntity() {
+    return requestedCeilingEntity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRequestedConfigKey() {
+    return requestedConfigKey;
+  }
+} // end class OverrideViaXmlRequest

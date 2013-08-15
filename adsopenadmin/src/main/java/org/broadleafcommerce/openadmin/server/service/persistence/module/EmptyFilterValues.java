@@ -18,11 +18,14 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 import java.util.ArrayList;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class EmptyFilterValues extends ArrayList<String> {
-
-    //do nothing - this is a marker class
+  // do nothing - this is a marker class
 
 }

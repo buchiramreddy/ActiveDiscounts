@@ -17,61 +17,103 @@
 package org.broadleafcommerce.core.payment.service;
 
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PaymentContext {
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  DOCUMENT ME!
+   * @see         #getTransactionAmount()
+   */
+  Money getOriginalPaymentAmount();
 
-    /**
-     * @deprecated
-     * @see #getTransactionAmount()
-     */
-    public Money getOriginalPaymentAmount();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  DOCUMENT ME!
+   * @see         #getRemainingTransactionAmount()
+   */
+  Money getRemainingPaymentAmount();
 
-    /**
-     * @deprecated
-     * @see #getRemainingTransactionAmount()
-     */
-    public Money getRemainingPaymentAmount();
+  /**
+   * The amount that the system should attempt to process. For example, when submitting an order, this would be the
+   * order.getTotal. If refunding $10, this would be 10.
+   *
+   * @return  the amount that the system should attempt to process.
+   */
+  Money getTransactionAmount();
 
-    /**
-     * The amount that the system should attempt to process.   For example, when submitting an order, this would be the order.getTotal.
-     * If refunding $10, this would be 10.
-     *
-     * @return
-     */
-    public Money getTransactionAmount();
+  /**
+   * Sets the transaction amount.
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setTransactionAmount(Money amount);
 
-    /**
-     * Sets the transaction amount
-     *
-     * @param amount
-     */
-    public void setTransactionAmount(Money amount);
+  /**
+   * Returns the remaining transaction amount that needs to be processed. When using multiple forms of payment, each
+   * payment module will attempt to perform the operation if they are able to up to this amount.
+   *
+   * @return  the remaining transaction amount that needs to be processed.
+   */
+  Money getRemainingTransactionAmount();
 
-    /**
-     * Returns the remaining transaction amount that needs to be processed.   When using multiple forms of payment, each payment module will
-     * attempt to perform the operation if they are able to up to this amount.
-     *
-     * @return
-     */
-    public Money getRemainingTransactionAmount();
+  /**
+   * Sets the remaining transaction amount.
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setRemainingTransactionAmount(Money amount);
 
-    /**
-     * Sets the remaining transaction amount.
-     *
-     * @param amount
-     */
-    public void setRemainingTransactionAmount(Money amount);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfo getPaymentInfo();
 
-    public PaymentInfo getPaymentInfo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Referenced getReferencedPaymentInfo();
 
-    public Referenced getReferencedPaymentInfo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTransactionId();
 
-    public String getTransactionId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  transactionId  DOCUMENT ME!
+   */
+  void setTransactionId(String transactionId);
 
-    public void setTransactionId(String transactionId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUserName();
 
-    public String getUserName() ;
-    
-}
+} // end interface PaymentContext

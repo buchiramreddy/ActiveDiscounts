@@ -17,23 +17,46 @@
 package org.broadleafcommerce.openadmin.server.service.persistence;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class PersistenceException extends RuntimeException {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public PersistenceException() {
-        super();
-    }
+  /**
+   * Creates a new PersistenceException object.
+   */
+  public PersistenceException() {
+    super();
+  }
 
-    public PersistenceException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new PersistenceException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public PersistenceException(Throwable cause) {
+    super(cause);
+  }
 
-    public PersistenceException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new PersistenceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public PersistenceException(String message) {
+    super(message);
+  }
 
-    public PersistenceException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
+  /**
+   * Creates a new PersistenceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public PersistenceException(String message, Throwable cause) {
+    super(message, cause);
+  }
+} // end class PersistenceException

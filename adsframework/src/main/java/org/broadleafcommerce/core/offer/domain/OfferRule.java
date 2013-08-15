@@ -18,19 +18,44 @@ package org.broadleafcommerce.core.offer.domain;
 
 import org.broadleafcommerce.common.rule.SimpleRule;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface OfferRule extends SimpleRule {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getMatchRule();
+  /**
+   * @see  org.broadleafcommerce.common.rule.SimpleRule#getMatchRule()
+   */
+  @Override String getMatchRule();
 
-    public void setMatchRule(String matchRule);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.SimpleRule#setMatchRule(java.lang.String)
+   */
+  @Override void setMatchRule(String matchRule);
+
+} // end interface OfferRule

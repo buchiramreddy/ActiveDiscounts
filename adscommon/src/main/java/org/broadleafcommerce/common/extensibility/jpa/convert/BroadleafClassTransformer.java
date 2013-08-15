@@ -16,16 +16,28 @@
 
 package org.broadleafcommerce.common.extensibility.jpa.convert;
 
-import javax.persistence.spi.ClassTransformer;
 import java.util.Properties;
 
+import javax.persistence.spi.ClassTransformer;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafClassTransformer extends ClassTransformer {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void compileJPAProperties(Properties props, Object key) throws Exception;
-        
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   props  DOCUMENT ME!
+   * @param   key    DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  void compileJPAProperties(Properties props, Object key) throws Exception;
+
 }

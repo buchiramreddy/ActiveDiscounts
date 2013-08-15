@@ -24,12 +24,15 @@ package org.broadleafcommerce.openadmin.server.service.type;
  * providers respond with NOT_HANDLED, then the default provider is called. If HANDLED_BREAK is returned, then the
  * provider loop is immediately exited and the default provider is not called.</p>
  *
- * <p>In combination with the {@link org.springframework.core.Ordered}, this provides a way for a provider to either override
- * existing behavior by setting a low order and returning HANDLED_BREAK, or add to behavior by setting any order and
- * returning HANDLED.</p>
+ * <p>In combination with the {@link org.springframework.core.Ordered}, this provides a way for a provider to either
+ * override existing behavior by setting a low order and returning HANDLED_BREAK, or add to behavior by setting any
+ * order and returning HANDLED.</p>
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum FieldProviderResponse {
-    HANDLED,NOT_HANDLED,HANDLED_BREAK
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  HANDLED, NOT_HANDLED, HANDLED_BREAK
 }

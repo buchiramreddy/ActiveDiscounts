@@ -16,34 +16,60 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
 
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Service("blRestrictionFactory")
 public class RestrictionFactoryImpl implements RestrictionFactory {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blRestrictionFactoryMap")
-    protected Map<String, Restriction> restrictions = new LinkedHashMap<String, Restriction>();
+  /** DOCUMENT ME! */
+  @Resource(name = "blRestrictionFactoryMap")
+  protected Map<String, Restriction> restrictions = new LinkedHashMap<String, Restriction>();
 
-    public Map<String, Restriction> getRestrictions() {
-        return restrictions;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setRestrictions(Map<String, Restriction> restrictions) {
-        this.restrictions = restrictions;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory#getRestriction(java.lang.String,
+   *       java.lang.String)
+   */
+  @Override public Restriction getRestriction(String type, String propertyId) {
+    Restriction restriction = restrictions.get(type).clone();
+    restriction.setFieldPathBuilder(new FieldPathBuilder());
 
-    @Override
-    public Restriction getRestriction(String type, String propertyId) {
-        Restriction restriction = restrictions.get(type).clone();
-        restriction.setFieldPathBuilder(new FieldPathBuilder());
+    return restriction;
+  }
 
-        return restriction;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, Restriction> getRestrictions() {
+    return restrictions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  restrictions  DOCUMENT ME!
+   */
+  public void setRestrictions(Map<String, Restriction> restrictions) {
+    this.restrictions = restrictions;
+  }
+} // end class RestrictionFactoryImpl

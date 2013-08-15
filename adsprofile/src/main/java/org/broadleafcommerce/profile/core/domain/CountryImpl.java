@@ -16,11 +16,6 @@
 
 package org.broadleafcommerce.profile.core.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,67 +23,121 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(friendlyName = "CountryImpl_baseCountry")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_COUNTRY")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-@AdminPresentationClass(friendlyName = "CountryImpl_baseCountry")
 public class CountryImpl implements Country {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @Column(name = "ABBREVIATION")
+  @Id protected String abbreviation;
 
-    @Id
-    @Column(name = "ABBREVIATION")
-    protected String abbreviation;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "CountryImpl_Country",
+    order        = 12,
+    group        = "CountryImpl_Address",
+    prominent    = true
+  )
+  @Column(
+    name     = "NAME",
+    nullable = false
+  )
+  protected String name;
 
-    @Column(name = "NAME", nullable=false)
-    @AdminPresentation(friendlyName = "CountryImpl_Country", order=12, group = "CountryImpl_Address", prominent = true)
-    protected String name;
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.Country#getAbbreviation()
+   */
+  @Override public String getAbbreviation() {
+    return abbreviation;
+  }
 
-    public String getAbbreviation() {
-        return abbreviation;
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.Country#setAbbreviation(java.lang.String)
+   */
+  @Override public void setAbbreviation(String Abbreviation) {
+    this.abbreviation = Abbreviation;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.Country#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.Country#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    public void setAbbreviation(String Abbreviation) {
-        this.abbreviation = Abbreviation;
+    if (obj == null) {
+      return false;
     }
 
-    public String getName() {
-        return name;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    CountryImpl other = (CountryImpl) obj;
+
+    if (abbreviation == null) {
+      if (other.abbreviation != null) {
+        return false;
+      }
+    } else if (!abbreviation.equals(other.abbreviation)) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CountryImpl other = (CountryImpl) obj;
-        if (abbreviation == null) {
-            if (other.abbreviation != null)
-                return false;
-        } else if (!abbreviation.equals(other.abbreviation))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((abbreviation == null) ? 0 : abbreviation.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-}
+    return true;
+  } // end method equals
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((abbreviation == null) ? 0 : abbreviation.hashCode());
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+
+    return result;
+  }
+} // end class CountryImpl

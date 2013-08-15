@@ -16,35 +16,52 @@
 
 package org.broadleafcommerce.core.inventory.dao;
 
-import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
+
+
 /**
- * 
- * @deprecated This is no longer required and is instead implemented as a third-party inventory module
- * 
+ * DOCUMENT ME!
+ *
+ * @deprecated  This is no longer required and is instead implemented as a third-party inventory module
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface AvailabilityDao {
+@Deprecated public interface AvailabilityDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns a SKU Availability record for the passed in skuId.   Uses a cacheable query
-     * unless the realTime flag is set to true.
-     * @param skuId
-     * @param realTime
-     * @return
-     */
-    public List<SkuAvailability> readSKUAvailability(List<Long> skuIds, boolean realTime);
+  /**
+   * Returns a SKU Availability record for the passed in skuId. Uses a cacheable query unless the realTime flag is set
+   * to true.
+   *
+   * @param   skuIds    DOCUMENT ME!
+   * @param   realTime  DOCUMENT ME!
+   *
+   * @return  a SKU Availability record for the passed in skuId.
+   */
+  List<SkuAvailability> readSKUAvailability(List<Long> skuIds, boolean realTime);
 
-    /**
-     * Returns a SKU Availability record for the passed in skuId and locationId.   Uses a cacheable query
-     * unless the realTime flag is set to true.
-     * @param skuId
-     * @param realTime
-     * @return
-     */
-    public List<SkuAvailability> readSKUAvailabilityForLocation(List<Long> skuIds, Long locationId, boolean realTime);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void save(SkuAvailability skuAvailability);
-}
+  /**
+   * Returns a SKU Availability record for the passed in skuId and locationId. Uses a cacheable query unless the
+   * realTime flag is set to true.
+   *
+   * @param   skuIds      DOCUMENT ME!
+   * @param   locationId  DOCUMENT ME!
+   * @param   realTime    DOCUMENT ME!
+   *
+   * @return  a SKU Availability record for the passed in skuId and locationId.
+   */
+  List<SkuAvailability> readSKUAvailabilityForLocation(List<Long> skuIds, Long locationId, boolean realTime);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  skuAvailability  DOCUMENT ME!
+   */
+  void save(SkuAvailability skuAvailability);
+} // end interface AvailabilityDao

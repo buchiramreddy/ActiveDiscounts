@@ -18,34 +18,70 @@ package org.broadleafcommerce.core.payment.service.exception;
 
 import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentProcessorException extends PaymentException {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  protected PaymentResponseItem paymentResponseItem;
 
-    protected PaymentResponseItem paymentResponseItem;
+  /**
+   * Creates a new PaymentProcessorException object.
+   *
+   * @param  paymentResponseItem  DOCUMENT ME!
+   */
+  public PaymentProcessorException(PaymentResponseItem paymentResponseItem) {
+    super();
+    this.paymentResponseItem = paymentResponseItem;
+  }
 
-    public PaymentProcessorException(PaymentResponseItem paymentResponseItem) {
-        super();
-        this.paymentResponseItem = paymentResponseItem;
-    }
+  /**
+   * Creates a new PaymentProcessorException object.
+   *
+   * @param  message              DOCUMENT ME!
+   * @param  cause                DOCUMENT ME!
+   * @param  paymentResponseItem  DOCUMENT ME!
+   */
+  public PaymentProcessorException(String message, Throwable cause, PaymentResponseItem paymentResponseItem) {
+    super(message, cause);
+    this.paymentResponseItem = paymentResponseItem;
+  }
 
-    public PaymentProcessorException(String message, Throwable cause, PaymentResponseItem paymentResponseItem) {
-        super(message, cause);
-        this.paymentResponseItem = paymentResponseItem;
-    }
+  /**
+   * Creates a new PaymentProcessorException object.
+   *
+   * @param  message              DOCUMENT ME!
+   * @param  paymentResponseItem  DOCUMENT ME!
+   */
+  public PaymentProcessorException(String message, PaymentResponseItem paymentResponseItem) {
+    super(message);
+    this.paymentResponseItem = paymentResponseItem;
+  }
 
-    public PaymentProcessorException(String message, PaymentResponseItem paymentResponseItem) {
-        super(message);
-        this.paymentResponseItem = paymentResponseItem;
-    }
+  /**
+   * Creates a new PaymentProcessorException object.
+   *
+   * @param  cause                DOCUMENT ME!
+   * @param  paymentResponseItem  DOCUMENT ME!
+   */
+  public PaymentProcessorException(Throwable cause, PaymentResponseItem paymentResponseItem) {
+    super(cause);
+    this.paymentResponseItem = paymentResponseItem;
+  }
 
-    public PaymentProcessorException(Throwable cause, PaymentResponseItem paymentResponseItem) {
-        super(cause);
-        this.paymentResponseItem = paymentResponseItem;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PaymentResponseItem getPaymentResponseItem() {
+    return paymentResponseItem;
+  }
 
-    public PaymentResponseItem getPaymentResponseItem() {
-        return paymentResponseItem;
-    }
-
-}
+} // end class PaymentProcessorException

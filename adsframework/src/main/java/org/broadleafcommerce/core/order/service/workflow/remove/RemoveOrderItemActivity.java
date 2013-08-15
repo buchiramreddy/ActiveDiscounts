@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.order.service.workflow.remove;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.OrderItemService;
@@ -25,44 +27,47 @@ import org.broadleafcommerce.core.order.service.workflow.CartOperationContext;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
 /**
- * This class is responsible for removing OrderItems when requested by the OrderService.
- * Note that this class does not touch the FulfillmentGroupItems and expects that they 
- * have already been removed by the time this activity executes. 
- * 
- * @author Andre Azzolini (apazzolini)
+ * This class is responsible for removing OrderItems when requested by the OrderService. Note that this class does not
+ * touch the FulfillmentGroupItems and expects that they have already been removed by the time this activity executes.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class RemoveOrderItemActivity extends BaseActivity<CartOperationContext> {
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
-    
-    @Resource(name = "blOrderItemService")
-    protected OrderItemService orderItemService;
-    
-    @Override
-    public CartOperationContext execute(CartOperationContext context) throws Exception {
-        CartOperationRequest request = context.getSeedData();
-        OrderItemRequestDTO orderItemRequestDTO = request.getItemRequest();
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderItemService")
+  protected OrderItemService orderItemService;
 
-        // Find the OrderItem from the database based on its ID
-        Order order = request.getOrder();
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.order.service.workflow.CartOperationContext)
+   */
+  @Override public CartOperationContext execute(CartOperationContext context) throws Exception {
+    CartOperationRequest request             = context.getSeedData();
+    OrderItemRequestDTO  orderItemRequestDTO = request.getItemRequest();
 
-        OrderItem orderItem = orderItemService.readOrderItemById(orderItemRequestDTO.getOrderItemId());
-        
-        // Remove the OrderItem from the Order
-        OrderItem itemFromOrder = order.getOrderItems().remove(order.getOrderItems().indexOf(orderItem));
-        
-        // Delete the OrderItem from the database
-        itemFromOrder.setOrder(null);
-        orderItemService.delete(itemFromOrder);
-        
-        order = orderService.save(order, false);
-        
-        request.setOrder(order);
-        return context;
-    }
+    // Find the OrderItem from the database based on its ID
+    Order order = request.getOrder();
 
-}
+    OrderItem orderItem = orderItemService.readOrderItemById(orderItemRequestDTO.getOrderItemId());
+
+    // Remove the OrderItem from the Order
+    OrderItem itemFromOrder = order.getOrderItems().remove(order.getOrderItems().indexOf(orderItem));
+
+    // Delete the OrderItem from the database
+    itemFromOrder.setOrder(null);
+    orderItemService.delete(itemFromOrder);
+
+    order = orderService.save(order, false);
+
+    request.setOrder(order);
+
+    return context;
+  }
+
+} // end class RemoveOrderItemActivity

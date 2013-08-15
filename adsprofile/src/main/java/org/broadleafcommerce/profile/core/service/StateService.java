@@ -16,18 +16,58 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.domain.State;
-
 import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.State;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface StateService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<State> findStates();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   abbreviation  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  State findStateByAbbreviation(String abbreviation);
 
-    public List<State> findStates(String countryAbbreviation);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public State findStateByAbbreviation(String abbreviation);
-    
-    public State save(State state);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<State> findStates();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   countryAbbreviation  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<State> findStates(String countryAbbreviation);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   state  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  State save(State state);
+
+} // end interface StateService

@@ -17,6 +17,7 @@
 package org.broadleafcommerce.core.web.service;
 
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+
 import org.broadleafcommerce.core.extension.ExtensionHandler;
 import org.broadleafcommerce.core.extension.ExtensionResultHolder;
 import org.broadleafcommerce.core.extension.ExtensionResultStatusType;
@@ -25,27 +26,35 @@ import org.broadleafcommerce.core.order.domain.Order;
 
 
 /**
- * @author Andre Azzolini (apazzolini), bpolster
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini), bpolster
+ * @version  $Revision$, $Date$
  */
 public interface UpdateCartServiceExtensionHandler extends ExtensionHandler {
-    
-    /**
-     * Throws an exception if cart is invalid.
-     * 
-     * @param cart
-     * @param resultHolder
-     * @return
-     */
-    public ExtensionResultStatusType validateCart(Order cart);
-    
-    /**
-     * 
-     * @param doi
-     * @param currency
-     * @param resultHolder
-     * @return
-     */
-    public ExtensionResultStatusType isAvailable(DiscreteOrderItem doi, BroadleafCurrency currency,
-                                                 ExtensionResultHolder resultHolder);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   doi           DOCUMENT ME!
+   * @param   currency      DOCUMENT ME!
+   * @param   resultHolder  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ExtensionResultStatusType isAvailable(DiscreteOrderItem doi, BroadleafCurrency currency,
+    ExtensionResultHolder resultHolder);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Throws an exception if cart is invalid.
+   *
+   * @param   cart  DOCUMENT ME!
+   *
+   * @return  throws an exception if cart is invalid.
+   */
+  ExtensionResultStatusType validateCart(Order cart);
+
+} // end interface UpdateCartServiceExtensionHandler

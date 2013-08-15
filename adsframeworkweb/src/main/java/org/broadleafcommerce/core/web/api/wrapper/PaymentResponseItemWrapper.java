@@ -17,60 +17,79 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
+
+
 /**
  * This is a JAXB wrapper around PaymentResponseItem.
- * <p/>
- * User: Elbert Bautista
- * Date: 4/26/12
+ *
+ * <p>User: Elbert Bautista Date: 4/26/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "paymentResponseItem")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "paymentResponseItem")
 public class PaymentResponseItemWrapper extends BaseWrapper implements APIWrapper<PaymentResponseItem> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long paymentInfoId;
+  /** DOCUMENT ME! */
+  @XmlElement(name = "element")
+  @XmlElementWrapper(name = "additionalFields")
+  protected List<MapElementWrapper> additionalFields;
 
-    @XmlElement
-    protected Boolean transactionSuccess;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long paymentInfoId;
 
-    @XmlElement
-    protected String processorResponseCode;
+  /** DOCUMENT ME! */
+  @XmlElement protected String processorResponseCode;
 
-    @XmlElement(name = "element")
-    @XmlElementWrapper(name = "additionalFields")
-    protected List<MapElementWrapper> additionalFields;
+  /** DOCUMENT ME! */
+  @XmlElement protected Boolean transactionSuccess;
 
-    @Override
-    public void wrapDetails(PaymentResponseItem model, HttpServletRequest request) {
-        this.paymentInfoId = model.getPaymentInfoId();
-        this.processorResponseCode = model.getProcessorResponseCode();
-        this.transactionSuccess = model.getTransactionSuccess();
-        if (model.getAdditionalFields() != null && !model.getAdditionalFields().isEmpty()) {
-            List<MapElementWrapper> mapElementWrappers = new ArrayList<MapElementWrapper>();
-            for (String key : model.getAdditionalFields().keySet()) {
-                MapElementWrapper mapElementWrapper = new MapElementWrapper();
-                mapElementWrapper.setKey(key);
-                mapElementWrapper.setValue(model.getAdditionalFields().get(key));
-                mapElementWrappers.add(mapElementWrapper);
-            }
-            this.additionalFields = mapElementWrappers;
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.payment.domain.PaymentResponseItem,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(PaymentResponseItem model, HttpServletRequest request) {
+    this.paymentInfoId         = model.getPaymentInfoId();
+    this.processorResponseCode = model.getProcessorResponseCode();
+    this.transactionSuccess    = model.getTransactionSuccess();
+
+    if ((model.getAdditionalFields() != null) && !model.getAdditionalFields().isEmpty()) {
+      List<MapElementWrapper> mapElementWrappers = new ArrayList<MapElementWrapper>();
+
+      for (String key : model.getAdditionalFields().keySet()) {
+        MapElementWrapper mapElementWrapper = new MapElementWrapper();
+        mapElementWrapper.setKey(key);
+        mapElementWrapper.setValue(model.getAdditionalFields().get(key));
+        mapElementWrappers.add(mapElementWrapper);
+      }
+
+      this.additionalFields = mapElementWrappers;
     }
+  }
 
-    @Override
-    public void wrapSummary(PaymentResponseItem model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.payment.domain.PaymentResponseItem,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(PaymentResponseItem model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class PaymentResponseItemWrapper

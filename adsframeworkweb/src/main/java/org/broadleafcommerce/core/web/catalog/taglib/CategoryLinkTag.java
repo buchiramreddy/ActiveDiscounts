@@ -16,50 +16,90 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.broadleafcommerce.core.catalog.domain.Category;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import java.io.IOException;
 
+import org.broadleafcommerce.core.catalog.domain.Category;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CategoryLinkTag extends AbstractCatalogTag {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private Category category;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public void doTag() throws JspException, IOException {
-        JspWriter out = getJspContext().getOut();
+  private Category category;
 
-        if (category != null) out.println(getUrl(category));
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        super.doTag();
+  /**
+   * @see  javax.servlet.jsp.tagext.SimpleTagSupport#doTag()
+   */
+  @Override public void doTag() throws JspException, IOException {
+    JspWriter out = getJspContext().getOut();
+
+    if (category != null) {
+      out.println(getUrl(category));
     }
 
-    public Category getCategory() {
-        return this.category;
-    }
+    super.doTag();
+  }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    protected String getUrl(Category category) {
-        PageContext pageContext = (PageContext)getJspContext();
-        HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-        StringBuffer sb = new StringBuffer();
-        sb.append("<a href=\"");
-        sb.append(request.getContextPath());
-        sb.append("/");
-        sb.append(category.getGeneratedUrl());
-        sb.append("\">");
-        sb.append(category.getName());
-        sb.append("</a>");
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Category getCategory() {
+    return this.category;
+  }
 
-        return sb.toString();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   category  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected String getUrl(Category category) {
+    PageContext        pageContext = (PageContext) getJspContext();
+    HttpServletRequest request     = (HttpServletRequest) pageContext.getRequest();
+    StringBuffer       sb          = new StringBuffer();
+    sb.append("<a href=\"");
+    sb.append(request.getContextPath());
+    sb.append("/");
+    sb.append(category.getGeneratedUrl());
+    sb.append("\">");
+    sb.append(category.getName());
+    sb.append("</a>");
+
+    return sb.toString();
+  }
+
+} // end class CategoryLinkTag

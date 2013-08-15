@@ -16,89 +16,137 @@
 
 package org.broadleafcommerce.core.pricing.service.workflow.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of shipping service types.
- * 
- * @author jfischer
- * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider} paradigm
- * @see {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}, {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
+ *
+ * @author      jfischer
+ * @deprecated  Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} and
+ *              {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
+ *              paradigm
+ * @see         {@link org.broadleafcommerce.core.order.domain.FulfillmentOption},
+ *              {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public class ShippingServiceType implements Serializable, BroadleafEnumerationType {
+@Deprecated public class ShippingServiceType implements Serializable, BroadleafEnumerationType {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  private static final Map<String, ShippingServiceType> TYPES = new LinkedHashMap<String, ShippingServiceType>();
 
-    private static final Map<String, ShippingServiceType> TYPES = new LinkedHashMap<String, ShippingServiceType>();
+  /** DOCUMENT ME! */
+  public static final ShippingServiceType BANDED_SHIPPING = new ShippingServiceType("BANDED_SHIPPING",
+      "Banded Shipping");
 
-    public static final ShippingServiceType BANDED_SHIPPING = new ShippingServiceType("BANDED_SHIPPING", "Banded Shipping");
-    public static final ShippingServiceType USPS = new ShippingServiceType("USPS", "United States Postal Service");
-    public static final ShippingServiceType FED_EX = new ShippingServiceType("FED_EX", "Federal Express");
-    public static final ShippingServiceType UPS = new ShippingServiceType("UPS", "United Parcel Service");
-    public static final ShippingServiceType DHL = new ShippingServiceType("DHL", "DHL");
+  /** DOCUMENT ME! */
+  public static final ShippingServiceType USPS   = new ShippingServiceType("USPS", "United States Postal Service");
 
-    public static ShippingServiceType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final ShippingServiceType FED_EX = new ShippingServiceType("FED_EX", "Federal Express");
+
+  /** DOCUMENT ME! */
+  public static final ShippingServiceType UPS = new ShippingServiceType("UPS", "United Parcel Service");
+
+  /** DOCUMENT ME! */
+  public static final ShippingServiceType DHL = new ShippingServiceType("DHL", "DHL");
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static ShippingServiceType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  private String type;
+  private String friendlyType;
+
+  /**
+   * Creates a new ShippingServiceType object.
+   */
+  public ShippingServiceType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new ShippingServiceType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public ShippingServiceType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public ShippingServiceType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public ShippingServiceType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public String getType() {
-        return type;
+    ShippingServiceType other = (ShippingServiceType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    @Override
-    public String getFriendlyType() {
-        return friendlyType;
-    }
-
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ShippingServiceType other = (ShippingServiceType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-}
+    return true;
+  } // end method equals
+} // end class ShippingServiceType

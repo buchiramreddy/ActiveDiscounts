@@ -17,10 +17,9 @@
 package org.broadleafcommerce.core.order.domain;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-public interface DynamicPriceDiscreteOrderItem extends DiscreteOrderItem {
-
-}
+public interface DynamicPriceDiscreteOrderItem extends DiscreteOrderItem { }

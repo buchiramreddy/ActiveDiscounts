@@ -16,69 +16,93 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.TaxDetail;
-
 import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "taxDetail")
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.TaxDetail;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "taxDetail")
 public class TaxDetailWrapper extends BaseWrapper implements APIWrapper<TaxDetail> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected Money amount;
 
-    @XmlElement
-    protected BroadleafEnumerationTypeWrapper taxType;
+  /** DOCUMENT ME! */
+  @XmlElement protected String country;
 
-    @XmlElement
-    protected Money amount;
+  /** DOCUMENT ME! */
+  @XmlElement protected String currency;
 
-    @XmlElement
-    protected BigDecimal rate;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected String currency;
+  /** DOCUMENT ME! */
+  @XmlElement protected String jurisdictionName;
 
-    @XmlElement
-    protected String jurisdictionName;
+  /** DOCUMENT ME! */
+  @XmlElement protected BigDecimal rate;
 
-    @XmlElement
-    protected String taxName;
+  /** DOCUMENT ME! */
+  @XmlElement protected String region;
 
-    @XmlElement
-    protected String region;
+  /** DOCUMENT ME! */
+  @XmlElement protected String taxName;
 
-    @XmlElement
-    protected String country;
+  /** DOCUMENT ME! */
+  @XmlElement protected BroadleafEnumerationTypeWrapper taxType;
 
-    @Override
-    public void wrapDetails(TaxDetail model, HttpServletRequest request) {
-        this.id = model.getId();
-        if (model.getType() != null) {
-            this.taxType = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class.getName());
-            this.taxType.wrapDetails(model.getType(), request);
-        }
-        this.amount = model.getAmount();
-        this.rate = model.getRate();
-        if (model.getCurrency() != null) {
-            this.currency = model.getCurrency().getCurrencyCode();
-        }
-        this.jurisdictionName = model.getJurisdictionName();
-        this.taxName = model.getTaxName();
-        this.region = model.getRegion();
-        this.country = model.getCountry();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.order.domain.TaxDetail,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(TaxDetail model, HttpServletRequest request) {
+    this.id = model.getId();
+
+    if (model.getType() != null) {
+      this.taxType = (BroadleafEnumerationTypeWrapper) context.getBean(BroadleafEnumerationTypeWrapper.class.getName());
+      this.taxType.wrapDetails(model.getType(), request);
     }
 
-    @Override
-    public void wrapSummary(TaxDetail model, HttpServletRequest request) {
-        wrapDetails(model, request);
+    this.amount = model.getAmount();
+    this.rate   = model.getRate();
+
+    if (model.getCurrency() != null) {
+      this.currency = model.getCurrency().getCurrencyCode();
     }
 
-}
+    this.jurisdictionName = model.getJurisdictionName();
+    this.taxName          = model.getTaxName();
+    this.region           = model.getRegion();
+    this.country          = model.getCountry();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.order.domain.TaxDetail,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(TaxDetail model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+
+} // end class TaxDetailWrapper

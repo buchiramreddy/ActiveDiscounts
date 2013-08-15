@@ -19,61 +19,108 @@ package org.broadleafcommerce.core.rating.service.type;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ReviewStatusType {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, ReviewStatusType> TYPES = new HashMap<String, ReviewStatusType>();
+  private static final Map<String, ReviewStatusType> TYPES = new HashMap<String, ReviewStatusType>();
 
-    public static final ReviewStatusType PENDING = new ReviewStatusType("PENDING");
-    public static final ReviewStatusType APPROVED = new ReviewStatusType("APPROVED");
-    public static final ReviewStatusType REJECTED = new ReviewStatusType("REJECTED");
+  /** DOCUMENT ME! */
+  public static final ReviewStatusType PENDING  = new ReviewStatusType("PENDING");
 
-    public static ReviewStatusType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final ReviewStatusType APPROVED = new ReviewStatusType("APPROVED");
+
+  /** DOCUMENT ME! */
+  public static final ReviewStatusType REJECTED = new ReviewStatusType("REJECTED");
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static ReviewStatusType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  private String type;
+
+  /**
+   * Creates a new ReviewStatusType object.
+   */
+  public ReviewStatusType() { }
+
+  /**
+   * Creates a new ReviewStatusType object.
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  public ReviewStatusType(final String type) {
+    setType(type);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getType() {
+    return type;
+  }
+
+  private void setType(String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-
-    public ReviewStatusType() {
+    if (obj == null) {
+      return false;
     }
 
-    public ReviewStatusType(final String type) {
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    ReviewStatusType other = (ReviewStatusType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    private void setType(String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ReviewStatusType other = (ReviewStatusType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-}
+    return true;
+  } // end method equals
+} // end class ReviewStatusType

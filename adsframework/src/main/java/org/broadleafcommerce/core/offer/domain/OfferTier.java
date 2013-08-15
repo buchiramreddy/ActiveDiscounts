@@ -20,23 +20,83 @@ package org.broadleafcommerce.core.offer.domain;
 import java.math.BigDecimal;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface OfferTier extends Comparable<OfferTier> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-public interface OfferTier extends Comparable<OfferTier>{
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BigDecimal getAmount();
 
-    Long getId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    BigDecimal getAmount();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    Long getMinQuantity();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getMinQuantity();
 
-    void setAmount(BigDecimal amount);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setMinQuantity(Long minQuantity);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
 
-    Offer getOffer();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setOffer(Offer offer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(BigDecimal amount);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  minQuantity  DOCUMENT ME!
+   */
+  void setMinQuantity(Long minQuantity);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  void setOffer(Offer offer);
+
+} // end interface OfferTier

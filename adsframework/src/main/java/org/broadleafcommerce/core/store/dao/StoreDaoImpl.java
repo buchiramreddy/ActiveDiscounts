@@ -16,36 +16,57 @@
 
 package org.broadleafcommerce.core.store.dao;
 
-import org.broadleafcommerce.core.store.domain.Store;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
 
+import org.broadleafcommerce.core.store.domain.Store;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blStoreDao")
 public class StoreDaoImpl implements StoreDao {
+  @PersistenceContext(unitName = "blPU")
+  private EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    private EntityManager em;
+  /**
+   * @see  org.broadleafcommerce.core.store.dao.StoreDao#readStoreByStoreCode(java.lang.String)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public Store readStoreByStoreCode(final String storeCode) {
+    Query query = em.createNamedQuery("FIND_STORE_BY_STORE_CODE");
+    query.setParameter("abbreviation", storeCode.toUpperCase());
 
-    @SuppressWarnings("unchecked")
-    public Store readStoreByStoreCode(final String storeCode) {
-        Query query = em.createNamedQuery("FIND_STORE_BY_STORE_CODE");
-        query.setParameter("abbreviation", storeCode.toUpperCase());
-        //TODO use the property injection for "org.hibernate.cacheable" like the other daos
-        query.setHint("org.hibernate.cacheable", true);
-        List result = query.getResultList();
-        return (result.size() > 0) ? (Store) result.get(0) : null;
-    }
+    // TODO use the property injection for "org.hibernate.cacheable" like the other daos
+    query.setHint("org.hibernate.cacheable", true);
 
-    @SuppressWarnings("unchecked")
-    public List<Store> readAllStores() {
-        Query query = em.createNamedQuery("BC_FIND_ALL_STORES");
-        query.setHint("org.hibernate.cacheable", true);
-        List results = query.getResultList();
-        return results;
-    }
+    List result = query.getResultList();
 
-}
+    return (result.size() > 0) ? (Store) result.get(0) : null;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.store.dao.StoreDao#readAllStores()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Store> readAllStores() {
+    Query query = em.createNamedQuery("BC_FIND_ALL_STORES");
+    query.setHint("org.hibernate.cacheable", true);
+
+    List results = query.getResultList();
+
+    return results;
+  }
+
+} // end class StoreDaoImpl

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008-2013 the original author or authors.
  *
@@ -19,8 +18,22 @@ package org.broadleafcommerce.core.order.service;
 
 import org.broadleafcommerce.core.catalog.domain.ProductOption;
 
-public interface ProductOptionValidationService {
 
-    public abstract Boolean validate(ProductOption productOption, String value);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface ProductOptionValidationService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   productOption  DOCUMENT ME!
+   * @param   value          DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean validate(ProductOption productOption, String value);
 
 }

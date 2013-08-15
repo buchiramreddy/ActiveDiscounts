@@ -16,79 +16,119 @@
 
 package org.broadleafcommerce.core.catalog.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
- * @author Phillip Verheyden
+ * DOCUMENT ME!
  *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public class SkuFeeType implements Serializable, BroadleafEnumerationType {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  private static final Map<String, SkuFeeType> TYPES = new LinkedHashMap<String, SkuFeeType>();
 
-    private static final Map<String, SkuFeeType> TYPES = new LinkedHashMap<String, SkuFeeType>();
+  /** DOCUMENT ME! */
+  public static final SkuFeeType FULFILLMENT = new SkuFeeType("FULFILLMENT", "Fulfillment");
 
-    public static final SkuFeeType FULFILLMENT  = new SkuFeeType("FULFILLMENT", "Fulfillment");
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static SkuFeeType getInstance(final String type) {
+    return TYPES.get(type);
+  }
 
-    public static SkuFeeType getInstance(final String type) {
-        return TYPES.get(type);
+  private String type;
+  private String friendlyType;
+
+  /**
+   * Creates a new SkuFeeType object.
+   */
+  public SkuFeeType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new SkuFeeType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public SkuFeeType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public SkuFeeType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public SkuFeeType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public String getType() {
-        return type;
+    SkuFeeType other = (SkuFeeType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    @Override
-    public String getFriendlyType() {
-        return friendlyType;
-    }
-
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        SkuFeeType other = (SkuFeeType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-}
+    return true;
+  } // end method equals
+} // end class SkuFeeType

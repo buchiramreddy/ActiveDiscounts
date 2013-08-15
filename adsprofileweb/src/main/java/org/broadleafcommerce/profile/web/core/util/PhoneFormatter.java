@@ -18,6 +18,20 @@ package org.broadleafcommerce.profile.web.core.util;
 
 import org.broadleafcommerce.profile.core.domain.Phone;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PhoneFormatter {
-public void formatPhoneNumber(Phone phone);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  void formatPhoneNumber(Phone phone);
 }

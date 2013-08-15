@@ -16,7 +16,10 @@
 
 package org.broadleafcommerce.common.time.domain;
 
-import org.broadleafcommerce.common.time.SystemTime;
+import java.lang.reflect.Field;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -25,59 +28,79 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.Date;
 
+import org.broadleafcommerce.common.time.SystemTime;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class TemporalTimestampListener {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @PrePersist
-    @PreUpdate
-    public void setTimestamps(Object entity) throws Exception {
-        if (entity.getClass().isAnnotationPresent(Entity.class)) {
-            Field[] fields = entity.getClass().getDeclaredFields();
-            setTimestamps(fields, entity);
-        }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entity  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @PrePersist @PreUpdate public void setTimestamps(Object entity) throws Exception {
+    if (entity.getClass().isAnnotationPresent(Entity.class)) {
+      Field[] fields = entity.getClass().getDeclaredFields();
+      setTimestamps(fields, entity);
     }
+  }
 
-    private void setTimestamps(Field[] fields, Object entity) throws Exception {
-        Calendar cal = null;
-        for (Field field : fields) {
-            Class<?> type = field.getType();
-            Temporal temporalAnnotation = field.getAnnotation(Temporal.class);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-            if (temporalAnnotation != null) {
-                if (field.isAnnotationPresent(Column.class)) {
-                    field.setAccessible(true);
-                    try {
-                        if (TemporalType.TIMESTAMP.equals(temporalAnnotation.value()) && (field.isAnnotationPresent(AutoPopulate.class))) {
-                            if (field.get(entity) == null || field.getAnnotation(AutoPopulate.class).autoUpdateValue()) {
-                                if (type.isAssignableFrom(Date.class)) {
-                                    if (cal == null) {
-                                        cal = SystemTime.asCalendar();
-                                    }
-                                    field.set(entity, cal.getTime());
-                                } else if (type.isAssignableFrom(Calendar.class)) {
-                                    if (cal == null) {
-                                        cal = SystemTime.asCalendar();
-                                    }
-                                    field.set(entity, cal);
-                                }
-                            }
-                        }
-                    } finally {
-                        field.setAccessible(false);
-                    }
+  private void setTimestamps(Field[] fields, Object entity) throws Exception {
+    Calendar cal = null;
+
+    for (Field field : fields) {
+      Class<?> type               = field.getType();
+      Temporal temporalAnnotation = field.getAnnotation(Temporal.class);
+
+      if (temporalAnnotation != null) {
+        if (field.isAnnotationPresent(Column.class)) {
+          field.setAccessible(true);
+
+          try {
+            if (TemporalType.TIMESTAMP.equals(temporalAnnotation.value())
+                  && (field.isAnnotationPresent(AutoPopulate.class))) {
+              if ((field.get(entity) == null) || field.getAnnotation(AutoPopulate.class).autoUpdateValue()) {
+                if (type.isAssignableFrom(Date.class)) {
+                  if (cal == null) {
+                    cal = SystemTime.asCalendar();
+                  }
+
+                  field.set(entity, cal.getTime());
+                } else if (type.isAssignableFrom(Calendar.class)) {
+                  if (cal == null) {
+                    cal = SystemTime.asCalendar();
+                  }
+
+                  field.set(entity, cal);
                 }
-            } else if (field.isAnnotationPresent(Embedded.class)) {
-                field.setAccessible(true);
-                try {
-                    // Call recursively
-                    setTimestamps(field.getType().getDeclaredFields(), field.get(entity));
-                } finally {
-                    field.setAccessible(false);
-                }
+              }
             }
+          } finally {
+            field.setAccessible(false);
+          }
+        } // end if
+      } else if (field.isAnnotationPresent(Embedded.class)) {
+        field.setAccessible(true);
+
+        try {
+          // Call recursively
+          setTimestamps(field.getType().getDeclaredFields(), field.get(entity));
+        } finally {
+          field.setAccessible(false);
         }
-    }
-}
+      } // end if-else
+    } // end for
+  } // end method setTimestamps
+} // end class TemporalTimestampListener

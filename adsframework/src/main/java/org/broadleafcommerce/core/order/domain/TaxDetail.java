@@ -16,144 +16,162 @@
 
 package org.broadleafcommerce.core.order.domain;
 
+import java.io.Serializable;
+
+import java.math.BigDecimal;
+
 import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.money.Money;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
- * The Interface TaxDetail. A TaxDetail object stores relevant tax information 
- * including a tax type, amount, and rate.
+ * The Interface TaxDetail. A TaxDetail object stores relevant tax information including a tax type, amount, and rate.
  *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface TaxDetail extends Serializable {
+  /**
+   * Gets the id.
+   *
+   * @return  the id
+   */
+  Long getId();
 
-    /**
-     * Gets the id.
-     * 
-     * @return the id
-     */
-    public Long getId();
+  /**
+   * Sets the id.
+   *
+   * @param  id  the new id
+   */
+  void setId(Long id);
 
-    /**
-     * Sets the id.
-     * 
-     * @param id the new id
-     */
-    public void setId(Long id);
-    
-    /**
-     * Gets the tax type
-     * 
-     * @return the tax type
-     */
-    public TaxType getType();
+  /**
+   * Gets the tax type.
+   *
+   * @return  the tax type
+   */
+  TaxType getType();
 
-    /**
-     * Sets the tax type
-     * 
-     * @param type the tax type
-     */
-    public void setType(TaxType type);
+  /**
+   * Sets the tax type.
+   *
+   * @param  type  the tax type
+   */
+  void setType(TaxType type);
 
-    /**
-     * Gets the tax amount
-     * 
-     * @return the tax amount
-     */
-    public Money getAmount();
+  /**
+   * Gets the tax amount.
+   *
+   * @return  the tax amount
+   */
+  Money getAmount();
 
-    /**
-     * Sets the tax amount
-     * 
-     * @param amount the tax amount
-     */
-    public void setAmount(Money amount);
+  /**
+   * Sets the tax amount.
+   *
+   * @param  amount  the tax amount
+   */
+  void setAmount(Money amount);
 
-    /**
-     * Gets the tax rate
-     * 
-     * @return the rate
-     */
-    public BigDecimal getRate();
+  /**
+   * Gets the tax rate.
+   *
+   * @return  the rate
+   */
+  BigDecimal getRate();
 
-    /**
-     * Sets the tax rate.
-     * 
-     * @param name the tax rate
-     */
-    public void setRate(BigDecimal rate);
-    
-    public BroadleafCurrency getCurrency();
+  /**
+   * Sets the tax rate.
+   *
+   * @param  rate  name the tax rate
+   */
+  void setRate(BigDecimal rate);
 
-    public void setCurrency(BroadleafCurrency currency);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency getCurrency();
 
-    /**
-     * Returns the configuration of the module that was used to calculate taxes. Allows 
-     * for tracking, especially when more than one module may be used by the system.
-     * @return
-     */
-    public ModuleConfiguration getModuleConfiguration();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currency  DOCUMENT ME!
+   */
+  void setCurrency(BroadleafCurrency currency);
 
-    /**
-     * Sets the module configuration that was used to calculate taxes.  Allows for tracking 
-     * of which module was used, especially in cases where more than one module is available 
-     * over time.
-     * @param config
-     */
-    public void setModuleConfiguration(ModuleConfiguration config);
+  /**
+   * Returns the configuration of the module that was used to calculate taxes. Allows for tracking, especially when more
+   * than one module may be used by the system.
+   *
+   * @return  the configuration of the module that was used to calculate taxes.
+   */
+  ModuleConfiguration getModuleConfiguration();
 
-    /**
-     * Optionally sets the name of the tax jurisdiction.
-     * @param jurisdiction
-     */
-    public void setJurisdictionName(String jurisdiction);
+  /**
+   * Sets the module configuration that was used to calculate taxes. Allows for tracking of which module was used,
+   * especially in cases where more than one module is available over time.
+   *
+   * @param  config  DOCUMENT ME!
+   */
+  void setModuleConfiguration(ModuleConfiguration config);
 
-    /**
-     * Returns the name of the tax jurisdiction. May return null.
-     * @return
-     */
-    public String getJurisdictionName();
+  /**
+   * Optionally sets the name of the tax jurisdiction.
+   *
+   * @param  jurisdiction  DOCUMENT ME!
+   */
+  void setJurisdictionName(String jurisdiction);
 
-    /**
-     * Sets the name of the tax, if applicable.
-     * @param taxName
-     */
-    public void setTaxName(String taxName);
+  /**
+   * Returns the name of the tax jurisdiction. May return null.
+   *
+   * @return  the name of the tax jurisdiction.
+   */
+  String getJurisdictionName();
 
-    /**
-     * Gets the name of the tax. May return null.
-     * @return
-     */
-    public String getTaxName();
+  /**
+   * Sets the name of the tax, if applicable.
+   *
+   * @param  taxName  DOCUMENT ME!
+   */
+  void setTaxName(String taxName);
 
-    /**
-     * Sets the region, as a string. Typically this will be a 
-     * State, Province, or County.
-     * @param region
-     */
-    public void setRegion(String region);
+  /**
+   * Gets the name of the tax. May return null.
+   *
+   * @return  gets the name of the tax.
+   */
+  String getTaxName();
 
-    /**
-     * Returns the name of the region used for tax calculation. May 
-     * return null.
-     * @return
-     */
-    public String getRegion();
+  /**
+   * Sets the region, as a string. Typically this will be a State, Province, or County.
+   *
+   * @param  region  DOCUMENT ME!
+   */
+  void setRegion(String region);
 
-    /**
-     * Sets the country used for tax calculation.
-     * @param country
-     */
-    public void setCountry(String country);
+  /**
+   * Returns the name of the region used for tax calculation. May return null.
+   *
+   * @return  the name of the region used for tax calculation.
+   */
+  String getRegion();
 
-    /**
-     * Returns the country, as a string, used for tax calculation. 
-     * May return null.
-     * @return
-     */
-    public String getCountry();
+  /**
+   * Sets the country used for tax calculation.
+   *
+   * @param  country  DOCUMENT ME!
+   */
+  void setCountry(String country);
 
-}
+  /**
+   * Returns the country, as a string, used for tax calculation. May return null.
+   *
+   * @return  the country, as a string, used for tax calculation.
+   */
+  String getCountry();
+
+} // end interface TaxDetail

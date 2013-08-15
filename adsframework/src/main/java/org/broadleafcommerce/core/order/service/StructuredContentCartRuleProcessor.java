@@ -16,88 +16,107 @@
 
 package org.broadleafcommerce.core.order.service;
 
-import org.broadleafcommerce.cms.structure.dto.ItemCriteriaDTO;
-import org.broadleafcommerce.cms.structure.dto.StructuredContentDTO;
-import org.broadleafcommerce.cms.structure.service.AbstractStructuredContentRuleProcessor;
-import org.broadleafcommerce.core.order.dao.OrderDao;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.broadleafcommerce.cms.structure.dto.ItemCriteriaDTO;
+import org.broadleafcommerce.cms.structure.dto.StructuredContentDTO;
+import org.broadleafcommerce.cms.structure.service.AbstractStructuredContentRuleProcessor;
+
+import org.broadleafcommerce.core.order.dao.OrderDao;
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderItem;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class StructuredContentCartRuleProcessor extends AbstractStructuredContentRuleProcessor {
-    private OrderDao orderDao;
+  private OrderDao orderDao;
 
-    /**
-     * Expects to find a valid "Customer" in the valueMap.
-     * Uses the customer to locate the cart and then loops through the items in the current
-     * cart and checks to see if the cart items rules are met.
-     *
-     * @param sc
-     * @return
-     */
-    @Override
-    public boolean checkForMatch(StructuredContentDTO sc, Map<String, Object> valueMap) {
-        List<ItemCriteriaDTO> itemCriterias = sc.getItemCriteriaDTOList();
+  /**
+   * Expects to find a valid "Customer" in the valueMap. Uses the customer to locate the cart and then loops through the
+   * items in the current cart and checks to see if the cart items rules are met.
+   *
+   * @param   sc        DOCUMENT ME!
+   * @param   valueMap  DOCUMENT ME!
+   *
+   * @return  expects to find a valid "Customer" in the valueMap.
+   */
+  @Override public boolean checkForMatch(StructuredContentDTO sc, Map<String, Object> valueMap) {
+    List<ItemCriteriaDTO> itemCriterias = sc.getItemCriteriaDTOList();
 
-        if (itemCriterias != null && itemCriterias.size() > 0) {
+    if ((itemCriterias != null) && (itemCriterias.size() > 0)) {
+      Order order = lookupOrderForCustomer((Customer) valueMap.get("customer"));
 
-            Order order = lookupOrderForCustomer((Customer) valueMap.get("customer"));
+      if ((order == null) || (order.getOrderItems() == null) || (order.getOrderItems().size() < 1)) {
+        return false;
+      }
 
-            if (order == null || order.getOrderItems() == null || order.getOrderItems().size() < 1) {
-                return false;
-            }
-
-            for(ItemCriteriaDTO itemCriteria : itemCriterias) {
-                if (! checkItemCriteria(itemCriteria, order.getOrderItems())) {
-                    // Item criteria check failed.
-                    return false;
-                }
-            }
+      for (ItemCriteriaDTO itemCriteria : itemCriterias) {
+        if (!checkItemCriteria(itemCriteria, order.getOrderItems())) {
+          // Item criteria check failed.
+          return false;
         }
-
-
-        return true;
+      }
     }
 
-    private Order lookupOrderForCustomer(Customer c) {
-        Order o = null;
-        if (c != null) {
-            o = orderDao.readCartForCustomer(c);
-        }
 
-        return o;
+    return true;
+  }
+
+  private Order lookupOrderForCustomer(Customer c) {
+    Order o = null;
+
+    if (c != null) {
+      o = orderDao.readCartForCustomer(c);
     }
 
-    private boolean checkItemCriteria(ItemCriteriaDTO itemCriteria, List<OrderItem> orderItems) {
-        Map<String,Object> vars = new HashMap<String, Object>();
-        int foundCount = 0;
-        Iterator<OrderItem> items = orderItems.iterator();
-        while (foundCount < itemCriteria.getQty() && items.hasNext()) {
-            OrderItem currentItem = items.next();
-            vars.put("discreteOrderItem", currentItem);
-            vars.put("orderItem", currentItem);
-            boolean match = executeExpression(itemCriteria.getMatchRule(), vars);
+    return o;
+  }
 
-            if (match) {
-                foundCount = foundCount + currentItem.getQuantity();
-            }
-        }
-        return (foundCount >= itemCriteria.getQty().intValue());
+  private boolean checkItemCriteria(ItemCriteriaDTO itemCriteria, List<OrderItem> orderItems) {
+    Map<String, Object> vars       = new HashMap<String, Object>();
+    int                 foundCount = 0;
+    Iterator<OrderItem> items      = orderItems.iterator();
+
+    while ((foundCount < itemCriteria.getQty()) && items.hasNext()) {
+      OrderItem currentItem = items.next();
+      vars.put("discreteOrderItem", currentItem);
+      vars.put("orderItem", currentItem);
+
+      boolean match = executeExpression(itemCriteria.getMatchRule(), vars);
+
+      if (match) {
+        foundCount = foundCount + currentItem.getQuantity();
+      }
     }
 
-    public void setOrderDao(OrderDao orderDao) {
-        this.orderDao = orderDao;
-    }
+    return (foundCount >= itemCriteria.getQty().intValue());
+  }
 
-    public OrderDao getOrderDao() {
-        return orderDao;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderDao  DOCUMENT ME!
+   */
+  public void setOrderDao(OrderDao orderDao) {
+    this.orderDao = orderDao;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public OrderDao getOrderDao() {
+    return orderDao;
+  }
+} // end class StructuredContentCartRuleProcessor

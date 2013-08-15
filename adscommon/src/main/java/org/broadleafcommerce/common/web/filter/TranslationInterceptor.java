@@ -16,34 +16,54 @@
 
 package org.broadleafcommerce.common.web.filter;
 
+import javax.annotation.Resource;
+
 import org.springframework.ui.ModelMap;
+
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.WebRequestInterceptor;
 
-import javax.annotation.Resource;
 
 /**
- * Interceptor for use with portlets that calls the {@link org.broadleafcommerce.common.web.filter.TranslationRequestProcessor}.
- * 
- * @author bpolster
+ * Interceptor for use with portlets that calls the
+ * {@link org.broadleafcommerce.common.web.filter.TranslationRequestProcessor}.
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class TranslationInterceptor implements WebRequestInterceptor {
-    
-    @Resource(name = "blTranslationRequestProcessor")
-    protected TranslationRequestProcessor translationRequestProcessor;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public void preHandle(WebRequest request) throws Exception {
-        translationRequestProcessor.process(request);
-    }
+  /** DOCUMENT ME! */
+  @Resource(name = "blTranslationRequestProcessor")
+  protected TranslationRequestProcessor translationRequestProcessor;
 
-    @Override
-    public void postHandle(WebRequest request, ModelMap model) throws Exception {
-        // unimplemented
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void afterCompletion(WebRequest request, Exception ex) throws Exception {
-        // unimplemented
-    }
-}
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#afterCompletion(org.springframework.web.context.request.WebRequest,
+   *       java.lang.Exception)
+   */
+  @Override public void afterCompletion(WebRequest request, Exception ex) throws Exception {
+    // unimplemented
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#postHandle(org.springframework.web.context.request.WebRequest,
+   *       org.springframework.ui.ModelMap)
+   */
+  @Override public void postHandle(WebRequest request, ModelMap model) throws Exception {
+    // unimplemented
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.context.request.WebRequestInterceptor#preHandle(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public void preHandle(WebRequest request) throws Exception {
+    translationRequestProcessor.process(request);
+  }
+} // end class TranslationInterceptor

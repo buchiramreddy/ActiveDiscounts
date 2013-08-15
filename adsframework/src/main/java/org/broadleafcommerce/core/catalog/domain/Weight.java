@@ -16,56 +16,90 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
+import java.io.Serializable;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import org.broadleafcommerce.common.presentation.AdminPresentation;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.common.util.WeightUnitOfMeasureType;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-@Embeddable
-public class Weight implements Serializable {
+@Embeddable public class Weight implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "ProductWeight_Product_Weight",
+    order        = 8000,
+    tab          = ProductImpl.Presentation.Tab.Name.Shipping,
+    tabOrder     = ProductImpl.Presentation.Tab.Order.Shipping,
+    group        = ProductImpl.Presentation.Group.Name.Shipping,
+    groupOrder   = ProductImpl.Presentation.Group.Order.Shipping
+  )
+  @Column(name = "WEIGHT")
+  protected BigDecimal weight;
 
-    @Column(name = "WEIGHT")
-    @AdminPresentation(friendlyName = "ProductWeight_Product_Weight", order = 8000,
-        tab = ProductImpl.Presentation.Tab.Name.Shipping, tabOrder = ProductImpl.Presentation.Tab.Order.Shipping,
-        group = ProductImpl.Presentation.Group.Name.Shipping, groupOrder = ProductImpl.Presentation.Group.Order.Shipping)
-    protected BigDecimal weight;
 
-        
-    @Column(name = "WEIGHT_UNIT_OF_MEASURE")
-    @AdminPresentation(friendlyName = "ProductWeight_Product_Weight_Units", order = 9000,
-        tab = ProductImpl.Presentation.Tab.Name.Shipping, tabOrder = ProductImpl.Presentation.Tab.Order.Shipping,
-        group = ProductImpl.Presentation.Group.Name.Shipping, groupOrder = ProductImpl.Presentation.Group.Order.Shipping,
-        fieldType= SupportedFieldType.BROADLEAF_ENUMERATION, 
-        broadleafEnumeration="org.broadleafcommerce.common.util.WeightUnitOfMeasureType")
-    protected String weightUnitOfMeasure;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName         = "ProductWeight_Product_Weight_Units",
+    order                = 9000,
+    tab                  = ProductImpl.Presentation.Tab.Name.Shipping,
+    tabOrder             = ProductImpl.Presentation.Tab.Order.Shipping,
+    group                = ProductImpl.Presentation.Group.Name.Shipping,
+    groupOrder           = ProductImpl.Presentation.Group.Order.Shipping,
+    fieldType            = SupportedFieldType.BROADLEAF_ENUMERATION,
+    broadleafEnumeration = "org.broadleafcommerce.common.util.WeightUnitOfMeasureType"
+  )
+  @Column(name = "WEIGHT_UNIT_OF_MEASURE")
+  protected String weightUnitOfMeasure;
 
-    public WeightUnitOfMeasureType getWeightUnitOfMeasure() {
-        return WeightUnitOfMeasureType.getInstance(weightUnitOfMeasure);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public WeightUnitOfMeasureType getWeightUnitOfMeasure() {
+    return WeightUnitOfMeasureType.getInstance(weightUnitOfMeasure);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  weightUnitOfMeasure  DOCUMENT ME!
+   */
+  public void setWeightUnitOfMeasure(WeightUnitOfMeasureType weightUnitOfMeasure) {
+    if (weightUnitOfMeasure != null) {
+      this.weightUnitOfMeasure = weightUnitOfMeasure.getType();
     }
+  }
 
-    public void setWeightUnitOfMeasure(WeightUnitOfMeasureType weightUnitOfMeasure) {
-        if (weightUnitOfMeasure != null) {
-            this.weightUnitOfMeasure = weightUnitOfMeasure.getType();
-        }
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BigDecimal getWeight() {
+    return weight;
+  }
 
-    public BigDecimal getWeight() {
-        return weight;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  weight  DOCUMENT ME!
+   */
+  public void setWeight(BigDecimal weight) {
+    this.weight = weight;
+  }
 
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
-    }
-
-}
+} // end class Weight

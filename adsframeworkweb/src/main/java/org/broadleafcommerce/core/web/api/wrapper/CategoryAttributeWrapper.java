@@ -16,45 +16,59 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.CategoryAttribute;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.catalog.domain.CategoryAttribute;
+
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "categoryAttribute")
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class CategoryAttributeWrapper extends BaseWrapper implements APIWrapper<CategoryAttribute>{
+@XmlRootElement(name = "categoryAttribute")
+public class CategoryAttributeWrapper extends BaseWrapper implements APIWrapper<CategoryAttribute> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected String attributeName;
 
-    @XmlElement
-    protected Long categoryId;
+  /** DOCUMENT ME! */
+  @XmlElement protected String attributeValue;
 
-    @XmlElement
-    protected String attributeName;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long categoryId;
 
-    @XmlElement
-    protected String attributeValue;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @Override
-    public void wrapDetails(CategoryAttribute model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.categoryId = model.getCategory().getId();
-        this.attributeName = model.getName();
-        this.attributeValue = model.getValue();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void wrapSummary(CategoryAttribute model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.CategoryAttribute,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(CategoryAttribute model, HttpServletRequest request) {
+    this.id             = model.getId();
+    this.categoryId     = model.getCategory().getId();
+    this.attributeName  = model.getName();
+    this.attributeValue = model.getValue();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.CategoryAttribute,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(CategoryAttribute model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class CategoryAttributeWrapper

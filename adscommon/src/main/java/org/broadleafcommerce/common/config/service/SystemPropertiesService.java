@@ -16,30 +16,67 @@
 
 package org.broadleafcommerce.common.config.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.config.domain.SystemProperty;
 
-import java.util.List;
 
 /**
  * To change this template use File | Settings | File Templates.
- * <p/>
- * User: Kelly Tisdell
- * Date: 6/25/12
+ *
+ * <p>User: Kelly Tisdell Date: 6/25/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface SystemPropertiesService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public SystemProperty saveSystemProperty(SystemProperty systemProperty);
+  /**
+   * This method should not persist anything to the database. It should simply return the correct implementation of the
+   * SystemProperty interface.
+   *
+   * @return  this method should not persist anything to the database.
+   */
+  SystemProperty createNewSystemProperty();
 
-    public void deleteSystemProperty(SystemProperty systemProperty);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<SystemProperty> findAllSystemProperties();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  systemProperty  DOCUMENT ME!
+   */
+  void deleteSystemProperty(SystemProperty systemProperty);
 
-    public SystemProperty findSystemPropertyByName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * This method should not persist anything to the database. It should simply return the correct implementation of
-     * the SystemProperty interface.
-     * @return
-     */
-    public SystemProperty createNewSystemProperty();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<SystemProperty> findAllSystemProperties();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SystemProperty findSystemPropertyByName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   systemProperty  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SystemProperty saveSystemProperty(SystemProperty systemProperty);
+} // end interface SystemPropertiesService

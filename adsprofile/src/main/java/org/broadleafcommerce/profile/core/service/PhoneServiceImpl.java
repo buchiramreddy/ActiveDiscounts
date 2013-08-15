@@ -16,27 +16,52 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.dao.PhoneDao;
-import org.broadleafcommerce.profile.core.domain.Phone;
-import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.profile.core.dao.PhoneDao;
+import org.broadleafcommerce.profile.core.domain.Phone;
+
+import org.springframework.stereotype.Service;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blPhoneService")
 public class PhoneServiceImpl implements PhoneService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blPhoneDao")
-    protected PhoneDao phoneDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blPhoneDao")
+  protected PhoneDao phoneDao;
 
-    public Phone savePhone(Phone phone) {
-        return phoneDao.save(phone);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Phone readPhoneById(Long phoneId) {
-        return phoneDao.readPhoneById(phoneId);
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.PhoneService#create()
+   */
+  @Override public Phone create() {
+    return phoneDao.create();
+  }
 
-    public Phone create() {
-        return phoneDao.create();
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.PhoneService#readPhoneById(java.lang.Long)
+   */
+  @Override public Phone readPhoneById(Long phoneId) {
+    return phoneDao.readPhoneById(phoneId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.PhoneService#savePhone(org.broadleafcommerce.profile.core.domain.Phone)
+   */
+  @Override public Phone savePhone(Phone phone) {
+    return phoneDao.save(phone);
+  }
+} // end class PhoneServiceImpl

@@ -16,22 +16,48 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FilterNotFoundException extends Exception {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public FilterNotFoundException() {
-        super();
-    }
+  /**
+   * Creates a new FilterNotFoundException object.
+   */
+  public FilterNotFoundException() {
+    super();
+  }
 
-    public FilterNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new FilterNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public FilterNotFoundException(String message) {
+    super(message);
+  }
 
-    public FilterNotFoundException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new FilterNotFoundException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public FilterNotFoundException(Throwable cause) {
+    super(cause);
+  }
 
-    public FilterNotFoundException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new FilterNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public FilterNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-}
+} // end class FilterNotFoundException

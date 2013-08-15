@@ -16,25 +16,58 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
+import java.util.Map;
+
 import org.broadleafcommerce.common.presentation.client.OperationType;
+
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 
-import java.util.Map;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface InspectHelper {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ClassMetadata getMergedClassMetadata(Class<?>[] entities, Map<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties);
-    
-    public Map<String, FieldMetadata> getSimpleMergedProperties(String entityName, PersistencePerspective persistencePerspective);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   operationType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PersistenceModule getCompatibleModule(OperationType operationType);
 
-    public PersistenceModule getCompatibleModule(OperationType operationType);
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entities          DOCUMENT ME!
+   * @param   mergedProperties  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ClassMetadata getMergedClassMetadata(Class<?>[] entities,
+    Map<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entityName              DOCUMENT ME!
+   * @param   persistencePerspective  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, FieldMetadata> getSimpleMergedProperties(String entityName,
+    PersistencePerspective persistencePerspective);
+
+} // end interface InspectHelper

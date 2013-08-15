@@ -17,8 +17,13 @@
 package org.broadleafcommerce.common.extensibility.context.merge;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum Placement {
-    PREPEND,APPEND,SPECIFIC
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  PREPEND, APPEND, SPECIFIC
 }

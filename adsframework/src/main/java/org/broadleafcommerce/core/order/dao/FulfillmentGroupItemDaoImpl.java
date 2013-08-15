@@ -16,50 +16,82 @@
 
 package org.broadleafcommerce.core.order.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupItemImpl;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blFulfillmentGroupItemDao")
 public class FulfillmentGroupItemDaoImpl implements FulfillmentGroupItemDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
-
-    public void delete(FulfillmentGroupItem fulfillmentGroupItem) {
-        if (!em.contains(fulfillmentGroupItem)) {
-            fulfillmentGroupItem = readFulfillmentGroupItemById(fulfillmentGroupItem.getId());
-        }
-        em.remove(fulfillmentGroupItem);
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao#delete(org.broadleafcommerce.core.order.domain.FulfillmentGroupItem)
+   */
+  @Override public void delete(FulfillmentGroupItem fulfillmentGroupItem) {
+    if (!em.contains(fulfillmentGroupItem)) {
+      fulfillmentGroupItem = readFulfillmentGroupItemById(fulfillmentGroupItem.getId());
     }
 
-    public FulfillmentGroupItem save(final FulfillmentGroupItem fulfillmentGroupItem) {
-        return em.merge(fulfillmentGroupItem);
-    }
+    em.remove(fulfillmentGroupItem);
+  }
 
-    public FulfillmentGroupItem readFulfillmentGroupItemById(final Long fulfillmentGroupItemId) {
-        return (FulfillmentGroupItem) em.find(FulfillmentGroupItemImpl.class, fulfillmentGroupItemId);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao#save(org.broadleafcommerce.core.order.domain.FulfillmentGroupItem)
+   */
+  @Override public FulfillmentGroupItem save(final FulfillmentGroupItem fulfillmentGroupItem) {
+    return em.merge(fulfillmentGroupItem);
+  }
 
-    @SuppressWarnings("unchecked")
-    public List<FulfillmentGroupItem> readFulfillmentGroupItemsForFulfillmentGroup(final FulfillmentGroup fulfillmentGroup) {
-        final Query query = em.createNamedQuery("BC_READ_FULFILLMENT_GROUP_ITEM_BY_FULFILLMENT_GROUP_ID");
-        query.setParameter("fulfillmentGroupId", fulfillmentGroup.getId());
-        return query.getResultList();
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao#readFulfillmentGroupItemById(java.lang.Long)
+   */
+  @Override public FulfillmentGroupItem readFulfillmentGroupItemById(final Long fulfillmentGroupItemId) {
+    return (FulfillmentGroupItem) em.find(FulfillmentGroupItemImpl.class, fulfillmentGroupItemId);
+  }
 
-    public FulfillmentGroupItem create() {
-        return ((FulfillmentGroupItem) entityConfiguration.createEntityInstance("org.broadleafcommerce.core.order.domain.FulfillmentGroupItem"));
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao#readFulfillmentGroupItemsForFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<FulfillmentGroupItem> readFulfillmentGroupItemsForFulfillmentGroup(
+    final FulfillmentGroup fulfillmentGroup) {
+    final Query query = em.createNamedQuery("BC_READ_FULFILLMENT_GROUP_ITEM_BY_FULFILLMENT_GROUP_ID");
+    query.setParameter("fulfillmentGroupId", fulfillmentGroup.getId());
+
+    return query.getResultList();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao#create()
+   */
+  @Override public FulfillmentGroupItem create() {
+    return ((FulfillmentGroupItem) entityConfiguration.createEntityInstance(
+          "org.broadleafcommerce.core.order.domain.FulfillmentGroupItem"));
+  }
+} // end class FulfillmentGroupItemDaoImpl

@@ -17,10 +17,13 @@
 package org.broadleafcommerce.openadmin.server.security.remote;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public enum EntityOperationType {
-    FETCH, ADD, UPDATE, REMOVE, INSPECT
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  FETCH, ADD, UPDATE, REMOVE, INSPECT
 }

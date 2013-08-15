@@ -16,131 +16,187 @@
 
 package org.broadleafcommerce.common.site.domain;
 
+import java.io.Serializable;
+
+import java.util.List;
+
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.site.service.type.SiteResolutionType;
 
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface Site extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Unique/internal id for a site.
-     * @return
-     */
-    public Long getId();
+  /**
+   * Retrieve an deep copy of this site. Not bound by entity manager scope.
+   *
+   * @return  a deep copy of this site
+   */
+  @Override Site clone();
 
-    /**
-     * Sets the internal id for a site.
-     * @param id
-     */
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * The display name for a site.
-     * @return
-     */
-    public String getName();
+  /**
+   * Retrieve a list of product, category and offer groupings that this site has access to.
+   *
+   * @return  a list of catalog groupings
+   */
+  List<Catalog> getCatalogs();
 
-    /**
-     * Sets the displayName for a site.
-     * @param name
-     */
-    public void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @deprecated use {@link #getSiteResolutionType()}
-     * Intended to be used along with the #getSiteIdentifierValue()
-     * by the SiteResolver to determine if this is the current site.
-     *
-     * @return
-     */
-    public String getSiteIdentifierType();
+  /**
+   * Unique/internal id for a site.
+   *
+   * @return  unique/internal id for a site.
+   */
+  Long getId();
 
-    /**
-     * @deprecated Use {@link #setSiteResolutionType(org.broadleafcommerce.common.site.service.type.SiteResolutionType)}
-     * Sets the site identifier type.
-     * @see #getSiteIdentifierType()
-     * @param siteIdentifierType
-     */
-    public void setSiteIdentifierType(String siteIdentifierType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Used along with {@link #getSiteResolutionType()} to determine the current
-     * Site for a given request.
-     *
-     * @return
-     */
-    public String getSiteIdentifierValue();
+  /**
+   * The display name for a site.
+   *
+   * @return  the display name for a site.
+   */
+  String getName();
 
-    /**
-     *
-     * @param siteIdentifierValue
-     */
-    public void setSiteIdentifierValue(String siteIdentifierValue);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * If null, then this is a single-site installation.    Otherwise,
-     * each site must define it's production sandbox so that data can
-     * be properly segmented.
-     *
-     * @return
-     */
-    public SandBox getProductionSandbox();
+  /**
+   * If null, then this is a single-site installation. Otherwise, each site must define it's production sandbox so that
+   * data can be properly segmented.
+   *
+   * @return  if null, then this is a single-site installation.
+   */
+  SandBox getProductionSandbox();
 
-    /**
-     * Sets the production sandbox.   Typically configured via the
-     * database.
-     *
-     * @see #getProductionSandbox();
-     * @param sandbox
-     */
-    public void setProductionSandbox(SandBox sandbox);
-    
-    /**
-     * Intended to be used along with the #getSiteIdentifierValue()
-     * by an implementation of SiteResolver to determine 
-     * if this is the current site.   
-     *
-     * @return
-     */
-    public SiteResolutionType getSiteResolutionType();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /** 
-     * Sets the site resolution type.
-     * @see #getSiteResolutionType()
-     * @param siteResolutionType
-     */
-    public void setSiteResolutionType(SiteResolutionType siteResolutionType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @deprecated  use {@link #getSiteResolutionType()} Intended to be used along with the #getSiteIdentifierValue() by
+   *              the SiteResolver to determine if this is the current site.
+   *
+   * @return      DOCUMENT ME!
+   */
+  String getSiteIdentifierType();
 
-    /**
-     * Retrieve a list of product, category and offer groupings that
-     * this site has access to
-     *
-     * @return a list of catalog groupings
-     */
-    public List<Catalog> getCatalogs();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Set the list of product, category and offer groupings that
-     * this site has access to
-     *
-     * @param catalogs a list of catalog groupings
-     */
-    public void setCatalogs(List<Catalog> catalogs);
+  /**
+   * Used along with {@link #getSiteResolutionType()} to determine the current Site for a given request.
+   *
+   * @return  used along with {@link #getSiteResolutionType()} to determine the current Site for a given request.
+   */
+  String getSiteIdentifierValue();
 
-    /**
-     * Retrieve an deep copy of this site. Not bound by
-     * entity manager scope.
-     *
-     * @return a deep copy of this site
-     */
-    public Site clone();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isDeactivated();
+  /**
+   * Intended to be used along with the #getSiteIdentifierValue() by an implementation of SiteResolver to determine if
+   * this is the current site.
+   *
+   * @return  intended to be used along with the #getSiteIdentifierValue() by an implementation of SiteResolver to
+   *          determine if this is the current site.
+   */
+  SiteResolutionType getSiteResolutionType();
 
-    public void setDeactivated(boolean deactivated);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isDeactivated();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Set the list of product, category and offer groupings that this site has access to.
+   *
+   * @param  catalogs  a list of catalog groupings
+   */
+  void setCatalogs(List<Catalog> catalogs);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  deactivated  DOCUMENT ME!
+   */
+  void setDeactivated(boolean deactivated);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the internal id for a site.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the displayName for a site.
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the production sandbox. Typically configured via the database.
+   *
+   * @see    #getProductionSandbox();
+   *
+   * @param  sandbox  DOCUMENT ME!
+   */
+  void setProductionSandbox(SandBox sandbox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @deprecated  Use {@link #setSiteResolutionType(org.broadleafcommerce.common.site.service.type.SiteResolutionType)}
+   *              Sets the site identifier type.
+   * @see         #getSiteIdentifierType()
+   *
+   * @param       siteIdentifierType  DOCUMENT ME!
+   */
+  void setSiteIdentifierType(String siteIdentifierType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  siteIdentifierValue  DOCUMENT ME!
+   */
+  void setSiteIdentifierValue(String siteIdentifierValue);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the site resolution type.
+   *
+   * @see    #getSiteResolutionType()
+   *
+   * @param  siteResolutionType  DOCUMENT ME!
+   */
+  void setSiteResolutionType(SiteResolutionType siteResolutionType);
+} // end interface Site

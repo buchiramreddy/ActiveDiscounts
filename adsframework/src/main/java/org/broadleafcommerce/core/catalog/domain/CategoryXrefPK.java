@@ -16,56 +16,94 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.io.Serializable;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
-@Embeddable
-public class CategoryXrefPK implements Serializable {
+@Embeddable public class CategoryXrefPK implements Serializable {
+  /** The Constant serialVersionUID. */
+  private static final long serialVersionUID = 1L;
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "CATEGORY_ID")
+  @ManyToOne(
+    targetEntity = CategoryImpl.class,
+    optional     = false
+  )
+  protected Category category = new CategoryImpl();
 
-    @ManyToOne(targetEntity = CategoryImpl.class, optional=false)
-    @JoinColumn(name = "CATEGORY_ID")
-    protected Category category = new CategoryImpl();
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "SUB_CATEGORY_ID")
+  @ManyToOne(
+    targetEntity = CategoryImpl.class,
+    optional     = false
+  )
+  protected Category subCategory = new CategoryImpl();
 
-    @ManyToOne(targetEntity = CategoryImpl.class, optional=false)
-    @JoinColumn(name = "SUB_CATEGORY_ID")
-    protected Category subCategory = new CategoryImpl();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Category getCategory() {
+    return category;
+  }
 
-    public Category getCategory() {
-        return category;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  public void setCategory(final Category category) {
+    this.category = category;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Category getSubCategory() {
+    return subCategory;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  subCategory  DOCUMENT ME!
+   */
+  public void setSubCategory(final Category subCategory) {
+    this.subCategory = subCategory;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(final Object obj) {
+    if (obj == null) {
+      return false;
+    } else if (!(obj instanceof CategoryXrefPK)) {
+      return false;
     }
 
-    public void setCategory(final Category category) {
-        this.category = category;
-    }
-
-    public Category getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(final Category subCategory) {
-        this.subCategory = subCategory;
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (obj == null) return false;
-        else if (!(obj instanceof CategoryXrefPK)) return false;
-
-        return category.getId().equals(((CategoryXrefPK) obj).getCategory().getId())
-        && subCategory.getId().equals(((CategoryXrefPK) obj).getSubCategory().getId());
-    }
+    return category.getId().equals(((CategoryXrefPK) obj).getCategory().getId())
+      && subCategory.getId().equals(((CategoryXrefPK) obj).getSubCategory().getId());
+  }
 
 
-    @Override
-    public int hashCode() {
-        return category.hashCode() + subCategory.hashCode();
-    }
-}
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    return category.hashCode() + subCategory.hashCode();
+  }
+} // end class CategoryXrefPK

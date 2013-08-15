@@ -18,13 +18,23 @@ package org.broadleafcommerce.openadmin.server.security.remote;
 
 import org.broadleafcommerce.common.exception.ServiceException;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AdminSecurityService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public AdminUser getAdminUser() throws ServiceException;
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  AdminUser getAdminUser() throws ServiceException;
+
 }

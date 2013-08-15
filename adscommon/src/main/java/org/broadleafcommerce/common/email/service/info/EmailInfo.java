@@ -16,141 +16,236 @@
 
 package org.broadleafcommerce.common.email.service.info;
 
-import org.broadleafcommerce.common.email.service.message.Attachment;
-
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.common.email.service.message.Attachment;
+
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class EmailInfo implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String emailType;
-    private String emailTemplate;
-    private String subject;
-    private String fromAddress;
-    private String messageBody;
-    private List<Attachment> attachments = new ArrayList<Attachment>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private String sendEmailReliableAsync;
-    private String sendAsyncPriority;
+  private List<Attachment> attachments   = new ArrayList<Attachment>();
+  private String           emailTemplate;
 
-    /**
-     * @return the emailType
-     */
-    public String getEmailType() {
-        return emailType;
-    }
+  private String emailType;
+  private String fromAddress;
+  private String messageBody;
+  private String sendAsyncPriority;
 
-    /**
-     * @param emailType the emailType to set
-     */
-    public void setEmailType(String emailType) {
-        this.emailType = emailType;
-    }
+  private String sendEmailReliableAsync;
+  private String subject;
 
-    /**
-     * @return the emailTemplate
-     */
-    public String getEmailTemplate() {
-        return emailTemplate;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param emailTemplate the emailTemplate to set
-     */
-    public void setEmailTemplate(String emailTemplate) {
-        this.emailTemplate = emailTemplate;
-    }
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override public synchronized EmailInfo clone() {
+    EmailInfo info = new EmailInfo();
+    info.setAttachments(attachments);
+    info.setEmailTemplate(emailTemplate);
+    info.setEmailType(emailType);
+    info.setFromAddress(fromAddress);
+    info.setMessageBody(messageBody);
+    info.setSendAsyncPriority(sendAsyncPriority);
+    info.setSendEmailReliableAsync(sendEmailReliableAsync);
+    info.setSubject(subject);
 
-    /**
-     * @return the subject
-     */
-    public String getSubject() {
-        return subject;
-    }
+    return info;
+  }
 
-    /**
-     * @param subject the subject to set
-     */
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the fromAddress
-     */
-    public String getFromAddress() {
-        return fromAddress;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Attachment> getAttachments() {
+    return attachments;
+  }
 
-    /**
-     * @param fromAddress the fromAddress to set
-     */
-    public void setFromAddress(String fromAddress) {
-        this.fromAddress = fromAddress;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the sendEmailReliableAsync
-     */
-    public String getSendEmailReliableAsync() {
-        return sendEmailReliableAsync;
-    }
+  /**
+   * The emailTemplate.
+   *
+   * @return  the emailTemplate
+   */
+  public String getEmailTemplate() {
+    return emailTemplate;
+  }
 
-    /**
-     * @param sendEmailReliableAsync the sendEmailReliableAsync to set
-     */
-    public void setSendEmailReliableAsync(String sendEmailReliableAsync) {
-        this.sendEmailReliableAsync = sendEmailReliableAsync;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the sendAsyncPriority
-     */
-    public String getSendAsyncPriority() {
-        return sendAsyncPriority;
-    }
+  /**
+   * The emailType.
+   *
+   * @return  the emailType
+   */
+  public String getEmailType() {
+    return emailType;
+  }
 
-    /**
-     * @param sendAsyncPriority the sendAsyncPriority to set
-     */
-    public void setSendAsyncPriority(String sendAsyncPriority) {
-        this.sendAsyncPriority = sendAsyncPriority;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getMessageBody() {
-        return messageBody;
-    }
+  /**
+   * The fromAddress.
+   *
+   * @return  the fromAddress
+   */
+  public String getFromAddress() {
+    return fromAddress;
+  }
 
-    public void setMessageBody(String messageBody) {
-        this.messageBody = messageBody;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<Attachment> getAttachments() {
-        return attachments;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getMessageBody() {
+    return messageBody;
+  }
 
-    public void setAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public synchronized EmailInfo clone() {
-        EmailInfo info = new EmailInfo();
-        info.setAttachments(attachments);
-        info.setEmailTemplate(emailTemplate);
-        info.setEmailType(emailType);
-        info.setFromAddress(fromAddress);
-        info.setMessageBody(messageBody);
-        info.setSendAsyncPriority(sendAsyncPriority);
-        info.setSendEmailReliableAsync(sendEmailReliableAsync);
-        info.setSubject(subject);
+  /**
+   * The sendAsyncPriority.
+   *
+   * @return  the sendAsyncPriority
+   */
+  public String getSendAsyncPriority() {
+    return sendAsyncPriority;
+  }
 
-        return info;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The sendEmailReliableAsync.
+   *
+   * @return  the sendEmailReliableAsync
+   */
+  public String getSendEmailReliableAsync() {
+    return sendEmailReliableAsync;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The subject.
+   *
+   * @return  the subject
+   */
+  public String getSubject() {
+    return subject;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  attachments  DOCUMENT ME!
+   */
+  public void setAttachments(List<Attachment> attachments) {
+    this.attachments = attachments;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailTemplate  the emailTemplate to set
+   */
+  public void setEmailTemplate(String emailTemplate) {
+    this.emailTemplate = emailTemplate;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailType  the emailType to set
+   */
+  public void setEmailType(String emailType) {
+    this.emailType = emailType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  fromAddress  the fromAddress to set
+   */
+  public void setFromAddress(String fromAddress) {
+    this.fromAddress = fromAddress;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  messageBody  DOCUMENT ME!
+   */
+  public void setMessageBody(String messageBody) {
+    this.messageBody = messageBody;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  sendAsyncPriority  the sendAsyncPriority to set
+   */
+  public void setSendAsyncPriority(String sendAsyncPriority) {
+    this.sendAsyncPriority = sendAsyncPriority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  sendEmailReliableAsync  the sendEmailReliableAsync to set
+   */
+  public void setSendEmailReliableAsync(String sendEmailReliableAsync) {
+    this.sendEmailReliableAsync = sendEmailReliableAsync;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  subject  the subject to set
+   */
+  public void setSubject(String subject) {
+    this.subject = subject;
+  }
+} // end class EmailInfo

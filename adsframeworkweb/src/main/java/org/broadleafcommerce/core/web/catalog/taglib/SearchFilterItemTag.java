@@ -16,247 +16,371 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.Product;
+import java.io.IOException;
+
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
+
+import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
+
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.Product;
+
 
 /**
- * <p>The SearchFilterItemTag renders form elements designed to help filter a list of products. There
- * are two different filter options currently implemented: multiSelect and sliderRange.</p>
- * <p>multiSelect, the default displayType, renders an unordered list of the unique values for properties.
- * Each item consists of a checkbox, a string containing either the string representation of the property
- * or, if set, the propertyDisplay property of a product. Javascript is also rendered that makes clicking on
- * the strings check the corresponding checkbox as well as apply the css class 'searchFilterDisabledSelect'
- * to unchecked options.</p>
- * <p>sliderRange relies on the designated property being of type {@link org.broadleafcommerce.common.money.Money} and renders a jQuery slider with
- * minimum and maximum values corresponding to the minimum and maximum values of the property. The slider renders
- * with javascript that causes 2 text input boxes to be updated with the values of the slider after each change.</p>
- * <p>After all changes, the javascript function updateSearchFilterResults will be called, this funciton should
- * be defined before the SearchFilterTag.</p>
- * 
+ * <p>The SearchFilterItemTag renders form elements designed to help filter a list of products. There are two different
+ * filter options currently implemented: multiSelect and sliderRange.</p>
+ *
+ * <p>multiSelect, the default displayType, renders an unordered list of the unique values for properties. Each item
+ * consists of a checkbox, a string containing either the string representation of the property or, if set, the
+ * propertyDisplay property of a product. Javascript is also rendered that makes clicking on the strings check the
+ * corresponding checkbox as well as apply the css class 'searchFilterDisabledSelect' to unchecked options.</p>
+ *
+ * <p>sliderRange relies on the designated property being of type {@link org.broadleafcommerce.common.money.Money} and
+ * renders a jQuery slider with minimum and maximum values corresponding to the minimum and maximum values of the
+ * property. The slider renders with javascript that causes 2 text input boxes to be updated with the values of the
+ * slider after each change.</p>
+ *
+ * <p>After all changes, the javascript function updateSearchFilterResults will be called, this funciton should be
+ * defined before the SearchFilterTag.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class SearchFilterItemTag extends SimpleTagSupport {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String property;
-    protected String propertyDisplay;
+  /** DOCUMENT ME! */
+  protected String displayTitle;
 
-    protected String displayTitle;
-    protected String displayType = "multiSelect";
+  /** DOCUMENT ME! */
+  protected String displayType = "multiSelect";
 
-    @Override
-    public void doTag() throws JspException, IOException {
+  /** DOCUMENT ME! */
+  protected String property;
 
-        JspWriter out = getJspContext().getOut();
-        out.println("<h3>"+getDisplayTitle()+"</h3>");          
+  /** DOCUMENT ME! */
+  protected String propertyDisplay;
 
-        if (displayType.equals("multiSelect")) {
-            doMultiSelect(out);
-        } else if (displayType.equals("sliderRange")) {
-            doSliderRange(out);
-        }
-        super.doTag();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.jsp.tagext.SimpleTagSupport#doTag()
+   */
+  @Override public void doTag() throws JspException, IOException {
+    JspWriter out = getJspContext().getOut();
+    out.println("<h3>" + getDisplayTitle() + "</h3>");
+
+    if (displayType.equals("multiSelect")) {
+      doMultiSelect(out);
+    } else if (displayType.equals("sliderRange")) {
+      doSliderRange(out);
     }
 
-    private void doMultiSelect(JspWriter out) throws JspException, IOException {
-        List<Product> products = ((SearchFilterTag) getParent()).getProducts();
-        List<Category> categories = ((SearchFilterTag) getParent()).getCategories();
+    super.doTag();
+  }
 
-        if(products != null ){
-            doProductMultiSelect(out, products);
-        }            
-          
-        if(categories != null){
-            doCategoryMultiSelect(out, categories);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDisplayTitle() {
+    if (displayTitle == null) {
+      return property;
     }
-    
-    private void doCategoryMultiSelect(JspWriter out, List<Category> categories) throws JspException, IOException{
-        String propertyCss = property.replaceAll("[\\.\\[\\]]", "_");
-        out.println("<ul class='searchFilter-"+propertyCss+"'>");
-        for (Category category : categories) {
-            String catUrl = getUrl(category);
-            out.println("<li vaue='"+category.getName()+"'>"+catUrl);
-        }
-        out.println("</ul>");
-    }
-    
-    private void doProductMultiSelect(JspWriter out, List<Product> products) throws JspException, IOException{
-        BeanToPropertyValueTransformer valueTransformer = new BeanToPropertyValueTransformer(property, true);
-        BeanToPropertyValueTransformer displayTransformer;
-        if (propertyDisplay != null) {
-            displayTransformer = new BeanToPropertyValueTransformer(propertyDisplay, true);
-        } else {
-            displayTransformer = valueTransformer;
-        }
 
-        HashMap<Object, Integer> countMap = new HashMap<Object, Integer>();
-        HashMap<Object, Object> valueDisplayMap = new HashMap<Object, Object>();
-        for (Product product : products) {
-            Object value = valueTransformer.transform(product);
-            Object display = displayTransformer.transform(product);
-            valueDisplayMap.put(value, display);
-            Integer integer = countMap.get(value);
-            if (integer == null) {
-                countMap.put(value, new Integer(1));
-            } else {
-                countMap.put(value, new Integer(integer + 1));
-            }
-        }
+    return displayTitle;
+  }
 
-        String propertyCss = property.replaceAll("[\\.\\[\\]]", "_");
-        out.println("<ul class='searchFilter-"+propertyCss+"'>");
-        for (Object value : countMap.keySet()) {
-            Object display = valueDisplayMap.get(value);
-            out.println("<li value='"+ value +"'><input type=\"checkbox\" class=\"searchFilter-"+propertyCss+"Checkbox\" name=\""+property+"\" value=\"" + value + "\"/> " +
-                    "<span class='searchFilter-"+propertyCss+"Display'>"+display+"</span>" + " <span class='searchFilter"+propertyCss+"-count'>(" + countMap.get(value).toString() + ")</span></li>");
-        }
-        out.println("</ul>");
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDisplayType() {
+    return displayType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
 
-        out.println("<script>" +
-                " var " + propertyCss + "Checked = 0;\r\n" +
-                "     $('.searchFilter-" + propertyCss + "Checkbox').click(function() {\r\n "+
-                "        var value = $(this).attr('value');\r\n" +
-                "        var checkbox = $(this).find(':checkbox');\r\n" +
-                "        if (" + propertyCss + "Checked == 0) {\r\n" +
-                "            $('.searchFilter-" + propertyCss + " li').each(function(){$(this).addClass('searchFilterDisabledSelect')});\r\n" +
-                "            $(this).removeClass('searchFilterDisabledSelect');\r\n" +
-                "            checkbox.attr('checked',true);\r\n" +
-                "            " + propertyCss + "Checked++;\r\n" +
-                "        } else if (checkbox.attr('checked') == true) {\r\n" +
-                "            $(this).addClass('searchFilterDisabledSelect');\r\n" +
-                "            if (" + propertyCss + "Checked == 1) {\r\n" +
-                "                // unchecking the only checked category, so reactivate all categories\r\n" +
-                "                $('.searchFilter-"+propertyCss+" li').each(function(){$(this).removeClass('searchFilterDisabledSelect')});\r\n" +
-                "            } \r\n" +
-                "            checkbox.attr('checked',false);\r\n" +
-                "            " + propertyCss + "Checked--;\r\n" +
-                "        } else {\r\n" +
-                "            $(this).removeClass('searchFilterDisabledSelect');\r\n" +
-                "            checkbox.attr('checked',true);\r\n" +
-                "            " + propertyCss + "Checked++;\r\n" +
-                "        }\r\n" +
-                "        updateSearchFilterResults();\r\n" +
-                "    } );" +
-                
-                "     $('.searchFilter-" + propertyCss + "Display').click(function() {\r\n "+
-                "        var value = $(this).attr('value');\r\n" +
-                "        var liObj = $(this).parent(); \r\n" +
-                "        var checkbox = liObj.find(':checkbox');\r\n" +                
-                "        if (" + propertyCss + "Checked == 0) {\r\n" +
-                "            $('.searchFilter-" + propertyCss + " li').each(function(){liObj.addClass('searchFilterDisabledSelect')});\r\n" +
-                "            liObj.removeClass('searchFilterDisabledSelect');\r\n" +
-                "            checkbox.attr('checked',true);\r\n" +
-                "            " + propertyCss + "Checked++;\r\n" +
-                "        } else if (checkbox.attr('checked') == true) {\r\n" +
-                "            liObj.addClass('searchFilterDisabledSelect');\r\n" +
-                "            if (" + propertyCss + "Checked == 1) {\r\n" +
-                "                // unchecking the only checked category, so reactivate all categories\r\n" +
-                "                $('.searchFilter-"+propertyCss+" li').each(function(){liObj.removeClass('searchFilterDisabledSelect')});\r\n" +
-                "            } \r\n" +
-                "            checkbox.attr('checked',false);\r\n" +
-                "            " + propertyCss + "Checked--;\r\n" +
-                "        } else {\r\n" +
-                "            liObj.removeClass('searchFilterDisabledSelect');\r\n" +
-                "            checkbox.attr('checked',true);\r\n" +
-                "            " + propertyCss + "Checked++;\r\n" +
-                "        }\r\n" +
-                "        updateSearchFilterResults();\r\n" +
-                "    } );" +
-        "</script>");
-        
-    }
-    
-    private void doSliderRange(JspWriter out)  throws JspException, IOException {
-        List<Product> products = ((SearchFilterTag) getParent()).getProducts();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getProperty() {
+    return property;
+  }
 
-        Money min = null;
-        Money max = null;
-        BeanToPropertyValueTransformer valueTransformer = new BeanToPropertyValueTransformer(property, true);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        for (Product product : products) {
-            Money propertyObject = (Money) valueTransformer.transform(product);
-            if (propertyObject == null) {
-                min = new Money(0D);
-                max = new Money(0D);
-            } else {
-                min = propertyObject.min(min);
-                max = propertyObject.max(max);
-            }
-        }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyDisplay() {
+    return propertyDisplay;
+  }
 
-        String propertyCss = property.replaceAll("[.\\[\\]]", "_");
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        out.println("<div id='searchFilter-"+propertyCss+"'></div>");
-        out.println("Range:");
-        out.println("<input type=\"text\" id=\"min-" + propertyCss + "\" name='min-" + property + "' value='"+min.getCurrency().getSymbol()+min.getAmount().toPlainString()+"'/> - ");
-        out.println("<input type=\"text\" id=\"max-" + propertyCss + "\" name='max-" + property + "' value='"+max.getCurrency().getSymbol()+max.getAmount().toPlainString()+"'/> <br/>");
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayTitle  DOCUMENT ME!
+   */
+  public void setDisplayTitle(String displayTitle) {
+    this.displayTitle = displayTitle;
+  }
 
-        out.println("        <script type=\"text/javascript\">\r\n" +
-                "        $(function() {\r\n" +
-                "            $(\"#searchFilter-" + propertyCss + "\").slider({\r\n" +
-                "                range: true,\r\n" +
-                "                min: "+ min.getAmount().toPlainString() +", max: "+ max.getAmount().toPlainString() + "," +
-                "                values: ["+ min.getAmount().toPlainString() +","+ max.getAmount().toPlainString() +"]," +
-                "                slide: function(event, ui) {\r\n" +
-                "                    $(\"#min-" + propertyCss + "\").val('" + min.getCurrency().getSymbol() + "' + ui.values[0] );\r\n" +
-                "                    $(\"#max-" + propertyCss + "\").val('" + max.getCurrency().getSymbol() + "' + ui.values[1]);\r\n" +
-                "                }\r\n" +
-                "            });\r\n" +
-                "        });\r\n" +
-                "        $('#searchFilter-"+propertyCss+"').bind('slidechange',  updateSearchFilterResults); \r\n" +
-        "        </script>");
-    }
-    
-    protected String getUrl(Category category) {
-        PageContext pageContext = (PageContext)getJspContext();
-        HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-        StringBuffer sb = new StringBuffer();
-        sb.append("<a href=\"");
-        sb.append(request.getContextPath());
-        sb.append("/");
-        sb.append(category.getGeneratedUrl());
-        sb.append("\">");
-        sb.append(category.getName());
-        sb.append("</a>");
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return sb.toString();
-    }
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayType  DOCUMENT ME!
+   */
+  public void setDisplayType(String displayType) {
+    this.displayType = displayType;
+  }
 
-    public String getProperty() {
-        return property;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  property  DOCUMENT ME!
+   */
+  public void setProperty(String property) {
+    this.property = property;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  propertyDisplay  DOCUMENT ME!
+   */
+  public void setPropertyDisplay(String propertyDisplay) {
+    this.propertyDisplay = propertyDisplay;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   category  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected String getUrl(Category category) {
+    PageContext        pageContext = (PageContext) getJspContext();
+    HttpServletRequest request     = (HttpServletRequest) pageContext.getRequest();
+    StringBuffer       sb          = new StringBuffer();
+    sb.append("<a href=\"");
+    sb.append(request.getContextPath());
+    sb.append("/");
+    sb.append(category.getGeneratedUrl());
+    sb.append("\">");
+    sb.append(category.getName());
+    sb.append("</a>");
+
+    return sb.toString();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void doCategoryMultiSelect(JspWriter out, List<Category> categories) throws JspException, IOException {
+    String propertyCss = property.replaceAll("[\\.\\[\\]]", "_");
+    out.println("<ul class='searchFilter-" + propertyCss + "'>");
+
+    for (Category category : categories) {
+      String catUrl = getUrl(category);
+      out.println("<li vaue='" + category.getName() + "'>" + catUrl);
     }
-    public void setProperty(String property) {
-        this.property = property;
+
+    out.println("</ul>");
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void doMultiSelect(JspWriter out) throws JspException, IOException {
+    List<Product>  products   = ((SearchFilterTag) getParent()).getProducts();
+    List<Category> categories = ((SearchFilterTag) getParent()).getCategories();
+
+    if (products != null) {
+      doProductMultiSelect(out, products);
     }
-    public String getDisplayType() {
-        return displayType;
+
+    if (categories != null) {
+      doCategoryMultiSelect(out, categories);
     }
-    public void setDisplayType(String displayType) {
-        this.displayType = displayType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void doProductMultiSelect(JspWriter out, List<Product> products) throws JspException, IOException {
+    BeanToPropertyValueTransformer valueTransformer   = new BeanToPropertyValueTransformer(property, true);
+    BeanToPropertyValueTransformer displayTransformer;
+
+    if (propertyDisplay != null) {
+      displayTransformer = new BeanToPropertyValueTransformer(propertyDisplay, true);
+    } else {
+      displayTransformer = valueTransformer;
     }
-    public String getDisplayTitle() {
-        if (displayTitle==null) return property;
-        return displayTitle;
+
+    HashMap<Object, Integer> countMap        = new HashMap<Object, Integer>();
+    HashMap<Object, Object>  valueDisplayMap = new HashMap<Object, Object>();
+
+    for (Product product : products) {
+      Object value   = valueTransformer.transform(product);
+      Object display = displayTransformer.transform(product);
+      valueDisplayMap.put(value, display);
+
+      Integer integer = countMap.get(value);
+
+      if (integer == null) {
+        countMap.put(value, new Integer(1));
+      } else {
+        countMap.put(value, new Integer(integer + 1));
+      }
     }
-    public void setDisplayTitle(String displayTitle) {
-        this.displayTitle = displayTitle;
+
+    String propertyCss = property.replaceAll("[\\.\\[\\]]", "_");
+    out.println("<ul class='searchFilter-" + propertyCss + "'>");
+
+    for (Object value : countMap.keySet()) {
+      Object display = valueDisplayMap.get(value);
+      out.println("<li value='" + value + "'><input type=\"checkbox\" class=\"searchFilter-" + propertyCss
+        + "Checkbox\" name=\"" + property + "\" value=\"" + value + "\"/> "
+        + "<span class='searchFilter-" + propertyCss + "Display'>" + display + "</span>" + " <span class='searchFilter"
+        + propertyCss + "-count'>(" + countMap.get(value).toString() + ")</span></li>");
     }
-    public String getPropertyDisplay() {
-        return propertyDisplay;
+
+    out.println("</ul>");
+
+
+    out.println("<script>"
+      + " var " + propertyCss + "Checked = 0;\r\n"
+      + "     $('.searchFilter-" + propertyCss + "Checkbox').click(function() {\r\n "
+      + "        var value = $(this).attr('value');\r\n"
+      + "        var checkbox = $(this).find(':checkbox');\r\n"
+      + "        if (" + propertyCss + "Checked == 0) {\r\n"
+      + "            $('.searchFilter-" + propertyCss
+      + " li').each(function(){$(this).addClass('searchFilterDisabledSelect')});\r\n"
+      + "            $(this).removeClass('searchFilterDisabledSelect');\r\n"
+      + "            checkbox.attr('checked',true);\r\n"
+      + "            " + propertyCss + "Checked++;\r\n"
+      + "        } else if (checkbox.attr('checked') == true) {\r\n"
+      + "            $(this).addClass('searchFilterDisabledSelect');\r\n"
+      + "            if (" + propertyCss + "Checked == 1) {\r\n"
+      + "                // unchecking the only checked category, so reactivate all categories\r\n"
+      + "                $('.searchFilter-" + propertyCss
+      + " li').each(function(){$(this).removeClass('searchFilterDisabledSelect')});\r\n"
+      + "            } \r\n"
+      + "            checkbox.attr('checked',false);\r\n"
+      + "            " + propertyCss + "Checked--;\r\n"
+      + "        } else {\r\n"
+      + "            $(this).removeClass('searchFilterDisabledSelect');\r\n"
+      + "            checkbox.attr('checked',true);\r\n"
+      + "            " + propertyCss + "Checked++;\r\n"
+      + "        }\r\n"
+      + "        updateSearchFilterResults();\r\n"
+      + "    } );"
+      +
+
+      "     $('.searchFilter-" + propertyCss + "Display').click(function() {\r\n "
+      + "        var value = $(this).attr('value');\r\n"
+      + "        var liObj = $(this).parent(); \r\n"
+      + "        var checkbox = liObj.find(':checkbox');\r\n"
+      + "        if (" + propertyCss + "Checked == 0) {\r\n"
+      + "            $('.searchFilter-" + propertyCss
+      + " li').each(function(){liObj.addClass('searchFilterDisabledSelect')});\r\n"
+      + "            liObj.removeClass('searchFilterDisabledSelect');\r\n"
+      + "            checkbox.attr('checked',true);\r\n"
+      + "            " + propertyCss + "Checked++;\r\n"
+      + "        } else if (checkbox.attr('checked') == true) {\r\n"
+      + "            liObj.addClass('searchFilterDisabledSelect');\r\n"
+      + "            if (" + propertyCss + "Checked == 1) {\r\n"
+      + "                // unchecking the only checked category, so reactivate all categories\r\n"
+      + "                $('.searchFilter-" + propertyCss
+      + " li').each(function(){liObj.removeClass('searchFilterDisabledSelect')});\r\n"
+      + "            } \r\n"
+      + "            checkbox.attr('checked',false);\r\n"
+      + "            " + propertyCss + "Checked--;\r\n"
+      + "        } else {\r\n"
+      + "            liObj.removeClass('searchFilterDisabledSelect');\r\n"
+      + "            checkbox.attr('checked',true);\r\n"
+      + "            " + propertyCss + "Checked++;\r\n"
+      + "        }\r\n"
+      + "        updateSearchFilterResults();\r\n"
+      + "    } );"
+      + "</script>");
+
+  } // end method doProductMultiSelect
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void doSliderRange(JspWriter out) throws JspException, IOException {
+    List<Product> products = ((SearchFilterTag) getParent()).getProducts();
+
+    Money                          min              = null;
+    Money                          max              = null;
+    BeanToPropertyValueTransformer valueTransformer = new BeanToPropertyValueTransformer(property, true);
+
+    for (Product product : products) {
+      Money propertyObject = (Money) valueTransformer.transform(product);
+
+      if (propertyObject == null) {
+        min = new Money(0D);
+        max = new Money(0D);
+      } else {
+        min = propertyObject.min(min);
+        max = propertyObject.max(max);
+      }
     }
-    public void setPropertyDisplay(String propertyDisplay) {
-        this.propertyDisplay = propertyDisplay;
-    }
-}
+
+    String propertyCss = property.replaceAll("[.\\[\\]]", "_");
+
+    out.println("<div id='searchFilter-" + propertyCss + "'></div>");
+    out.println("Range:");
+    out.println("<input type=\"text\" id=\"min-" + propertyCss + "\" name='min-" + property + "' value='"
+      + min.getCurrency().getSymbol() + min.getAmount().toPlainString() + "'/> - ");
+    out.println("<input type=\"text\" id=\"max-" + propertyCss + "\" name='max-" + property + "' value='"
+      + max.getCurrency().getSymbol() + max.getAmount().toPlainString() + "'/> <br/>");
+
+    out.println("        <script type=\"text/javascript\">\r\n"
+      + "        $(function() {\r\n"
+      + "            $(\"#searchFilter-" + propertyCss + "\").slider({\r\n"
+      + "                range: true,\r\n"
+      + "                min: " + min.getAmount().toPlainString() + ", max: " + max.getAmount().toPlainString() + ","
+      + "                values: [" + min.getAmount().toPlainString() + "," + max.getAmount().toPlainString() + "],"
+      + "                slide: function(event, ui) {\r\n"
+      + "                    $(\"#min-" + propertyCss + "\").val('" + min.getCurrency().getSymbol()
+      + "' + ui.values[0] );\r\n"
+      + "                    $(\"#max-" + propertyCss + "\").val('" + max.getCurrency().getSymbol()
+      + "' + ui.values[1]);\r\n"
+      + "                }\r\n"
+      + "            });\r\n"
+      + "        });\r\n"
+      + "        $('#searchFilter-" + propertyCss + "').bind('slidechange',  updateSearchFilterResults); \r\n"
+      + "        </script>");
+  } // end method doSliderRange
+} // end class SearchFilterItemTag

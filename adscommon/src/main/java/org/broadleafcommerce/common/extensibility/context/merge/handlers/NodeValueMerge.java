@@ -16,66 +16,100 @@
 
 package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.w3c.dom.Node;
-
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+
+import org.w3c.dom.Node;
+
+
 /**
- * MergeHandler implementation that provides merging for the white space
- * delimited text values of a source and patch node. This merge takes into
- * account the same values from both nodes, such that the resulting string
- * is a union of the two without any repeat values.
- * 
- * @author jfischer
+ * MergeHandler implementation that provides merging for the white space delimited text values of a source and patch
+ * node. This merge takes into account the same values from both nodes, such that the resulting string is a union of the
+ * two without any repeat values.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class NodeValueMerge extends BaseHandler {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String delimiter = " ";
-    protected String regex = "[\\s\\n\\r]+";
+  /** DOCUMENT ME! */
+  protected String delimiter = " ";
 
-    public Node[] merge(List<Node> nodeList1, List<Node> nodeList2, List<Node> exhaustedNodes) {
-        if (CollectionUtils.isEmpty(nodeList1) || CollectionUtils.isEmpty(nodeList2)) {
-            return null;
-        }
-        Node node1 = nodeList1.get(0);
-        Node node2 = nodeList2.get(0);
-        String[] items1 = node1.getNodeValue().split(getRegEx());
-        String[] items2 = node2.getNodeValue().split(getRegEx());
-        Set<String> finalItems = new LinkedHashSet<String>();
-        for (String anItems1 : items1) {
-            finalItems.add(anItems1.trim());
-        }
-        for (String anItems2 : items2) {
-            finalItems.add(anItems2.trim());
-        }
-        StringBuilder sb = new StringBuilder();
-        Iterator<String> itr = finalItems.iterator();
-        while (itr.hasNext()) {
-            sb.append(itr.next());
-            if (itr.hasNext()) {
-                sb.append(getDelimiter());
-            }
-        }
-        node1.setNodeValue(sb.toString());
-        node2.setNodeValue(sb.toString());
+  /** DOCUMENT ME! */
+  protected String regex = "[\\s\\n\\r]+";
 
-        Node[] response = new Node[nodeList2.size()];
-        for (int j=0;j<response.length;j++){
-            response[j] = nodeList2.get(j);
-        }
-        return response;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDelimiter() {
+    return delimiter;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRegEx() {
+    return regex;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#merge(java.util.List,java.util.List,
+   *       java.util.List)
+   */
+  @Override public Node[] merge(List<Node> nodeList1, List<Node> nodeList2, List<Node> exhaustedNodes) {
+    if (CollectionUtils.isEmpty(nodeList1) || CollectionUtils.isEmpty(nodeList2)) {
+      return null;
     }
 
-    public String getDelimiter() {
-        return delimiter;
+    Node        node1      = nodeList1.get(0);
+    Node        node2      = nodeList2.get(0);
+    String[]    items1     = node1.getNodeValue().split(getRegEx());
+    String[]    items2     = node2.getNodeValue().split(getRegEx());
+    Set<String> finalItems = new LinkedHashSet<String>();
+
+    for (String anItems1 : items1) {
+      finalItems.add(anItems1.trim());
     }
 
-    public String getRegEx() {
-        return regex;
+    for (String anItems2 : items2) {
+      finalItems.add(anItems2.trim());
     }
-}
+
+    StringBuilder    sb  = new StringBuilder();
+    Iterator<String> itr = finalItems.iterator();
+
+    while (itr.hasNext()) {
+      sb.append(itr.next());
+
+      if (itr.hasNext()) {
+        sb.append(getDelimiter());
+      }
+    }
+
+    node1.setNodeValue(sb.toString());
+    node2.setNodeValue(sb.toString());
+
+    Node[] response = new Node[nodeList2.size()];
+
+    for (int j = 0; j < response.length; j++) {
+      response[j] = nodeList2.get(j);
+    }
+
+    return response;
+  } // end method merge
+} // end class NodeValueMerge

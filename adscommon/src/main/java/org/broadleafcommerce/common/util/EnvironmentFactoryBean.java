@@ -18,29 +18,60 @@ package org.broadleafcommerce.common.util;
 
 import org.springframework.beans.factory.FactoryBean;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class EnvironmentFactoryBean implements FactoryBean {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private String className;
+  private String className;
 
-    public EnvironmentFactoryBean(String className) {
-        this.className = className;
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new EnvironmentFactoryBean object.
+   *
+   * @param  className  DOCUMENT ME!
+   */
+  public EnvironmentFactoryBean(String className) {
+    this.className = className;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.beans.factory.FactoryBean#getObject()
+   */
+  @Override public Object getObject() throws Exception {
+    return Class.forName(className).newInstance();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.beans.factory.FactoryBean#getObjectType()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public Class getObjectType() {
+    try {
+      return Class.forName(className);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    public Object getObject() throws Exception {
-        return Class.forName(className).newInstance();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
-    public Class getObjectType() {
-        try {
-            return Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+  /**
+   * @see  org.springframework.beans.factory.FactoryBean#isSingleton()
+   */
+  @Override public boolean isSingleton() {
+    return false;
+  }
 
-    public boolean isSingleton() {
-        return false;
-    }
-
-}
+} // end class EnvironmentFactoryBean

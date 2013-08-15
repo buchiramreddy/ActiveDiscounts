@@ -17,26 +17,61 @@
 package org.broadleafcommerce.common.filter;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class PropertyFilter extends Filter {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected boolean isJoinTableFilter = false;
-    protected String propertyName;
+  /** DOCUMENT ME! */
+  protected boolean isJoinTableFilter = false;
 
-    public Boolean getJoinTableFilter() {
-        return isJoinTableFilter;
-    }
+  /** DOCUMENT ME! */
+  protected String  propertyName;
 
-    public void setJoinTableFilter(Boolean joinTableFilter) {
-        isJoinTableFilter = joinTableFilter;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getPropertyName() {
-        return propertyName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getJoinTableFilter() {
+    return isJoinTableFilter;
+  }
 
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyName() {
+    return propertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  joinTableFilter  DOCUMENT ME!
+   */
+  public void setJoinTableFilter(Boolean joinTableFilter) {
+    isJoinTableFilter = joinTableFilter;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  propertyName  DOCUMENT ME!
+   */
+  public void setPropertyName(String propertyName) {
+    this.propertyName = propertyName;
+  }
+} // end class PropertyFilter

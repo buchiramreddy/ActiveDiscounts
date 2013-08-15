@@ -19,18 +19,36 @@ package org.broadleafcommerce.common.jmx;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 
-public class AspectUtil {
 
-    public static Object exposeRootBean(Object managedBean) {
-        try {
-            if (AopUtils.isAopProxy(managedBean) && managedBean instanceof Advised) {
-                Advised advised = (Advised) managedBean;
-                managedBean = advised.getTargetSource().getTarget();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return managedBean;
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class AspectUtil {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   managedBean  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  RuntimeException  DOCUMENT ME!
+   */
+  public static Object exposeRootBean(Object managedBean) {
+    try {
+      if (AopUtils.isAopProxy(managedBean) && (managedBean instanceof Advised)) {
+        Advised advised = (Advised) managedBean;
+        managedBean = advised.getTargetSource().getTarget();
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
-}
+    return managedBean;
+  }
+
+} // end class AspectUtil

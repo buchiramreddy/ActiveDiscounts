@@ -17,12 +17,13 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public enum PersistencePerspectiveItemType {
-    FOREIGNKEY,
-    ADORNEDTARGETLIST,
-    MAPSTRUCTURE
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  FOREIGNKEY, ADORNEDTARGETLIST, MAPSTRUCTURE
 }

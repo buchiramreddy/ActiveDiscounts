@@ -16,44 +16,114 @@
 package org.broadleafcommerce.core.payment.domain;
 
 import java.io.Serializable;
+
 import java.math.BigDecimal;
 
+
 /**
- * This class is useful if you wish to delineate in the paymentinfo
- * the various components that make up the total being charged. This
- * is optional and not all payment modules support.
- * 
- * @author jfischer
+ * This class is useful if you wish to delineate in the paymentinfo the various components that make up the total being
+ * charged. This is optional and not all payment modules support.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AmountItem extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public abstract Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public abstract void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getShortDescription();
 
-    public abstract String getShortDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  shortDescription  DOCUMENT ME!
+   */
+  void setShortDescription(String shortDescription);
 
-    public abstract void setShortDescription(String shortDescription);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDescription();
 
-    public abstract String getDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  void setDescription(String description);
 
-    public abstract void setDescription(String description);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BigDecimal getUnitPrice();
 
-    public abstract BigDecimal getUnitPrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  unitPrice  DOCUMENT ME!
+   */
+  void setUnitPrice(BigDecimal unitPrice);
 
-    public abstract void setUnitPrice(BigDecimal unitPrice);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getQuantity();
 
-    public abstract Long getQuantity();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  void setQuantity(Long quantity);
 
-    public abstract void setQuantity(Long quantity);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfo getPaymentInfo();
 
-    public abstract PaymentInfo getPaymentInfo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfo  DOCUMENT ME!
+   */
+  void setPaymentInfo(PaymentInfo paymentInfo);
 
-    public abstract void setPaymentInfo(PaymentInfo paymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getSystemId();
 
-    public abstract String getSystemId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  systemId  DOCUMENT ME!
+   */
+  void setSystemId(String systemId);
 
-    public abstract void setSystemId(String systemId);
-    
-}
+} // end interface AmountItem

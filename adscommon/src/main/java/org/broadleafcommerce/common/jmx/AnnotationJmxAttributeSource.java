@@ -19,29 +19,47 @@ package org.broadleafcommerce.common.jmx;
 import org.springframework.jmx.export.metadata.InvalidMetadataException;
 import org.springframework.jmx.export.metadata.ManagedResource;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-public class AnnotationJmxAttributeSource extends org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource {
-    
-    private final String appName;
-    
-    public AnnotationJmxAttributeSource(String appName) {
-        this.appName = appName;
+public class AnnotationJmxAttributeSource
+  extends org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private final String appName;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new AnnotationJmxAttributeSource object.
+   *
+   * @param  appName  DOCUMENT ME!
+   */
+  public AnnotationJmxAttributeSource(String appName) {
+    this.appName = appName;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource#getManagedResource(java.lang.Class)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public ManagedResource getManagedResource(Class beanClass) throws InvalidMetadataException {
+    ManagedResource resource = super.getManagedResource(beanClass);
+
+    if ((resource != null) && (appName != null)) {
+      String objectName = resource.getObjectName();
+      objectName += "." + appName;
+      resource.setObjectName(objectName);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public ManagedResource getManagedResource(Class beanClass) throws InvalidMetadataException {
-        ManagedResource resource = super.getManagedResource(beanClass);
-        if (resource != null && appName != null) {
-            String objectName = resource.getObjectName();
-            objectName += "." + appName;
-            resource.setObjectName(objectName);
-        }
-        return resource;
-    }
-    
-}
+    return resource;
+  }
+
+} // end class AnnotationJmxAttributeSource

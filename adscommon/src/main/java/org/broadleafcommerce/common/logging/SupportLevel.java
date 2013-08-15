@@ -18,48 +18,103 @@ package org.broadleafcommerce.common.logging;
 
 import org.apache.log4j.Level;
 
+
 /**
- * Extend Log4J standard level implementation to add support
- * for the SUPPORT log level. This level is used in support logging
- * in modules.
+ * Extend Log4J standard level implementation to add support for the SUPPORT log level. This level is used in support
+ * logging in modules.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class SupportLevel extends Level {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public SupportLevel(int level, String levelStr, int syslogEquivalent) {
-        super(level, levelStr, syslogEquivalent);
+  /** DOCUMENT ME! */
+  public static final int SUPPORT_INT = ERROR_INT + 10;
+
+  /** DOCUMENT ME! */
+  public static final Level SUPPORT = new SupportLevel(SUPPORT_INT, "SUPPORT", 6);
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new SupportLevel object.
+   *
+   * @param  level             DOCUMENT ME!
+   * @param  levelStr          DOCUMENT ME!
+   * @param  syslogEquivalent  DOCUMENT ME!
+   */
+  public SupportLevel(int level, String levelStr, int syslogEquivalent) {
+    super(level, levelStr, syslogEquivalent);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sArg  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Level toLevel(String sArg) {
+    if ((sArg != null) && sArg.toUpperCase().equals("SUPPORT")) {
+      return SUPPORT;
     }
 
-    public static final int SUPPORT_INT = ERROR_INT + 10;
+    return toLevel(sArg, Level.DEBUG);
+  }
 
-    public static final Level SUPPORT = new SupportLevel(SUPPORT_INT, "SUPPORT", 6);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static Level toLevel(String sArg) {
-        if (sArg != null && sArg.toUpperCase().equals("SUPPORT")) {
-            return SUPPORT;
-        }
-        return toLevel(sArg, Level.DEBUG);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   val  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Level toLevel(int val) {
+    if (val == SUPPORT_INT) {
+      return SUPPORT;
     }
 
-    public static Level toLevel(int val) {
-        if (val == SUPPORT_INT) {
-            return SUPPORT;
-        }
-        return toLevel(val, Level.DEBUG);
+    return toLevel(val, Level.DEBUG);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   val           DOCUMENT ME!
+   * @param   defaultLevel  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Level toLevel(int val, Level defaultLevel) {
+    if (val == SUPPORT_INT) {
+      return SUPPORT;
     }
 
-    public static Level toLevel(int val, Level defaultLevel) {
-        if (val == SUPPORT_INT) {
-            return SUPPORT;
-        }
-        return Level.toLevel(val, defaultLevel);
+    return Level.toLevel(val, defaultLevel);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sArg          DOCUMENT ME!
+   * @param   defaultLevel  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Level toLevel(String sArg, Level defaultLevel) {
+    if ((sArg != null) && sArg.toUpperCase().equals("SUPPORT")) {
+      return SUPPORT;
     }
 
-    public static Level toLevel(String sArg, Level defaultLevel) {
-        if (sArg != null && sArg.toUpperCase().equals("SUPPORT")) {
-            return SUPPORT;
-        }
-        return Level.toLevel(sArg, defaultLevel);
-    }
-}
+    return Level.toLevel(sArg, defaultLevel);
+  }
+} // end class SupportLevel

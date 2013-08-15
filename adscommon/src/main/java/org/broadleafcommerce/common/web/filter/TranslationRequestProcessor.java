@@ -16,34 +16,46 @@
 
 package org.broadleafcommerce.common.web.filter;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.i18n.service.TranslationConsiderationContext;
 import org.broadleafcommerce.common.i18n.service.TranslationService;
 import org.broadleafcommerce.common.web.AbstractBroadleafWebRequestProcessor;
+
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Component;
+
 import org.springframework.web.context.request.WebRequest;
 
-import javax.annotation.Resource;
 
 /**
- * This processor is responsible for setting up the translation context.   It is intended to be used
- * by both typical Web applications and called from a ServletFilter (such as "TranslationFilter") or 
- * from a portletFilter (such as "TranslationInterceptor")
- * 
- * @author bpolster
+ * This processor is responsible for setting up the translation context. It is intended to be used by both typical Web
+ * applications and called from a ServletFilter (such as "TranslationFilter") or from a portletFilter (such as
+ * "TranslationInterceptor")
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 @Component("blTranslationRequestProcessor")
 public class TranslationRequestProcessor extends AbstractBroadleafWebRequestProcessor {
-    
-    @Resource(name = "blTranslationService")
-    protected TranslationService translationService;
-    
-    @Value("${i18n.translation.enabled}")
-    protected boolean translationEnabled = false;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public void process(WebRequest request) {
-        TranslationConsiderationContext.setTranslationConsiderationContext(translationEnabled);
-        TranslationConsiderationContext.setTranslationService(translationService);
-    }
+  /** DOCUMENT ME! */
+  @Value("${i18n.translation.enabled}")
+  protected boolean translationEnabled = false;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blTranslationService")
+  protected TranslationService translationService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafWebRequestProcessor#process(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public void process(WebRequest request) {
+    TranslationConsiderationContext.setTranslationConsiderationContext(translationEnabled);
+    TranslationConsiderationContext.setTranslationService(translationService);
+  }
 }

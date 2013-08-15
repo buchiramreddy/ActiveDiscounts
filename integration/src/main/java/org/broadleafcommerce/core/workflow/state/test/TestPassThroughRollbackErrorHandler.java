@@ -20,21 +20,31 @@ import org.broadleafcommerce.core.workflow.ErrorHandler;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 
+
 /**
- * Add an ErrorHandler that does nothing and does not stop the workflow
+ * Add an ErrorHandler that does nothing and does not stop the workflow.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class TestPassThroughRollbackErrorHandler implements ErrorHandler {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void handleError(ProcessContext context, Throwable th) throws WorkflowException {
-        //do nothing
-        //could get programmatic access to the ActivityStateManager for explicit rollbacks here
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ErrorHandler#handleError(org.broadleafcommerce.core.workflow.ProcessContext,
+   *       java.lang.Throwable)
+   */
+  @Override public void handleError(ProcessContext context, Throwable th) throws WorkflowException {
+    // do nothing
+    // could get programmatic access to the ActivityStateManager for explicit rollbacks here
+  }
 
-    @Override
-    public void setBeanName(String name) {
-        //do nothing
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.beans.factory.BeanNameAware#setBeanName(java.lang.String)
+   */
+  @Override public void setBeanName(String name) {
+    // do nothing
+  }
 }

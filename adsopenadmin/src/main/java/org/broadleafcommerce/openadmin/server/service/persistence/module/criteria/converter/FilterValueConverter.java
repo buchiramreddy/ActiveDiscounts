@@ -17,10 +17,21 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface FilterValueConverter<T> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    T convert(String stringValue);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   stringValue  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  T convert(String stringValue);
 
 }

@@ -18,28 +18,101 @@ package org.broadleafcommerce.cms.field.domain;
 
 import java.io.Serializable;
 
+
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface FieldEnumerationItem extends Serializable {
-    
-    FieldEnumeration getFieldEnumeration();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    void setFieldEnumeration(FieldEnumeration fieldEnumeration);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FieldEnumeration getFieldEnumeration();
 
-    int getFieldOrder();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setFieldOrder(int fieldOrder);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int getFieldOrder();
 
-    String getFriendlyName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setFriendlyName(String friendlyName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFriendlyName();
 
-    Long getId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    String getName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setName(String name);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldEnumeration  DOCUMENT ME!
+   */
+  void setFieldEnumeration(FieldEnumeration fieldEnumeration);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldOrder  DOCUMENT ME!
+   */
+  void setFieldOrder(int fieldOrder);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  friendlyName  DOCUMENT ME!
+   */
+  void setFriendlyName(String friendlyName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+} // end interface FieldEnumerationItem

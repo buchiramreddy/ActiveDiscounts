@@ -16,88 +16,109 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.payment.domain.AmountItem;
-import org.broadleafcommerce.core.payment.domain.AmountItemImpl;
-import org.broadleafcommerce.core.payment.domain.PaymentInfo;
-import org.broadleafcommerce.core.payment.service.PaymentInfoService;
-import org.springframework.context.ApplicationContext;
-
 import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.payment.domain.AmountItem;
+import org.broadleafcommerce.core.payment.domain.AmountItemImpl;
+import org.broadleafcommerce.core.payment.domain.PaymentInfo;
+import org.broadleafcommerce.core.payment.service.PaymentInfoService;
+
+import org.springframework.context.ApplicationContext;
+
+
 /**
  * This is a JAXB wrapper around PaymentInfo.
- * <p/>
- * User: Elbert Bautista
- * Date: 4/26/12
+ *
+ * <p>User: Elbert Bautista Date: 4/26/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "amountItem")
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class AmountItemWrapper  extends BaseWrapper implements APIWrapper<AmountItem>, APIUnwrapper<AmountItem> {
+@XmlRootElement(name = "amountItem")
+public class AmountItemWrapper extends BaseWrapper implements APIWrapper<AmountItem>, APIUnwrapper<AmountItem> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected String description;
 
-    @XmlElement
-    protected String description;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected Long paymentInfoId;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long paymentInfoId;
 
-    @XmlElement
-    protected Long quantity;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long quantity;
 
-    @XmlElement
-    protected String shortDescription;
+  /** DOCUMENT ME! */
+  @XmlElement protected String shortDescription;
 
-    @XmlElement
-    protected String systemId;
+  /** DOCUMENT ME! */
+  @XmlElement protected String systemId;
 
-    @XmlElement
-    protected BigDecimal unitPrice;
+  /** DOCUMENT ME! */
+  @XmlElement protected BigDecimal unitPrice;
 
-    @Override
-    public void wrapDetails(AmountItem model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.description = model.getDescription();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        if (model.getPaymentInfo() != null ) {
-            this.paymentInfoId = model.getPaymentInfo().getId();
-        }
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIUnwrapper#unwrap(javax.servlet.http.HttpServletRequest, org.springframework.context.ApplicationContext)
+   */
+  @Override public AmountItem unwrap(HttpServletRequest request, ApplicationContext context) {
+    AmountItem amountItem = new AmountItemImpl();
+    amountItem.setId(this.id);
+    amountItem.setDescription(this.description);
 
-        this.quantity = model.getQuantity();
-        this.shortDescription = model.getShortDescription();
-        this.systemId = model.getSystemId();
-        this.unitPrice = model.getUnitPrice();
+    PaymentInfoService paymentInfoService = (PaymentInfoService) context.getBean("blPaymentInfoService");
+    PaymentInfo        paymentInfo        = paymentInfoService.readPaymentInfoById(this.paymentInfoId);
+
+    if (paymentInfo != null) {
+      amountItem.setPaymentInfo(paymentInfo);
     }
 
-    @Override
-    public void wrapSummary(AmountItem model, HttpServletRequest request) {
-        wrapDetails(model, request);
+    amountItem.setQuantity(this.quantity);
+    amountItem.setShortDescription(this.shortDescription);
+    amountItem.setSystemId(this.systemId);
+    amountItem.setUnitPrice(this.unitPrice);
+
+    return amountItem;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.payment.domain.AmountItem,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(AmountItem model, HttpServletRequest request) {
+    this.id          = model.getId();
+    this.description = model.getDescription();
+
+    if (model.getPaymentInfo() != null) {
+      this.paymentInfoId = model.getPaymentInfo().getId();
     }
 
-    @Override
-    public AmountItem unwrap(HttpServletRequest request, ApplicationContext context) {
-        AmountItem amountItem = new AmountItemImpl();
-        amountItem.setId(this.id);
-        amountItem.setDescription(this.description);
+    this.quantity         = model.getQuantity();
+    this.shortDescription = model.getShortDescription();
+    this.systemId         = model.getSystemId();
+    this.unitPrice        = model.getUnitPrice();
+  }
 
-        PaymentInfoService paymentInfoService = (PaymentInfoService) context.getBean("blPaymentInfoService");
-        PaymentInfo paymentInfo = paymentInfoService.readPaymentInfoById(this.paymentInfoId);
-        if (paymentInfo != null) {
-            amountItem.setPaymentInfo(paymentInfo);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        amountItem.setQuantity(this.quantity);
-        amountItem.setShortDescription(this.shortDescription);
-        amountItem.setSystemId(this.systemId);
-        amountItem.setUnitPrice(this.unitPrice);
-
-        return amountItem;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.payment.domain.AmountItem,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(AmountItem model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class AmountItemWrapper

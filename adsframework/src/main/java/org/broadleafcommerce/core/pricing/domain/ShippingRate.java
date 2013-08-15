@@ -17,24 +17,113 @@
 package org.broadleafcommerce.core.pricing.domain;
 
 import java.io.Serializable;
+
 import java.math.BigDecimal;
 
-@Deprecated
-public interface ShippingRate extends Serializable {
 
-    public Long  getId();
-    public void setId(Long id);
-    public String getFeeType();
-    public void setFeeType(String feeType);
-    public String getFeeSubType();
-    public void setFeeSubType(String feeSubType);
-    public Integer getFeeBand();
-    public void setFeeBand(Integer feeBand);
-    public BigDecimal getBandUnitQuantity();
-    public void setBandUnitQuantity(BigDecimal bandUnitQuantity);
-    public BigDecimal getBandResultQuantity();
-    public void setBandResultQuantity(BigDecimal bandResultQuantity);
-    public Integer getBandResultPercent();
-    public void setBandResultPercent(Integer bandResultPersent);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Deprecated public interface ShippingRate extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFeeType();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  feeType  DOCUMENT ME!
+   */
+  void setFeeType(String feeType);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFeeSubType();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  feeSubType  DOCUMENT ME!
+   */
+  void setFeeSubType(String feeSubType);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getFeeBand();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  feeBand  DOCUMENT ME!
+   */
+  void setFeeBand(Integer feeBand);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BigDecimal getBandUnitQuantity();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bandUnitQuantity  DOCUMENT ME!
+   */
+  void setBandUnitQuantity(BigDecimal bandUnitQuantity);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BigDecimal getBandResultQuantity();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bandResultQuantity  DOCUMENT ME!
+   */
+  void setBandResultQuantity(BigDecimal bandResultQuantity);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getBandResultPercent();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bandResultPersent  DOCUMENT ME!
+   */
+  void setBandResultPercent(Integer bandResultPersent);
+
+} // end interface ShippingRate

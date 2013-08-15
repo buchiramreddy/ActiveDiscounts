@@ -16,47 +16,68 @@
 
 package org.broadleafcommerce.core.catalog.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.core.catalog.domain.ProductOption;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.core.catalog.domain.ProductOption;
+import org.broadleafcommerce.core.catalog.domain.ProductOptionImpl;
+import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
+import org.broadleafcommerce.core.catalog.domain.ProductOptionValueImpl;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blProductOptionDao")
 public class ProductOptionDaoImpl implements ProductOptionDao {
-    
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
-    
-    @Override
-    public List<ProductOption> readAllProductOptions() {
-        TypedQuery<ProductOption> query = em.createNamedQuery("BC_READ_ALL_PRODUCT_OPTIONS", ProductOption.class);
-        return query.getResultList();
-    }
-    
-    public ProductOption saveProductOption(ProductOption option) {
-        return em.merge(option);
-    }
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Override
-    public ProductOption readProductOptionById(Long id) {
-        return em.find(ProductOptionImpl.class, id);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.ProductOptionDao#readAllProductOptions()
+   */
+  @Override public List<ProductOption> readAllProductOptions() {
+    TypedQuery<ProductOption> query = em.createNamedQuery("BC_READ_ALL_PRODUCT_OPTIONS", ProductOption.class);
 
-    @Override
-    public ProductOptionValue readProductOptionValueById(Long id) {
-        return em.find(ProductOptionValueImpl.class, id);
-    }
+    return query.getResultList();
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.ProductOptionDao#saveProductOption(org.broadleafcommerce.core.catalog.domain.ProductOption)
+   */
+  @Override public ProductOption saveProductOption(ProductOption option) {
+    return em.merge(option);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.ProductOptionDao#readProductOptionById(java.lang.Long)
+   */
+  @Override public ProductOption readProductOptionById(Long id) {
+    return em.find(ProductOptionImpl.class, id);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.ProductOptionDao#readProductOptionValueById(java.lang.Long)
+   */
+  @Override public ProductOptionValue readProductOptionValueById(Long id) {
+    return em.find(ProductOptionValueImpl.class, id);
+  }
+
+} // end class ProductOptionDaoImpl

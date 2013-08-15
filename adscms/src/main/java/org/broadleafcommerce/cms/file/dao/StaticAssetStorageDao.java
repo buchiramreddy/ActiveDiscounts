@@ -16,29 +16,84 @@
 
 package org.broadleafcommerce.cms.file.dao;
 
-import org.broadleafcommerce.cms.file.domain.StaticAssetStorage;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
+
 import java.sql.Blob;
 
+import org.broadleafcommerce.cms.file.domain.StaticAssetStorage;
+
+import org.springframework.web.multipart.MultipartFile;
+
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/9/11
- * Time: 10:47 AM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/9/11 Time: 10:47 AM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface StaticAssetStorageDao {
-    StaticAssetStorage create();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    StaticAssetStorage readStaticAssetStorageById(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   uploadedFile  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  IOException  DOCUMENT ME!
+   */
+  Blob createBlob(MultipartFile uploadedFile) throws IOException;
 
-    public StaticAssetStorage readStaticAssetStorageByStaticAssetId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    StaticAssetStorage save(StaticAssetStorage assetStorage);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAssetStorage readStaticAssetStorageByStaticAssetId(Long id);
 
-    void delete(StaticAssetStorage assetStorage);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Blob createBlob(MultipartFile uploadedFile) throws IOException;
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAssetStorage create();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  assetStorage  DOCUMENT ME!
+   */
+  void delete(StaticAssetStorage assetStorage);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAssetStorage readStaticAssetStorageById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   assetStorage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAssetStorage save(StaticAssetStorage assetStorage);
+} // end interface StaticAssetStorageDao

@@ -16,24 +16,71 @@
 
 package org.broadleafcommerce.cms.file.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.cms.file.domain.StaticAsset;
+
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 
-import java.util.List;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface StaticAssetDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public StaticAsset readStaticAssetById(Long id);
-    
-    public List<StaticAsset> readAllStaticAssets();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   asset             DOCUMENT ME!
+   * @param   clearLevel1Cache  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAsset addOrUpdateStaticAsset(StaticAsset asset, boolean clearLevel1Cache);
 
-    public void delete(StaticAsset asset);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public StaticAsset addOrUpdateStaticAsset(StaticAsset asset, boolean clearLevel1Cache);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  asset  DOCUMENT ME!
+   */
+  void delete(StaticAsset asset);
 
-    public StaticAsset readStaticAssetByFullUrl(String fullUrl, SandBox targetSandBox);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<StaticAsset> readAllStaticAssets();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fullUrl        DOCUMENT ME!
+   * @param   targetSandBox  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAsset readStaticAssetByFullUrl(String fullUrl, SandBox targetSandBox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAsset readStaticAssetById(Long id);
+
+} // end interface StaticAssetDao

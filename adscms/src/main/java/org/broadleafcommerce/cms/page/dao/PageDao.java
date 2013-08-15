@@ -16,55 +16,150 @@
 
 package org.broadleafcommerce.cms.page.dao;
 
-import org.broadleafcommerce.cms.page.domain.Page;
-import org.broadleafcommerce.cms.page.domain.PageField;
-import org.broadleafcommerce.cms.page.domain.PageTemplate;
-import org.broadleafcommerce.common.locale.domain.Locale;
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-
 import java.util.List;
 import java.util.Map;
 
+import org.broadleafcommerce.cms.page.domain.Page;
+import org.broadleafcommerce.cms.page.domain.PageField;
+import org.broadleafcommerce.cms.page.domain.PageTemplate;
+
+import org.broadleafcommerce.common.locale.domain.Locale;
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface PageDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Page readPageById(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   clonedPage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Page addPage(Page clonedPage);
 
-    public PageTemplate readPageTemplateById(Long id);
-    
-    /**
-     * Saves the given {@link org.broadleafcommerce.cms.page.domain.PageTemplate}
-     * 
-     * @param template the {@link org.broadleafcommerce.cms.page.domain.PageTemplate} to save
-     * @return the database-saved {@link org.broadleafcommerce.cms.page.domain.PageTemplate}
-     */
-    public PageTemplate savePageTemplate(PageTemplate template);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Map<String, PageField> readPageFieldsByPage(Page page);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  page  DOCUMENT ME!
+   */
+  void delete(Page page);
 
-    public Page updatePage(Page page);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void delete(Page page);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  page  DOCUMENT ME!
+   */
+  void detachPage(Page page);
 
-    public Page addPage(Page clonedPage);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns all pages, regardless of any sandbox they are apart of
-     * @return all Pages configured in the system
-     */
-    public List<Page> readAllPages();
-    
-    /**
-     * Returns all page templates, regardless of any sandbox they are apart of
-     * @return all {@link org.broadleafcommerce.cms.page.domain.PageTemplate}s configured in the system
-     */
-    public List<PageTemplate> readAllPageTemplates();
-    
-    public List<Page> findPageByURI(SandBox sandBox, Locale fullLocale, Locale languageOnlyLocale, String uri);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sandBox  DOCUMENT ME!
+   * @param   locale   DOCUMENT ME!
+   * @param   uri      DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Page> findPageByURI(SandBox sandBox, Locale locale, String uri);
 
-    public List<Page> findPageByURI(SandBox sandBox, Locale locale, String uri);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void detachPage(Page page);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sandBox             DOCUMENT ME!
+   * @param   fullLocale          DOCUMENT ME!
+   * @param   languageOnlyLocale  DOCUMENT ME!
+   * @param   uri                 DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Page> findPageByURI(SandBox sandBox, Locale fullLocale, Locale languageOnlyLocale, String uri);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns all pages, regardless of any sandbox they are apart of.
+   *
+   * @return  all Pages configured in the system
+   */
+  List<Page> readAllPages();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns all page templates, regardless of any sandbox they are apart of.
+   *
+   * @return  all {@link org.broadleafcommerce.cms.page.domain.PageTemplate}s configured in the system
+   */
+  List<PageTemplate> readAllPageTemplates();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Page readPageById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   page  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, PageField> readPageFieldsByPage(Page page);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PageTemplate readPageTemplateById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Saves the given {@link org.broadleafcommerce.cms.page.domain.PageTemplate}.
+   *
+   * @param   template  the {@link org.broadleafcommerce.cms.page.domain.PageTemplate} to save
+   *
+   * @return  the database-saved {@link org.broadleafcommerce.cms.page.domain.PageTemplate}
+   */
+  PageTemplate savePageTemplate(PageTemplate template);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   page  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Page updatePage(Page page);
+} // end interface PageDao

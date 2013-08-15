@@ -16,33 +16,61 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.profile.core.domain.Phone;
-import org.broadleafcommerce.profile.core.domain.PhoneImpl;
-import org.springframework.stereotype.Repository;
-
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.profile.core.domain.Phone;
+import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blPhoneDao")
 public class PhoneDaoImpl implements PhoneDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    public Phone save(Phone phone) {
-        return em.merge(phone);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Phone readPhoneById(Long phoneId) {
-        return (Phone) em.find(PhoneImpl.class, phoneId);
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.PhoneDao#create()
+   */
+  @Override public Phone create() {
+    return (Phone) entityConfiguration.createEntityInstance(Phone.class.getName());
+  }
 
-    public Phone create() {
-        return (Phone) entityConfiguration.createEntityInstance(Phone.class.getName());
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.PhoneDao#readPhoneById(java.lang.Long)
+   */
+  @Override public Phone readPhoneById(Long phoneId) {
+    return (Phone) em.find(PhoneImpl.class, phoneId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.PhoneDao#save(org.broadleafcommerce.profile.core.domain.Phone)
+   */
+  @Override public Phone save(Phone phone) {
+    return em.merge(phone);
+  }
+} // end class PhoneDaoImpl

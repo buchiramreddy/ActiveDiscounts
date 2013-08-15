@@ -16,42 +16,68 @@
 
 package org.broadleafcommerce.core.catalog.service.dynamic;
 
-import org.broadleafcommerce.core.catalog.domain.SkuImpl;
-
 import java.util.HashMap;
 
+
 /**
- * Convenient place to store the active date context and the related service on thread local. 
- * 
- * @author jfischer
- * @see {@link org.broadleafcommerce.core.catalog.domain.SkuImpl#getActiveStartDate()}
- * @see {@link org.broadleafcommerce.core.catalog.domain.SkuImpl#getActiveEndDate()}
+ * Convenient place to store the active date context and the related service on thread local.
+ *
+ * @author   jfischer
+ * @see      {@link org.broadleafcommerce.core.catalog.domain.SkuImpl#getActiveStartDate()}
+ * @see      {@link org.broadleafcommerce.core.catalog.domain.SkuImpl#getActiveEndDate()}
+ * @version  $Revision$, $Date$
  */
 public class SkuActiveDateConsiderationContext {
-    
-    private static final ThreadLocal<DynamicSkuActiveDatesService> skuActiveDatesService = new ThreadLocal<DynamicSkuActiveDatesService>();
-    
-    @SuppressWarnings("rawtypes")
-    private static final ThreadLocal<HashMap> skuActiveDatesConsiderationContext = new ThreadLocal<HashMap>();
-    
-    @SuppressWarnings("rawtypes")
-    public static HashMap getSkuActiveDatesConsiderationContext() {
-        return SkuActiveDateConsiderationContext.skuActiveDatesConsiderationContext.get();
-    }
-    
-    public static void setSkuActiveDatesConsiderationContext(@SuppressWarnings("rawtypes") HashMap skuActiveDatesConsiderationContext) {
-        SkuActiveDateConsiderationContext.skuActiveDatesConsiderationContext.set(skuActiveDatesConsiderationContext);
-    }
-    
-    public static DynamicSkuActiveDatesService getSkuActiveDatesService() {
-        return SkuActiveDateConsiderationContext.skuActiveDatesService.get();
-    }
-    
-    public static void setSkuActiveDatesService(DynamicSkuActiveDatesService skuActiveDatesService) {
-        SkuActiveDateConsiderationContext.skuActiveDatesService.set(skuActiveDatesService);
-    }
-    
-    public static boolean hasDynamicActiveDates() {
-        return (getSkuActiveDatesService() != null);
-    }
-}
+  private static final ThreadLocal<DynamicSkuActiveDatesService> skuActiveDatesService =
+    new ThreadLocal<DynamicSkuActiveDatesService>();
+
+  @SuppressWarnings("rawtypes")
+  private static final ThreadLocal<HashMap> skuActiveDatesConsiderationContext = new ThreadLocal<HashMap>();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @SuppressWarnings("rawtypes")
+  public static HashMap getSkuActiveDatesConsiderationContext() {
+    return SkuActiveDateConsiderationContext.skuActiveDatesConsiderationContext.get();
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  skuActiveDatesConsiderationContext  DOCUMENT ME!
+   */
+  public static void setSkuActiveDatesConsiderationContext(
+    @SuppressWarnings("rawtypes") HashMap skuActiveDatesConsiderationContext) {
+    SkuActiveDateConsiderationContext.skuActiveDatesConsiderationContext.set(skuActiveDatesConsiderationContext);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static DynamicSkuActiveDatesService getSkuActiveDatesService() {
+    return SkuActiveDateConsiderationContext.skuActiveDatesService.get();
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  skuActiveDatesService  DOCUMENT ME!
+   */
+  public static void setSkuActiveDatesService(DynamicSkuActiveDatesService skuActiveDatesService) {
+    SkuActiveDateConsiderationContext.skuActiveDatesService.set(skuActiveDatesService);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static boolean hasDynamicActiveDates() {
+    return (getSkuActiveDatesService() != null);
+  }
+} // end class SkuActiveDateConsiderationContext

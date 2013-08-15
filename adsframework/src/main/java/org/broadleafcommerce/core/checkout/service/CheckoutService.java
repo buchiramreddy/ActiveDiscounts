@@ -16,18 +16,43 @@
 
 package org.broadleafcommerce.core.checkout.service;
 
+import java.util.Map;
+
 import org.broadleafcommerce.core.checkout.service.exception.CheckoutException;
 import org.broadleafcommerce.core.checkout.service.workflow.CheckoutResponse;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CheckoutService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  CheckoutException  DOCUMENT ME!
+   */
+  CheckoutResponse performCheckout(Order order) throws CheckoutException;
 
-    public CheckoutResponse performCheckout(Order order) throws CheckoutException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order     DOCUMENT ME!
+   * @param   payments  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  CheckoutException  DOCUMENT ME!
+   */
+  CheckoutResponse performCheckout(Order order, Map<PaymentInfo, Referenced> payments) throws CheckoutException;
 
-    public CheckoutResponse performCheckout(Order order, Map<PaymentInfo, Referenced> payments) throws CheckoutException;
-
-}
+} // end interface CheckoutService

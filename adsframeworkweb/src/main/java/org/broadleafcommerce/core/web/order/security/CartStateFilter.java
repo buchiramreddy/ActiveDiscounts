@@ -16,22 +16,34 @@
 
 package org.broadleafcommerce.core.web.order.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.filter.GenericFilterBean;
+import java.io.IOException;
 
 import javax.annotation.Resource;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.core.Ordered;
+
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.GenericFilterBean;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Component("blCartStateFilter")
 /**
  * <p>
@@ -42,26 +54,39 @@ import java.io.IOException;
  *
  * @author bpolster
  */
-public class CartStateFilter extends GenericFilterBean implements  Ordered {
+public class CartStateFilter extends GenericFilterBean implements Ordered {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /** Logger for this class and subclasses */
-    protected final Log LOG = LogFactory.getLog(getClass());
+  /** DOCUMENT ME! */
+  @Resource(name = "blCartStateRequestProcessor")
+  protected CartStateRequestProcessor cartStateProcessor;
 
-    @Resource(name = "blCartStateRequestProcessor")
-    protected CartStateRequestProcessor cartStateProcessor;
+  /** Logger for this class and subclasses. */
+  protected final Log LOG = LogFactory.getLog(getClass());
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {        
-        cartStateProcessor.process(new ServletWebRequest((HttpServletRequest) request, (HttpServletResponse)response));
-        chain.doFilter(request, response);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int getOrder() {
-        //FilterChainOrder has been dropped from Spring Security 3
-        //return FilterChainOrder.REMEMBER_ME_FILTER+1;
-        return 1502;
-    }
+  /**
+   * @see  javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse,
+   *       javax.servlet.FilterChain)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+    ServletException {
+    cartStateProcessor.process(new ServletWebRequest((HttpServletRequest) request, (HttpServletResponse) response));
+    chain.doFilter(request, response);
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.core.Ordered#getOrder()
+   */
+  @Override public int getOrder() {
+    // FilterChainOrder has been dropped from Spring Security 3
+    // return FilterChainOrder.REMEMBER_ME_FILTER+1;
+    return 1502;
+  }
+
+} // end class CartStateFilter

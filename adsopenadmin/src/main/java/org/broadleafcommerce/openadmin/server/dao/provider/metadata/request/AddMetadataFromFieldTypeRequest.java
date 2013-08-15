@@ -16,136 +16,286 @@
 
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 
+import java.lang.reflect.Field;
+
+import java.util.List;
+import java.util.Map;
+
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.ForeignKey;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
+
 import org.hibernate.mapping.Property;
+
 import org.hibernate.type.Type;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Contains the requested field, property name and support classes.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class AddMetadataFromFieldTypeRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final Field requestedField;
-    private final Class<?> targetClass;
-    private final ForeignKey foreignField;
-    private final ForeignKey[] additionalForeignFields;
-    private final MergedPropertyType mergedPropertyType;
-    private final List<Property> componentProperties;
-    private final String idProperty;
-    private final String prefix;
-    private final String requestedPropertyName;
-    private final Type type;
-    private final boolean propertyForeignKey;
-    private final int additionalForeignKeyIndexPosition;
-    private final Map<String, FieldMetadata> presentationAttributes;
-    private final FieldMetadata presentationAttribute;
-    private final SupportedFieldType explicitType;
-    private final Class<?> returnedClass;
-    private final DynamicEntityDao dynamicEntityDao;
+  private final ForeignKey[]               additionalForeignFields;
+  private final int                        additionalForeignKeyIndexPosition;
+  private final List<Property>             componentProperties;
+  private final DynamicEntityDao           dynamicEntityDao;
+  private final SupportedFieldType         explicitType;
+  private final ForeignKey                 foreignField;
+  private final String                     idProperty;
+  private final MergedPropertyType         mergedPropertyType;
+  private final String                     prefix;
+  private final FieldMetadata              presentationAttribute;
+  private final Map<String, FieldMetadata> presentationAttributes;
+  private final boolean                    propertyForeignKey;
 
-    public AddMetadataFromFieldTypeRequest(Field requestedField, Class<?> targetClass, ForeignKey foreignField,
-                                           ForeignKey[] additionalForeignFields,
-                                           MergedPropertyType mergedPropertyType, List<Property> componentProperties,
-                                           String idProperty,
-                                           String prefix, String requestedPropertyName, Type type,
-                                           boolean propertyForeignKey, int additionalForeignKeyIndexPosition,
-                                           Map<String, FieldMetadata> presentationAttributes,
-                                           FieldMetadata presentationAttribute, SupportedFieldType explicitType, 
-                                           Class<?> returnedClass, DynamicEntityDao dynamicEntityDao) {
-        this.requestedField = requestedField;
-        this.targetClass = targetClass;
-        this.foreignField = foreignField;
-        this.additionalForeignFields = additionalForeignFields;
-        this.mergedPropertyType = mergedPropertyType;
-        this.componentProperties = componentProperties;
-        this.idProperty = idProperty;
-        this.prefix = prefix;
-        this.requestedPropertyName = requestedPropertyName;
-        this.type = type;
-        this.propertyForeignKey = propertyForeignKey;
-        this.additionalForeignKeyIndexPosition = additionalForeignKeyIndexPosition;
-        this.presentationAttributes = presentationAttributes;
-        this.presentationAttribute = presentationAttribute;
-        this.explicitType = explicitType;
-        this.returnedClass = returnedClass;
-        this.dynamicEntityDao = dynamicEntityDao;
-    }
+  private final Field    requestedField;
+  private final String   requestedPropertyName;
+  private final Class<?> returnedClass;
+  private final Class<?> targetClass;
+  private final Type     type;
 
-    public Field getRequestedField() {
-        return requestedField;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public Class<?> getTargetClass() {
-        return targetClass;
-    }
+  /**
+   * Creates a new AddMetadataFromFieldTypeRequest object.
+   *
+   * @param  requestedField                     DOCUMENT ME!
+   * @param  targetClass                        DOCUMENT ME!
+   * @param  foreignField                       DOCUMENT ME!
+   * @param  additionalForeignFields            DOCUMENT ME!
+   * @param  mergedPropertyType                 DOCUMENT ME!
+   * @param  componentProperties                DOCUMENT ME!
+   * @param  idProperty                         DOCUMENT ME!
+   * @param  prefix                             DOCUMENT ME!
+   * @param  requestedPropertyName              DOCUMENT ME!
+   * @param  type                               DOCUMENT ME!
+   * @param  propertyForeignKey                 DOCUMENT ME!
+   * @param  additionalForeignKeyIndexPosition  DOCUMENT ME!
+   * @param  presentationAttributes             DOCUMENT ME!
+   * @param  presentationAttribute              DOCUMENT ME!
+   * @param  explicitType                       DOCUMENT ME!
+   * @param  returnedClass                      DOCUMENT ME!
+   * @param  dynamicEntityDao                   DOCUMENT ME!
+   */
+  public AddMetadataFromFieldTypeRequest(Field requestedField, Class<?> targetClass, ForeignKey foreignField,
+    ForeignKey[] additionalForeignFields,
+    MergedPropertyType mergedPropertyType, List<Property> componentProperties,
+    String idProperty,
+    String prefix, String requestedPropertyName, Type type,
+    boolean propertyForeignKey, int additionalForeignKeyIndexPosition,
+    Map<String, FieldMetadata> presentationAttributes,
+    FieldMetadata presentationAttribute, SupportedFieldType explicitType, Class<?> returnedClass,
+    DynamicEntityDao dynamicEntityDao) {
+    this.requestedField                    = requestedField;
+    this.targetClass                       = targetClass;
+    this.foreignField                      = foreignField;
+    this.additionalForeignFields           = additionalForeignFields;
+    this.mergedPropertyType                = mergedPropertyType;
+    this.componentProperties               = componentProperties;
+    this.idProperty                        = idProperty;
+    this.prefix                            = prefix;
+    this.requestedPropertyName             = requestedPropertyName;
+    this.type                              = type;
+    this.propertyForeignKey                = propertyForeignKey;
+    this.additionalForeignKeyIndexPosition = additionalForeignKeyIndexPosition;
+    this.presentationAttributes            = presentationAttributes;
+    this.presentationAttribute             = presentationAttribute;
+    this.explicitType                      = explicitType;
+    this.returnedClass                     = returnedClass;
+    this.dynamicEntityDao                  = dynamicEntityDao;
+  }
 
-    public ForeignKey getForeignField() {
-        return foreignField;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ForeignKey[] getAdditionalForeignFields() {
-        return additionalForeignFields;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ForeignKey[] getAdditionalForeignFields() {
+    return additionalForeignFields;
+  }
 
-    public MergedPropertyType getMergedPropertyType() {
-        return mergedPropertyType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<Property> getComponentProperties() {
-        return componentProperties;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getAdditionalForeignKeyIndexPosition() {
+    return additionalForeignKeyIndexPosition;
+  }
 
-    public String getIdProperty() {
-        return idProperty;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getPrefix() {
-        return prefix;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Property> getComponentProperties() {
+    return componentProperties;
+  }
 
-    public String getRequestedPropertyName() {
-        return requestedPropertyName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Type getType() {
-        return type;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityDao getDynamicEntityDao() {
+    return dynamicEntityDao;
+  }
 
-    public boolean isPropertyForeignKey() {
-        return propertyForeignKey;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public int getAdditionalForeignKeyIndexPosition() {
-        return additionalForeignKeyIndexPosition;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getExplicitType() {
+    return explicitType;
+  }
 
-    public Map<String, FieldMetadata> getPresentationAttributes() {
-        return presentationAttributes;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public FieldMetadata getPresentationAttribute() {
-        return presentationAttribute;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ForeignKey getForeignField() {
+    return foreignField;
+  }
 
-    public SupportedFieldType getExplicitType() {
-        return explicitType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Class<?> getReturnedClass() {
-        return returnedClass;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getIdProperty() {
+    return idProperty;
+  }
 
-    public DynamicEntityDao getDynamicEntityDao() {
-        return dynamicEntityDao;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public MergedPropertyType getMergedPropertyType() {
+    return mergedPropertyType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPrefix() {
+    return prefix;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldMetadata getPresentationAttribute() {
+    return presentationAttribute;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, FieldMetadata> getPresentationAttributes() {
+    return presentationAttributes;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Field getRequestedField() {
+    return requestedField;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRequestedPropertyName() {
+    return requestedPropertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Class<?> getReturnedClass() {
+    return returnedClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Class<?> getTargetClass() {
+    return targetClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Type getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isPropertyForeignKey() {
+    return propertyForeignKey;
+  }
+} // end class AddMetadataFromFieldTypeRequest

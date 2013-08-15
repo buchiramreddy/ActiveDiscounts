@@ -15,29 +15,34 @@
  */
 package org.broadleafcommerce.common.rule;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
+
 /**
- * Represents a class containing an MVEL rule
+ * Represents a class containing an MVEL rule.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface SimpleRule extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * The rule in the form of an MVEL expression
-     *
-     * @return the rule as an MVEL string
-     */
-    @Nonnull
-    public String getMatchRule();
+  /**
+   * The rule in the form of an MVEL expression.
+   *
+   * @return  the rule as an MVEL string
+   */
+  @Nonnull String getMatchRule();
 
-    /**
-     * Sets the match rule used to test this item.
-     *
-     * @param matchRule the rule as an MVEL string
-     */
-    public void setMatchRule(@Nonnull String matchRule);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the match rule used to test this item.
+   *
+   * @param  matchRule  the rule as an MVEL string
+   */
+  void setMatchRule(@Nonnull String matchRule);
 
 }

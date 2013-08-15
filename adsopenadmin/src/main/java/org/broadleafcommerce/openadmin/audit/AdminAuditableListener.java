@@ -16,89 +16,147 @@
 
 package org.broadleafcommerce.openadmin.audit;
 
-import org.broadleafcommerce.common.time.SystemTime;
-import org.broadleafcommerce.common.web.SandBoxContext;
-import org.broadleafcommerce.openadmin.security.AdminSandBoxContext;
+import java.lang.reflect.Field;
+
+import java.util.Calendar;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import java.lang.reflect.Field;
-import java.util.Calendar;
 
+import org.broadleafcommerce.common.time.SystemTime;
+import org.broadleafcommerce.common.web.SandBoxContext;
+
+import org.broadleafcommerce.openadmin.security.AdminSandBoxContext;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AdminAuditableListener {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @PrePersist
-    public void setAuditCreatedBy(Object entity) throws Exception {
-        if (entity.getClass().isAnnotationPresent(Entity.class)) {
-            Field field = getSingleField(entity.getClass(), "auditable");
-            field.setAccessible(true);
-            if (field.isAnnotationPresent(Embedded.class)) {
-                Object auditable = field.get(entity);
-                if (auditable == null) {
-                    field.set(entity, new AdminAuditable());
-                    auditable = field.get(entity);
-                }
-                Field temporalCreatedField = auditable.getClass().getDeclaredField("dateCreated");
-                Field temporalUpdatedField = auditable.getClass().getDeclaredField("dateUpdated");
-                Field agentField = auditable.getClass().getDeclaredField("createdBy");
-                setAuditValueTemporal(temporalCreatedField, auditable);
-                setAuditValueTemporal(temporalUpdatedField, auditable);
-                setAuditValueAgent(agentField, auditable);
-            }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entity  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @PrePersist public void setAuditCreatedBy(Object entity) throws Exception {
+    if (entity.getClass().isAnnotationPresent(Entity.class)) {
+      Field field = getSingleField(entity.getClass(), "auditable");
+      field.setAccessible(true);
+
+      if (field.isAnnotationPresent(Embedded.class)) {
+        Object auditable = field.get(entity);
+
+        if (auditable == null) {
+          field.set(entity, new AdminAuditable());
+          auditable = field.get(entity);
         }
-    }
 
-    @PreUpdate
-    public void setAuditUpdatedBy(Object entity) throws Exception {
-        if (entity.getClass().isAnnotationPresent(Entity.class)) {
-            Field field = getSingleField(entity.getClass(), "auditable");
-            field.setAccessible(true);
-            if (field.isAnnotationPresent(Embedded.class)) {
-                Object auditable = field.get(entity);
-                if (auditable == null) {
-                    field.set(entity, new AdminAuditable());
-                    auditable = field.get(entity);
-                }
-                Field temporalField = auditable.getClass().getDeclaredField("dateUpdated");
-                Field agentField = auditable.getClass().getDeclaredField("updatedBy");
-                setAuditValueTemporal(temporalField, auditable);
-                setAuditValueAgent(agentField, auditable);
-            }
+        Field temporalCreatedField = auditable.getClass().getDeclaredField("dateCreated");
+        Field temporalUpdatedField = auditable.getClass().getDeclaredField("dateUpdated");
+        Field agentField           = auditable.getClass().getDeclaredField("createdBy");
+        setAuditValueTemporal(temporalCreatedField, auditable);
+        setAuditValueTemporal(temporalUpdatedField, auditable);
+        setAuditValueAgent(agentField, auditable);
+      }
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entity  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @PreUpdate public void setAuditUpdatedBy(Object entity) throws Exception {
+    if (entity.getClass().isAnnotationPresent(Entity.class)) {
+      Field field = getSingleField(entity.getClass(), "auditable");
+      field.setAccessible(true);
+
+      if (field.isAnnotationPresent(Embedded.class)) {
+        Object auditable = field.get(entity);
+
+        if (auditable == null) {
+          field.set(entity, new AdminAuditable());
+          auditable = field.get(entity);
         }
-    }
 
-    protected void setAuditValueTemporal(Field field, Object entity) throws IllegalArgumentException, IllegalAccessException {
-        Calendar cal = SystemTime.asCalendar();
+        Field temporalField = auditable.getClass().getDeclaredField("dateUpdated");
+        Field agentField    = auditable.getClass().getDeclaredField("updatedBy");
+        setAuditValueTemporal(temporalField, auditable);
+        setAuditValueAgent(agentField, auditable);
+      }
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   field   DOCUMENT ME!
+   * @param   entity  DOCUMENT ME!
+   *
+   * @throws  IllegalArgumentException  DOCUMENT ME!
+   * @throws  IllegalAccessException    DOCUMENT ME!
+   */
+  protected void setAuditValueAgent(Field field, Object entity) throws IllegalArgumentException,
+    IllegalAccessException {
+    try {
+      AdminSandBoxContext context = (AdminSandBoxContext) SandBoxContext.getSandBoxContext();
+
+      if (context != null) {
         field.setAccessible(true);
-        field.set(entity, cal.getTime());
+        field.set(entity, context.getAdminUser().getId());
+      }
+    } catch (IllegalStateException e) {
+      // do nothing
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    protected void setAuditValueAgent(Field field, Object entity) throws IllegalArgumentException, IllegalAccessException {
-        try {
-            AdminSandBoxContext context = (AdminSandBoxContext) SandBoxContext.getSandBoxContext();
-            if (context != null) {
-                field.setAccessible(true);
-                field.set(entity, context.getAdminUser().getId());
-            }
-        } catch (IllegalStateException e) {
-            //do nothing
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   field   DOCUMENT ME!
+   * @param   entity  DOCUMENT ME!
+   *
+   * @throws  IllegalArgumentException  DOCUMENT ME!
+   * @throws  IllegalAccessException    DOCUMENT ME!
+   */
+  protected void setAuditValueTemporal(Field field, Object entity) throws IllegalArgumentException,
+    IllegalAccessException {
+    Calendar cal = SystemTime.asCalendar();
+    field.setAccessible(true);
+    field.set(entity, cal.getTime());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private Field getSingleField(Class<?> clazz, String fieldName) throws IllegalStateException {
+    try {
+      return clazz.getDeclaredField(fieldName);
+    } catch (NoSuchFieldException nsf) {
+      // Try superclass
+      if (clazz.getSuperclass() != null) {
+        return getSingleField(clazz.getSuperclass(), fieldName);
+      }
+
+      return null;
     }
-
-    private Field getSingleField(Class<?> clazz, String fieldName) throws IllegalStateException {
-        try {
-            return clazz.getDeclaredField(fieldName);
-        } catch (NoSuchFieldException nsf) {
-            // Try superclass
-            if (clazz.getSuperclass() != null) {
-                return getSingleField(clazz.getSuperclass(), fieldName);
-            }
-
-            return null;
-        }
-    }
-}
+  }
+} // end class AdminAuditableListener

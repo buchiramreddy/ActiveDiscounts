@@ -16,59 +16,67 @@
 
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
-import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmountType;
-
 import java.io.Serializable;
+
 import java.math.BigDecimal;
 
+import org.broadleafcommerce.core.order.service.type.FulfillmentBandResultAmountType;
+
+
 /**
- * This entity is a collection of properties shared between different band implementations.
- * Out of the box, Broadleaf provides implementations for banded weight and banded price.
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand}, {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBand}
+ * This entity is a collection of properties shared between different band implementations. Out of the box, Broadleaf
+ * provides implementations for banded weight and banded price.
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentPriceBand},
+ *           {@link org.broadleafcommerce.core.order.fulfillment.domain.FulfillmentWeightBand}
+ * @version  $Revision$, $Date$
  */
 public interface FulfillmentBand extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * Gets the amount that should be applied to the fulfillment cost for the
+   * {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}. This could be applied as a percentage or as a
+   * flat rate, depending on the result of calling {@link #getResultType()}. This is required and should never be null
+   *
+   * @return  the amount to apply for this band
+   */
+  BigDecimal getResultAmount();
 
-    /**
-     * Gets the amount that should be applied to the fulfillment
-     * cost for the {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}. This could be applied as
-     * a percentage or as a flat rate, depending on the result of calling
-     * {@link #getResultType()}. This is required and should never be null
-     * 
-     * @return the amount to apply for this band
-     */
-    public BigDecimal getResultAmount();
+  /**
+   * Sets the amount that should be applied to the fulfillment cost for this band. This can be either a flat rate or a
+   * percentage depending on {@link #getResultType()}.
+   *
+   * @param  resultAmount  - the percentage or flat rate that should be applied as a fulfillment cost for this band
+   */
+  void setResultAmount(BigDecimal resultAmount);
 
-    /**
-     * Sets the amount that should be applied to the fulfillment cost
-     * for this band. This can be either a flat rate or a percentage depending
-     * on {@link #getResultType()}.
-     * 
-     * @param resultAmount - the percentage or flat rate that should be applied
-     * as a fulfillment cost for this band
-     */
-    public void setResultAmount(BigDecimal resultAmount);
+  /**
+   * Gets how {@link #getResultAmount} should be applied to the fulfillment cost.
+   *
+   * @return  the type of {@link #getResultAmount()} which determines how that value should be calculated into the cost
+   */
+  FulfillmentBandResultAmountType getResultAmountType();
 
-    /**
-     * Gets how {@link #getResultAmount} should be applied to the fulfillment cost
-     * 
-     * @return the type of {@link #getResultAmount()} which determines how that value
-     * should be calculated into the cost
-     */
-    public FulfillmentBandResultAmountType getResultAmountType();
+  /**
+   * Sets how {@link #getResultAmount()} should be applied to the fulfillment cost.
+   *
+   * @param  resultAmountType  - how the value from {@link #getResultAmount()} should be applied to the cost of the
+   *                           {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}
+   */
+  void setResultAmountType(FulfillmentBandResultAmountType resultAmountType);
 
-    /**
-     * Sets how {@link #getResultAmount()} should be applied to the fulfillment cost
-     * 
-     * @param resultAmountType - how the value from {@link #getResultAmount()} should be
-     * applied to the cost of the {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup}
-     */
-    public void setResultAmountType(FulfillmentBandResultAmountType resultAmountType);
-
-}
+} // end interface FulfillmentBand

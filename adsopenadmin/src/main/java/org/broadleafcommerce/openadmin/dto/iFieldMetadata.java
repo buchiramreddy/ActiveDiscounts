@@ -18,74 +18,308 @@ package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface iFieldMetadata extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    String[] getAvailableToTypes();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FieldMetadata cloneFieldMetadata();
 
-    void setAvailableToTypes(String[] availableToTypes);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getInheritedFromType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String[] getAvailableToTypes();
 
-    void setInheritedFromType(String inheritedFromType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    Boolean getExcluded();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getChildrenExcluded();
 
-    void setExcluded(Boolean excluded);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getShowIfProperty();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCurrencyCodeField();
 
-    void setShowIfProperty(String showIfProperty);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getCurrencyCodeField();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getExcluded();
 
-    void setCurrencyCodeField(String currencyCodeField);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getFriendlyName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFieldName();
 
-    void setFriendlyName(String friendlyName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getSecurityLevel();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFriendlyName();
 
-    void setSecurityLevel(String securityLevel);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    Integer getOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getInheritedFromType();
 
-    void setOrder(Integer order);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getTargetClass();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getOrder();
 
-    void setTargetClass(String targetClass);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getFieldName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getOwningClass();
 
-    void setFieldName(String fieldName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getOwningClassFriendlyName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getOwningClassFriendlyName();
 
-    void setOwningClassFriendlyName(String owningClassFriendlyName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getOwningClass();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPrefix();
 
-    void setOwningClass(String owningClass);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getPrefix();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getSecurityLevel();
 
-    void setPrefix(String prefix);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    Boolean getChildrenExcluded();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getShowIfProperty();
 
-    void setChildrenExcluded(Boolean childrenExcluded);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getTab();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTab();
 
-    void setTab(String tab);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    Integer getTabOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getTabOrder();
 
-    void setTabOrder(Integer tabOrder);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    FieldMetadata cloneFieldMetadata();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTargetClass();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  availableToTypes  DOCUMENT ME!
+   */
+  void setAvailableToTypes(String[] availableToTypes);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  childrenExcluded  DOCUMENT ME!
+   */
+  void setChildrenExcluded(Boolean childrenExcluded);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currencyCodeField  DOCUMENT ME!
+   */
+  void setCurrencyCodeField(String currencyCodeField);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  excluded  DOCUMENT ME!
+   */
+  void setExcluded(Boolean excluded);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldName  DOCUMENT ME!
+   */
+  void setFieldName(String fieldName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  friendlyName  DOCUMENT ME!
+   */
+  void setFriendlyName(String friendlyName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  inheritedFromType  DOCUMENT ME!
+   */
+  void setInheritedFromType(String inheritedFromType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  void setOrder(Integer order);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  owningClass  DOCUMENT ME!
+   */
+  void setOwningClass(String owningClass);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  owningClassFriendlyName  DOCUMENT ME!
+   */
+  void setOwningClassFriendlyName(String owningClassFriendlyName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  prefix  DOCUMENT ME!
+   */
+  void setPrefix(String prefix);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  securityLevel  DOCUMENT ME!
+   */
+  void setSecurityLevel(String securityLevel);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  showIfProperty  DOCUMENT ME!
+   */
+  void setShowIfProperty(String showIfProperty);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  tab  DOCUMENT ME!
+   */
+  void setTab(String tab);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  tabOrder  DOCUMENT ME!
+   */
+  void setTabOrder(Integer tabOrder);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  targetClass  DOCUMENT ME!
+   */
+  void setTargetClass(String targetClass);
+} // end interface iFieldMetadata

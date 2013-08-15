@@ -16,54 +16,68 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
-import org.broadleafcommerce.common.presentation.ValidationConfiguration;
-import org.broadleafcommerce.openadmin.dto.Entity;
-import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule;
-
 import java.io.Serializable;
+
 import java.util.List;
 import java.util.Map;
 
+import org.broadleafcommerce.openadmin.dto.Entity;
+import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+
 
 /**
- * Validates all of the populated properties for entities
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
+ * Validates all of the populated properties for entities.
+ *
+ * @author   Phillip Verheyden
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
+ * @version  $Revision$, $Date$
  */
 public interface EntityValidatorService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Validate the given entity. Implementers should set {@link org.broadleafcommerce.openadmin.dto.Entity#setValidationFailure(boolean)} appropriately.
-     * Validation is invoked after the entire instance has been populated according to
-     * {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}.
-     * 
-     * @param entity DTO representation of <b>instance</b>
-     * @param instance actual domain representation of <b>entity</b>
-     * @param propertiesMetadata all of the merged properties metadata for the given {@link org.broadleafcommerce.openadmin.dto.Entity}
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws ClassNotFoundException
-     */
-    public void validate(Entity entity, Serializable instance, Map<String, FieldMetadata> propertiesMetadata);
+  /**
+   * The global validators that will be executed for every {@link org.broadleafcommerce.openadmin.dto.Entity}.
+   *
+   * @return  the global validators that will be executed for every {@link org.broadleafcommerce.openadmin.dto.Entity}
+   */
+  List<GlobalPropertyValidator> getGlobalEntityValidators();
 
-    /**
-     * @return the global validators that will be executed for every {@link org.broadleafcommerce.openadmin.dto.Entity}
-     */
-    public List<GlobalPropertyValidator> getGlobalEntityValidators();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    
-    /**
-     * <p>Set the global validators that will be run on every entity that is attempted to be saved in the admin. Global
-     * validators are useful to operate on things like field types and other scenarios that could occur with a number of
-     * entities. Rather than being required to define a {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} on all of those properties, this
-     * can more conveniently validate that set of properties.</p>
-     * 
-     * <p>An example of a global validator in Broadleaf is the {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.RequiredPropertyValidator} which will ensure that every
-     * property that is marked as required will fail validation if a value is unset.</p>
-     * @param globalEntityValidators the globalEntityValidators to set
-     */
-    public void setGlobalEntityValidators(List<GlobalPropertyValidator> globalEntityValidators);
+  /**
+   * <p>Set the global validators that will be run on every entity that is attempted to be saved in the admin. Global
+   * validators are useful to operate on things like field types and other scenarios that could occur with a number of
+   * entities. Rather than being required to define a
+   * {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} on all of those properties, this can more
+   * conveniently validate that set of properties.</p>
+   *
+   * <p>An example of a global validator in Broadleaf is the
+   * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.RequiredPropertyValidator} which will
+   * ensure that every property that is marked as required will fail validation if a value is unset.</p>
+   *
+   * @param  globalEntityValidators  the globalEntityValidators to set
+   */
+  void setGlobalEntityValidators(List<GlobalPropertyValidator> globalEntityValidators);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Validate the given entity. Implementers should set
+   * {@link org.broadleafcommerce.openadmin.dto.Entity#setValidationFailure(boolean)} appropriately. Validation is
+   * invoked after the entire instance has been populated according to
+   * {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}.
+   *
+   * @param   entity              DTO representation of <b>instance</b>
+   * @param   instance            actual domain representation of <b>entity</b>
+   * @param   propertiesMetadata  all of the merged properties metadata for the given
+   *                              {@link org.broadleafcommerce.openadmin.dto.Entity}
+   *
+   * @throws  InstantiationException
+   * @throws  IllegalAccessException
+   * @throws  ClassNotFoundException
+   */
+  void validate(Entity entity, Serializable instance, Map<String, FieldMetadata> propertiesMetadata);
+
+} // end interface EntityValidatorService

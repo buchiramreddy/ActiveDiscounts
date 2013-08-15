@@ -16,42 +16,67 @@
 
 package org.broadleafcommerce.openadmin.server.dao;
 
-import org.hibernate.ejb.Ejb3Configuration;
-
-import javax.persistence.spi.PersistenceUnitInfo;
 import java.util.HashMap;
 
+import javax.persistence.spi.PersistenceUnitInfo;
+
+import org.hibernate.ejb.Ejb3Configuration;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class EJB3ConfigurationDaoImpl implements EJB3ConfigurationDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Ejb3Configuration configuration = null;
+  /** DOCUMENT ME! */
+  protected PersistenceUnitInfo persistenceUnitInfo;
 
-    protected PersistenceUnitInfo persistenceUnitInfo;
+  private Ejb3Configuration configuration = null;
 
-    public Ejb3Configuration getConfiguration() {
-        synchronized(this) {
-            if (configuration == null) {
-                Ejb3Configuration temp = new Ejb3Configuration();
-                String previousValue = persistenceUnitInfo.getProperties().getProperty("hibernate.hbm2ddl.auto");
-                persistenceUnitInfo.getProperties().setProperty("hibernate.hbm2ddl.auto", "none");
-                configuration = temp.configure(persistenceUnitInfo, new HashMap());
-                configuration.getHibernateConfiguration().buildSessionFactory();
-                persistenceUnitInfo.getProperties().setProperty("hibernate.hbm2ddl.auto", previousValue);
-            }
-        }
-        return configuration;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.EJB3ConfigurationDao#getConfiguration()
+   */
+  @Override public Ejb3Configuration getConfiguration() {
+    synchronized (this) {
+      if (configuration == null) {
+        Ejb3Configuration temp          = new Ejb3Configuration();
+        String            previousValue = persistenceUnitInfo.getProperties().getProperty("hibernate.hbm2ddl.auto");
+        persistenceUnitInfo.getProperties().setProperty("hibernate.hbm2ddl.auto", "none");
+        configuration = temp.configure(persistenceUnitInfo, new HashMap());
+        configuration.getHibernateConfiguration().buildSessionFactory();
+        persistenceUnitInfo.getProperties().setProperty("hibernate.hbm2ddl.auto", previousValue);
+      }
     }
 
-    public PersistenceUnitInfo getPersistenceUnitInfo() {
-        return persistenceUnitInfo;
-    }
+    return configuration;
+  }
 
-    public void setPersistenceUnitInfo(PersistenceUnitInfo persistenceUnitInfo) {
-        this.persistenceUnitInfo = persistenceUnitInfo;
-    }
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistenceUnitInfo getPersistenceUnitInfo() {
+    return persistenceUnitInfo;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  persistenceUnitInfo  DOCUMENT ME!
+   */
+  public void setPersistenceUnitInfo(PersistenceUnitInfo persistenceUnitInfo) {
+    this.persistenceUnitInfo = persistenceUnitInfo;
+  }
+
+} // end class EJB3ConfigurationDaoImpl

@@ -16,44 +16,76 @@
 
 package org.broadleafcommerce.core.checkout.service.workflow;
 
+import java.util.Map;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 import org.broadleafcommerce.core.payment.service.module.PaymentResponse;
 import org.broadleafcommerce.core.payment.service.module.PaymentResponseImpl;
 
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CheckoutSeed implements CheckoutResponse {
+  private Map<PaymentInfo, Referenced> infos;
+  private Order                        order;
+  private PaymentResponse              paymentResponse   = new PaymentResponseImpl();
+  private Map<String, Object>          userDefinedFields;
 
-    private Map<PaymentInfo, Referenced> infos;
-    private Order order;
-    private PaymentResponse paymentResponse = new PaymentResponseImpl();
-    private Map<String, Object> userDefinedFields;
+  /**
+   * Creates a new CheckoutSeed object.
+   *
+   * @param  order              DOCUMENT ME!
+   * @param  infos              DOCUMENT ME!
+   * @param  userDefinedFields  DOCUMENT ME!
+   */
+  public CheckoutSeed(Order order, Map<PaymentInfo, Referenced> infos, Map<String, Object> userDefinedFields) {
+    this.order             = order;
+    this.infos             = infos;
+    this.userDefinedFields = userDefinedFields;
+  }
 
-    public CheckoutSeed(Order order, Map<PaymentInfo, Referenced> infos, Map<String, Object> userDefinedFields) {
-        this.order = order;
-        this.infos = infos;
-        this.userDefinedFields = userDefinedFields;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.checkout.service.workflow.CheckoutResponse#getInfos()
+   */
+  @Override public Map<PaymentInfo, Referenced> getInfos() {
+    return infos;
+  }
 
-    public Map<PaymentInfo, Referenced> getInfos() {
-        return infos;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.checkout.service.workflow.CheckoutResponse#getOrder()
+   */
+  @Override public Order getOrder() {
+    return order;
+  }
 
-    public Order getOrder() {
-        return order;
-    }
-    
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    public PaymentResponse getPaymentResponse() {
-        return paymentResponse;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.checkout.service.workflow.CheckoutResponse#getPaymentResponse()
+   */
+  @Override public PaymentResponse getPaymentResponse() {
+    return paymentResponse;
+  }
 
-    public Map<String, Object> getUserDefinedFields() {
-        return userDefinedFields;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, Object> getUserDefinedFields() {
+    return userDefinedFields;
+  }
+} // end class CheckoutSeed

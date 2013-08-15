@@ -16,737 +16,1594 @@
 
 package org.broadleafcommerce.openadmin.dto;
 
-import org.broadleafcommerce.common.presentation.client.LookupType;
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor;
-import org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.presentation.client.LookupType;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class BasicFieldMetadata extends FieldMetadata {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected SupportedFieldType fieldType;
-    protected SupportedFieldType secondaryType = SupportedFieldType.INTEGER;
-    protected Integer length;
-    protected Boolean required;
-    protected Boolean unique;
-    protected Integer scale;
-    protected Integer precision;
-    protected Boolean mutable;
-    protected String foreignKeyProperty;
-    protected String foreignKeyClass;
-    protected String foreignKeyDisplayValueProperty;
-    protected Boolean foreignKeyCollection;
-    protected MergedPropertyType mergedPropertyType;
-    protected String[][] enumerationValues;
-    protected String enumerationClass;
-    protected Boolean isDerived;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    //@AdminPresentation derived fields
-    protected String name;
-    protected VisibilityEnum visibility;
-    protected String group;
-    protected Integer groupOrder;
-    protected Boolean groupCollapsed;
-    protected SupportedFieldType explicitFieldType;
-    protected Boolean largeEntry;
-    protected Boolean prominent;
-    protected Integer gridOrder;
-    protected String columnWidth;
-    protected String broadleafEnumeration;
-    protected Boolean readOnly;
-    protected Map<String, Map<String, String>> validationConfigurations = new HashMap<String, Map<String, String>>(5);
-    protected Boolean requiredOverride;
-    protected String tooltip;
-    protected String helpText;
-    protected String hint;
-    protected String lookupDisplayProperty;
-    protected String optionListEntity;
-    protected String optionValueFieldName;
-    protected String optionDisplayFieldName;
-    protected Boolean optionCanEditValues;
-    protected String[][] optionFilterParams;
-    protected String[] customCriteria;
-    protected Boolean useServerSideInspectionCache;
-    protected Boolean toOneLookupCreatedViaAnnotation;
-    protected String ruleIdentifier;
-    protected LookupType lookupType;
-    protected Boolean translatable;
+  /** DOCUMENT ME! */
+  protected String             broadleafEnumeration;
 
-    //for MapFields
-    protected String mapFieldValueClass;
-    protected Boolean searchable;
-    protected String manyToField;
+  /** DOCUMENT ME! */
+  protected String             columnWidth;
 
-    public SupportedFieldType getFieldType() {
-        return fieldType;
-    }
+  /** DOCUMENT ME! */
+  protected String[]           customCriteria;
 
-    public void setFieldType(SupportedFieldType fieldType) {
-        this.fieldType = fieldType;
-    }
+  /** DOCUMENT ME! */
+  protected String             enumerationClass;
 
-    public SupportedFieldType getSecondaryType() {
-        return secondaryType;
-    }
+  /** DOCUMENT ME! */
+  protected String[][]         enumerationValues;
 
-    public void setSecondaryType(SupportedFieldType secondaryType) {
-        this.secondaryType = secondaryType;
-    }
+  /** DOCUMENT ME! */
+  protected SupportedFieldType explicitFieldType;
 
-    public Integer getLength() {
-        return length;
-    }
+  /** DOCUMENT ME! */
+  protected SupportedFieldType fieldType;
 
-    public void setLength(Integer length) {
-        this.length = length;
-    }
+  /** DOCUMENT ME! */
+  protected String             foreignKeyClass;
 
-    public Boolean getRequired() {
-        return required;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean            foreignKeyCollection;
 
-    public void setRequired(Boolean required) {
-        this.required = required;
-    }
+  /** DOCUMENT ME! */
+  protected String             foreignKeyDisplayValueProperty;
 
-    public Integer getScale() {
-        return scale;
-    }
+  /** DOCUMENT ME! */
+  protected String             foreignKeyProperty;
 
-    public void setScale(Integer scale) {
-        this.scale = scale;
-    }
+  /** DOCUMENT ME! */
+  protected Integer            gridOrder;
 
-    public Integer getPrecision() {
-        return precision;
-    }
+  /** DOCUMENT ME! */
+  protected String             group;
 
-    public void setPrecision(Integer precision) {
-        this.precision = precision;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean            groupCollapsed;
 
-    public Boolean getUnique() {
-        return unique;
-    }
+  /** DOCUMENT ME! */
+  protected Integer            groupOrder;
 
-    public void setUnique(Boolean unique) {
-        this.unique = unique;
-    }
+  /** DOCUMENT ME! */
+  protected String             helpText;
 
-    public Boolean getMutable() {
-        return mutable;
-    }
+  /** DOCUMENT ME! */
+  protected String             hint;
 
-    public void setMutable(Boolean mutable) {
-        this.mutable = mutable;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean            isDerived;
 
-    public String getForeignKeyProperty() {
-        return foreignKeyProperty;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean            largeEntry;
 
-    public void setForeignKeyProperty(String foreignKeyProperty) {
-        this.foreignKeyProperty = foreignKeyProperty;
-    }
+  /** DOCUMENT ME! */
+  protected Integer            length;
 
-    public String getForeignKeyClass() {
-        return foreignKeyClass;
-    }
+  /** DOCUMENT ME! */
+  protected String             lookupDisplayProperty;
 
-    public void setForeignKeyClass(String foreignKeyClass) {
-        this.foreignKeyClass = foreignKeyClass;
-    }
+  /** DOCUMENT ME! */
+  protected LookupType         lookupType;
 
-    public Boolean getForeignKeyCollection() {
-        return foreignKeyCollection;
-    }
+  /** DOCUMENT ME! */
+  protected String             manyToField;
 
-    public void setForeignKeyCollection(Boolean foreignKeyCollection) {
-        this.foreignKeyCollection = foreignKeyCollection;
-    }
+  // for MapFields
+  /** DOCUMENT ME! */
+  protected String             mapFieldValueClass;
 
-    public MergedPropertyType getMergedPropertyType() {
-        return mergedPropertyType;
-    }
+  /** DOCUMENT ME! */
+  protected MergedPropertyType mergedPropertyType;
 
-    public void setMergedPropertyType(MergedPropertyType mergedPropertyType) {
-        this.mergedPropertyType = mergedPropertyType;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean            mutable;
 
-    public String[][] getEnumerationValues() {
-        return enumerationValues;
-    }
+  // @AdminPresentation derived fields
+  /** DOCUMENT ME! */
+  protected String                           name;
 
-    public void setEnumerationValues(String[][] enumerationValues) {
-        this.enumerationValues = enumerationValues;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean                          optionCanEditValues;
 
-    public String getForeignKeyDisplayValueProperty() {
-        return foreignKeyDisplayValueProperty;
-    }
+  /** DOCUMENT ME! */
+  protected String                           optionDisplayFieldName;
 
-    public void setForeignKeyDisplayValueProperty(String foreignKeyDisplayValueProperty) {
-        this.foreignKeyDisplayValueProperty = foreignKeyDisplayValueProperty;
-    }
+  /** DOCUMENT ME! */
+  protected String[][]                       optionFilterParams;
 
-    public String getEnumerationClass() {
-        return enumerationClass;
-    }
+  /** DOCUMENT ME! */
+  protected String                           optionListEntity;
 
-    public void setEnumerationClass(String enumerationClass) {
-        this.enumerationClass = enumerationClass;
-    }
-    
-    public Boolean getIsDerived() {
-        return isDerived;
-    }
+  /** DOCUMENT ME! */
+  protected String                           optionValueFieldName;
+
+  /** DOCUMENT ME! */
+  protected Integer                          precision;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          prominent;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          readOnly;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          required;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          requiredOverride;
+
+  /** DOCUMENT ME! */
+  protected String                           ruleIdentifier;
+
+  /** DOCUMENT ME! */
+  protected Integer                          scale;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          searchable;
+
+  /** DOCUMENT ME! */
+  protected SupportedFieldType               secondaryType                   = SupportedFieldType.INTEGER;
+
+  /** DOCUMENT ME! */
+  protected String                           tooltip;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          toOneLookupCreatedViaAnnotation;
 
-    public void setDerived(Boolean isDerived) {
-        this.isDerived = isDerived;
-    }
+  /** DOCUMENT ME! */
+  protected Boolean                          translatable;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          unique;
+
+  /** DOCUMENT ME! */
+  protected Boolean                          useServerSideInspectionCache;
+
+  /** DOCUMENT ME! */
+  protected Map<String, Map<String, String>> validationConfigurations = new HashMap<String, Map<String, String>>(5);
+
+  /** DOCUMENT ME! */
+  protected VisibilityEnum                   visibility;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.FieldMetadata#accept(org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor)
+   */
+  @Override public void accept(MetadataVisitor visitor) {
+    visitor.visit(this);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.FieldMetadata#cloneFieldMetadata()
+   */
+  @Override public FieldMetadata cloneFieldMetadata() {
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    metadata.fieldType                      = fieldType;
+    metadata.secondaryType                  = secondaryType;
+    metadata.length                         = length;
+    metadata.required                       = required;
+    metadata.unique                         = unique;
+    metadata.scale                          = scale;
+    metadata.precision                      = precision;
+    metadata.mutable                        = mutable;
+    metadata.foreignKeyProperty             = foreignKeyProperty;
+    metadata.foreignKeyClass                = foreignKeyClass;
+    metadata.foreignKeyDisplayValueProperty = foreignKeyDisplayValueProperty;
+    metadata.foreignKeyCollection           = foreignKeyCollection;
+    metadata.mergedPropertyType             = mergedPropertyType;
+    metadata.enumerationClass               = enumerationClass;
 
-    public String getName() {
-        return name;
-    }
+    if (enumerationValues != null) {
+      metadata.enumerationValues = new String[enumerationValues.length][];
 
-    public void setName(String name) {
-        this.name = name;
+      for (int j = 0; j < enumerationValues.length; j++) {
+        metadata.enumerationValues[j] = new String[enumerationValues[j].length];
+        System.arraycopy(enumerationValues[j], 0, metadata.enumerationValues[j], 0, enumerationValues[j].length);
+      }
     }
 
-    public SupportedFieldType getExplicitFieldType() {
-        return explicitFieldType;
-    }
+    metadata.name           = name;
+    metadata.visibility     = visibility;
+    metadata.group          = group;
+    metadata.groupOrder     = groupOrder;
+    metadata.groupCollapsed = groupCollapsed;
+    metadata.setTab(getTab());
+    metadata.setTabOrder(getTabOrder());
+    metadata.explicitFieldType    = explicitFieldType;
+    metadata.largeEntry           = largeEntry;
+    metadata.prominent            = prominent;
+    metadata.gridOrder            = gridOrder;
+    metadata.columnWidth          = columnWidth;
+    metadata.broadleafEnumeration = broadleafEnumeration;
+    metadata.readOnly             = readOnly;
+    metadata.requiredOverride     = requiredOverride;
+    metadata.tooltip              = tooltip;
+    metadata.helpText             = helpText;
+    metadata.hint                 = hint;
 
-    public void setExplicitFieldType(SupportedFieldType fieldType) {
-        this.explicitFieldType = fieldType;
-    }
+    for (Map.Entry<String, Map<String, String>> entry : validationConfigurations.entrySet()) {
+      Map<String, String> clone = new HashMap<String, String>(entry.getValue().size());
 
-    public String getGroup() {
-        return group;
-    }
+      for (Map.Entry<String, String> entry2 : entry.getValue().entrySet()) {
+        clone.put(entry2.getKey(), entry2.getValue());
+      }
 
-    public void setGroup(String group) {
-        this.group = group;
+      metadata.validationConfigurations.put(entry.getKey(), clone);
     }
 
-    public Boolean isLargeEntry() {
-        return largeEntry;
-    }
+    metadata.lookupDisplayProperty  = lookupDisplayProperty;
+    metadata.optionListEntity       = optionListEntity;
+    metadata.optionCanEditValues    = optionCanEditValues;
+    metadata.optionDisplayFieldName = optionDisplayFieldName;
+    metadata.optionValueFieldName   = optionValueFieldName;
 
-    public void setLargeEntry(Boolean largeEntry) {
-        this.largeEntry = largeEntry;
-    }
+    if (optionFilterParams != null) {
+      metadata.optionFilterParams = new String[optionFilterParams.length][];
 
-    public Boolean isProminent() {
-        return prominent;
+      for (int j = 0; j < optionFilterParams.length; j++) {
+        metadata.optionFilterParams[j] = new String[optionFilterParams[j].length];
+        System.arraycopy(optionFilterParams[j], 0, metadata.optionFilterParams[j], 0, optionFilterParams[j].length);
+      }
     }
 
-    public void setProminent(Boolean prominent) {
-        this.prominent = prominent;
-    }
+    metadata.customCriteria                  = customCriteria;
+    metadata.useServerSideInspectionCache    = useServerSideInspectionCache;
+    metadata.toOneLookupCreatedViaAnnotation = toOneLookupCreatedViaAnnotation;
+    metadata.ruleIdentifier                  = ruleIdentifier;
+    metadata.mapFieldValueClass              = mapFieldValueClass;
+    metadata.searchable                      = searchable;
+    metadata.manyToField                     = manyToField;
+    metadata.lookupType                      = lookupType;
+    metadata.translatable                    = translatable;
+    metadata.isDerived                       = isDerived;
 
-    public String getColumnWidth() {
-        return columnWidth;
-    }
+    metadata = (BasicFieldMetadata) populate(metadata);
 
-    public void setColumnWidth(String columnWidth) {
-        this.columnWidth = columnWidth;
-    }
+    return metadata;
+  } // end method cloneFieldMetadata
 
-    public String getBroadleafEnumeration() {
-        return broadleafEnumeration;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setBroadleafEnumeration(String broadleafEnumeration) {
-        this.broadleafEnumeration = broadleafEnumeration;
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.FieldMetadata#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    public Boolean getReadOnly() {
-        return readOnly;
+    if (!(o instanceof BasicFieldMetadata)) {
+      return false;
     }
 
-    public void setReadOnly(Boolean readOnly) {
-        this.readOnly = readOnly;
+    if (!super.equals(o)) {
+      return false;
     }
 
-    public Integer getGroupOrder() {
-        return groupOrder;
-    }
+    BasicFieldMetadata metadata = (BasicFieldMetadata) o;
 
-    public void setGroupOrder(Integer groupOrder) {
-        this.groupOrder = groupOrder;
+    if ((broadleafEnumeration != null) ? (!broadleafEnumeration.equals(metadata.broadleafEnumeration))
+                                       : (metadata.broadleafEnumeration != null)) {
+      return false;
     }
-    
-    public Integer getGridOrder() {
-        return gridOrder;
-    }
 
-    public void setGridOrder(Integer gridOrder) {
-        this.gridOrder = gridOrder;
+    if ((columnWidth != null) ? (!columnWidth.equals(metadata.columnWidth)) : (metadata.columnWidth != null)) {
+      return false;
     }
 
-    /**
-     * @return the validation configurations for this property keyed by the fully-qualified name of the
-     * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} implementation
-     */
-    public Map<String, Map<String, String>> getValidationConfigurations() {
-        return validationConfigurations;
+    if ((enumerationClass != null) ? (!enumerationClass.equals(metadata.enumerationClass))
+                                   : (metadata.enumerationClass != null)) {
+      return false;
     }
 
-    public void setValidationConfigurations(Map<String, Map<String, String>> validationConfigurations) {
-        this.validationConfigurations = validationConfigurations;
+    if (explicitFieldType != metadata.explicitFieldType) {
+      return false;
     }
 
-    public Boolean getRequiredOverride() {
-        return requiredOverride;
+    if (fieldType != metadata.fieldType) {
+      return false;
     }
 
-    public void setRequiredOverride(Boolean requiredOverride) {
-        this.requiredOverride = requiredOverride;
+    if ((foreignKeyClass != null) ? (!foreignKeyClass.equals(metadata.foreignKeyClass))
+                                  : (metadata.foreignKeyClass != null)) {
+      return false;
     }
 
-    public Boolean getGroupCollapsed() {
-        return groupCollapsed;
+    if ((foreignKeyCollection != null) ? (!foreignKeyCollection.equals(metadata.foreignKeyCollection))
+                                       : (metadata.foreignKeyCollection != null)) {
+      return false;
     }
 
-    public void setGroupCollapsed(Boolean groupCollapsed) {
-        this.groupCollapsed = groupCollapsed;
+    if ((foreignKeyDisplayValueProperty != null)
+          ? (!foreignKeyDisplayValueProperty.equals(metadata.foreignKeyDisplayValueProperty))
+          : (metadata.foreignKeyDisplayValueProperty != null)) {
+      return false;
     }
 
-    public String getTooltip() {
-        return tooltip;
+    if ((foreignKeyProperty != null) ? (!foreignKeyProperty.equals(metadata.foreignKeyProperty))
+                                     : (metadata.foreignKeyProperty != null)) {
+      return false;
     }
 
-    public void setTooltip(String tooltip) {
-        this.tooltip = tooltip;
+    if ((group != null) ? (!group.equals(metadata.group)) : (metadata.group != null)) {
+      return false;
     }
 
-    public String getHelpText() {
-        return helpText;
+    if ((groupCollapsed != null) ? (!groupCollapsed.equals(metadata.groupCollapsed))
+                                 : (metadata.groupCollapsed != null)) {
+      return false;
     }
 
-    public void setHelpText(String helpText) {
-        this.helpText = helpText;
+    if ((groupOrder != null) ? (!groupOrder.equals(metadata.groupOrder)) : (metadata.groupOrder != null)) {
+      return false;
     }
 
-    public String getHint() {
-        return hint;
+    if ((helpText != null) ? (!helpText.equals(metadata.helpText)) : (metadata.helpText != null)) {
+      return false;
     }
 
-    public void setHint(String hint) {
-        this.hint = hint;
+    if ((hint != null) ? (!hint.equals(metadata.hint)) : (metadata.hint != null)) {
+      return false;
     }
 
-    public VisibilityEnum getVisibility() {
-        return visibility;
+    if ((largeEntry != null) ? (!largeEntry.equals(metadata.largeEntry)) : (metadata.largeEntry != null)) {
+      return false;
     }
 
-    public void setVisibility(VisibilityEnum visibility) {
-        this.visibility = visibility;
+    if ((length != null) ? (!length.equals(metadata.length)) : (metadata.length != null)) {
+      return false;
     }
 
-    public String getLookupDisplayProperty() {
-        return lookupDisplayProperty;
+    if ((lookupDisplayProperty != null) ? (!lookupDisplayProperty.equals(metadata.lookupDisplayProperty))
+                                        : (metadata.lookupDisplayProperty != null)) {
+      return false;
     }
 
-    public void setLookupDisplayProperty(String lookupDisplayProperty) {
-        this.lookupDisplayProperty = lookupDisplayProperty;
+    if (mergedPropertyType != metadata.mergedPropertyType) {
+      return false;
     }
 
-    public Boolean getOptionCanEditValues() {
-        return optionCanEditValues;
+    if ((mutable != null) ? (!mutable.equals(metadata.mutable)) : (metadata.mutable != null)) {
+      return false;
     }
 
-    public void setOptionCanEditValues(Boolean optionCanEditValues) {
-        this.optionCanEditValues = optionCanEditValues;
+    if ((name != null) ? (!name.equals(metadata.name)) : (metadata.name != null)) {
+      return false;
     }
 
-    public String getOptionDisplayFieldName() {
-        return optionDisplayFieldName;
+    if ((optionCanEditValues != null) ? (!optionCanEditValues.equals(metadata.optionCanEditValues))
+                                      : (metadata.optionCanEditValues != null)) {
+      return false;
     }
 
-    public void setOptionDisplayFieldName(String optionDisplayFieldName) {
-        this.optionDisplayFieldName = optionDisplayFieldName;
+    if ((optionDisplayFieldName != null) ? (!optionDisplayFieldName.equals(metadata.optionDisplayFieldName))
+                                         : (metadata.optionDisplayFieldName != null)) {
+      return false;
     }
 
-    public String getOptionListEntity() {
-        return optionListEntity;
+    if ((optionListEntity != null) ? (!optionListEntity.equals(metadata.optionListEntity))
+                                   : (metadata.optionListEntity != null)) {
+      return false;
     }
 
-    public void setOptionListEntity(String optionListEntity) {
-        this.optionListEntity = optionListEntity;
+    if ((optionValueFieldName != null) ? (!optionValueFieldName.equals(metadata.optionValueFieldName))
+                                       : (metadata.optionValueFieldName != null)) {
+      return false;
     }
 
-    public String getOptionValueFieldName() {
-        return optionValueFieldName;
+    if ((precision != null) ? (!precision.equals(metadata.precision)) : (metadata.precision != null)) {
+      return false;
     }
 
-    public void setOptionValueFieldName(String optionValueFieldName) {
-        this.optionValueFieldName = optionValueFieldName;
+    if ((prominent != null) ? (!prominent.equals(metadata.prominent)) : (metadata.prominent != null)) {
+      return false;
     }
 
-    public String[][] getOptionFilterParams() {
-        return optionFilterParams;
+    if ((gridOrder != null) ? (!gridOrder.equals(metadata.gridOrder)) : (metadata.gridOrder != null)) {
+      return false;
     }
 
-    public void setOptionFilterParams(String[][] optionFilterParams) {
-        this.optionFilterParams = optionFilterParams;
+    if ((readOnly != null) ? (!readOnly.equals(metadata.readOnly)) : (metadata.readOnly != null)) {
+      return false;
     }
 
-    public String[] getCustomCriteria() {
-        return customCriteria;
+    if ((required != null) ? (!required.equals(metadata.required)) : (metadata.required != null)) {
+      return false;
     }
 
-    public void setCustomCriteria(String[] customCriteria) {
-        this.customCriteria = customCriteria;
+    if ((requiredOverride != null) ? (!requiredOverride.equals(metadata.requiredOverride))
+                                   : (metadata.requiredOverride != null)) {
+      return false;
     }
 
-    public Boolean getUseServerSideInspectionCache() {
-        return useServerSideInspectionCache;
+    if ((scale != null) ? (!scale.equals(metadata.scale)) : (metadata.scale != null)) {
+      return false;
     }
 
-    public void setUseServerSideInspectionCache(Boolean useServerSideInspectionCache) {
-        this.useServerSideInspectionCache = useServerSideInspectionCache;
+    if (secondaryType != metadata.secondaryType) {
+      return false;
     }
 
-    public Boolean getToOneLookupCreatedViaAnnotation() {
-        return toOneLookupCreatedViaAnnotation;
+    if ((tooltip != null) ? (!tooltip.equals(metadata.tooltip)) : (metadata.tooltip != null)) {
+      return false;
     }
 
-    public void setToOneLookupCreatedViaAnnotation(Boolean toOneLookupCreatedViaAnnotation) {
-        this.toOneLookupCreatedViaAnnotation = toOneLookupCreatedViaAnnotation;
+    if ((unique != null) ? (!unique.equals(metadata.unique)) : (metadata.unique != null)) {
+      return false;
     }
 
-    public String getRuleIdentifier() {
-        return ruleIdentifier;
+    if ((validationConfigurations != null) ? (!validationConfigurations.equals(metadata.validationConfigurations))
+                                           : (metadata.validationConfigurations != null)) {
+      return false;
     }
 
-    public void setRuleIdentifier(String ruleIdentifier) {
-        this.ruleIdentifier = ruleIdentifier;
+    if (visibility != metadata.visibility) {
+      return false;
     }
 
-    public String getMapFieldValueClass() {
-        return mapFieldValueClass;
+    if ((ruleIdentifier != null) ? (!ruleIdentifier.equals(metadata.ruleIdentifier))
+                                 : (metadata.ruleIdentifier != null)) {
+      return false;
     }
 
-    public void setMapFieldValueClass(String mapFieldValueClass) {
-        this.mapFieldValueClass = mapFieldValueClass;
-    }
-    
-    public LookupType getLookupType() {
-        return lookupType;
+    if ((mapFieldValueClass != null) ? (!mapFieldValueClass.equals(metadata.mapFieldValueClass))
+                                     : (metadata.mapFieldValueClass != null)) {
+      return false;
     }
 
-    public Boolean getSearchable() {
-        return searchable;
+    if ((searchable != null) ? (!searchable.equals(metadata.searchable)) : (metadata.searchable != null)) {
+      return false;
     }
 
-    public void setSearchable(Boolean searchable) {
-        this.searchable = searchable;
+    if ((manyToField != null) ? (!manyToField.equals(metadata.manyToField)) : (metadata.manyToField != null)) {
+      return false;
     }
 
-    public String getManyToField() {
-        return manyToField;
+    if ((lookupType != null) ? (!lookupType.equals(metadata.lookupType)) : (metadata.lookupType != null)) {
+      return false;
     }
 
-    public void setManyToField(String manyToField) {
-        this.manyToField = manyToField;
+    if ((isDerived != null) ? (!isDerived.equals(metadata.isDerived)) : (metadata.isDerived != null)) {
+      return false;
     }
 
-    public void setLookupType(LookupType lookupType) {
-        this.lookupType = lookupType;
-    }
-    
-    public Boolean getTranslatable() {
-        return translatable;
-    }
-    
-    public void setTranslatable(Boolean translatable) {
-        this.translatable = translatable;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public FieldMetadata cloneFieldMetadata() {
-        BasicFieldMetadata metadata = new BasicFieldMetadata();
-        metadata.fieldType = fieldType;
-        metadata.secondaryType = secondaryType;
-        metadata.length = length;
-        metadata.required = required;
-        metadata.unique = unique;
-        metadata.scale = scale;
-        metadata.precision = precision;
-        metadata.mutable = mutable;
-        metadata.foreignKeyProperty = foreignKeyProperty;
-        metadata.foreignKeyClass = foreignKeyClass;
-        metadata.foreignKeyDisplayValueProperty = foreignKeyDisplayValueProperty;
-        metadata.foreignKeyCollection = foreignKeyCollection;
-        metadata.mergedPropertyType = mergedPropertyType;
-        metadata.enumerationClass = enumerationClass;
-        if (enumerationValues != null) {
-            metadata.enumerationValues = new String[enumerationValues.length][];
-            for (int j=0;j<enumerationValues.length;j++) {
-                metadata.enumerationValues[j] = new String[enumerationValues[j].length];
-                System.arraycopy(enumerationValues[j], 0, metadata.enumerationValues[j], 0, enumerationValues[j].length);
-            }
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        metadata.name = name;
-        metadata.visibility = visibility;
-        metadata.group = group;
-        metadata.groupOrder = groupOrder;
-        metadata.groupCollapsed = groupCollapsed;
-        metadata.setTab(getTab());
-        metadata.setTabOrder(getTabOrder());
-        metadata.explicitFieldType = explicitFieldType;
-        metadata.largeEntry = largeEntry;
-        metadata.prominent = prominent;
-        metadata.gridOrder = gridOrder;        
-        metadata.columnWidth = columnWidth;
-        metadata.broadleafEnumeration = broadleafEnumeration;
-        metadata.readOnly = readOnly;
-        metadata.requiredOverride = requiredOverride;
-        metadata.tooltip = tooltip;
-        metadata.helpText = helpText;
-        metadata.hint = hint;
-        for (Map.Entry<String, Map<String, String>> entry : validationConfigurations.entrySet()) {
-            Map<String, String> clone = new HashMap<String, String>(entry.getValue().size());
-            for (Map.Entry<String, String> entry2 : entry.getValue().entrySet()) {
-                clone.put(entry2.getKey(), entry2.getValue());
-            }
-            metadata.validationConfigurations.put(entry.getKey(), clone);
-        }
-        metadata.lookupDisplayProperty = lookupDisplayProperty;
-        metadata.optionListEntity = optionListEntity;
-        metadata.optionCanEditValues = optionCanEditValues;
-        metadata.optionDisplayFieldName = optionDisplayFieldName;
-        metadata.optionValueFieldName = optionValueFieldName;
-        if (optionFilterParams != null) {
-            metadata.optionFilterParams = new String[optionFilterParams.length][];
-            for (int j=0;j<optionFilterParams.length;j++) {
-                metadata.optionFilterParams[j] = new String[optionFilterParams[j].length];
-                System.arraycopy(optionFilterParams[j], 0, metadata.optionFilterParams[j], 0, optionFilterParams[j].length);
-            }
-        }
-        metadata.customCriteria = customCriteria;
-        metadata.useServerSideInspectionCache = useServerSideInspectionCache;
-        metadata.toOneLookupCreatedViaAnnotation = toOneLookupCreatedViaAnnotation;
-        metadata.ruleIdentifier = ruleIdentifier;
-        metadata.mapFieldValueClass = mapFieldValueClass;
-        metadata.searchable = searchable;
-        metadata.manyToField = manyToField;
-        metadata.lookupType = lookupType;
-        metadata.translatable = translatable;
-        metadata.isDerived = isDerived;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getBroadleafEnumeration() {
+    return broadleafEnumeration;
+  }
 
-        metadata = (BasicFieldMetadata) populate(metadata);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return metadata;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getColumnWidth() {
+    return columnWidth;
+  }
 
-    @Override
-    public void accept(MetadataVisitor visitor) {
-        visitor.visit(this);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof BasicFieldMetadata)) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String[] getCustomCriteria() {
+    return customCriteria;
+  }
 
-        BasicFieldMetadata metadata = (BasicFieldMetadata) o;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (broadleafEnumeration != null ? !broadleafEnumeration.equals(metadata.broadleafEnumeration) : metadata.broadleafEnumeration != null) {
-            return false;
-        }
-        if (columnWidth != null ? !columnWidth.equals(metadata.columnWidth) : metadata.columnWidth != null) {
-            return false;
-        }
-        if (enumerationClass != null ? !enumerationClass.equals(metadata.enumerationClass) : metadata.enumerationClass != null) {
-            return false;
-        }
-        if (explicitFieldType != metadata.explicitFieldType) {
-            return false;
-        }
-        if (fieldType != metadata.fieldType) {
-            return false;
-        }
-        if (foreignKeyClass != null ? !foreignKeyClass.equals(metadata.foreignKeyClass) : metadata.foreignKeyClass != null) {
-            return false;
-        }
-        if (foreignKeyCollection != null ? !foreignKeyCollection.equals(metadata.foreignKeyCollection) : metadata.foreignKeyCollection != null) {
-            return false;
-        }
-        if (foreignKeyDisplayValueProperty != null ? !foreignKeyDisplayValueProperty.equals(metadata.foreignKeyDisplayValueProperty) : metadata.foreignKeyDisplayValueProperty != null) {
-            return false;
-        }
-        if (foreignKeyProperty != null ? !foreignKeyProperty.equals(metadata.foreignKeyProperty) : metadata.foreignKeyProperty != null) {
-            return false;
-        }
-        if (group != null ? !group.equals(metadata.group) : metadata.group != null) {
-            return false;
-        }
-        if (groupCollapsed != null ? !groupCollapsed.equals(metadata.groupCollapsed) : metadata.groupCollapsed != null) {
-            return false;
-        }
-        if (groupOrder != null ? !groupOrder.equals(metadata.groupOrder) : metadata.groupOrder != null) {
-            return false;
-        }
-        if (helpText != null ? !helpText.equals(metadata.helpText) : metadata.helpText != null) {
-            return false;
-        }
-        if (hint != null ? !hint.equals(metadata.hint) : metadata.hint != null) {
-            return false;
-        }
-        if (largeEntry != null ? !largeEntry.equals(metadata.largeEntry) : metadata.largeEntry != null) {
-            return false;
-        }
-        if (length != null ? !length.equals(metadata.length) : metadata.length != null) {
-            return false;
-        }
-        if (lookupDisplayProperty != null ? !lookupDisplayProperty.equals(metadata.lookupDisplayProperty) : metadata.lookupDisplayProperty != null) {
-            return false;
-        }
-        if (mergedPropertyType != metadata.mergedPropertyType) {
-            return false;
-        }
-        if (mutable != null ? !mutable.equals(metadata.mutable) : metadata.mutable != null) {
-            return false;
-        }
-        if (name != null ? !name.equals(metadata.name) : metadata.name != null) {
-            return false;
-        }
-        if (optionCanEditValues != null ? !optionCanEditValues.equals(metadata.optionCanEditValues) : metadata.optionCanEditValues != null) {
-            return false;
-        }
-        if (optionDisplayFieldName != null ? !optionDisplayFieldName.equals(metadata.optionDisplayFieldName) : metadata.optionDisplayFieldName != null) {
-            return false;
-        }
-        if (optionListEntity != null ? !optionListEntity.equals(metadata.optionListEntity) : metadata.optionListEntity != null) {
-            return false;
-        }
-        if (optionValueFieldName != null ? !optionValueFieldName.equals(metadata.optionValueFieldName) : metadata.optionValueFieldName != null) {
-            return false;
-        }
-        if (precision != null ? !precision.equals(metadata.precision) : metadata.precision != null) {
-            return false;
-        }
-        if (prominent != null ? !prominent.equals(metadata.prominent) : metadata.prominent != null) {
-            return false;
-        }
-        if (gridOrder != null ? !gridOrder.equals(metadata.gridOrder) : metadata.gridOrder != null) {
-            return false;
-        }
-        if (readOnly != null ? !readOnly.equals(metadata.readOnly) : metadata.readOnly != null) {
-            return false;
-        }
-        if (required != null ? !required.equals(metadata.required) : metadata.required != null) {
-            return false;
-        }
-        if (requiredOverride != null ? !requiredOverride.equals(metadata.requiredOverride) : metadata.requiredOverride != null) {
-            return false;
-        }
-        if (scale != null ? !scale.equals(metadata.scale) : metadata.scale != null) {
-            return false;
-        }
-        if (secondaryType != metadata.secondaryType) {
-            return false;
-        }
-        if (tooltip != null ? !tooltip.equals(metadata.tooltip) : metadata.tooltip != null) {
-            return false;
-        }
-        if (unique != null ? !unique.equals(metadata.unique) : metadata.unique != null) {
-            return false;
-        }
-        if (validationConfigurations != null ? !validationConfigurations.equals(metadata.validationConfigurations) : metadata.validationConfigurations != null) {
-            return false;
-        }
-        if (visibility != metadata.visibility) {
-            return false;
-        }
-        if (ruleIdentifier != null ? !ruleIdentifier.equals(metadata.ruleIdentifier) : metadata.ruleIdentifier != null) {
-            return false;
-        }
-        if (mapFieldValueClass != null ? !mapFieldValueClass.equals(metadata.mapFieldValueClass) : metadata.mapFieldValueClass != null) {
-            return false;
-        }
-        if (searchable != null ? !searchable.equals(metadata.searchable) : metadata.searchable != null) {
-            return false;
-        }
-        if (manyToField != null ? !manyToField.equals(metadata.manyToField) : metadata.manyToField != null) {
-            return false;
-        }
-        if (lookupType != null ? !lookupType.equals(metadata.lookupType) : metadata.lookupType != null) {
-            return false;
-        }
-        if (isDerived != null ? !isDerived.equals(metadata.isDerived) : metadata.isDerived != null) {
-            return false;
-        }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEnumerationClass() {
+    return enumerationClass;
+  }
 
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (fieldType != null ? fieldType.hashCode() : 0);
-        result = 31 * result + (secondaryType != null ? secondaryType.hashCode() : 0);
-        result = 31 * result + (length != null ? length.hashCode() : 0);
-        result = 31 * result + (required != null ? required.hashCode() : 0);
-        result = 31 * result + (unique != null ? unique.hashCode() : 0);
-        result = 31 * result + (scale != null ? scale.hashCode() : 0);
-        result = 31 * result + (precision != null ? precision.hashCode() : 0);
-        result = 31 * result + (mutable != null ? mutable.hashCode() : 0);
-        result = 31 * result + (foreignKeyProperty != null ? foreignKeyProperty.hashCode() : 0);
-        result = 31 * result + (foreignKeyClass != null ? foreignKeyClass.hashCode() : 0);
-        result = 31 * result + (foreignKeyDisplayValueProperty != null ? foreignKeyDisplayValueProperty.hashCode() : 0);
-        result = 31 * result + (foreignKeyCollection != null ? foreignKeyCollection.hashCode() : 0);
-        result = 31 * result + (mergedPropertyType != null ? mergedPropertyType.hashCode() : 0);
-        result = 31 * result + (enumerationClass != null ? enumerationClass.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (visibility != null ? visibility.hashCode() : 0);
-        result = 31 * result + (group != null ? group.hashCode() : 0);
-        result = 31 * result + (groupOrder != null ? groupOrder.hashCode() : 0);
-        result = 31 * result + (groupCollapsed != null ? groupCollapsed.hashCode() : 0);
-        result = 31 * result + (explicitFieldType != null ? explicitFieldType.hashCode() : 0);
-        result = 31 * result + (largeEntry != null ? largeEntry.hashCode() : 0);
-        result = 31 * result + (prominent != null ? prominent.hashCode() : 0);
-        result = 31 * result + (gridOrder != null ? gridOrder.hashCode() : 0);
-        result = 31 * result + (columnWidth != null ? columnWidth.hashCode() : 0);
-        result = 31 * result + (broadleafEnumeration != null ? broadleafEnumeration.hashCode() : 0);
-        result = 31 * result + (readOnly != null ? readOnly.hashCode() : 0);
-        result = 31 * result + (validationConfigurations != null ? validationConfigurations.hashCode() : 0);
-        result = 31 * result + (requiredOverride != null ? requiredOverride.hashCode() : 0);
-        result = 31 * result + (tooltip != null ? tooltip.hashCode() : 0);
-        result = 31 * result + (helpText != null ? helpText.hashCode() : 0);
-        result = 31 * result + (hint != null ? hint.hashCode() : 0);
-        result = 31 * result + (lookupDisplayProperty != null ? lookupDisplayProperty.hashCode() : 0);
-        result = 31 * result + (optionListEntity != null ? optionListEntity.hashCode() : 0);
-        result = 31 * result + (optionValueFieldName != null ? optionValueFieldName.hashCode() : 0);
-        result = 31 * result + (optionDisplayFieldName != null ? optionDisplayFieldName.hashCode() : 0);
-        result = 31 * result + (optionCanEditValues != null ? optionCanEditValues.hashCode() : 0);
-        result = 31 * result + (ruleIdentifier != null ? ruleIdentifier.hashCode() : 0);
-        result = 31 * result + (mapFieldValueClass != null ? mapFieldValueClass.hashCode() : 0);
-        result = 31 * result + (searchable != null ? searchable.hashCode() : 0);
-        result = 31 * result + (manyToField != null ? manyToField.hashCode() : 0);
-        result = 31 * result + (lookupType != null ? lookupType.hashCode() : 0);
-        result = 31 * result + (isDerived != null ? isDerived.hashCode() : 0);
-        return result;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String[][] getEnumerationValues() {
+    return enumerationValues;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getExplicitFieldType() {
+    return explicitFieldType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getFieldType() {
+    return fieldType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getForeignKeyClass() {
+    return foreignKeyClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getForeignKeyCollection() {
+    return foreignKeyCollection;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getForeignKeyDisplayValueProperty() {
+    return foreignKeyDisplayValueProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getForeignKeyProperty() {
+    return foreignKeyProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getGridOrder() {
+    return gridOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getGroup() {
+    return group;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getGroupCollapsed() {
+    return groupCollapsed;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getGroupOrder() {
+    return groupOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getHelpText() {
+    return helpText;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getHint() {
+    return hint;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getIsDerived() {
+    return isDerived;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getLength() {
+    return length;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getLookupDisplayProperty() {
+    return lookupDisplayProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public LookupType getLookupType() {
+    return lookupType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getManyToField() {
+    return manyToField;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getMapFieldValueClass() {
+    return mapFieldValueClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public MergedPropertyType getMergedPropertyType() {
+    return mergedPropertyType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getMutable() {
+    return mutable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getOptionCanEditValues() {
+    return optionCanEditValues;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOptionDisplayFieldName() {
+    return optionDisplayFieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String[][] getOptionFilterParams() {
+    return optionFilterParams;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOptionListEntity() {
+    return optionListEntity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOptionValueFieldName() {
+    return optionValueFieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPrecision() {
+    return precision;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getReadOnly() {
+    return readOnly;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getRequired() {
+    return required;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getRequiredOverride() {
+    return requiredOverride;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRuleIdentifier() {
+    return ruleIdentifier;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getScale() {
+    return scale;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getSearchable() {
+    return searchable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getSecondaryType() {
+    return secondaryType;
+  }
 
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getTooltip() {
+    return tooltip;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getToOneLookupCreatedViaAnnotation() {
+    return toOneLookupCreatedViaAnnotation;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getTranslatable() {
+    return translatable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getUnique() {
+    return unique;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getUseServerSideInspectionCache() {
+    return useServerSideInspectionCache;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The validation configurations for this property keyed by the fully-qualified name of the
+   * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} implementation.
+   *
+   * @return  the validation configurations for this property keyed by the fully-qualified name of the
+   *          {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator}
+   *          implementation
+   */
+  public Map<String, Map<String, String>> getValidationConfigurations() {
+    return validationConfigurations;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public VisibilityEnum getVisibility() {
+    return visibility;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.FieldMetadata#hashCode()
+   */
+  @Override public int hashCode() {
+    int result = super.hashCode();
+    result = (31 * result) + ((fieldType != null) ? fieldType.hashCode() : 0);
+    result = (31 * result) + ((secondaryType != null) ? secondaryType.hashCode() : 0);
+    result = (31 * result) + ((length != null) ? length.hashCode() : 0);
+    result = (31 * result) + ((required != null) ? required.hashCode() : 0);
+    result = (31 * result) + ((unique != null) ? unique.hashCode() : 0);
+    result = (31 * result) + ((scale != null) ? scale.hashCode() : 0);
+    result = (31 * result) + ((precision != null) ? precision.hashCode() : 0);
+    result = (31 * result) + ((mutable != null) ? mutable.hashCode() : 0);
+    result = (31 * result) + ((foreignKeyProperty != null) ? foreignKeyProperty.hashCode() : 0);
+    result = (31 * result) + ((foreignKeyClass != null) ? foreignKeyClass.hashCode() : 0);
+    result = (31 * result) + ((foreignKeyDisplayValueProperty != null) ? foreignKeyDisplayValueProperty.hashCode() : 0);
+    result = (31 * result) + ((foreignKeyCollection != null) ? foreignKeyCollection.hashCode() : 0);
+    result = (31 * result) + ((mergedPropertyType != null) ? mergedPropertyType.hashCode() : 0);
+    result = (31 * result) + ((enumerationClass != null) ? enumerationClass.hashCode() : 0);
+    result = (31 * result) + ((name != null) ? name.hashCode() : 0);
+    result = (31 * result) + ((visibility != null) ? visibility.hashCode() : 0);
+    result = (31 * result) + ((group != null) ? group.hashCode() : 0);
+    result = (31 * result) + ((groupOrder != null) ? groupOrder.hashCode() : 0);
+    result = (31 * result) + ((groupCollapsed != null) ? groupCollapsed.hashCode() : 0);
+    result = (31 * result) + ((explicitFieldType != null) ? explicitFieldType.hashCode() : 0);
+    result = (31 * result) + ((largeEntry != null) ? largeEntry.hashCode() : 0);
+    result = (31 * result) + ((prominent != null) ? prominent.hashCode() : 0);
+    result = (31 * result) + ((gridOrder != null) ? gridOrder.hashCode() : 0);
+    result = (31 * result) + ((columnWidth != null) ? columnWidth.hashCode() : 0);
+    result = (31 * result) + ((broadleafEnumeration != null) ? broadleafEnumeration.hashCode() : 0);
+    result = (31 * result) + ((readOnly != null) ? readOnly.hashCode() : 0);
+    result = (31 * result) + ((validationConfigurations != null) ? validationConfigurations.hashCode() : 0);
+    result = (31 * result) + ((requiredOverride != null) ? requiredOverride.hashCode() : 0);
+    result = (31 * result) + ((tooltip != null) ? tooltip.hashCode() : 0);
+    result = (31 * result) + ((helpText != null) ? helpText.hashCode() : 0);
+    result = (31 * result) + ((hint != null) ? hint.hashCode() : 0);
+    result = (31 * result) + ((lookupDisplayProperty != null) ? lookupDisplayProperty.hashCode() : 0);
+    result = (31 * result) + ((optionListEntity != null) ? optionListEntity.hashCode() : 0);
+    result = (31 * result) + ((optionValueFieldName != null) ? optionValueFieldName.hashCode() : 0);
+    result = (31 * result) + ((optionDisplayFieldName != null) ? optionDisplayFieldName.hashCode() : 0);
+    result = (31 * result) + ((optionCanEditValues != null) ? optionCanEditValues.hashCode() : 0);
+    result = (31 * result) + ((ruleIdentifier != null) ? ruleIdentifier.hashCode() : 0);
+    result = (31 * result) + ((mapFieldValueClass != null) ? mapFieldValueClass.hashCode() : 0);
+    result = (31 * result) + ((searchable != null) ? searchable.hashCode() : 0);
+    result = (31 * result) + ((manyToField != null) ? manyToField.hashCode() : 0);
+    result = (31 * result) + ((lookupType != null) ? lookupType.hashCode() : 0);
+    result = (31 * result) + ((isDerived != null) ? isDerived.hashCode() : 0);
+
+    return result;
+  } // end method hashCode
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean isLargeEntry() {
+    return largeEntry;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean isProminent() {
+    return prominent;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  broadleafEnumeration  DOCUMENT ME!
+   */
+  public void setBroadleafEnumeration(String broadleafEnumeration) {
+    this.broadleafEnumeration = broadleafEnumeration;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  columnWidth  DOCUMENT ME!
+   */
+  public void setColumnWidth(String columnWidth) {
+    this.columnWidth = columnWidth;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customCriteria  DOCUMENT ME!
+   */
+  public void setCustomCriteria(String[] customCriteria) {
+    this.customCriteria = customCriteria;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isDerived  DOCUMENT ME!
+   */
+  public void setDerived(Boolean isDerived) {
+    this.isDerived = isDerived;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  enumerationClass  DOCUMENT ME!
+   */
+  public void setEnumerationClass(String enumerationClass) {
+    this.enumerationClass = enumerationClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  enumerationValues  DOCUMENT ME!
+   */
+  public void setEnumerationValues(String[][] enumerationValues) {
+    this.enumerationValues = enumerationValues;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldType  DOCUMENT ME!
+   */
+  public void setExplicitFieldType(SupportedFieldType fieldType) {
+    this.explicitFieldType = fieldType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldType  DOCUMENT ME!
+   */
+  public void setFieldType(SupportedFieldType fieldType) {
+    this.fieldType = fieldType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  foreignKeyClass  DOCUMENT ME!
+   */
+  public void setForeignKeyClass(String foreignKeyClass) {
+    this.foreignKeyClass = foreignKeyClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  foreignKeyCollection  DOCUMENT ME!
+   */
+  public void setForeignKeyCollection(Boolean foreignKeyCollection) {
+    this.foreignKeyCollection = foreignKeyCollection;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  foreignKeyDisplayValueProperty  DOCUMENT ME!
+   */
+  public void setForeignKeyDisplayValueProperty(String foreignKeyDisplayValueProperty) {
+    this.foreignKeyDisplayValueProperty = foreignKeyDisplayValueProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  foreignKeyProperty  DOCUMENT ME!
+   */
+  public void setForeignKeyProperty(String foreignKeyProperty) {
+    this.foreignKeyProperty = foreignKeyProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  gridOrder  DOCUMENT ME!
+   */
+  public void setGridOrder(Integer gridOrder) {
+    this.gridOrder = gridOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  group  DOCUMENT ME!
+   */
+  public void setGroup(String group) {
+    this.group = group;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  groupCollapsed  DOCUMENT ME!
+   */
+  public void setGroupCollapsed(Boolean groupCollapsed) {
+    this.groupCollapsed = groupCollapsed;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  groupOrder  DOCUMENT ME!
+   */
+  public void setGroupOrder(Integer groupOrder) {
+    this.groupOrder = groupOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  helpText  DOCUMENT ME!
+   */
+  public void setHelpText(String helpText) {
+    this.helpText = helpText;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  hint  DOCUMENT ME!
+   */
+  public void setHint(String hint) {
+    this.hint = hint;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  largeEntry  DOCUMENT ME!
+   */
+  public void setLargeEntry(Boolean largeEntry) {
+    this.largeEntry = largeEntry;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  length  DOCUMENT ME!
+   */
+  public void setLength(Integer length) {
+    this.length = length;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  lookupDisplayProperty  DOCUMENT ME!
+   */
+  public void setLookupDisplayProperty(String lookupDisplayProperty) {
+    this.lookupDisplayProperty = lookupDisplayProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  lookupType  DOCUMENT ME!
+   */
+  public void setLookupType(LookupType lookupType) {
+    this.lookupType = lookupType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  manyToField  DOCUMENT ME!
+   */
+  public void setManyToField(String manyToField) {
+    this.manyToField = manyToField;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  mapFieldValueClass  DOCUMENT ME!
+   */
+  public void setMapFieldValueClass(String mapFieldValueClass) {
+    this.mapFieldValueClass = mapFieldValueClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  mergedPropertyType  DOCUMENT ME!
+   */
+  public void setMergedPropertyType(MergedPropertyType mergedPropertyType) {
+    this.mergedPropertyType = mergedPropertyType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  mutable  DOCUMENT ME!
+   */
+  public void setMutable(Boolean mutable) {
+    this.mutable = mutable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  optionCanEditValues  DOCUMENT ME!
+   */
+  public void setOptionCanEditValues(Boolean optionCanEditValues) {
+    this.optionCanEditValues = optionCanEditValues;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  optionDisplayFieldName  DOCUMENT ME!
+   */
+  public void setOptionDisplayFieldName(String optionDisplayFieldName) {
+    this.optionDisplayFieldName = optionDisplayFieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  optionFilterParams  DOCUMENT ME!
+   */
+  public void setOptionFilterParams(String[][] optionFilterParams) {
+    this.optionFilterParams = optionFilterParams;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  optionListEntity  DOCUMENT ME!
+   */
+  public void setOptionListEntity(String optionListEntity) {
+    this.optionListEntity = optionListEntity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  optionValueFieldName  DOCUMENT ME!
+   */
+  public void setOptionValueFieldName(String optionValueFieldName) {
+    this.optionValueFieldName = optionValueFieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  precision  DOCUMENT ME!
+   */
+  public void setPrecision(Integer precision) {
+    this.precision = precision;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  prominent  DOCUMENT ME!
+   */
+  public void setProminent(Boolean prominent) {
+    this.prominent = prominent;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  readOnly  DOCUMENT ME!
+   */
+  public void setReadOnly(Boolean readOnly) {
+    this.readOnly = readOnly;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  required  DOCUMENT ME!
+   */
+  public void setRequired(Boolean required) {
+    this.required = required;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  requiredOverride  DOCUMENT ME!
+   */
+  public void setRequiredOverride(Boolean requiredOverride) {
+    this.requiredOverride = requiredOverride;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ruleIdentifier  DOCUMENT ME!
+   */
+  public void setRuleIdentifier(String ruleIdentifier) {
+    this.ruleIdentifier = ruleIdentifier;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  scale  DOCUMENT ME!
+   */
+  public void setScale(Integer scale) {
+    this.scale = scale;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  searchable  DOCUMENT ME!
+   */
+  public void setSearchable(Boolean searchable) {
+    this.searchable = searchable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  secondaryType  DOCUMENT ME!
+   */
+  public void setSecondaryType(SupportedFieldType secondaryType) {
+    this.secondaryType = secondaryType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  tooltip  DOCUMENT ME!
+   */
+  public void setTooltip(String tooltip) {
+    this.tooltip = tooltip;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  toOneLookupCreatedViaAnnotation  DOCUMENT ME!
+   */
+  public void setToOneLookupCreatedViaAnnotation(Boolean toOneLookupCreatedViaAnnotation) {
+    this.toOneLookupCreatedViaAnnotation = toOneLookupCreatedViaAnnotation;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  translatable  DOCUMENT ME!
+   */
+  public void setTranslatable(Boolean translatable) {
+    this.translatable = translatable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  unique  DOCUMENT ME!
+   */
+  public void setUnique(Boolean unique) {
+    this.unique = unique;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  useServerSideInspectionCache  DOCUMENT ME!
+   */
+  public void setUseServerSideInspectionCache(Boolean useServerSideInspectionCache) {
+    this.useServerSideInspectionCache = useServerSideInspectionCache;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  validationConfigurations  DOCUMENT ME!
+   */
+  public void setValidationConfigurations(Map<String, Map<String, String>> validationConfigurations) {
+    this.validationConfigurations = validationConfigurations;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  visibility  DOCUMENT ME!
+   */
+  public void setVisibility(VisibilityEnum visibility) {
+    this.visibility = visibility;
+  }
+
+
+} // end class BasicFieldMetadata

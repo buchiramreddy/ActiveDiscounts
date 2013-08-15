@@ -17,8 +17,13 @@
 package org.broadleafcommerce.common.presentation;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum PopulateToOneFieldsEnum {
-    TRUE,FALSE,NOT_SPECIFIED
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  TRUE, FALSE, NOT_SPECIFIED
 }

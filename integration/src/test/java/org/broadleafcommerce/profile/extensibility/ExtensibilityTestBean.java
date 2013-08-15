@@ -17,41 +17,64 @@
 package org.broadleafcommerce.profile.extensibility;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class ExtensibilityTestBean {
-    
-    protected String testProperty = "none";
-    protected String testProperty2 = "none2";
-    
-    /**
-     * @return the testProperty
-     */
-    public String getTestProperty() {
-        return testProperty;
-    }
-    
-    /**
-     * @param testProperty the testProperty to set
-     */
-    public void setTestProperty(String testProperty) {
-        this.testProperty = testProperty;
-    }
-    
-    /**
-     * @return the testProperty2
-     */
-    public String getTestProperty2() {
-        return testProperty2;
-    }
-    
-    /**
-     * @param testProperty2 the testProperty2 to set
-     */
-    public void setTestProperty2(String testProperty2) {
-        this.testProperty2 = testProperty2;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-}
+  /** DOCUMENT ME! */
+  protected String testProperty  = "none";
+
+  /** DOCUMENT ME! */
+  protected String testProperty2 = "none2";
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * The testProperty.
+   *
+   * @return  the testProperty
+   */
+  public String getTestProperty() {
+    return testProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The testProperty2.
+   *
+   * @return  the testProperty2
+   */
+  public String getTestProperty2() {
+    return testProperty2;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  testProperty  the testProperty to set
+   */
+  public void setTestProperty(String testProperty) {
+    this.testProperty = testProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  testProperty2  the testProperty2 to set
+   */
+  public void setTestProperty2(String testProperty2) {
+    this.testProperty2 = testProperty2;
+  }
+
+} // end class ExtensibilityTestBean

@@ -16,12 +16,6 @@
 
 package org.broadleafcommerce.profile.core.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Index;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,86 +26,178 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(friendlyName = "StateImpl_baseState")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_STATE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-@AdminPresentationClass(friendlyName = "StateImpl_baseState")
 public class StateImpl implements State {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ABBREVIATION")
-    protected String abbreviation;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "NAME", nullable = false)
-    @Index(name="STATE_NAME_INDEX", columnNames={"NAME"})
-    @AdminPresentation(friendlyName = "StateImpl_State", order=9, group = "StateImpl_Address", prominent = true)
-    protected String name;
+  /** DOCUMENT ME! */
+  @Column(name = "ABBREVIATION")
+  @Id protected String abbreviation;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = CountryImpl.class, optional = false)
-    @JoinColumn(name = "COUNTRY")
-    protected Country country;
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "COUNTRY")
+  @ManyToOne(
+    cascade      = { CascadeType.PERSIST, CascadeType.MERGE },
+    targetEntity = CountryImpl.class,
+    optional     = false
+  )
+  protected Country country;
 
-    public String getAbbreviation() {
-        return abbreviation;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "StateImpl_State",
+    order        = 9,
+    group        = "StateImpl_Address",
+    prominent    = true
+  )
+  @Column(
+    name     = "NAME",
+    nullable = false
+  )
+  @Index(
+    name        = "STATE_NAME_INDEX",
+    columnNames = { "NAME" }
+  )
+  protected String name;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
+    if (obj == null) {
+      return false;
     }
 
-    public String getName() {
-        return name;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    StateImpl other = (StateImpl) obj;
+
+    if (abbreviation == null) {
+      if (other.abbreviation != null) {
+        return false;
+      }
+    } else if (!abbreviation.equals(other.abbreviation)) {
+      return false;
     }
 
-    public Country getCountry() {
-        return country;
+    if (country == null) {
+      if (other.country != null) {
+        return false;
+      }
+    } else if (!country.equals(other.country)) {
+      return false;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((abbreviation == null) ? 0 : abbreviation.hashCode());
-        result = prime * result + ((country == null) ? 0 : country.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        StateImpl other = (StateImpl) obj;
-        if (abbreviation == null) {
-            if (other.abbreviation != null)
-                return false;
-        } else if (!abbreviation.equals(other.abbreviation))
-            return false;
-        if (country == null) {
-            if (other.country != null)
-                return false;
-        } else if (!country.equals(other.country))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.State#getAbbreviation()
+   */
+  @Override public String getAbbreviation() {
+    return abbreviation;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.State#getCountry()
+   */
+  @Override public Country getCountry() {
+    return country;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.State#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((abbreviation == null) ? 0 : abbreviation.hashCode());
+    result = (prime * result) + ((country == null) ? 0 : country.hashCode());
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.State#setAbbreviation(java.lang.String)
+   */
+  @Override public void setAbbreviation(String abbreviation) {
+    this.abbreviation = abbreviation;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.State#setCountry(org.broadleafcommerce.profile.core.domain.Country)
+   */
+  @Override public void setCountry(Country country) {
+    this.country = country;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.domain.State#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+} // end class StateImpl

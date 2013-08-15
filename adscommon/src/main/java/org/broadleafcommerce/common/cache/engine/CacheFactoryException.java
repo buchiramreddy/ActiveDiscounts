@@ -17,28 +17,51 @@
 package org.broadleafcommerce.common.cache.engine;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class CacheFactoryException extends Exception {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public CacheFactoryException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public CacheFactoryException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new CacheFactoryException object.
+   */
+  public CacheFactoryException() {
+    super();
+  }
 
-    public CacheFactoryException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new CacheFactoryException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public CacheFactoryException(String message) {
+    super(message);
+  }
 
-    public CacheFactoryException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new CacheFactoryException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public CacheFactoryException(Throwable cause) {
+    super(cause);
+  }
 
-}
+  /**
+   * Creates a new CacheFactoryException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public CacheFactoryException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+} // end class CacheFactoryException

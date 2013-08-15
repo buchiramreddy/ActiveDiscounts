@@ -21,33 +21,60 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class NamedOperationManagerImpl implements NamedOperationManager {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected List<NamedOperationComponent> namedOperationComponents = new ArrayList<NamedOperationComponent>();
+  /** DOCUMENT ME! */
+  protected List<NamedOperationComponent> namedOperationComponents = new ArrayList<NamedOperationComponent>();
 
-    @Override
-    public Map<String, String> manageNamedParameters(Map<String, String> parameterMap) {
-        List<String> utilizedNames = new ArrayList<String>();
-        Map<String, String> derivedMap = new LinkedHashMap<String, String>();
-        for (NamedOperationComponent namedOperationComponent : namedOperationComponents) {
-            utilizedNames.addAll(namedOperationComponent.setOperationValues(parameterMap, derivedMap));
-        }
-        for (String utilizedName : utilizedNames) {
-            parameterMap.remove(utilizedName);
-        }
-        derivedMap.putAll(parameterMap);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        return derivedMap;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<NamedOperationComponent> getNamedOperationComponents() {
+    return namedOperationComponents;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.operation.NamedOperationManager#manageNamedParameters(java.util.Map)
+   */
+  @Override public Map<String, String> manageNamedParameters(Map<String, String> parameterMap) {
+    List<String>        utilizedNames = new ArrayList<String>();
+    Map<String, String> derivedMap    = new LinkedHashMap<String, String>();
+
+    for (NamedOperationComponent namedOperationComponent : namedOperationComponents) {
+      utilizedNames.addAll(namedOperationComponent.setOperationValues(parameterMap, derivedMap));
     }
 
-    public List<NamedOperationComponent> getNamedOperationComponents() {
-        return namedOperationComponents;
+    for (String utilizedName : utilizedNames) {
+      parameterMap.remove(utilizedName);
     }
 
-    public void setNamedOperationComponents(List<NamedOperationComponent> namedOperationComponents) {
-        this.namedOperationComponents = namedOperationComponents;
-    }
-}
+    derivedMap.putAll(parameterMap);
+
+    return derivedMap;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  namedOperationComponents  DOCUMENT ME!
+   */
+  public void setNamedOperationComponents(List<NamedOperationComponent> namedOperationComponents) {
+    this.namedOperationComponents = namedOperationComponents;
+  }
+} // end class NamedOperationManagerImpl

@@ -16,26 +16,6 @@
 
 package org.broadleafcommerce.cms.file.service;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.cms.common.AssetNotFoundException;
-import org.broadleafcommerce.cms.field.type.StorageType;
-import org.broadleafcommerce.cms.file.dao.StaticAssetStorageDao;
-import org.broadleafcommerce.cms.file.domain.StaticAsset;
-import org.broadleafcommerce.cms.file.domain.StaticAssetStorage;
-import org.broadleafcommerce.cms.file.service.operation.NamedOperationManager;
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-import org.broadleafcommerce.common.site.domain.Site;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
-import org.broadleafcommerce.openadmin.server.service.artifact.ArtifactService;
-import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -46,449 +26,689 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.math.BigInteger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import java.sql.Blob;
 import java.sql.SQLException;
+
 import java.text.SimpleDateFormat;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.cms.common.AssetNotFoundException;
+import org.broadleafcommerce.cms.field.type.StorageType;
+import org.broadleafcommerce.cms.file.dao.StaticAssetStorageDao;
+import org.broadleafcommerce.cms.file.domain.StaticAsset;
+import org.broadleafcommerce.cms.file.domain.StaticAssetStorage;
+import org.broadleafcommerce.cms.file.service.operation.NamedOperationManager;
+
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+import org.broadleafcommerce.common.site.domain.Site;
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
+import org.broadleafcommerce.openadmin.server.service.artifact.ArtifactService;
+import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
+
+import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.core.io.ClassPathResource;
+
+import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.web.multipart.MultipartFile;
+
+
 /**
- * @author Jeff Fischer, Brian Polster
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer, Brian Polster
+ * @version  $Revision$, $Date$
  */
 @Service("blStaticAssetStorageService")
 public class StaticAssetStorageServiceImpl implements StaticAssetStorageService {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Value("${asset.server.file.system.path}")
-    protected String assetFileSystemPath;
+  private static final Log    LOG                       = LogFactory.getLog(StaticAssetStorageServiceImpl.class);
+  private static final String DEFAULT_STORAGE_DIRECTORY = System.getProperty("java.io.tmpdir");
 
-    @Value("${asset.server.file.classpath.directory}")
-    protected String assetFileClasspathDirectory;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Value("${asset.server.max.generated.file.system.directories}")
-    protected int assetServerMaxGeneratedDirectories;
+  /** DOCUMENT ME! */
+  @Resource(name = "blArtifactService")
+  protected ArtifactService artifactService;
 
-    @Value("${asset.server.max.uploadable.file.size}")
-    protected long maxUploadableFileSize;
+  /** DOCUMENT ME! */
+  @Value("${asset.server.file.classpath.directory}")
+  protected String assetFileClasspathDirectory;
 
-    @Value("${asset.server.file.buffer.size}")
-    protected int fileBufferSize = 8096;
+  /** DOCUMENT ME! */
+  @Value("${asset.server.file.system.path}")
+  protected String assetFileSystemPath;
 
-    private static final Log LOG = LogFactory.getLog(StaticAssetStorageServiceImpl.class);
-    private static final String DEFAULT_STORAGE_DIRECTORY = System.getProperty("java.io.tmpdir");
+  /** DOCUMENT ME! */
+  @Value("${asset.server.max.generated.file.system.directories}")
+  protected int assetServerMaxGeneratedDirectories;
 
-    protected String cacheDirectory;
+  /** DOCUMENT ME! */
+  protected String cacheDirectory;
 
-    @Resource(name="blStaticAssetService")
-    protected StaticAssetService staticAssetService;
+  /** DOCUMENT ME! */
+  @Value("${asset.server.file.buffer.size}")
+  protected int fileBufferSize = 8096;
 
-    @Resource(name="blArtifactService")
-    protected ArtifactService artifactService;
+  /** DOCUMENT ME! */
+  @Value("${asset.server.max.uploadable.file.size}")
+  protected long maxUploadableFileSize;
 
-    @Resource(name="blStaticAssetStorageDao")
-    protected StaticAssetStorageDao staticAssetStorageDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blNamedOperationManager")
+  protected NamedOperationManager namedOperationManager;
 
-    @Resource(name="blNamedOperationManager")
-    protected NamedOperationManager namedOperationManager;
+  /** DOCUMENT ME! */
+  @Resource(name = "blStaticAssetService")
+  protected StaticAssetService staticAssetService;
 
-    protected StaticAsset findStaticAsset(String fullUrl, SandBox sandBox) {
-        StaticAsset staticAsset = staticAssetService.findStaticAssetByFullUrl(fullUrl, sandBox);
-        if (staticAsset == null && sandBox != null) {
-            staticAsset = staticAssetService.findStaticAssetByFullUrl(fullUrl, null);
+  /** DOCUMENT ME! */
+  @Resource(name = "blStaticAssetStorageDao")
+  protected StaticAssetStorageDao staticAssetStorageDao;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  args  DOCUMENT ME!
+   */
+  public static void main(String[] args) {
+    System.out.println(DigestUtils.md5Hex("/product/myproductimage.jpg"));
+    System.out.println(DigestUtils.md5Hex("/site-125"));
+
+    System.out.println("/product/myproductimage.jpg".substring("/product/myproductimage.jpg".lastIndexOf('.')));
+
+    System.out.println("/product/myproductimage.jpg".substring(0, "/product/myproductimage.jpg".lastIndexOf("/") + 1)
+      + UUID.randomUUID().toString());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#create()
+   */
+  @Override
+  @Transactional("blTransactionManagerAssetStorageInfo")
+  public StaticAssetStorage create() {
+    return staticAssetStorageDao.create();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#createBlob(org.springframework.web.multipart.MultipartFile)
+   */
+  @Override
+  @Transactional("blTransactionManagerAssetStorageInfo")
+  public Blob createBlob(MultipartFile uploadedFile) throws IOException {
+    return staticAssetStorageDao.createBlob(uploadedFile);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#createStaticAssetStorageFromFile(org.springframework.web.multipart.MultipartFile,
+   *       org.broadleafcommerce.cms.file.domain.StaticAsset)
+   */
+  @Override public void createStaticAssetStorageFromFile(MultipartFile file, StaticAsset staticAsset)
+    throws IOException {
+    if (StorageType.DATABASE.equals(staticAsset.getStorageType())) {
+      StaticAssetStorage storage = staticAssetStorageDao.create();
+      storage.setStaticAssetId(staticAsset.getId());
+
+      Blob uploadBlob = staticAssetStorageDao.createBlob(file);
+      storage.setFileData(uploadBlob);
+      staticAssetStorageDao.save(storage);
+    } else if (StorageType.FILESYSTEM.equals(staticAsset.getStorageType())) {
+      InputStream input        = file.getInputStream();
+      byte[]      buffer       = new byte[fileBufferSize];
+      String      destFileName = generateStorageFileName(staticAsset.getFullUrl(), false);
+      String      tempFileName = destFileName.substring(0, destFileName.lastIndexOf("/") + 1)
+        + UUID.randomUUID().toString();
+      File        tmpFile      = new File(tempFileName);
+
+      if (!tmpFile.getParentFile().exists()) {
+        if (!tmpFile.getParentFile().mkdirs()) {
+          throw new RuntimeException("Unable to create parent directories for file: " + destFileName);
         }
+      }
 
-        return staticAsset;
+      OutputStream output     = new FileOutputStream(tmpFile);
+      boolean      deleteFile = false;
+
+      try {
+        int bytesRead;
+        int totalBytesRead = 0;
+
+        while ((bytesRead = input.read(buffer)) != -1) {
+          totalBytesRead += bytesRead;
+
+          if (totalBytesRead > maxUploadableFileSize) {
+            deleteFile = true;
+            throw new IOException("Maximum Upload File Size Exceeded");
+          }
+
+          output.write(buffer, 0, bytesRead);
+        }
+      } finally {
+        output.close();
+
+        if (deleteFile && tmpFile.exists()) {
+          tmpFile.delete();
+        }
+      }
+
+      File newFile = new File(destFileName);
+
+      if (!tmpFile.renameTo(newFile)) {
+        if (!newFile.exists()) {
+          throw new RuntimeException("Unable to rename temp file to create file named: " + destFileName);
+        }
+      }
+    } // end if-else
+  } // end method createStaticAssetStorageFromFile
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#delete(org.broadleafcommerce.cms.file.domain.StaticAssetStorage)
+   */
+  @Override
+  @Transactional("blTransactionManagerAssetStorageInfo")
+  public void delete(StaticAssetStorage assetStorage) {
+    staticAssetStorageDao.delete(assetStorage);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#findStaticAssetStorageById(java.lang.Long)
+   */
+  @Override
+  @Transactional("blTransactionManagerAssetStorageInfo")
+  public StaticAssetStorage findStaticAssetStorageById(Long id) {
+    return staticAssetStorageDao.readStaticAssetStorageById(id);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#generateStorageFileName(org.broadleafcommerce.cms.file.domain.StaticAsset,
+   *       boolean)
+   */
+  @Override public String generateStorageFileName(StaticAsset staticAsset, boolean useSharedFile) {
+    return generateStorageFileName(staticAsset.getFullUrl(), useSharedFile);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#generateStorageFileName(java.lang.String, boolean)
+   */
+  @Override public String generateStorageFileName(String fullUrl, boolean useSharedFile) {
+    String                  baseDirectory = getBaseDirectory();
+    StringBuilder           fileName      = new StringBuilder(fixPath(baseDirectory));
+    BroadleafRequestContext brc           = BroadleafRequestContext.getBroadleafRequestContext();
+
+    if (brc != null) {
+      Site site = brc.getSite();
+
+      if ((site != null) && !useSharedFile) {
+        String siteDirectory = "/site-" + site.getId();
+        String siteHash      = DigestUtils.md5Hex(siteDirectory);
+        fileName = fileName.append("/").append(siteHash.substring(0, 2)).append(siteDirectory);
+      }
     }
 
-    /**
-     * Removes trailing "/" and ensures that there is a beginning "/"
-     * @param path
-     * @return
-     */
-    protected String fixPath(String path) {
-        if (!path.startsWith("/")) {
-            path = "/" + path;
-        }
+    // Create directories based on hash
+    String fileHash = DigestUtils.md5Hex(fullUrl);
 
-        if (path.endsWith("/")) {
-            path = path.substring(0, path.length() - 1);
-        }
-        return path;
+    for (int i = 0; i < assetServerMaxGeneratedDirectories; i++) {
+      if (i == 4) {
+        LOG.warn("Property assetServerMaxGeneratedDirectories set to high, ignoring values past 4 - value set to"
+          + assetServerMaxGeneratedDirectories);
+
+        break;
+      }
+
+      fileName = fileName.append("/").append(fileHash.substring(i * 2, (i + 1) * 2));
     }
 
-    @Override
-    public String generateStorageFileName(StaticAsset staticAsset, boolean useSharedFile) {
-        return generateStorageFileName(staticAsset.getFullUrl(), useSharedFile);
+    int pos = fullUrl.lastIndexOf("/");
+
+    if (pos >= 0) {
+      // Use the fileName as specified if possible.
+      fileName = fileName.append(fullUrl.substring(pos));
+    } else {
+      // Just use the hash since we didn't find a filename for this one.
+      fileName = fileName.append("/").append(fullUrl);
     }
 
-    /**
-     * Returns the baseDirectory for writing and reading files as the property assetFileSystemPath if it
-     * exists or java.tmp.io if that property has not been set.
-     */
-    protected String getBaseDirectory() {
-        if (assetFileSystemPath != null && !"".equals(assetFileSystemPath.trim())) {
-            return assetFileSystemPath;
+    return fileName.toString();
+  } // end method generateStorageFileName
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#getCacheFileModel(java.lang.String,org.broadleafcommerce.common.sandbox.domain.SandBox,
+   *       java.util.Map)
+   */
+  @Override
+  @Transactional("blTransactionManagerAssetStorageInfo")
+  public Map<String, String> getCacheFileModel(String fullUrl, SandBox sandBox, Map<String, String> parameterMap)
+    throws Exception {
+    StaticAsset staticAsset = findStaticAsset(fullUrl, sandBox);
+
+    if (staticAsset == null) {
+      if (sandBox == null) {
+        throw new AssetNotFoundException("Unable to find an asset for the url (" + fullUrl
+          + ") using the production sandBox.");
+      } else {
+        throw new AssetNotFoundException("Unable to find an asset for the url (" + fullUrl + ") using the sandBox id ("
+          + sandBox.getId() + "), or the production sandBox.");
+      }
+    }
+
+    String mimeType = staticAsset.getMimeType();
+
+    // extract the values for any named parameters
+    Map<String, String> convertedParameters = namedOperationManager.manageNamedParameters(parameterMap);
+    String              returnFilePath      = null;
+
+    if (StorageType.FILESYSTEM.equals(staticAsset.getStorageType()) && convertedParameters.isEmpty()) {
+      InputStream classPathInputStream = getResourceFromClasspath(staticAsset);
+
+      if (classPathInputStream != null) {
+        // Create a file system cache file representing this file.
+        String cacheName = constructCacheFileName(staticAsset, convertedParameters, true);
+        File   cacheFile = new File(cacheName);
+
+        if (!cacheFile.exists()) {
+          createCacheFile(classPathInputStream, cacheFile);
+        }
+
+        returnFilePath = cacheFile.getAbsolutePath();
+      } else {
+        returnFilePath = generateStorageFileName(staticAsset.getFullUrl(), false);
+      }
+    } else {
+      String sharedCacheName = constructCacheFileName(staticAsset, convertedParameters, true);
+      File   cacheFile       = new File(sharedCacheName);
+
+      // See if the shared file exists.   This is primarily to support a multi-tenant
+      // implementation that shares assets across the tenants.   If not, check for the
+      // site specific file.
+      if (!cacheFile.exists()) {
+        String cacheName = constructCacheFileName(staticAsset, convertedParameters, false);
+        cacheFile = new File(cacheName);
+      }
+
+      if (!cacheFile.exists()) {
+        InputStream original      = findInputStreamForStaticAsset(staticAsset);
+        boolean     useSharedFile = shouldUseSharedFile(original);
+
+        if (!convertedParameters.isEmpty()) {
+          Operation[] operations = artifactService.buildOperations(convertedParameters, original,
+              staticAsset.getMimeType());
+          InputStream converted  = artifactService.convert(original, operations, staticAsset.getMimeType());
+          createCacheFile(converted, cacheFile);
+
+          if ("image/gif".equals(mimeType)) {
+            mimeType = "image/png";
+          }
         } else {
-            return DEFAULT_STORAGE_DIRECTORY;
+          if (useSharedFile) {
+            cacheFile = new File(sharedCacheName);
+            createCacheFile(original, cacheFile);
+          } else {
+            createCacheFile(original, cacheFile);
+          }
         }
+      }
+
+      returnFilePath = cacheFile.getAbsolutePath();
+    } // end if-else
+
+    Map<String, String> model = new HashMap<String, String>(2);
+    model.put("cacheFilePath", returnFilePath);
+    model.put("mimeType", mimeType);
+
+    return model;
+  } // end method getCacheFileModel
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#readStaticAssetStorageByStaticAssetId(java.lang.Long)
+   */
+  @Override
+  @Transactional("blTransactionManagerAssetStorageInfo")
+  public StaticAssetStorage readStaticAssetStorageByStaticAssetId(Long id) {
+    return staticAssetStorageDao.readStaticAssetStorageByStaticAssetId(id);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.file.service.StaticAssetStorageService#save(org.broadleafcommerce.cms.file.domain.StaticAssetStorage)
+   */
+  @Override
+  @Transactional("blTransactionManagerAssetStorageInfo")
+  public StaticAssetStorage save(StaticAssetStorage assetStorage) {
+    return staticAssetStorageDao.save(assetStorage);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Builds a file system path for the passed in static asset and paramaterMap.
+   *
+   * <p>If in a multi-site implementation, the system will also prefix the filepath with a site-identifier unless the
+   * useSharedFile parameter is set to true.</p>
+   *
+   * @param   staticAsset    DOCUMENT ME!
+   * @param   parameterMap   DOCUMENT ME!
+   * @param   useSharedFile  DOCUMENT ME!
+   *
+   * @return  builds a file system path for the passed in static asset and paramaterMap.
+   *
+   * @throws  RuntimeException  DOCUMENT ME!
+   */
+  protected String constructCacheFileName(StaticAsset staticAsset, Map<String, String> parameterMap,
+    boolean useSharedFile) {
+    String fileName = generateStorageFileName(staticAsset, useSharedFile);
+
+    StringBuilder sb = new StringBuilder(200);
+    sb.append(fileName.substring(0, fileName.lastIndexOf('.')));
+    sb.append("---");
+
+    StringBuilder    sb2    = new StringBuilder(200);
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+
+    if (staticAsset.getAuditable() != null) {
+      sb2.append(format.format(
+          (staticAsset.getAuditable().getDateUpdated() == null) ? staticAsset.getAuditable().getDateCreated()
+                                                                : staticAsset.getAuditable().getDateUpdated()));
     }
 
-    @Override
-    public String generateStorageFileName(String fullUrl, boolean useSharedFile) {
-        String baseDirectory = getBaseDirectory();
-        StringBuilder fileName = new StringBuilder(fixPath(baseDirectory));
-        BroadleafRequestContext brc = BroadleafRequestContext.getBroadleafRequestContext();
-        if (brc != null) {
-            Site site = brc.getSite();
-            if (site != null && !useSharedFile) {
-                String siteDirectory = "/site-" + site.getId();
-                String siteHash = DigestUtils.md5Hex(siteDirectory);
-                fileName = fileName.append("/").append(siteHash.substring(0, 2)).append(siteDirectory);
-            }
-        }
-        
-        // Create directories based on hash
-        String fileHash = DigestUtils.md5Hex(fullUrl);
-        for (int i = 0; i < assetServerMaxGeneratedDirectories; i++) {
-            if (i == 4) {
-                LOG.warn("Property assetServerMaxGeneratedDirectories set to high, ignoring values past 4 - value set to" +
-                        assetServerMaxGeneratedDirectories);
-                break;
-            }
-            fileName = fileName.append("/").append(fileHash.substring(i * 2, (i + 1) * 2));
-        }
+    for (Map.Entry<String, String> entry : parameterMap.entrySet()) {
+      sb2.append('-');
+      sb2.append(entry.getKey());
+      sb2.append('-');
+      sb2.append(entry.getValue());
+    }
 
-        int pos = fullUrl.lastIndexOf("/");
-        if (pos >= 0) {
-            // Use the fileName as specified if possible.
-            fileName = fileName.append(fullUrl.substring(pos));
+    String digest;
+
+    try {
+      MessageDigest md            = MessageDigest.getInstance("MD5");
+      byte[]        messageDigest = md.digest(sb2.toString().getBytes());
+      BigInteger    number        = new BigInteger(1, messageDigest);
+      digest = number.toString(16);
+    } catch (NoSuchAlgorithmException e) {
+      throw new RuntimeException(e);
+    }
+
+    sb.append(pad(digest, 32, '0'));
+    sb.append(fileName.substring(fileName.lastIndexOf('.')));
+
+    return sb.toString();
+  } // end method constructCacheFileName
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   is         DOCUMENT ME!
+   * @param   cacheFile  DOCUMENT ME!
+   *
+   * @throws  SQLException      DOCUMENT ME!
+   * @throws  IOException       DOCUMENT ME!
+   * @throws  RuntimeException  DOCUMENT ME!
+   */
+  protected void createCacheFile(InputStream is, File cacheFile) throws SQLException, IOException {
+    if (!cacheFile.getParentFile().exists()) {
+      if (!cacheFile.getParentFile().mkdirs()) {
+        throw new RuntimeException("Unable to create middle directories for file: " + cacheFile.getAbsolutePath());
+      }
+    }
+
+    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cacheFile));
+
+    try {
+      boolean eof  = false;
+      int     temp;
+
+      while (!eof) {
+        temp = is.read();
+
+        if (temp < 0) {
+          eof = true;
         } else {
-            // Just use the hash since we didn't find a filename for this one.
-            fileName = fileName.append("/").append(fullUrl);
+          bos.write(temp);
         }
+      }
+    } finally {
+      try {
+        bos.flush();
+        bos.close();
+      } catch (Throwable e) {
+        // do nothing
+      }
+    }
+  } // end method createCacheFile
 
-        return fileName.toString();
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   staticAsset  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  SQLException              DOCUMENT ME!
+   * @throws  IOException               DOCUMENT ME!
+   * @throws  IllegalArgumentException  DOCUMENT ME!
+   */
+  protected InputStream findInputStreamForStaticAsset(StaticAsset staticAsset) throws SQLException, IOException {
+    InputStream classPathInputStream = getResourceFromClasspath(staticAsset);
+
+    if (classPathInputStream != null) {
+      return classPathInputStream;
     }
 
-    protected boolean shouldUseSharedFile(InputStream is) {
-        return (is != null && is instanceof GloballySharedInputStream);
+    if (StorageType.DATABASE.equals(staticAsset.getStorageType())) {
+      StaticAssetStorage storage = readStaticAssetStorageByStaticAssetId(staticAsset.getId());
+
+      // there are filter operations to perform on the asset
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      InputStream           is   = null;
+
+      try {
+        is = storage.getFileData().getBinaryStream();
+
+        byte[] buffer    = new byte[fileBufferSize];
+        int    bytesRead;
+
+        while ((bytesRead = is.read(buffer)) != -1) {
+          baos.write(buffer, 0, bytesRead);
+        }
+
+        baos.flush();
+      } finally {
+        if (is != null) {
+          try {
+            is.close();
+          } catch (Throwable e) {
+            // do nothing
+          }
+        }
+      }
+
+      InputStream original = new ByteArrayInputStream(baos.toByteArray());
+
+      return original;
+    } else if (StorageType.FILESYSTEM.equals(staticAsset.getStorageType())) {
+      FileInputStream     assetFile      = new FileInputStream(generateStorageFileName(staticAsset.getFullUrl(),
+            false));
+      BufferedInputStream bufferedStream = new BufferedInputStream(assetFile);
+      bufferedStream.mark(0);
+
+      return bufferedStream;
+    } else {
+      throw new IllegalArgumentException("Unknown storage type while trying to read static asset.");
+    } // end if-else
+  } // end method findInputStreamForStaticAsset
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fullUrl  DOCUMENT ME!
+   * @param   sandBox  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected StaticAsset findStaticAsset(String fullUrl, SandBox sandBox) {
+    StaticAsset staticAsset = staticAssetService.findStaticAssetByFullUrl(fullUrl, sandBox);
+
+    if ((staticAsset == null) && (sandBox != null)) {
+      staticAsset = staticAssetService.findStaticAssetByFullUrl(fullUrl, null);
     }
 
-    @Transactional("blTransactionManagerAssetStorageInfo")
-    @Override
-    public Map<String, String> getCacheFileModel(String fullUrl, SandBox sandBox, Map<String, String> parameterMap) throws Exception {
-        StaticAsset staticAsset = findStaticAsset(fullUrl, sandBox);
-        if (staticAsset == null) {
-            if (sandBox == null) {
-                throw new AssetNotFoundException("Unable to find an asset for the url (" + fullUrl + ") using the production sandBox.");
-            } else {
-                throw new AssetNotFoundException("Unable to find an asset for the url (" + fullUrl + ") using the sandBox id (" + sandBox.getId() + "), or the production sandBox.");
-            }
-        }
-        String mimeType = staticAsset.getMimeType();
+    return staticAsset;
+  }
 
-        //extract the values for any named parameters
-        Map<String, String> convertedParameters = namedOperationManager.manageNamedParameters(parameterMap);   
-        String returnFilePath = null;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (StorageType.FILESYSTEM.equals(staticAsset.getStorageType()) && convertedParameters.isEmpty()) {
-            InputStream classPathInputStream = getResourceFromClasspath(staticAsset);
-            if (classPathInputStream != null) {
-                // Create a file system cache file representing this file.
-                String cacheName = constructCacheFileName(staticAsset, convertedParameters, true);
-                File cacheFile = new File(cacheName);
-                if (!cacheFile.exists()) {
-                    createCacheFile(classPathInputStream, cacheFile);
-                }
-                returnFilePath = cacheFile.getAbsolutePath();
-            } else {
-                returnFilePath = generateStorageFileName(staticAsset.getFullUrl(), false);
-            }
+  /**
+   * Removes trailing "/" and ensures that there is a beginning "/"
+   *
+   * @param   path  DOCUMENT ME!
+   *
+   * @return  removes trailing "/" and ensures that there is a beginning "/"
+   */
+  protected String fixPath(String path) {
+    if (!path.startsWith("/")) {
+      path = "/" + path;
+    }
+
+    if (path.endsWith("/")) {
+      path = path.substring(0, path.length() - 1);
+    }
+
+    return path;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the baseDirectory for writing and reading files as the property assetFileSystemPath if it exists or
+   * java.tmp.io if that property has not been set.
+   *
+   * @return  the baseDirectory for writing and reading files as the property assetFileSystemPath if it exists or
+   *          java.tmp.io if that property has not been set.
+   */
+  protected String getBaseDirectory() {
+    if ((assetFileSystemPath != null) && !"".equals(assetFileSystemPath.trim())) {
+      return assetFileSystemPath;
+    } else {
+      return DEFAULT_STORAGE_DIRECTORY;
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   staticAsset  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected InputStream getResourceFromClasspath(StaticAsset staticAsset) {
+    if ((assetFileClasspathDirectory != null) && !"".equals(assetFileClasspathDirectory)) {
+      try {
+        ClassPathResource resource = new ClassPathResource(assetFileClasspathDirectory + staticAsset.getFullUrl());
+
+        if (resource.exists()) {
+          InputStream         assetFile      = resource.getInputStream();
+          BufferedInputStream bufferedStream = new BufferedInputStream(assetFile);
+
+          // Wrapping the buffered input stream with a globally shared stream allows us to
+          // vary the way the file names are generated on the file system.
+          // This benefits us (mainly in our demo site but their could be other uses) when we
+          // have assets that are shared across sites that we also need to resize.
+          GloballySharedInputStream globallySharedStream = new GloballySharedInputStream(bufferedStream);
+          globallySharedStream.mark(0);
+
+          return globallySharedStream;
         } else {
-            String sharedCacheName = constructCacheFileName(staticAsset, convertedParameters, true);
-            File cacheFile = new File(sharedCacheName);
-
-            // See if the shared file exists.   This is primarily to support a multi-tenant
-            // implementation that shares assets across the tenants.   If not, check for the 
-            // site specific file.
-            if (!cacheFile.exists()) {
-                String cacheName = constructCacheFileName(staticAsset, convertedParameters, false);
-                cacheFile = new File(cacheName);
-            }
-
-            if (!cacheFile.exists()) {
-                InputStream original = findInputStreamForStaticAsset(staticAsset);
-                boolean useSharedFile = shouldUseSharedFile(original);
-    
-                if (!convertedParameters.isEmpty()) {
-                    Operation[] operations = artifactService.buildOperations(convertedParameters, original, staticAsset.getMimeType());
-                    InputStream converted = artifactService.convert(original, operations, staticAsset.getMimeType());
-                    createCacheFile(converted, cacheFile);
-                    if ("image/gif".equals(mimeType)) {
-                        mimeType = "image/png";
-                    }
-                } else {
-                    if (useSharedFile) {
-                        cacheFile = new File(sharedCacheName);
-                        createCacheFile(original, cacheFile);
-                    } else {
-                        createCacheFile(original, cacheFile);
-                    }
-                }
-            }
-            returnFilePath = cacheFile.getAbsolutePath();
+          return null;
         }
-        Map<String, String> model = new HashMap<String, String>(2);
-        model.put("cacheFilePath", returnFilePath);
-        model.put("mimeType", mimeType);
-
-        return model;
+      } catch (Exception e) {
+        LOG.error("Error getting resource from classpath", e);
+      }
     }
 
-    protected InputStream findInputStreamForStaticAsset(StaticAsset staticAsset) throws SQLException, IOException {
-        InputStream classPathInputStream = getResourceFromClasspath(staticAsset);
-        if (classPathInputStream != null) {
-            return classPathInputStream;
-        }
+    return null;
+  } // end method getResourceFromClasspath
 
-        if (StorageType.DATABASE.equals(staticAsset.getStorageType())) {
-            StaticAssetStorage storage = readStaticAssetStorageByStaticAssetId(staticAsset.getId());
-            //there are filter operations to perform on the asset
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            InputStream is = null;
-            try {
-                is = storage.getFileData().getBinaryStream();
-                byte[] buffer = new byte[fileBufferSize];
-                int bytesRead;
-                while ((bytesRead = is.read(buffer)) != -1) {
-                    baos.write(buffer, 0, bytesRead);
-                }
-                baos.flush();
-            } finally {
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (Throwable e) {
-                        //do nothing
-                    }
-                }
-            }
-            InputStream original = new ByteArrayInputStream(baos.toByteArray());
-            return original;
-        } else if (StorageType.FILESYSTEM.equals(staticAsset.getStorageType())) {
-            FileInputStream assetFile = new FileInputStream(generateStorageFileName(staticAsset.getFullUrl(), false));
-            BufferedInputStream bufferedStream = new BufferedInputStream(assetFile);
-            bufferedStream.mark(0);
-            return bufferedStream;
-        } else {
-            throw new IllegalArgumentException("Unknown storage type while trying to read static asset.");
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   s       DOCUMENT ME!
+   * @param   length  DOCUMENT ME!
+   * @param   pad     DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected String pad(String s, int length, char pad) {
+    StringBuilder buffer = new StringBuilder(s);
+
+    while (buffer.length() < length) {
+      buffer.insert(0, pad);
     }
 
-    protected InputStream getResourceFromClasspath(StaticAsset staticAsset) {
-        if (assetFileClasspathDirectory != null && !"".equals(assetFileClasspathDirectory)) {
-            try {
-                ClassPathResource resource = new ClassPathResource(assetFileClasspathDirectory + staticAsset.getFullUrl());
+    return buffer.toString();
+  }
 
-                if (resource.exists()) {
-                    InputStream assetFile = resource.getInputStream();
-                    BufferedInputStream bufferedStream = new BufferedInputStream(assetFile);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-                    // Wrapping the buffered input stream with a globally shared stream allows us to 
-                    // vary the way the file names are generated on the file system.    
-                    // This benefits us (mainly in our demo site but their could be other uses) when we
-                    // have assets that are shared across sites that we also need to resize. 
-                    GloballySharedInputStream globallySharedStream = new GloballySharedInputStream(bufferedStream);
-                    globallySharedStream.mark(0);
-                    return globallySharedStream;
-                } else {
-                    return null;
-                }
-            } catch (Exception e) {
-                LOG.error("Error getting resource from classpath", e);
-            }
-        }
-        return null;
-    }
-
-    @Transactional("blTransactionManagerAssetStorageInfo")
-    @Override
-    public StaticAssetStorage findStaticAssetStorageById(Long id) {
-        return staticAssetStorageDao.readStaticAssetStorageById(id);
-    }
-
-    @Transactional("blTransactionManagerAssetStorageInfo")
-    @Override
-    public StaticAssetStorage create() {
-        return staticAssetStorageDao.create();
-    }
-
-    @Transactional("blTransactionManagerAssetStorageInfo")
-    @Override
-    public StaticAssetStorage readStaticAssetStorageByStaticAssetId(Long id) {
-        return staticAssetStorageDao.readStaticAssetStorageByStaticAssetId(id);
-    }
-
-    @Transactional("blTransactionManagerAssetStorageInfo")
-    @Override
-    public StaticAssetStorage save(StaticAssetStorage assetStorage) {
-        return staticAssetStorageDao.save(assetStorage);
-    }
-
-    @Transactional("blTransactionManagerAssetStorageInfo")
-    @Override
-    public void delete(StaticAssetStorage assetStorage) {
-        staticAssetStorageDao.delete(assetStorage);
-    }
-
-    @Transactional("blTransactionManagerAssetStorageInfo")
-    @Override
-    public Blob createBlob(MultipartFile uploadedFile) throws IOException {
-        return staticAssetStorageDao.createBlob(uploadedFile);
-    }
-
-    protected void createCacheFile(InputStream is, File cacheFile) throws SQLException, IOException {
-        if (!cacheFile.getParentFile().exists()) {
-            if (!cacheFile.getParentFile().mkdirs()) {
-                throw new RuntimeException("Unable to create middle directories for file: " + cacheFile.getAbsolutePath());
-            }
-        }
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cacheFile));
-        try {
-            boolean eof = false;
-            int temp;
-            while (!eof) {
-                temp = is.read();
-                if (temp < 0) {
-                    eof = true;
-                } else {
-                    bos.write(temp);
-                }
-            }
-        } finally {
-            try {
-                bos.flush();
-                bos.close();
-            } catch (Throwable e) {
-                //do nothing
-            }
-        }
-    }
-
-    /**
-     * Builds a file system path for the passed in static asset and paramaterMap.
-     * 
-     * If in a multi-site implementation, the system will also prefix the filepath with a site-identifier
-     * unless the useSharedFile parameter is set to true.
-     * 
-     * @param staticAsset
-     * @param parameterMap
-     * @param useSharedFile
-     * @return
-     */
-    protected String constructCacheFileName(StaticAsset staticAsset, Map<String, String> parameterMap, boolean useSharedFile) {
-        String fileName = generateStorageFileName(staticAsset, useSharedFile);
-
-        StringBuilder sb = new StringBuilder(200);
-        sb.append(fileName.substring(0, fileName.lastIndexOf('.')));
-        sb.append("---");
-
-        StringBuilder sb2 = new StringBuilder(200);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        if (staticAsset.getAuditable() != null) {
-            sb2.append(format.format(staticAsset.getAuditable().getDateUpdated() == null ? staticAsset.getAuditable().getDateCreated() : staticAsset.getAuditable().getDateUpdated()));
-        }
-        
-        for (Map.Entry<String, String> entry : parameterMap.entrySet()) {
-            sb2.append('-');
-            sb2.append(entry.getKey());
-            sb2.append('-');
-            sb2.append(entry.getValue());
-        }
-
-        String digest;
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = md.digest(sb2.toString().getBytes());
-            BigInteger number = new BigInteger(1,messageDigest);
-            digest = number.toString(16);
-        } catch(NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
-        sb.append(pad(digest, 32, '0'));
-        sb.append(fileName.substring(fileName.lastIndexOf('.')));
-
-        return sb.toString();
-    }
-
-    protected String pad(String s, int length, char pad) {
-        StringBuilder buffer = new StringBuilder(s);
-        while (buffer.length() < length) {
-            buffer.insert(0, pad);
-        }
-        return buffer.toString();
-    }
-
-    @Override
-    public void createStaticAssetStorageFromFile(MultipartFile file, StaticAsset staticAsset) throws IOException {
-        if (StorageType.DATABASE.equals(staticAsset.getStorageType())) {
-            StaticAssetStorage storage = staticAssetStorageDao.create();
-            storage.setStaticAssetId(staticAsset.getId());
-            Blob uploadBlob = staticAssetStorageDao.createBlob(file);
-            storage.setFileData(uploadBlob);
-            staticAssetStorageDao.save(storage);
-        } else if (StorageType.FILESYSTEM.equals(staticAsset.getStorageType())) {
-            InputStream input = file.getInputStream();
-            byte[] buffer = new byte[fileBufferSize];
-            String destFileName = generateStorageFileName(staticAsset.getFullUrl(), false);
-            String tempFileName = destFileName.substring(0, destFileName.lastIndexOf("/") + 1) + UUID.randomUUID().toString();
-            File tmpFile = new File(tempFileName);
-            if (!tmpFile.getParentFile().exists()) {
-                if (!tmpFile.getParentFile().mkdirs()) {
-                    throw new RuntimeException("Unable to create parent directories for file: " + destFileName);
-                }
-            }
-            OutputStream output = new FileOutputStream(tmpFile);
-            boolean deleteFile = false;
-            try {
-                int bytesRead;
-                int totalBytesRead = 0;
-                while ((bytesRead = input.read(buffer)) != -1) {
-                    totalBytesRead += bytesRead;
-                    if (totalBytesRead > maxUploadableFileSize) {
-                        deleteFile = true;
-                        throw new IOException("Maximum Upload File Size Exceeded");
-                    }
-                    output.write(buffer, 0, bytesRead);
-                }
-            } finally {
-                output.close();
-                if (deleteFile && tmpFile.exists()) {
-                    tmpFile.delete();
-                }
-            }
-            File newFile = new File(destFileName);
-            if (!tmpFile.renameTo(newFile)) {
-                if (!newFile.exists()) {
-                    throw new RuntimeException("Unable to rename temp file to create file named: " + destFileName);
-                }
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(DigestUtils.md5Hex("/product/myproductimage.jpg"));
-        System.out.println(DigestUtils.md5Hex("/site-125"));
-
-        System.out.println("/product/myproductimage.jpg".substring("/product/myproductimage.jpg".lastIndexOf('.')));
-
-        System.out.println("/product/myproductimage.jpg".substring(0, "/product/myproductimage.jpg".lastIndexOf("/") + 1) +
-                UUID.randomUUID().toString());
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   is  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected boolean shouldUseSharedFile(InputStream is) {
+    return ((is != null) && (is instanceof GloballySharedInputStream));
+  }
+} // end class StaticAssetStorageServiceImpl

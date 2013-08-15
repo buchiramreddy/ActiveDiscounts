@@ -16,8 +16,12 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
+import java.util.List;
+import java.util.Map;
+
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
+
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
@@ -27,30 +31,108 @@ import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManager;
 
-import java.util.List;
-import java.util.Map;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface PersistenceModule {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean isCompatible(OperationType operationType);
-    
-    public Entity add(PersistencePackage persistencePackage) throws ServiceException;
-    
-    public void updateMergedProperties(PersistencePackage persistencePackage, Map<MergedPropertyType, Map<String, FieldMetadata>> allMergedProperties) throws ServiceException;
-    
-    public void extractProperties(Class<?>[] inheritanceLine, Map<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties, List<Property> properties);
-    
-    public Entity update(PersistencePackage persistencePackage) throws ServiceException;
-    
-    public void remove(PersistencePackage persistencePackage) throws ServiceException;
-    
-    public DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto) throws ServiceException;
-    
-    public void setPersistenceManager(PersistenceManager persistenceManager);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  Entity add(PersistencePackage persistencePackage) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  inheritanceLine   DOCUMENT ME!
+   * @param  mergedProperties  DOCUMENT ME!
+   * @param  properties        DOCUMENT ME!
+   */
+  void extractProperties(Class<?>[] inheritanceLine,
+    Map<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties, List<Property> properties);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   * @param   cto                 DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   operationType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isCompatible(OperationType operationType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  void remove(PersistencePackage persistencePackage) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  persistenceManager  DOCUMENT ME!
+   */
+  void setPersistenceManager(PersistenceManager persistenceManager);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  Entity update(PersistencePackage persistencePackage) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage   DOCUMENT ME!
+   * @param   allMergedProperties  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  void updateMergedProperties(PersistencePackage persistencePackage,
+    Map<MergedPropertyType, Map<String, FieldMetadata>> allMergedProperties) throws ServiceException;
+
+} // end interface PersistenceModule

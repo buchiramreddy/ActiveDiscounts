@@ -16,63 +16,192 @@
 
 package org.broadleafcommerce.core.payment.domain;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.payment.service.type.PaymentLogEventType;
-import org.broadleafcommerce.core.payment.service.type.TransactionType;
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.io.Serializable;
+
 import java.util.Date;
 
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.payment.service.type.PaymentLogEventType;
+import org.broadleafcommerce.core.payment.service.type.TransactionType;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PaymentLog extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUserName();
 
-    public String getUserName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  userName  DOCUMENT ME!
+   */
+  void setUserName(String userName);
 
-    public void setUserName(String userName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getTransactionTimestamp();
 
-    public Date getTransactionTimestamp();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  transactionTimestamp  DOCUMENT ME!
+   */
+  void setTransactionTimestamp(Date transactionTimestamp);
 
-    public void setTransactionTimestamp(Date transactionTimestamp);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getPaymentInfoId();
 
-    public Long getPaymentInfoId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfoId  DOCUMENT ME!
+   */
+  void setPaymentInfoId(Long paymentInfoId);
 
-    public void setPaymentInfoId(Long paymentInfoId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer getCustomer();
 
-    public Customer getCustomer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  void setCustomer(Customer customer);
 
-    public void setCustomer(Customer customer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPaymentInfoReferenceNumber();
 
-    public String getPaymentInfoReferenceNumber();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfoReferenceNumber  DOCUMENT ME!
+   */
+  void setPaymentInfoReferenceNumber(String paymentInfoReferenceNumber);
 
-    public void setPaymentInfoReferenceNumber(String paymentInfoReferenceNumber);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  TransactionType getTransactionType();
 
-    public TransactionType getTransactionType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  transactionType  DOCUMENT ME!
+   */
+  void setTransactionType(TransactionType transactionType);
 
-    public void setTransactionType(TransactionType transactionType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getTransactionSuccess();
 
-    public Boolean getTransactionSuccess();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  transactionSuccess  DOCUMENT ME!
+   */
+  void setTransactionSuccess(Boolean transactionSuccess);
 
-    public void setTransactionSuccess(Boolean transactionSuccess);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getExceptionMessage();
 
-    public String getExceptionMessage();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  exceptionMessage  DOCUMENT ME!
+   */
+  void setExceptionMessage(String exceptionMessage);
 
-    public void setExceptionMessage(String exceptionMessage);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentLogEventType getLogType();
 
-    public PaymentLogEventType getLogType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  logType  DOCUMENT ME!
+   */
+  void setLogType(PaymentLogEventType logType);
 
-    public void setLogType(PaymentLogEventType logType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getAmountPaid();
 
-    public Money getAmountPaid();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amountPaid  DOCUMENT ME!
+   */
+  void setAmountPaid(Money amountPaid);
 
-    public void setAmountPaid(Money amountPaid);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currency  DOCUMENT ME!
+   */
+  void setCurrency(BroadleafCurrency currency);
 
-    void setCurrency(BroadleafCurrency currency);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency getCurrency();
 
-    BroadleafCurrency getCurrency();
-
-}
+} // end interface PaymentLog

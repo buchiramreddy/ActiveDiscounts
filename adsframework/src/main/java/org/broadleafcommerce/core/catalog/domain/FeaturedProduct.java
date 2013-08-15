@@ -17,32 +17,86 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface FeaturedProduct extends PromotableProduct {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Category getCategory();
 
-    Category getCategory();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  void setCategory(Category category);
 
-    void setCategory(Category category);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Product getProduct();
 
-    Product getProduct();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  product  DOCUMENT ME!
+   */
+  void setProduct(Product product);
 
-    void setProduct(Product product);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sequence  DOCUMENT ME!
+   */
+  void setSequence(Long sequence);
 
-    void setSequence(Long sequence);
-    
-    Long getSequence();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getSequence();
 
-    String getPromotionMessage();
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.PromotableProduct#getPromotionMessage()
+   */
+  @Override String getPromotionMessage();
 
-    void setPromotionMessage(String promotionMessage);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  promotionMessage  DOCUMENT ME!
+   */
+  void setPromotionMessage(String promotionMessage);
 
-    /**
-     * Pass through to getProdcut() to meet the contract for promotable product.
-     * @return
-     */
-    Product getRelatedProduct();
+  /**
+   * Pass through to getProdcut() to meet the contract for promotable product.
+   *
+   * @return  pass through to getProdcut() to meet the contract for promotable product.
+   */
+  @Override Product getRelatedProduct();
 
-}
+} // end interface FeaturedProduct

@@ -17,69 +17,129 @@
 package org.broadleafcommerce.common.email.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface EmailTrackingClicks extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailId
-     */
-    public abstract Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCustomerId();
 
-    /**
-     * @param id the i to set
-     */
-    public abstract void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the dateClicked
-     */
-    public abstract Date getDateClicked();
+  /**
+   * The dateClicked.
+   *
+   * @return  the dateClicked
+   */
+  Date getDateClicked();
 
-    /**
-     * @param dateClicked the dateClicked to set
-     */
-    public abstract void setDateClicked(Date dateClicked);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the destinationUri
-     */
-    public abstract String getDestinationUri();
+  /**
+   * The destinationUri.
+   *
+   * @return  the destinationUri
+   */
+  String getDestinationUri();
 
-    /**
-     * @param destinationUri the destinationUri to set
-     */
-    public abstract void setDestinationUri(String destinationUri);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the queryString
-     */
-    public abstract String getQueryString();
+  /**
+   * The emailTracking.
+   *
+   * @return  the emailTracking
+   */
+  EmailTracking getEmailTracking();
 
-    /**
-     * @param queryString the queryString to set
-     */
-    public abstract void setQueryString(String queryString);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailTracking
-     */
-    public abstract EmailTracking getEmailTracking();
+  /**
+   * The emailId.
+   *
+   * @return  the emailId
+   */
+  Long getId();
 
-    /**
-     * @param emailTracking the emailTracking to set
-     */
-    public abstract void setEmailTracking(EmailTracking emailTracking);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract String getCustomerId();
+  /**
+   * The queryString.
+   *
+   * @return  the queryString
+   */
+  String getQueryString();
 
-    /**
-     * @param customerId the customer to set
-     */
-    public abstract void setCustomerId(String customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  customerId  the customer to set
+   */
+  void setCustomerId(String customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  dateClicked  the dateClicked to set
+   */
+  void setDateClicked(Date dateClicked);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  destinationUri  the destinationUri to set
+   */
+  void setDestinationUri(String destinationUri);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailTracking  the emailTracking to set
+   */
+  void setEmailTracking(EmailTracking emailTracking);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  id  the i to set
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  queryString  the queryString to set
+   */
+  void setQueryString(String queryString);
+
+} // end interface EmailTrackingClicks

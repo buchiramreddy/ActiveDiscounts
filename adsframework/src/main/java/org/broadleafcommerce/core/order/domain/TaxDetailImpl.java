@@ -16,19 +16,6 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.config.domain.AbstractModuleConfiguration;
-import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
-import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -41,174 +28,304 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.config.domain.AbstractModuleConfiguration;
+import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(friendlyName = "TaxDetailImpl_baseTaxDetail")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name="BLC_TAX_DETAIL")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blOrderElements")
-@AdminPresentationClass(friendlyName = "TaxDetailImpl_baseTaxDetail")
+@Table(name = "BLC_TAX_DETAIL")
 public class TaxDetailImpl implements TaxDetail {
-    
-    private static final long serialVersionUID = -4036994446393527252L;
+  private static final long serialVersionUID = -4036994446393527252L;
 
-    @Id
-    @GeneratedValue(generator = "TaxDetailId")
-    @GenericGenerator(
-        name="TaxDetailId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="TaxDetailImpl"),
-            @Parameter(name="increment_size", value="150"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.catalog.domain.TaxDetailImpl")
-        }
-    )
-    @Column(name = "TAX_DETAIL_ID")
-    protected Long id;
-    
-    @Column(name = "TYPE")
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Tax_Type", order=1, group = "TaxDetailImpl_Tax_Detail")
-    protected String type;
-    
-    @Column(name = "AMOUNT", precision=19, scale=5)
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Tax_Amount", order=2, group = "TaxDetailImpl_Tax_Detail")
-    protected BigDecimal amount;
-    
-    @Column(name = "RATE", precision=19, scale=5)
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Tax_Rate", order = 3, group = "TaxDetailImpl_Tax_Detail")
-    protected BigDecimal rate;
-    
-    @Column(name = "JURISDICTION_NAME")
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Tax_Jurisdiction_Name", order = 4, group = "TaxDetailImpl_Tax_Detail")
-    protected String jurisdictionName;
-
-    @Column(name = "TAX_COUNTRY")
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Tax_Country", order = 5, group = "TaxDetailImpl_Tax_Detail")
-    protected String country;
-    
-    @Column(name = "TAX_REGION")
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Tax_Region", order = 6, group = "TaxDetailImpl_Tax_Detail")
-    protected String region;
-
-    @Column(name = "TAX_NAME")
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Tax_Name", order = 7, group = "TaxDetailImpl_Tax_Detail")
-    protected String taxName;
-
-    @ManyToOne(targetEntity = BroadleafCurrencyImpl.class)
-    @JoinColumn(name = "CURRENCY_CODE")
-    @AdminPresentation(friendlyName = "TaxDetailImpl_Currency_Code", order = 1, group = "FixedPriceFulfillmentOptionImpl_Details", prominent = true)
-    protected BroadleafCurrency currency;
-
-    @ManyToOne(targetEntity = AbstractModuleConfiguration.class)
-    @JoinColumn(name = "MODULE_CONFIG_ID")
-    protected ModuleConfiguration moduleConfiguation;
-
-    public TaxDetailImpl() {
-        
+  /** DOCUMENT ME! */
+  @Column(name = "TAX_DETAIL_ID")
+  @GeneratedValue(generator = "TaxDetailId")
+  @GenericGenerator(
+    name       = "TaxDetailId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "TaxDetailImpl"
+      ),
+      @Parameter(
+        name   = "increment_size",
+        value  = "150"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.catalog.domain.TaxDetailImpl"
+      )
     }
-    
-    public TaxDetailImpl(TaxType type, Money amount, BigDecimal rate) {
-        this.type = type.getType();
-        this.amount = amount.getAmount();
-        this.rate = rate;
-    }
+  )
+  @Id protected Long id;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Tax_Type",
+    order        = 1,
+    group        = "TaxDetailImpl_Tax_Detail"
+  )
+  @Column(name = "TYPE")
+  protected String type;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Tax_Amount",
+    order        = 2,
+    group        = "TaxDetailImpl_Tax_Detail"
+  )
+  @Column(
+    name      = "AMOUNT",
+    precision = 19,
+    scale     = 5
+  )
+  protected BigDecimal amount;
 
-    @Override
-    public TaxType getType() {
-        return TaxType.getInstance(this.type);
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Tax_Rate",
+    order        = 3,
+    group        = "TaxDetailImpl_Tax_Detail"
+  )
+  @Column(
+    name      = "RATE",
+    precision = 19,
+    scale     = 5
+  )
+  protected BigDecimal rate;
 
-    @Override
-    public void setType(TaxType type) {
-        this.type = type.getType();
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Tax_Jurisdiction_Name",
+    order        = 4,
+    group        = "TaxDetailImpl_Tax_Detail"
+  )
+  @Column(name = "JURISDICTION_NAME")
+  protected String jurisdictionName;
 
-    @Override
-    public Money getAmount() {
-        return BroadleafCurrencyUtils.getMoney(amount, currency);
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Tax_Country",
+    order        = 5,
+    group        = "TaxDetailImpl_Tax_Detail"
+  )
+  @Column(name = "TAX_COUNTRY")
+  protected String country;
 
-    @Override
-    public void setAmount(Money amount) {
-        this.amount = amount.getAmount();
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Tax_Region",
+    order        = 6,
+    group        = "TaxDetailImpl_Tax_Detail"
+  )
+  @Column(name = "TAX_REGION")
+  protected String region;
 
-    @Override
-    public BigDecimal getRate() {
-        return rate;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Tax_Name",
+    order        = 7,
+    group        = "TaxDetailImpl_Tax_Detail"
+  )
+  @Column(name = "TAX_NAME")
+  protected String taxName;
 
-    @Override
-    public void setRate(BigDecimal rate) {
-        this.rate = rate;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "TaxDetailImpl_Currency_Code",
+    order        = 1,
+    group        = "FixedPriceFulfillmentOptionImpl_Details",
+    prominent    = true
+  )
+  @JoinColumn(name = "CURRENCY_CODE")
+  @ManyToOne(targetEntity = BroadleafCurrencyImpl.class)
+  protected BroadleafCurrency currency;
 
-    @Override
-    public BroadleafCurrency getCurrency() {
-        return currency;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "MODULE_CONFIG_ID")
+  @ManyToOne(targetEntity = AbstractModuleConfiguration.class)
+  protected ModuleConfiguration moduleConfiguation;
 
-    @Override
-    public void setCurrency(BroadleafCurrency currency) {
-        this.currency = currency;
-    }
+  /**
+   * Creates a new TaxDetailImpl object.
+   */
+  public TaxDetailImpl() { }
 
-    @Override
-    public ModuleConfiguration getModuleConfiguration() {
-        return this.moduleConfiguation;
-    }
+  /**
+   * Creates a new TaxDetailImpl object.
+   *
+   * @param  type    DOCUMENT ME!
+   * @param  amount  DOCUMENT ME!
+   * @param  rate    DOCUMENT ME!
+   */
+  public TaxDetailImpl(TaxType type, Money amount, BigDecimal rate) {
+    this.type   = type.getType();
+    this.amount = amount.getAmount();
+    this.rate   = rate;
+  }
 
-    @Override
-    public void setModuleConfiguration(ModuleConfiguration config) {
-        this.moduleConfiguation = config;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setJurisdictionName(String jurisdiction) {
-        this.jurisdictionName = jurisdiction;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public String getJurisdictionName() {
-        return this.jurisdictionName;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getType()
+   */
+  @Override public TaxType getType() {
+    return TaxType.getInstance(this.type);
+  }
 
-    @Override
-    public void setTaxName(String taxName) {
-        this.taxName = taxName;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setType(org.broadleafcommerce.core.order.domain.TaxType)
+   */
+  @Override public void setType(TaxType type) {
+    this.type = type.getType();
+  }
 
-    @Override
-    public String getTaxName() {
-        return this.taxName;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getAmount()
+   */
+  @Override public Money getAmount() {
+    return BroadleafCurrencyUtils.getMoney(amount, currency);
+  }
 
-    @Override
-    public void setRegion(String region) {
-        this.region = region;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setAmount(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setAmount(Money amount) {
+    this.amount = amount.getAmount();
+  }
 
-    @Override
-    public String getRegion() {
-        return this.region;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getRate()
+   */
+  @Override public BigDecimal getRate() {
+    return rate;
+  }
 
-    @Override
-    public void setCountry(String country) {
-        this.country = country;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setRate(java.math.BigDecimal)
+   */
+  @Override public void setRate(BigDecimal rate) {
+    this.rate = rate;
+  }
 
-    @Override
-    public String getCountry() {
-        return this.country;
-    }
-    
-}
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getCurrency()
+   */
+  @Override public BroadleafCurrency getCurrency() {
+    return currency;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setCurrency(org.broadleafcommerce.common.currency.domain.BroadleafCurrency)
+   */
+  @Override public void setCurrency(BroadleafCurrency currency) {
+    this.currency = currency;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getModuleConfiguration()
+   */
+  @Override public ModuleConfiguration getModuleConfiguration() {
+    return this.moduleConfiguation;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setModuleConfiguration(org.broadleafcommerce.common.config.domain.ModuleConfiguration)
+   */
+  @Override public void setModuleConfiguration(ModuleConfiguration config) {
+    this.moduleConfiguation = config;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setJurisdictionName(java.lang.String)
+   */
+  @Override public void setJurisdictionName(String jurisdiction) {
+    this.jurisdictionName = jurisdiction;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getJurisdictionName()
+   */
+  @Override public String getJurisdictionName() {
+    return this.jurisdictionName;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setTaxName(java.lang.String)
+   */
+  @Override public void setTaxName(String taxName) {
+    this.taxName = taxName;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getTaxName()
+   */
+  @Override public String getTaxName() {
+    return this.taxName;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setRegion(java.lang.String)
+   */
+  @Override public void setRegion(String region) {
+    this.region = region;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getRegion()
+   */
+  @Override public String getRegion() {
+    return this.region;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#setCountry(java.lang.String)
+   */
+  @Override public void setCountry(String country) {
+    this.country = country;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.TaxDetail#getCountry()
+   */
+  @Override public String getCountry() {
+    return this.country;
+  }
+
+} // end class TaxDetailImpl

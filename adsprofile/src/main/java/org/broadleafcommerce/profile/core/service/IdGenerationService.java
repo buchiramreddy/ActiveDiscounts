@@ -16,7 +16,21 @@
 
 package org.broadleafcommerce.profile.core.service;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface IdGenerationService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long findNextId(String idType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   idType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long findNextId(String idType);
 }

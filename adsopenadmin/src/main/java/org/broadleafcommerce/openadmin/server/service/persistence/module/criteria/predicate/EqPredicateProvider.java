@@ -16,31 +16,47 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate;
 
-import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
-import org.springframework.stereotype.Component;
+import java.io.Serializable;
+
+import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import java.io.Serializable;
-import java.util.List;
+
+import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
+
+import org.springframework.stereotype.Component;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blEqPredicateProvider")
 public class EqPredicateProvider implements PredicateProvider<Serializable, Serializable> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Predicate buildPredicate(CriteriaBuilder builder, FieldPathBuilder fieldPathBuilder, From root, String ceilingEntity,
-                                    String fullPropertyName, Path<Serializable> explicitPath, List<Serializable> directValues) {
-        Path<Serializable> path;
-        if (explicitPath != null) {
-            path = explicitPath;
-        } else {
-            path = fieldPathBuilder.getPath(root, fullPropertyName, builder);
-        }
-        return builder.equal(path, directValues.get(0));
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.predicate.PredicateProvider#buildPredicate(javax.persistence.criteria.CriteriaBuilder,
+   *       org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder,
+   *       javax.persistence.criteria.From, java.lang.String, java.lang.String, javax.persistence.criteria.Path,
+   *       java.util.List)
+   */
+  @Override public Predicate buildPredicate(CriteriaBuilder builder, FieldPathBuilder fieldPathBuilder, From root,
+    String ceilingEntity,
+    String fullPropertyName, Path<Serializable> explicitPath, List<Serializable> directValues) {
+    Path<Serializable> path;
+
+    if (explicitPath != null) {
+      path = explicitPath;
+    } else {
+      path = fieldPathBuilder.getPath(root, fullPropertyName, builder);
     }
+
+    return builder.equal(path, directValues.get(0));
+  }
 }

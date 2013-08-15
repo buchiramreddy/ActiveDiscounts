@@ -16,88 +16,146 @@
 
 package org.broadleafcommerce.core.payment.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of payment info types.
- * 
- * @author jfischer
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class PaymentInfoType implements Serializable, BroadleafEnumerationType {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  private static final Map<String, PaymentInfoType> TYPES = new LinkedHashMap<String, PaymentInfoType>();
 
-    private static final Map<String, PaymentInfoType> TYPES = new LinkedHashMap<String, PaymentInfoType>();
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType GIFT_CARD        = new PaymentInfoType("GIFT_CARD", "Gift Card");
 
-    public static final PaymentInfoType GIFT_CARD = new PaymentInfoType("GIFT_CARD", "Gift Card");
-    public static final PaymentInfoType CREDIT_CARD = new PaymentInfoType("CREDIT_CARD", "Credit Card");
-    public static final PaymentInfoType BANK_ACCOUNT = new PaymentInfoType("BANK_ACCOUNT", "Bank Account");
-    public static final PaymentInfoType PAYPAL = new PaymentInfoType("PAYPAL", "PayPal");
-    public static final PaymentInfoType CHECK = new PaymentInfoType("CHECK", "Check");
-    public static final PaymentInfoType ELECTRONIC_CHECK = new PaymentInfoType("ELECTRONIC_CHECK", "Electronic Check");
-    public static final PaymentInfoType WIRE = new PaymentInfoType("WIRE", "Wire Transfer");
-    public static final PaymentInfoType MONEY_ORDER = new PaymentInfoType("MONEY_ORDER", "Money Order");
-    public static final PaymentInfoType CUSTOMER_CREDIT = new PaymentInfoType("CUSTOMER_CREDIT", "Customer Credit");
-    public static final PaymentInfoType ACCOUNT = new PaymentInfoType("ACCOUNT", "Account");
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType CREDIT_CARD      = new PaymentInfoType("CREDIT_CARD", "Credit Card");
 
-    public static PaymentInfoType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType BANK_ACCOUNT     = new PaymentInfoType("BANK_ACCOUNT", "Bank Account");
+
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType PAYPAL           = new PaymentInfoType("PAYPAL", "PayPal");
+
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType CHECK            = new PaymentInfoType("CHECK", "Check");
+
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType ELECTRONIC_CHECK = new PaymentInfoType("ELECTRONIC_CHECK", "Electronic Check");
+
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType WIRE            = new PaymentInfoType("WIRE", "Wire Transfer");
+
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType MONEY_ORDER     = new PaymentInfoType("MONEY_ORDER", "Money Order");
+
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType CUSTOMER_CREDIT = new PaymentInfoType("CUSTOMER_CREDIT", "Customer Credit");
+
+  /** DOCUMENT ME! */
+  public static final PaymentInfoType ACCOUNT = new PaymentInfoType("ACCOUNT", "Account");
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static PaymentInfoType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  private String type;
+  private String friendlyType;
+
+  /**
+   * Creates a new PaymentInfoType object.
+   */
+  public PaymentInfoType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new PaymentInfoType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public PaymentInfoType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public PaymentInfoType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public PaymentInfoType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    PaymentInfoType other = (PaymentInfoType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
-
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        PaymentInfoType other = (PaymentInfoType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-}
+    return true;
+  } // end method equals
+} // end class PaymentInfoType

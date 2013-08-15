@@ -17,30 +17,51 @@
 package org.broadleafcommerce.common.extensibility.context.merge.exceptions;
 
 /**
- * This exception is thrown when a problem is encountered during
- * the MergeManager initialization
- * 
- * @author jfischer
+ * This exception is thrown when a problem is encountered during the MergeManager initialization.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class MergeManagerSetupException extends Exception {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    
-    public MergeManagerSetupException() {
-        super();
-    }
+  private static final long serialVersionUID = 1L;
 
-    public MergeManagerSetupException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public MergeManagerSetupException(String arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new MergeManagerSetupException object.
+   */
+  public MergeManagerSetupException() {
+    super();
+  }
 
-    public MergeManagerSetupException(Throwable arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new MergeManagerSetupException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public MergeManagerSetupException(String arg0) {
+    super(arg0);
+  }
 
-}
+  /**
+   * Creates a new MergeManagerSetupException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public MergeManagerSetupException(Throwable arg0) {
+    super(arg0);
+  }
+
+  /**
+   * Creates a new MergeManagerSetupException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   */
+  public MergeManagerSetupException(String arg0, Throwable arg1) {
+    super(arg0, arg1);
+  }
+
+} // end class MergeManagerSetupException

@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.order.service.workflow.remove;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.OrderItemService;
@@ -24,39 +26,48 @@ import org.broadleafcommerce.core.order.service.workflow.CartOperationContext;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ValidateRemoveRequestActivity extends BaseActivity<CartOperationContext> {
-    
-    @Resource(name = "blOrderItemService")
-    protected OrderItemService orderItemService;
-    
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderItemService")
+  protected OrderItemService orderItemService;
 
-    @Override
-    public CartOperationContext execute(CartOperationContext context) throws Exception {
-        CartOperationRequest request = context.getSeedData();
-        OrderItemRequestDTO orderItemRequestDTO = request.getItemRequest();
 
-        // Throw an exception if the user did not specify an orderItemId
-        if (orderItemRequestDTO.getOrderItemId() == null) {
-            throw new IllegalArgumentException("OrderItemId must be specified when removing from order");
-        }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.order.service.workflow.CartOperationContext)
+   */
+  @Override public CartOperationContext execute(CartOperationContext context) throws Exception {
+    CartOperationRequest request             = context.getSeedData();
+    OrderItemRequestDTO  orderItemRequestDTO = request.getItemRequest();
 
-        // Throw an exception if the user did not specify an order to add the item to
-        if (request.getOrder() == null) {
-            throw new IllegalArgumentException("Order is required when updating item quantities");
-        }
-        
-        // Throw an exception if the user is trying to remove an order item that is part of a bundle
-        OrderItem orderItem = orderItemService.readOrderItemById(orderItemRequestDTO.getOrderItemId());
-        if (orderItem != null && orderItem instanceof DiscreteOrderItem) {
-            DiscreteOrderItem doi = (DiscreteOrderItem) orderItem;
-            if (doi.getBundleOrderItem() != null) {
-                throw new IllegalArgumentException("Cannot remove an item that is part of a bundle");
-            }
-        }
-        
-        return context;
+    // Throw an exception if the user did not specify an orderItemId
+    if (orderItemRequestDTO.getOrderItemId() == null) {
+      throw new IllegalArgumentException("OrderItemId must be specified when removing from order");
     }
-    
-}
+
+    // Throw an exception if the user did not specify an order to add the item to
+    if (request.getOrder() == null) {
+      throw new IllegalArgumentException("Order is required when updating item quantities");
+    }
+
+    // Throw an exception if the user is trying to remove an order item that is part of a bundle
+    OrderItem orderItem = orderItemService.readOrderItemById(orderItemRequestDTO.getOrderItemId());
+
+    if ((orderItem != null) && (orderItem instanceof DiscreteOrderItem)) {
+      DiscreteOrderItem doi = (DiscreteOrderItem) orderItem;
+
+      if (doi.getBundleOrderItem() != null) {
+        throw new IllegalArgumentException("Cannot remove an item that is part of a bundle");
+      }
+    }
+
+    return context;
+  } // end method execute
+
+} // end class ValidateRemoveRequestActivity

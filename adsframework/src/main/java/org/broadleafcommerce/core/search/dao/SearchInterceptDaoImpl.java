@@ -16,68 +16,89 @@
 
 package org.broadleafcommerce.core.search.dao;
 
-import org.broadleafcommerce.core.search.domain.SearchIntercept;
-import org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDaoImpl;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
+
+import org.broadleafcommerce.core.search.domain.SearchIntercept;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
- * @deprecated Replaced in functionality by {@link org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDaoImpl}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Replaced in functionality by
+ *              {@link org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDaoImpl}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Repository("blSearchInterceptDao")
 @Deprecated
+@Repository("blSearchInterceptDao")
 public class SearchInterceptDaoImpl implements SearchInterceptDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchInterceptDao#findInterceptByTerm(java.lang.String)
+   */
+  @Override public SearchIntercept findInterceptByTerm(String term) {
+    Query query = em.createNamedQuery("BC_READ_SEARCH_INTERCEPT_BY_TERM");
+    query.setParameter("searchTerm", term);
 
-    @Override
-    public SearchIntercept findInterceptByTerm(String term) {
-        Query query = em.createNamedQuery("BC_READ_SEARCH_INTERCEPT_BY_TERM");
-        query.setParameter("searchTerm", term);
-        SearchIntercept result;
-        try {
-            result = (SearchIntercept) query.getSingleResult();
-        } catch (NoResultException e) {
-            result = null;
-        }
+    SearchIntercept result;
 
-        return result;
+    try {
+      result = (SearchIntercept) query.getSingleResult();
+    } catch (NoResultException e) {
+      result = null;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<SearchIntercept> findAllIntercepts() {
-        Query query = em.createNamedQuery("BC_READ_ALL_SEARCH_INTERCEPTS");
-        List<SearchIntercept> result;
-        try {
-            result = query.getResultList();
-        } catch (NoResultException e) {
-            result = null;
-        }
+    return result;
+  }
 
-        return result;
-        
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchInterceptDao#findAllIntercepts()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<SearchIntercept> findAllIntercepts() {
+    Query                 query  = em.createNamedQuery("BC_READ_ALL_SEARCH_INTERCEPTS");
+    List<SearchIntercept> result;
+
+    try {
+      result = query.getResultList();
+    } catch (NoResultException e) {
+      result = null;
     }
 
-    @Override
-    public void createIntercept(SearchIntercept intercept) {
-        em.persist(intercept);
-    }
+    return result;
 
-    @Override
-    public void deleteIntercept(SearchIntercept intercept) {
-        em.remove(intercept);
-    }
+  }
 
-    @Override
-    public void updateIntercept(SearchIntercept intercept) {
-        em.merge(intercept);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchInterceptDao#createIntercept(org.broadleafcommerce.core.search.domain.SearchIntercept)
+   */
+  @Override public void createIntercept(SearchIntercept intercept) {
+    em.persist(intercept);
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchInterceptDao#deleteIntercept(org.broadleafcommerce.core.search.domain.SearchIntercept)
+   */
+  @Override public void deleteIntercept(SearchIntercept intercept) {
+    em.remove(intercept);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.dao.SearchInterceptDao#updateIntercept(org.broadleafcommerce.core.search.domain.SearchIntercept)
+   */
+  @Override public void updateIntercept(SearchIntercept intercept) {
+    em.merge(intercept);
+  }
+
+} // end class SearchInterceptDaoImpl

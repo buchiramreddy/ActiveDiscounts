@@ -17,63 +17,93 @@
 package org.broadleafcommerce.common.web;
 
 import org.broadleafcommerce.common.site.domain.Theme;
+
 import org.thymeleaf.TemplateProcessingParameters;
+
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
 import org.thymeleaf.util.Validate;
 
+
 /**
- * Overrides the Thymeleaf ContextTemplateResolver and appends the org.broadleafcommerce.common.web.Theme path to the url
- * if it exists.
+ * Overrides the Thymeleaf ContextTemplateResolver and appends the org.broadleafcommerce.common.web.Theme path to the
+ * url if it exists.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-public class BroadleafThymeleafServletContextTemplateResolver extends ServletContextTemplateResolver {    
-    
-    protected String templateFolder = "";
+public class BroadleafThymeleafServletContextTemplateResolver extends ServletContextTemplateResolver {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    protected String computeResourceName(final TemplateProcessingParameters templateProcessingParameters) {
-        String themePath = null;
-    
-        Theme theme = BroadleafRequestContext.getBroadleafRequestContext().getTheme();
-        if (theme != null && theme.getPath() != null) {
-            themePath = theme.getPath();
-        }             
+  /** DOCUMENT ME! */
+  protected String templateFolder = "";
 
-        checkInitialized();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        final String templateName = templateProcessingParameters.getTemplateName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getTemplateFolder() {
+    return templateFolder;
+  }
 
-        Validate.notNull(templateName, "Template name cannot be null");
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        String unaliasedName = this.getTemplateAliases().get(templateName);
-        if (unaliasedName == null) {
-            unaliasedName = templateName;
-        }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  templateFolder  DOCUMENT ME!
+   */
+  public void setTemplateFolder(String templateFolder) {
+    this.templateFolder = templateFolder;
+  }
 
-        final StringBuilder resourceName = new StringBuilder();
-        String prefix = this.getPrefix();
-        if (prefix != null && ! prefix.trim().equals("")) {
-           
-            if (themePath != null) {        
-                resourceName.append(prefix).append(themePath).append('/').append(templateFolder);
-            }
-        }
-        resourceName.append(unaliasedName);
-        String suffix = this.getSuffix();
-        if (suffix != null && ! suffix.trim().equals("")) {
-            resourceName.append(suffix);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return resourceName.toString();
-    }
-    
-    public String getTemplateFolder() {
-        return templateFolder;
+  /**
+   * @see  org.thymeleaf.templateresolver.TemplateResolver#computeResourceName(org.thymeleaf.TemplateProcessingParameters)
+   */
+  @Override protected String computeResourceName(final TemplateProcessingParameters templateProcessingParameters) {
+    String themePath = null;
+
+    Theme theme = BroadleafRequestContext.getBroadleafRequestContext().getTheme();
+
+    if ((theme != null) && (theme.getPath() != null)) {
+      themePath = theme.getPath();
     }
 
-    public void setTemplateFolder(String templateFolder) {
-        this.templateFolder = templateFolder;
+    checkInitialized();
+
+    final String templateName = templateProcessingParameters.getTemplateName();
+
+    Validate.notNull(templateName, "Template name cannot be null");
+
+    String unaliasedName = this.getTemplateAliases().get(templateName);
+
+    if (unaliasedName == null) {
+      unaliasedName = templateName;
     }
-    
-}
 
+    final StringBuilder resourceName = new StringBuilder();
+    String              prefix       = this.getPrefix();
 
+    if ((prefix != null) && !prefix.trim().equals("")) {
+      if (themePath != null) {
+        resourceName.append(prefix).append(themePath).append('/').append(templateFolder);
+      }
+    }
+
+    resourceName.append(unaliasedName);
+
+    String suffix = this.getSuffix();
+
+    if ((suffix != null) && !suffix.trim().equals("")) {
+      resourceName.append(suffix);
+    }
+
+    return resourceName.toString();
+  } // end method computeResourceName
+
+} // end class BroadleafThymeleafServletContextTemplateResolver

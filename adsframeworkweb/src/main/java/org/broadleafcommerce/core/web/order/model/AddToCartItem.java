@@ -18,6 +18,11 @@ package org.broadleafcommerce.core.web.order.model;
 
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 
-public class AddToCartItem extends OrderItemRequestDTO {
-    
-}
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class AddToCartItem extends OrderItemRequestDTO { }

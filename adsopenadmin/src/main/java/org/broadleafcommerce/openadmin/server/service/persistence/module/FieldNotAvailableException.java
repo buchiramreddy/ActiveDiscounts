@@ -17,23 +17,45 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class FieldNotAvailableException extends Exception {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public FieldNotAvailableException() {
-    }
+  /**
+   * Creates a new FieldNotAvailableException object.
+   */
+  public FieldNotAvailableException() { }
 
-    public FieldNotAvailableException(String s) {
-        super(s);
-    }
+  /**
+   * Creates a new FieldNotAvailableException object.
+   *
+   * @param  s  DOCUMENT ME!
+   */
+  public FieldNotAvailableException(String s) {
+    super(s);
+  }
 
-    public FieldNotAvailableException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
+  /**
+   * Creates a new FieldNotAvailableException object.
+   *
+   * @param  throwable  DOCUMENT ME!
+   */
+  public FieldNotAvailableException(Throwable throwable) {
+    super(throwable);
+  }
 
-    public FieldNotAvailableException(Throwable throwable) {
-        super(throwable);
-    }
+  /**
+   * Creates a new FieldNotAvailableException object.
+   *
+   * @param  s          DOCUMENT ME!
+   * @param  throwable  DOCUMENT ME!
+   */
+  public FieldNotAvailableException(String s, Throwable throwable) {
+    super(s, throwable);
+  }
 
-}
+} // end class FieldNotAvailableException

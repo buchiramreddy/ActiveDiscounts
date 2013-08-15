@@ -16,37 +16,69 @@
 
 package org.broadleafcommerce.common.currency.domain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class NullBroadleafCurrency implements BroadleafCurrency {
-    private static final long serialVersionUID = 7926395625817119455L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Override
-    public String getCurrencyCode() {
-        return null;
-    }
+  private static final long serialVersionUID = 7926395625817119455L;
 
-    @Override
-    public void setCurrencyCode(String code) {
-        // Do nothing
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getFriendlyName() {
-        return null;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#getCurrencyCode()
+   */
+  @Override public String getCurrencyCode() {
+    return null;
+  }
 
-    @Override
-    public void setFriendlyName(String friendlyName) {
-        // Do nothing
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean getDefaultFlag() {
-        return false;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#getDefaultFlag()
+   */
+  @Override public boolean getDefaultFlag() {
+    return false;
+  }
 
-    @Override
-    public void setDefaultFlag(boolean defaultFlag) {
-        // Do nothing
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#getFriendlyName()
+   */
+  @Override public String getFriendlyName() {
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#setCurrencyCode(java.lang.String)
+   */
+  @Override public void setCurrencyCode(String code) {
+    // Do nothing
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#setDefaultFlag(boolean)
+   */
+  @Override public void setDefaultFlag(boolean defaultFlag) {
+    // Do nothing
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#setFriendlyName(java.lang.String)
+   */
+  @Override public void setFriendlyName(String friendlyName) {
+    // Do nothing
+  }
+
+} // end class NullBroadleafCurrency

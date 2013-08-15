@@ -17,30 +17,45 @@
 package org.broadleafcommerce.core.pricing.service.fulfillment;
 
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 
+
 /**
- * Default implementation of {@link org.broadleafcommerce.core.pricing.service.fulfillment.FulfillmentLocationResolver} that stores a
- * single Address. Useful for businesses that do not have a complicated warehouse solution
- * and fulfill from a single location.
- * 
- * @author Phillip Verheyden
+ * Default implementation of {@link org.broadleafcommerce.core.pricing.service.fulfillment.FulfillmentLocationResolver}
+ * that stores a single Address. Useful for businesses that do not have a complicated warehouse solution and fulfill
+ * from a single location.
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public class SimpleFulfillmentLocationResolver implements FulfillmentLocationResolver {
+  /** DOCUMENT ME! */
+  protected Address address;
 
-    protected Address address;
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.fulfillment.FulfillmentLocationResolver#resolveLocationForFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override public Address resolveLocationForFulfillmentGroup(FulfillmentGroup group) {
+    return address;
+  }
 
-    @Override
-    public Address resolveLocationForFulfillmentGroup(FulfillmentGroup group) {
-        return address;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Address getAddress() {
+    return address;
+  }
 
-    public Address getAddress() {
-        return address;
-    }
-    
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  public void setAddress(Address address) {
+    this.address = address;
+  }
 
-}
+} // end class SimpleFulfillmentLocationResolver

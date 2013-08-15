@@ -16,24 +16,43 @@
 
 package org.broadleafcommerce.common.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.locale.domain.Locale;
+
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Responsible for returning the Locale to use for the current request.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
-public interface BroadleafLocaleResolver  {
+public interface BroadleafLocaleResolver {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @deprecated Use {@link #resolveLocale(org.springframework.web.context.request.WebRequest)} instead
-     */
-    @Deprecated
-    public Locale resolveLocale(HttpServletRequest request);
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       request  DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  Use {@link #resolveLocale(org.springframework.web.context.request.WebRequest)} instead
+   */
+  @Deprecated Locale resolveLocale(HttpServletRequest request);
 
-    public Locale resolveLocale(WebRequest request);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Locale resolveLocale(WebRequest request);
+
+} // end interface BroadleafLocaleResolver

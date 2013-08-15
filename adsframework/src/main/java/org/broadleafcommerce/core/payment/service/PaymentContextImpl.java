@@ -17,76 +17,135 @@
 package org.broadleafcommerce.core.payment.service;
 
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentContextImpl implements PaymentContext {
+  /** DOCUMENT ME! */
+  protected Money       originalPaymentAmount;
 
-    protected Money originalPaymentAmount;
-    protected Money remainingPaymentAmount;
-    protected Money transactionAmount;
-    protected Money remainingTransactionAmount;
-    protected PaymentInfo paymentInfo;
-    protected Referenced referencedPaymentInfo;
-    protected String transactionId;
-    protected String userName;
+  /** DOCUMENT ME! */
+  protected Money       remainingPaymentAmount;
 
-    public PaymentContextImpl(Money transactionAmount, Money remainingTransactionAmount, PaymentInfo paymentInfo, Referenced referencedPaymentInfo, String userName) {
-        this.transactionAmount = transactionAmount;
-        this.remainingTransactionAmount = remainingTransactionAmount;
-        this.paymentInfo = paymentInfo;
-        this.referencedPaymentInfo = referencedPaymentInfo;
-        this.userName = userName;
-    }
+  /** DOCUMENT ME! */
+  protected Money       transactionAmount;
 
-    @Deprecated
-    public Money getOriginalPaymentAmount() {
-        return originalPaymentAmount;
-    }
+  /** DOCUMENT ME! */
+  protected Money       remainingTransactionAmount;
 
-    @Deprecated
-    public Money getRemainingPaymentAmount() {
-        return remainingPaymentAmount;
-    }
+  /** DOCUMENT ME! */
+  protected PaymentInfo paymentInfo;
 
-    @Override
-    public Money getTransactionAmount() {
-        return transactionAmount;
-    }
+  /** DOCUMENT ME! */
+  protected Referenced  referencedPaymentInfo;
 
-    @Override
-    public void setTransactionAmount(Money transactionAmount) {
-        this.transactionAmount = transactionAmount;
-    }
+  /** DOCUMENT ME! */
+  protected String      transactionId;
 
-    @Override
-    public Money getRemainingTransactionAmount() {
-        return remainingTransactionAmount;
-    }
+  /** DOCUMENT ME! */
+  protected String      userName;
 
-    @Override
-    public void setRemainingTransactionAmount(Money remainingTransactionAmount) {
-        this.remainingTransactionAmount = remainingTransactionAmount;
-    }
+  /**
+   * Creates a new PaymentContextImpl object.
+   *
+   * @param  transactionAmount           DOCUMENT ME!
+   * @param  remainingTransactionAmount  DOCUMENT ME!
+   * @param  paymentInfo                 DOCUMENT ME!
+   * @param  referencedPaymentInfo       DOCUMENT ME!
+   * @param  userName                    DOCUMENT ME!
+   */
+  public PaymentContextImpl(Money transactionAmount, Money remainingTransactionAmount, PaymentInfo paymentInfo,
+    Referenced referencedPaymentInfo, String userName) {
+    this.transactionAmount          = transactionAmount;
+    this.remainingTransactionAmount = remainingTransactionAmount;
+    this.paymentInfo                = paymentInfo;
+    this.referencedPaymentInfo      = referencedPaymentInfo;
+    this.userName                   = userName;
+  }
 
-    public PaymentInfo getPaymentInfo() {
-        return paymentInfo;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getOriginalPaymentAmount()
+   */
+  @Deprecated @Override public Money getOriginalPaymentAmount() {
+    return originalPaymentAmount;
+  }
 
-    public Referenced getReferencedPaymentInfo() {
-        return referencedPaymentInfo;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getRemainingPaymentAmount()
+   */
+  @Deprecated @Override public Money getRemainingPaymentAmount() {
+    return remainingPaymentAmount;
+  }
 
-    public String getTransactionId() {
-        return transactionId;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getTransactionAmount()
+   */
+  @Override public Money getTransactionAmount() {
+    return transactionAmount;
+  }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#setTransactionAmount(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setTransactionAmount(Money transactionAmount) {
+    this.transactionAmount = transactionAmount;
+  }
 
-    public String getUserName() {
-        return userName;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getRemainingTransactionAmount()
+   */
+  @Override public Money getRemainingTransactionAmount() {
+    return remainingTransactionAmount;
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#setRemainingTransactionAmount(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setRemainingTransactionAmount(Money remainingTransactionAmount) {
+    this.remainingTransactionAmount = remainingTransactionAmount;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getPaymentInfo()
+   */
+  @Override public PaymentInfo getPaymentInfo() {
+    return paymentInfo;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getReferencedPaymentInfo()
+   */
+  @Override public Referenced getReferencedPaymentInfo() {
+    return referencedPaymentInfo;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getTransactionId()
+   */
+  @Override public String getTransactionId() {
+    return transactionId;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#setTransactionId(java.lang.String)
+   */
+  @Override public void setTransactionId(String transactionId) {
+    this.transactionId = transactionId;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.PaymentContext#getUserName()
+   */
+  @Override public String getUserName() {
+    return userName;
+  }
+
+} // end class PaymentContextImpl

@@ -16,28 +16,59 @@
 
 package org.broadleafcommerce.core.payment.domain;
 
-import org.broadleafcommerce.common.encryption.EncryptionModule;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.encryption.EncryptionModule;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface Referenced extends Serializable {
+  /**
+   * The referenceNumber.
+   *
+   * @return  the referenceNumber
+   */
+  String getReferenceNumber();
 
-    /**
-     * @return the referenceNumber
-     */
-    public String getReferenceNumber();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  referenceNumber  the referenceNumber to set
+   */
+  void setReferenceNumber(String referenceNumber);
 
-    /**
-     * @param referenceNumber the referenceNumber to set
-     */
-    public void setReferenceNumber(String referenceNumber);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  EncryptionModule getEncryptionModule();
 
-    public EncryptionModule getEncryptionModule();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  encryptionModule  DOCUMENT ME!
+   */
+  void setEncryptionModule(EncryptionModule encryptionModule);
 
-    public void setEncryptionModule(EncryptionModule encryptionModule);
-    
-    public Long getId();
-    
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+} // end interface Referenced

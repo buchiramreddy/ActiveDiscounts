@@ -22,20 +22,29 @@ import org.broadleafcommerce.core.workflow.ProcessContext;
 
 
 /**
- * Pass-through activity to test that a workflow with a {@link ModuleActivity} marker interface in it performs correctly
+ * Pass-through activity to test that a workflow with a {@link ModuleActivity} marker interface in it performs
+ * correctly.
  *
- * @author Phillip Verheyden (phillipuniverse)
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 public class TestExampleModuleActivity extends BaseActivity<ProcessContext> implements ModuleActivity {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public ProcessContext execute(ProcessContext context) throws Exception {
-        return context;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.workflow.ProcessContext)
+   */
+  @Override public ProcessContext execute(ProcessContext context) throws Exception {
+    return context;
+  }
 
-    @Override
-    public String getModuleName() {
-        return "integration";
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ModuleActivity#getModuleName()
+   */
+  @Override public String getModuleName() {
+    return "integration";
+  }
 
 }

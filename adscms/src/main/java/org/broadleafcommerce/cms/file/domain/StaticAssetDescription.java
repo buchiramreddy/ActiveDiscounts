@@ -16,30 +16,96 @@
 
 package org.broadleafcommerce.cms.file.domain;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.openadmin.audit.AdminAuditable;
 
-import java.io.Serializable;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface StaticAssetDescription extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  StaticAssetDescription cloneEntity();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminAuditable getAuditable();
 
-    public void setDescription(String description);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getLongDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDescription();
 
-    public void setLongDescription(String longDescription);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public StaticAssetDescription cloneEntity();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public AdminAuditable getAuditable();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAuditable(AdminAuditable auditable);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getLongDescription();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(AdminAuditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  void setDescription(String description);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  longDescription  DOCUMENT ME!
+   */
+  void setLongDescription(String longDescription);
+} // end interface StaticAssetDescription

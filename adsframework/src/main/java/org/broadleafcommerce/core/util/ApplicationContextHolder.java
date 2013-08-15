@@ -17,20 +17,40 @@
 package org.broadleafcommerce.core.util;
 
 import org.springframework.beans.BeansException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ApplicationContextHolder implements ApplicationContextAware {
-    
-    private static ApplicationContext context;
-    
-    public static ApplicationContext getApplicationContext() {
-        return context;
-    }
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
-        context = applicationContext;
-    }
+  private static ApplicationContext context;
 
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static ApplicationContext getApplicationContext() {
+    return context;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+   */
+  @Override public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    context = applicationContext;
+  }
+
+} // end class ApplicationContextHolder

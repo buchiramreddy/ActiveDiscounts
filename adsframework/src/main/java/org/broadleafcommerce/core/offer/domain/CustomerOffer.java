@@ -16,22 +16,70 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerOffer extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer getCustomer();
 
-    public void setId(Long id) ;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Customer getCustomer() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setCustomer(Customer customer) ;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Offer getOffer() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
 
-    public void setOffer(Offer offer) ;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  void setCustomer(Customer customer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  void setOffer(Offer offer);
+
+} // end interface CustomerOffer

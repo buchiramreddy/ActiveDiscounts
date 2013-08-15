@@ -16,30 +16,95 @@
 
 package org.broadleafcommerce.core.store.domain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ZipCode {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getId();
 
-    public String getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(String id);
 
-    public void setId(String id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getZipcode();
 
-    public Integer getZipcode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  zipcode  DOCUMENT ME!
+   */
+  void setZipcode(Integer zipcode);
 
-    public void setZipcode(Integer zipcode);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getZipState();
 
-    public String getZipState();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  zipState  DOCUMENT ME!
+   */
+  void setZipState(String zipState);
 
-    public void setZipState(String zipState);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getZipCity();
 
-    public String getZipCity();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  zipCity  DOCUMENT ME!
+   */
+  void setZipCity(String zipCity);
 
-    public void setZipCity(String zipCity);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  double getZipLongitude();
 
-    public double getZipLongitude();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  zipLongitude  DOCUMENT ME!
+   */
+  void setZipLongitude(double zipLongitude);
 
-    public void setZipLongitude(double zipLongitude);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  double getZipLatitude();
 
-    public double getZipLatitude();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  zipLatitude  DOCUMENT ME!
+   */
+  void setZipLatitude(double zipLatitude);
 
-    public void setZipLatitude(double zipLatitude);
-
-}
+} // end interface ZipCode

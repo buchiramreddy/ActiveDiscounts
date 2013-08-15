@@ -18,28 +18,50 @@ package org.broadleafcommerce.core.payment.service.workflow;
 
 import org.broadleafcommerce.core.workflow.ProcessContext;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class WorkflowPaymentContext implements ProcessContext {
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    public final static long serialVersionUID = 1L;
+  private boolean                    stopEntireProcess = false;
+  private CombinedPaymentContextSeed seedData;
 
-    private boolean stopEntireProcess = false;
-    private CombinedPaymentContextSeed seedData;
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#setSeedData(java.lang.Object)
+   */
+  @Override public void setSeedData(Object seedObject) {
+    this.seedData = (CombinedPaymentContextSeed) seedObject;
+  }
 
-    public void setSeedData(Object seedObject) {
-        this.seedData = (CombinedPaymentContextSeed) seedObject;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#stopProcess()
+   */
+  @Override public boolean stopProcess() {
+    this.stopEntireProcess = true;
 
-    public boolean stopProcess() {
-        this.stopEntireProcess = true;
-        return stopEntireProcess;
-    }
+    return stopEntireProcess;
+  }
 
-    public boolean isStopped() {
-        return stopEntireProcess;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#isStopped()
+   */
+  @Override public boolean isStopped() {
+    return stopEntireProcess;
+  }
 
-    public CombinedPaymentContextSeed getSeedData() {
-        return seedData;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public CombinedPaymentContextSeed getSeedData() {
+    return seedData;
+  }
 
-}
+} // end class WorkflowPaymentContext

@@ -16,80 +16,124 @@
 
 package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
+import java.io.IOException;
+import java.io.Serializable;
+
+import java.util.ArrayList;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
  *
- * An example of the Serialized JSON:
- * (This is an example of a complex Item Rule)
+ * @author   Elbert Bautista (elbertbautista)
  *
- * {'data': [
- *      {'id':'100',
- *      'quantity':'1',
- *      'groupOperator':'AND',
- *      'groups':[
- *          {'id':null,
- *          'quantity':null,
- *          'groupOperator':null,
- *          'groups':null,
- *          'name':'name',
- *          'operator':'IEQUALS',
- *          'value':'merchandise'}]},
- *      {'id':'200',
- *      'quantity':'2',
- *      'groupOperator':'AND',
- *      'groups':[
- *          {'id':null,
- *          'quantity':null,
- *          'groupOperator':null,
- *          'groups':null,
- *          'name':'retailPrice',
- *          'operator':'GREATER_THAN',
- *          'value':'20.00'}]}
- * ]}
+ *           <p>An example of the Serialized JSON: (This is an example of a complex Item Rule)</p>
  *
+ *           <p>{'data': [ {'id':'100', 'quantity':'1', 'groupOperator':'AND', 'groups':[ {'id':null, 'quantity':null,
+ *           'groupOperator':null, 'groups':null, 'name':'name', 'operator':'IEQUALS', 'value':'merchandise' }]},
+ *           {'id':'200', 'quantity':'2', 'groupOperator':'AND', 'groups':[ {'id':null, 'quantity':null,
+ *           'groupOperator':null, 'groups':null, 'name':'retailPrice', 'operator':'GREATER_THAN', 'value':'20.00' }]}
+ *           ]}</p>
+ * @version  $Revision$, $Date$
  */
 public class DataWrapper implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected ArrayList<DataDTO> data = new ArrayList<DataDTO>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String error;
-    protected String rawMvel;
+  /** DOCUMENT ME! */
+  protected ArrayList<DataDTO> data = new ArrayList<DataDTO>();
 
-    public ArrayList<DataDTO> getData() {
-        return data;
-    }
+  /** DOCUMENT ME! */
+  protected String error;
 
-    public void setData(ArrayList<DataDTO> data) {
-        this.data = data;
-    }
+  /** DOCUMENT ME! */
+  protected String rawMvel;
 
-    public String getError() {
-        return error;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setError(String error) {
-        this.error = error;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ArrayList<DataDTO> getData() {
+    return data;
+  }
 
-    public String getRawMvel() {
-        return rawMvel;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setRawMvel(String rawMvel) {
-        this.rawMvel = rawMvel;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getError() {
+    return error;
+  }
 
-    public String serialize() throws JsonGenerationException, JsonMappingException, IOException {
-        return new ObjectMapper().writeValueAsString(this);
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRawMvel() {
+    return rawMvel;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  JsonGenerationException  DOCUMENT ME!
+   * @throws  JsonMappingException     DOCUMENT ME!
+   * @throws  IOException              DOCUMENT ME!
+   */
+  public String serialize() throws JsonGenerationException, JsonMappingException, IOException {
+    return new ObjectMapper().writeValueAsString(this);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  data  DOCUMENT ME!
+   */
+  public void setData(ArrayList<DataDTO> data) {
+    this.data = data;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  error  DOCUMENT ME!
+   */
+  public void setError(String error) {
+    this.error = error;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  rawMvel  DOCUMENT ME!
+   */
+  public void setRawMvel(String rawMvel) {
+    this.rawMvel = rawMvel;
+  }
+} // end class DataWrapper

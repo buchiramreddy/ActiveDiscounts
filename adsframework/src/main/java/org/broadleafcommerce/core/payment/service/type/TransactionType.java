@@ -16,86 +16,141 @@
 
 package org.broadleafcommerce.core.payment.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of payment transaction types.
- * 
- * @author jfischer
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class TransactionType implements Serializable, BroadleafEnumerationType {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  private static final Map<String, TransactionType> TYPES = new LinkedHashMap<String, TransactionType>();
 
-    private static final Map<String, TransactionType> TYPES = new LinkedHashMap<String, TransactionType>();
+  /** DOCUMENT ME! */
+  public static final TransactionType AUTHORIZE         = new TransactionType("AUTHORIZE", "Authorize");
 
-    public static final TransactionType AUTHORIZE = new TransactionType("AUTHORIZE", "Authorize");
-    public static final TransactionType DEBIT = new TransactionType("DEBIT", "Debit");
-    public static final TransactionType AUTHORIZEANDDEBIT = new TransactionType("AUTHORIZEANDDEBIT", "Authorize and Debit");
-    public static final TransactionType CREDIT = new TransactionType("CREDIT", "Credit");
-    public static final TransactionType VOIDPAYMENT = new TransactionType("VOIDPAYMENT", "Void Payment");
-    public static final TransactionType BALANCE = new TransactionType("BALANCE", "Balance");
-    public static final TransactionType REVERSEAUTHORIZE = new TransactionType("REVERSEAUTHORIZE", "Reverse Authorize");
-    public static final TransactionType PARTIALPAYMENT = new TransactionType("PARTIALPAYMENT", "Partial Payment");
+  /** DOCUMENT ME! */
+  public static final TransactionType DEBIT             = new TransactionType("DEBIT", "Debit");
 
-    public static TransactionType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final TransactionType AUTHORIZEANDDEBIT = new TransactionType("AUTHORIZEANDDEBIT",
+      "Authorize and Debit");
+
+  /** DOCUMENT ME! */
+  public static final TransactionType CREDIT           = new TransactionType("CREDIT", "Credit");
+
+  /** DOCUMENT ME! */
+  public static final TransactionType VOIDPAYMENT      = new TransactionType("VOIDPAYMENT", "Void Payment");
+
+  /** DOCUMENT ME! */
+  public static final TransactionType BALANCE          = new TransactionType("BALANCE", "Balance");
+
+  /** DOCUMENT ME! */
+  public static final TransactionType REVERSEAUTHORIZE = new TransactionType("REVERSEAUTHORIZE", "Reverse Authorize");
+
+  /** DOCUMENT ME! */
+  public static final TransactionType PARTIALPAYMENT = new TransactionType("PARTIALPAYMENT", "Partial Payment");
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static TransactionType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  private String type;
+  private String friendlyType;
+
+  /**
+   * Creates a new TransactionType object.
+   */
+  public TransactionType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new TransactionType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public TransactionType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public TransactionType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public TransactionType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    TransactionType other = (TransactionType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
-
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        TransactionType other = (TransactionType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-}
+    return true;
+  } // end method equals
+} // end class TransactionType

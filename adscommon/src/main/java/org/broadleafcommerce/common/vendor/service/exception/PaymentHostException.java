@@ -17,24 +17,52 @@
 package org.broadleafcommerce.common.vendor.service.exception;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentHostException extends PaymentException {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public PaymentHostException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public PaymentHostException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new PaymentHostException object.
+   */
+  public PaymentHostException() {
+    super();
+  }
 
-    public PaymentHostException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new PaymentHostException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public PaymentHostException(String message) {
+    super(message);
+  }
 
-    public PaymentHostException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new PaymentHostException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public PaymentHostException(Throwable cause) {
+    super(cause);
+  }
 
-}
+  /**
+   * Creates a new PaymentHostException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public PaymentHostException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+} // end class PaymentHostException

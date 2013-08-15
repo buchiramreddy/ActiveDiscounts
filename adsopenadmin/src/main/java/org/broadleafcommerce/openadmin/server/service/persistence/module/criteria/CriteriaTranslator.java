@@ -16,19 +16,50 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
 
-import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
-
-import javax.persistence.TypedQuery;
 import java.io.Serializable;
+
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
+import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface CriteriaTranslator {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    TypedQuery<Serializable> translateQuery(DynamicEntityDao dynamicEntityDao, String ceilingEntity, List<FilterMapping> filterMappings, Integer firstResult, Integer maxResults);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   dynamicEntityDao  DOCUMENT ME!
+   * @param   ceilingEntity     DOCUMENT ME!
+   * @param   filterMappings    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  TypedQuery<Serializable> translateCountQuery(DynamicEntityDao dynamicEntityDao, String ceilingEntity,
+    List<FilterMapping> filterMappings);
 
-    TypedQuery<Serializable> translateCountQuery(DynamicEntityDao dynamicEntityDao, String ceilingEntity, List<FilterMapping> filterMappings);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   dynamicEntityDao  DOCUMENT ME!
+   * @param   ceilingEntity     DOCUMENT ME!
+   * @param   filterMappings    DOCUMENT ME!
+   * @param   firstResult       DOCUMENT ME!
+   * @param   maxResults        DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  TypedQuery<Serializable> translateQuery(DynamicEntityDao dynamicEntityDao, String ceilingEntity,
+    List<FilterMapping> filterMappings, Integer firstResult, Integer maxResults);
+
+} // end interface CriteriaTranslator

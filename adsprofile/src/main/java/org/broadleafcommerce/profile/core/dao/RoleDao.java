@@ -16,17 +16,48 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.profile.core.domain.CustomerRole;
 import org.broadleafcommerce.profile.core.domain.Role;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface RoleDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<CustomerRole> readCustomerRolesByCustomerId(Long customerId);
-    
-    public Role readRoleByName(String name);
-    
-    public void addRoleToCustomer(CustomerRole customerRole);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerRole  DOCUMENT ME!
+   */
+  void addRoleToCustomer(CustomerRole customerRole);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerRole> readCustomerRolesByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Role readRoleByName(String name);
+
+} // end interface RoleDao

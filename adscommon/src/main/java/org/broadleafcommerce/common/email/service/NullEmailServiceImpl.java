@@ -16,32 +16,49 @@
 
 package org.broadleafcommerce.common.email.service;
 
+import java.util.HashMap;
+
 import org.broadleafcommerce.common.email.domain.EmailTarget;
 import org.broadleafcommerce.common.email.service.info.EmailInfo;
 
-import java.util.HashMap;
 
 /**
- * This null implementation class can be used during development to work around
- * the need to have a working SMTP service to route emails through.
- * 
- * @author aazzolini
+ * This null implementation class can be used during development to work around the need to have a working SMTP service
+ * to route emails through.
+ *
+ * @author   aazzolini
+ * @version  $Revision$, $Date$
  */
 public class NullEmailServiceImpl implements EmailService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean sendTemplateEmail(String emailAddress, EmailInfo emailInfo, HashMap<String, Object> props) {
-        return true;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.email.service.EmailService#sendBasicEmail(org.broadleafcommerce.common.email.service.info.EmailInfo,
+   *       org.broadleafcommerce.common.email.domain.EmailTarget, java.util.HashMap)
+   */
+  @Override public boolean sendBasicEmail(EmailInfo emailInfo, EmailTarget emailTarget, HashMap<String, Object> props) {
+    return true;
+  }
 
-    @Override
-    public boolean sendTemplateEmail(EmailTarget emailTarget, EmailInfo emailInfo, HashMap<String, Object> props) {
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean sendBasicEmail(EmailInfo emailInfo, EmailTarget emailTarget, HashMap<String, Object> props) {
-        return true;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.email.service.EmailService#sendTemplateEmail(java.lang.String,org.broadleafcommerce.common.email.service.info.EmailInfo,
+   *       java.util.HashMap)
+   */
+  @Override public boolean sendTemplateEmail(String emailAddress, EmailInfo emailInfo, HashMap<String, Object> props) {
+    return true;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.email.service.EmailService#sendTemplateEmail(org.broadleafcommerce.common.email.domain.EmailTarget,
+   *       org.broadleafcommerce.common.email.service.info.EmailInfo, java.util.HashMap)
+   */
+  @Override public boolean sendTemplateEmail(EmailTarget emailTarget, EmailInfo emailInfo,
+    HashMap<String, Object> props) {
+    return true;
+  }
+
+} // end class NullEmailServiceImpl

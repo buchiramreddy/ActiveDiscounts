@@ -19,16 +19,31 @@ package org.broadleafcommerce.security.service.dataprovider;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionImpl;
 import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
+
 import org.testng.annotations.DataProvider;
 
-public class AdminPermissionDataProvider {
-    @DataProvider(name = "setupAdminPermission")
-    public static Object[][] createAdminUser() {
-        AdminPermission adminPermission = new AdminPermissionImpl();
-        adminPermission.setName("TestAdminPermissionName");
-        adminPermission.setDescription("Test Admin Permission Description");
-        adminPermission.setType(PermissionType.ALL);
 
-        return new Object[][] { new Object[] { adminPermission } };
-    }
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class AdminPermissionDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupAdminPermission")
+  public static Object[][] createAdminUser() {
+    AdminPermission adminPermission = new AdminPermissionImpl();
+    adminPermission.setName("TestAdminPermissionName");
+    adminPermission.setDescription("Test Admin Permission Description");
+    adminPermission.setType(PermissionType.ALL);
+
+    return new Object[][] { new Object[] { adminPermission } };
+  }
 }

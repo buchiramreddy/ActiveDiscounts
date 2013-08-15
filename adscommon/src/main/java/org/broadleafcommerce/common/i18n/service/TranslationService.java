@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008-2013 the original author or authors.
  *
@@ -17,91 +16,116 @@
 
 package org.broadleafcommerce.common.i18n.service;
 
-import org.broadleafcommerce.common.i18n.domain.TranslatedEntity;
-import org.broadleafcommerce.common.i18n.domain.Translation;
-
 import java.util.List;
 import java.util.Locale;
 
+import org.broadleafcommerce.common.i18n.domain.TranslatedEntity;
+import org.broadleafcommerce.common.i18n.domain.Translation;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface TranslationService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Persists the given translation
-     * 
-     * @param translation
-     * @return the persisted translation
-     */
-    public Translation save(Translation translation);
+  /**
+   * Deletes the given translations.
+   *
+   * @param  translationId  DOCUMENT ME!
+   */
+  void deleteTranslationById(Long translationId);
 
-    /**
-     * Creates a new translation object for the requested parameters, saves it, and returns the saved instance.
-     * 
-     * <b>Note: This method will overwrite a previously existing translation if it matches on entityType, entityId, 
-     * fieldName, and localeCode.</b>
-     * 
-     * @param entityType
-     * @param entityId
-     * @param fieldName
-     * @param localeCode
-     * @param translatedValue
-     * @return the persisted translation
-     */
-    public Translation save(String entityType, String entityId, String fieldName, String localeCode,
-                            String translatedValue);
-    
-    /**
-     * Updates the given translation id with the new locale code and translated value
-     * 
-     * @param translationId
-     * @param localeCode
-     * @param translatedValue
-     * @return the persisted translation
-     */
-    public Translation update(Long translationId, String localeCode, String translatedValue);
-    
-    /**
-     * Deletes the given translations
-     * 
-     * @param translationId
-     */
-    public void deleteTranslationById(Long translationId);
-    
-    /**
-     * Finds all current translations for the specified field
-     * 
-     * @param ceilingEntityClassname
-     * @param entityId
-     * @param property
-     * @return the list of translations
-     */
-    public List<Translation> getTranslations(String ceilingEntityClassname, String entityId, String property);
-    
-    /**
-     * Attempts to find the translation object for the given parameters
-     * 
-     * @param entity
-     * @param entityId
-     * @param fieldName
-     * @param localeCode
-     * @return the persisted translation
-     */
-    public Translation getTranslation(TranslatedEntity entity, String entityId, String fieldName, String localeCode);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the translated value of the property for the given entity. For example, if entity is an instance of 
-     * Product and property is equal to name, this method might return "Hoppin' Hot Sauce" if we are in an English 
-     * locale and "Salsa de la Muerte Saltante" if we are in a Spanish locale.
-     * 
-     * If a country is set on the locale (locale code en_GB for example), we will first look for a translation that matches
-     * en_GB, and then look for a translation for en. If a translated value for the given locale is not available, 
-     * it will return null.
-     * 
-     * @param entity
-     * @param property
-     * @param locale
-     * @return the translated value of the property for the given entity
-     */
-    public String getTranslatedValue(Object entity, String property, Locale locale);
+  /**
+   * Returns the translated value of the property for the given entity. For example, if entity is an instance of Product
+   * and property is equal to name, this method might return "Hoppin' Hot Sauce" if we are in an English locale and
+   * "Salsa de la Muerte Saltante" if we are in a Spanish locale.
+   *
+   * <p>If a country is set on the locale (locale code en_GB for example), we will first look for a translation that
+   * matches en_GB, and then look for a translation for en. If a translated value for the given locale is not available,
+   * it will return null.</p>
+   *
+   * @param   entity    DOCUMENT ME!
+   * @param   property  DOCUMENT ME!
+   * @param   locale    DOCUMENT ME!
+   *
+   * @return  the translated value of the property for the given entity
+   */
+  String getTranslatedValue(Object entity, String property, Locale locale);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Attempts to find the translation object for the given parameters.
+   *
+   * @param   entity      DOCUMENT ME!
+   * @param   entityId    DOCUMENT ME!
+   * @param   fieldName   DOCUMENT ME!
+   * @param   localeCode  DOCUMENT ME!
+   *
+   * @return  the persisted translation
+   */
+  Translation getTranslation(TranslatedEntity entity, String entityId, String fieldName, String localeCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Finds all current translations for the specified field.
+   *
+   * @param   ceilingEntityClassname  DOCUMENT ME!
+   * @param   entityId                DOCUMENT ME!
+   * @param   property                DOCUMENT ME!
+   *
+   * @return  the list of translations
+   */
+  List<Translation> getTranslations(String ceilingEntityClassname, String entityId, String property);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Persists the given translation.
+   *
+   * @param   translation  DOCUMENT ME!
+   *
+   * @return  the persisted translation
+   */
+  Translation save(Translation translation);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new translation object for the requested parameters, saves it, and returns the saved instance. <b>Note:
+   * This method will overwrite a previously existing translation if it matches on entityType, entityId, fieldName, and
+   * localeCode.</b>
+   *
+   * @param   entityType       DOCUMENT ME!
+   * @param   entityId         DOCUMENT ME!
+   * @param   fieldName        DOCUMENT ME!
+   * @param   localeCode       DOCUMENT ME!
+   * @param   translatedValue  DOCUMENT ME!
+   *
+   * @return  the persisted translation
+   */
+  Translation save(String entityType, String entityId, String fieldName, String localeCode,
+    String translatedValue);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Updates the given translation id with the new locale code and translated value.
+   *
+   * @param   translationId    DOCUMENT ME!
+   * @param   localeCode       DOCUMENT ME!
+   * @param   translatedValue  DOCUMENT ME!
+   *
+   * @return  the persisted translation
+   */
+  Translation update(Long translationId, String localeCode, String translatedValue);
 
 
-}
+} // end interface TranslationService

@@ -16,117 +16,185 @@
 
 package org.broadleafcommerce.common.extensibility.context;
 
-import org.broadleafcommerce.common.extensibility.context.merge.ImportProcessor;
-import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.FatalBeanException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.AbstractXmlApplicationContext;
-import org.springframework.core.io.Resource;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.extensibility.context.merge.ImportProcessor;
+import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.FatalBeanException;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractXmlApplicationContext;
+
+import org.springframework.core.io.Resource;
+
+
 /**
- * Standalone XML application context, taking the locations of one or more
- * source applicationContext xml files and one or more patch xml files.
- * 
- * <p>One or more source files merge together in pure override mode. Source
- * files are merged in the order specified. If a bean id is repeated in a subsequent
- * source file, the subsequent bean definition will always win. This is the same behavior
- * as Spring's default mechanism for merging 1 to N applicationContext files.</p>
- * 
- * <p>Each patch file is merged with the combined source, one patch file at a time. This
- * merge is performed in true merge mode. Therefore, if a bean id is delivered in a patch
- * file with the same id as a bean in the source, the patch will merge with the source. This
- * could result in an override of the class definition for the bean, or additional or changed
- * property elements within the bean definition.</p>
- * 
- * @author jfischer
+ * Standalone XML application context, taking the locations of one or more source applicationContext xml files and one
+ * or more patch xml files.
  *
+ * <p>One or more source files merge together in pure override mode. Source files are merged in the order specified. If
+ * a bean id is repeated in a subsequent source file, the subsequent bean definition will always win. This is the same
+ * behavior as Spring's default mechanism for merging 1 to N applicationContext files.</p>
+ *
+ * <p>Each patch file is merged with the combined source, one patch file at a time. This merge is performed in true
+ * merge mode. Therefore, if a bean id is delivered in a patch file with the same id as a bean in the source, the patch
+ * will merge with the source. This could result in an override of the class definition for the bean, or additional or
+ * changed property elements within the bean definition.</p>
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class MergeFileSystemAndClassPathXMLApplicationContext extends AbstractXmlApplicationContext {
+  //~ Enums ------------------------------------------------------------------------------------------------------------
 
-    protected Resource[] configResources;
+  /**
+   * DOCUMENT ME!
+   *
+   * @author   $author$
+   * @version  $Revision$, $Date$
+   */
+  public enum ResourceType {
+    //~ Enum constants -------------------------------------------------------------------------------------------------
 
-    protected Resource[] getConfigResources() {
-        return this.configResources;
-    }
+    FILESYSTEM, CLASSPATH
+  }
 
-    public MergeFileSystemAndClassPathXMLApplicationContext(String[] classPathLocations, String[] fileSystemLocations) throws BeansException {
-        this(classPathLocations, fileSystemLocations, null);
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public MergeFileSystemAndClassPathXMLApplicationContext(LinkedHashMap<String, ResourceType> locations, ApplicationContext parent) throws BeansException {
-        super(parent);
+  /** DOCUMENT ME! */
+  protected Resource[] configResources;
 
-        ResourceInputStream[] resources = new ResourceInputStream[locations.size()];
-        int j = 0;
-        for (Map.Entry<String, ResourceType> entry : locations.entrySet()) {
-            switch (entry.getValue()) {
-                case CLASSPATH:
-                    resources[j] = new ResourceInputStream(MergeClassPathXMLApplicationContext.class.getClassLoader().getResourceAsStream(entry.getKey()), entry.getKey());
-                    break;
-                case FILESYSTEM:
-                    try {
-                        File temp = new File(entry.getKey());
-                        resources[j] = new ResourceInputStream(new BufferedInputStream(new FileInputStream(temp)), entry.getKey());
-                    } catch (FileNotFoundException e) {
-                        throw new FatalBeanException("Unable to merge context files", e);
-                    }
-                    break;
-            }
-            j++;
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new MergeFileSystemAndClassPathXMLApplicationContext object.
+   *
+   * @param   classPathLocations   DOCUMENT ME!
+   * @param   fileSystemLocations  DOCUMENT ME!
+   *
+   * @throws  BeansException  DOCUMENT ME!
+   */
+  public MergeFileSystemAndClassPathXMLApplicationContext(String[] classPathLocations, String[] fileSystemLocations)
+    throws BeansException {
+    this(classPathLocations, fileSystemLocations, null);
+  }
+
+  /**
+   * Creates a new MergeFileSystemAndClassPathXMLApplicationContext object.
+   *
+   * @param   locations  DOCUMENT ME!
+   * @param   parent     DOCUMENT ME!
+   *
+   * @throws  BeansException      DOCUMENT ME!
+   * @throws  FatalBeanException  DOCUMENT ME!
+   */
+  public MergeFileSystemAndClassPathXMLApplicationContext(LinkedHashMap<String, ResourceType> locations,
+    ApplicationContext parent) throws BeansException {
+    super(parent);
+
+    ResourceInputStream[] resources = new ResourceInputStream[locations.size()];
+    int                   j         = 0;
+
+    for (Map.Entry<String, ResourceType> entry : locations.entrySet()) {
+      switch (entry.getValue()) {
+        case CLASSPATH: {
+          resources[j] = new ResourceInputStream(MergeClassPathXMLApplicationContext.class.getClassLoader()
+              .getResourceAsStream(entry.getKey()), entry.getKey());
+
+          break;
         }
 
-        ImportProcessor importProcessor = new ImportProcessor(this);
-        try {
-            resources = importProcessor.extract(resources);
-        } catch (MergeException e) {
-            throw new FatalBeanException("Unable to merge source and patch locations", e);
-        }
-
-        this.configResources = new MergeApplicationContextXmlConfigResource().getConfigResources(resources, null);
-        refresh();
-    }
-
-    public MergeFileSystemAndClassPathXMLApplicationContext(String[] classPathLocations, String[] fileSystemLocations, ApplicationContext parent) throws BeansException {
-        super(parent);
-
-        ResourceInputStream[] classPathSources;
-        ResourceInputStream[] fileSystemSources;
-        try {
-            classPathSources = new ResourceInputStream[classPathLocations.length];
-            for (int j=0;j<classPathLocations.length;j++){
-                classPathSources[j] = new ResourceInputStream(MergeClassPathXMLApplicationContext.class.getClassLoader().getResourceAsStream(classPathLocations[j]), classPathLocations[j]);
-            }
-
-            fileSystemSources = new ResourceInputStream[fileSystemLocations.length];
-            for (int j=0;j<fileSystemSources.length;j++){
-                File temp = new File(fileSystemLocations[j]);
-                fileSystemSources[j] = new ResourceInputStream(new BufferedInputStream(new FileInputStream(temp)), fileSystemLocations[j]);
-            }
-        } catch (FileNotFoundException e) {
+        case FILESYSTEM: {
+          try {
+            File temp = new File(entry.getKey());
+            resources[j] = new ResourceInputStream(new BufferedInputStream(new FileInputStream(temp)), entry.getKey());
+          } catch (FileNotFoundException e) {
             throw new FatalBeanException("Unable to merge context files", e);
-        }
+          }
 
-        ImportProcessor importProcessor = new ImportProcessor(this);
-        try {
-            classPathSources = importProcessor.extract(classPathSources);
-            fileSystemSources = importProcessor.extract(fileSystemSources);
-        } catch (MergeException e) {
-            throw new FatalBeanException("Unable to merge source and patch locations", e);
+          break;
         }
+      }
 
-        this.configResources = new MergeApplicationContextXmlConfigResource().getConfigResources(classPathSources, fileSystemSources);
-        refresh();
+      j++;
     }
 
-    public enum ResourceType {
-        FILESYSTEM,CLASSPATH
+    ImportProcessor importProcessor = new ImportProcessor(this);
+
+    try {
+      resources = importProcessor.extract(resources);
+    } catch (MergeException e) {
+      throw new FatalBeanException("Unable to merge source and patch locations", e);
     }
-}
+
+    this.configResources = new MergeApplicationContextXmlConfigResource().getConfigResources(resources, null);
+    refresh();
+  } // end ctor MergeFileSystemAndClassPathXMLApplicationContext
+
+  /**
+   * Creates a new MergeFileSystemAndClassPathXMLApplicationContext object.
+   *
+   * @param   classPathLocations   DOCUMENT ME!
+   * @param   fileSystemLocations  DOCUMENT ME!
+   * @param   parent               DOCUMENT ME!
+   *
+   * @throws  BeansException      DOCUMENT ME!
+   * @throws  FatalBeanException  DOCUMENT ME!
+   */
+  public MergeFileSystemAndClassPathXMLApplicationContext(String[] classPathLocations, String[] fileSystemLocations,
+    ApplicationContext parent) throws BeansException {
+    super(parent);
+
+    ResourceInputStream[] classPathSources;
+    ResourceInputStream[] fileSystemSources;
+
+    try {
+      classPathSources = new ResourceInputStream[classPathLocations.length];
+
+      for (int j = 0; j < classPathLocations.length; j++) {
+        classPathSources[j] = new ResourceInputStream(MergeClassPathXMLApplicationContext.class.getClassLoader()
+            .getResourceAsStream(classPathLocations[j]), classPathLocations[j]);
+      }
+
+      fileSystemSources = new ResourceInputStream[fileSystemLocations.length];
+
+      for (int j = 0; j < fileSystemSources.length; j++) {
+        File temp = new File(fileSystemLocations[j]);
+        fileSystemSources[j] = new ResourceInputStream(new BufferedInputStream(new FileInputStream(temp)),
+            fileSystemLocations[j]);
+      }
+    } catch (FileNotFoundException e) {
+      throw new FatalBeanException("Unable to merge context files", e);
+    }
+
+    ImportProcessor importProcessor = new ImportProcessor(this);
+
+    try {
+      classPathSources  = importProcessor.extract(classPathSources);
+      fileSystemSources = importProcessor.extract(fileSystemSources);
+    } catch (MergeException e) {
+      throw new FatalBeanException("Unable to merge source and patch locations", e);
+    }
+
+    this.configResources =
+      new MergeApplicationContextXmlConfigResource().getConfigResources(classPathSources, fileSystemSources);
+    refresh();
+  } // end ctor MergeFileSystemAndClassPathXMLApplicationContext
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.support.AbstractXmlApplicationContext#getConfigResources()
+   */
+  @Override protected Resource[] getConfigResources() {
+    return this.configResources;
+  }
+} // end class MergeFileSystemAndClassPathXMLApplicationContext

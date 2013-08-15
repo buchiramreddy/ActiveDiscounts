@@ -18,25 +18,81 @@ package org.broadleafcommerce.core.order.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PersonalMessage extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getMessageTo();
 
-    public String getMessageTo();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  messageTo  DOCUMENT ME!
+   */
+  void setMessageTo(String messageTo);
 
-    public void setMessageTo(String messageTo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getMessageFrom();
 
-    public String getMessageFrom();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  messageFrom  DOCUMENT ME!
+   */
+  void setMessageFrom(String messageFrom);
 
-    public void setMessageFrom(String messageFrom);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getMessage();
 
-    public String getMessage();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  void setMessage(String message);
 
-    public void setMessage(String message);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getOccasion();
 
-    public String getOccasion();
-
-    public void setOccasion(String occasion);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  occasion  DOCUMENT ME!
+   */
+  void setOccasion(String occasion);
+} // end interface PersonalMessage

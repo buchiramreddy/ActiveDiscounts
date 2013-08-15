@@ -17,24 +17,87 @@
 package org.broadleafcommerce.common.enumeration.domain;
 
 import java.io.Serializable;
+
 import java.util.List;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface DataDrivenEnumeration extends Serializable {
-    
-    public Long getId();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public String getKey();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setKey(String key);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getKey();
 
-    public Boolean getModifiable();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setModifiable(Boolean modifiable);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getModifiable();
 
-    public List<DataDrivenEnumerationValue> getOrderItems();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOrderItems(List<DataDrivenEnumerationValue> orderItems);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<DataDrivenEnumerationValue> getOrderItems();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key  DOCUMENT ME!
+   */
+  void setKey(String key);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  modifiable  DOCUMENT ME!
+   */
+  void setModifiable(Boolean modifiable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItems  DOCUMENT ME!
+   */
+  void setOrderItems(List<DataDrivenEnumerationValue> orderItems);
+
+} // end interface DataDrivenEnumeration

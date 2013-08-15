@@ -16,16 +16,24 @@
 
 package org.broadleafcommerce.core.offer.service.processor;
 
-import org.broadleafcommerce.core.offer.domain.Offer;
-
 import java.util.TimeZone;
 
+import org.broadleafcommerce.core.offer.domain.Offer;
+
+
 /**
- * 
- * 
+ * DOCUMENT ME!
  *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface OfferTimeZoneProcessor {
-
-    public TimeZone getTimeZone(Offer offer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   offer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  TimeZone getTimeZone(Offer offer);
 }

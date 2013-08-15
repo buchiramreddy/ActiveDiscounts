@@ -19,47 +19,69 @@ package org.broadleafcommerce.core.offer.service.discount.domain;
 import java.math.RoundingMode;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public abstract class AbstractPromotionRounding implements PromotionRounding {
+  /** DOCUMENT ME! */
+  protected boolean      roundOfferValues = true;
 
-    protected boolean roundOfferValues = true;
-    protected int roundingScale = 2;
-    protected RoundingMode roundingMode = RoundingMode.HALF_EVEN;
+  /** DOCUMENT ME! */
+  protected int          roundingScale = 2;
 
-    /**
-     * It is sometimes problematic to offer percentage-off offers with regards to rounding. For example,
-     * consider an item that costs 9.99 and has a 50% promotion. To be precise, the offer value is 4.995,
-     * but this may be a strange value to display to the user depending on the currency being used.
-     */
-    public boolean isRoundOfferValues() {
-        return roundOfferValues;
-    }
+  /** DOCUMENT ME! */
+  protected RoundingMode roundingMode = RoundingMode.HALF_EVEN;
 
-    /**
-     * @see #isRoundOfferValues()
-     * 
-     * @param roundingScale
-     */
-    public void setRoundingScale(int roundingScale) {
-        this.roundingScale = roundingScale;
-    }
+  /**
+   * It is sometimes problematic to offer percentage-off offers with regards to rounding. For example, consider an item
+   * that costs 9.99 and has a 50% promotion. To be precise, the offer value is 4.995, but this may be a strange value
+   * to display to the user depending on the currency being used.
+   *
+   * @return  it is sometimes problematic to offer percentage-off offers with regards to rounding.
+   */
+  @Override public boolean isRoundOfferValues() {
+    return roundOfferValues;
+  }
 
-    /**
-     * @see #isRoundOfferValues()
-     * 
-     * @param roundingMode
-     */
-    public void setRoundingMode(RoundingMode roundingMode) {
-        this.roundingMode = roundingMode;
-    }
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @see    #isRoundOfferValues()
+   *
+   * @param  roundingScale  DOCUMENT ME!
+   */
+  public void setRoundingScale(int roundingScale) {
+    this.roundingScale = roundingScale;
+  }
 
-    @Override
-    public RoundingMode getRoundingMode() {
-        return roundingMode;
-    }
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @see    #isRoundOfferValues()
+   *
+   * @param  roundingMode  DOCUMENT ME!
+   */
+  public void setRoundingMode(RoundingMode roundingMode) {
+    this.roundingMode = roundingMode;
+  }
 
-    @Override
-    public int getRoundingScale() {
-        return roundingScale;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotionRounding#getRoundingMode()
+   */
+  @Override public RoundingMode getRoundingMode() {
+    return roundingMode;
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.discount.domain.PromotionRounding#getRoundingScale()
+   */
+  @Override public int getRoundingScale() {
+    return roundingScale;
+  }
+
+} // end class AbstractPromotionRounding

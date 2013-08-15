@@ -16,63 +16,82 @@
 
 package org.broadleafcommerce.core.web.processor;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
-import org.springframework.stereotype.Component;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.attr.AbstractTextChildModifierAttrProcessor;
-import org.thymeleaf.standard.expression.StandardExpressionProcessor;
-
 import java.text.NumberFormat;
 
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
+import org.springframework.stereotype.Component;
+
+import org.thymeleaf.Arguments;
+
+import org.thymeleaf.dom.Element;
+
+import org.thymeleaf.processor.attr.AbstractTextChildModifierAttrProcessor;
+
+import org.thymeleaf.standard.expression.StandardExpressionProcessor;
+
+
 /**
- * A Thymeleaf processor that renders a Money object according to the currently set locale options.
- * For example, when rendering "6.99" in a US locale, the output text would be "$6.99".
- * When viewing in France for example, you might see "6,99 (US)$". Alternatively, if currency conversion
- * was enabled, you may see "5,59 (euro-symbol)"
- * 
- * @author apazzolini
+ * A Thymeleaf processor that renders a Money object according to the currently set locale options. For example, when
+ * rendering "6.99" in a US locale, the output text would be "$6.99". When viewing in France for example, you might see
+ * "6,99 (US)$". Alternatively, if currency conversion was enabled, you may see "5,59 (euro-symbol)"
+ *
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 @Component("blPriceTextDisplayProcessor")
 public class PriceTextDisplayProcessor extends AbstractTextChildModifierAttrProcessor {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the name of this processor to be used in Thymeleaf template
-     */
-    public PriceTextDisplayProcessor() {
-        super("price");
+  /**
+   * Sets the name of this processor to be used in Thymeleaf template.
+   */
+  public PriceTextDisplayProcessor() {
+    super("price");
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.AbstractProcessor#getPrecedence()
+   */
+  @Override public int getPrecedence() {
+    return 1500;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.attr.AbstractTextChildModifierAttrProcessor#getText(org.thymeleaf.Arguments,org.thymeleaf.dom.Element,
+   *       java.lang.String)
+   */
+  @Override protected String getText(Arguments arguments, Element element, String attributeName) {
+    Money price;
+
+    try {
+      price = (Money) StandardExpressionProcessor.processExpression(arguments,
+          element.getAttributeValue(attributeName));
+    } catch (ClassCastException e) {
+      Number value = (Number) StandardExpressionProcessor.processExpression(arguments,
+          element.getAttributeValue(attributeName));
+      price = new Money(value.doubleValue());
     }
-    
-    @Override
-    public int getPrecedence() {
-        return 1500;
+
+    if (price == null) {
+      return "Not Available";
     }
 
-    @Override
-    protected String getText(Arguments arguments, Element element, String attributeName) {
-        
-        Money price;
-        
-        try {
-            price = (Money) StandardExpressionProcessor.processExpression(arguments, element.getAttributeValue(attributeName));
-        } catch (ClassCastException e) {
-            Number value = (Number) StandardExpressionProcessor.processExpression(arguments, element.getAttributeValue(attributeName));
-            price = new Money(value.doubleValue());
-        }
+    BroadleafRequestContext brc = BroadleafRequestContext.getBroadleafRequestContext();
 
-        if (price == null) {
-            return "Not Available";
-        }
+    if (brc.getJavaLocale() != null) {
+      NumberFormat format = NumberFormat.getCurrencyInstance(brc.getJavaLocale());
+      format.setCurrency(price.getCurrency());
 
-        BroadleafRequestContext brc = BroadleafRequestContext.getBroadleafRequestContext();
-        if (brc.getJavaLocale() != null) {
-            NumberFormat format = NumberFormat.getCurrencyInstance(brc.getJavaLocale());
-            format.setCurrency(price.getCurrency());
-            return format.format(price.getAmount());
-        } else {
-            // Setup your BLC_CURRENCY and BLC_LOCALE to display a diff default.
-            return "$ " + price.getAmount().toString();
-        }
+      return format.format(price.getAmount());
+    } else {
+      // Setup your BLC_CURRENCY and BLC_LOCALE to display a diff default.
+      return "$ " + price.getAmount().toString();
     }
-}
+  } // end method getText
+} // end class PriceTextDisplayProcessor

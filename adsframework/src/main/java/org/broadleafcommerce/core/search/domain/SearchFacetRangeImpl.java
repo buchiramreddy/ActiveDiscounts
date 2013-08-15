@@ -16,19 +16,8 @@
 
 package org.broadleafcommerce.core.search.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationOverride;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationOverrides;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.io.Serializable;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -41,83 +30,168 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationOverride;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationOverrides;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE)
+@AdminPresentationOverrides(
+  {
+    @AdminPresentationOverride(
+      name = "priceList.friendlyName",
+      value =
+        @AdminPresentation(
+          excluded     = false,
+          friendlyName = "PriceListImpl_Friendly_Name",
+          order        = 1,
+          group        = "SearchFacetRangeImpl_Description",
+          prominent    = true,
+          visibility   = VisibilityEnum.FORM_HIDDEN
+        )
+    )
+  }
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SEARCH_FACET_RANGE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE)
-@AdminPresentationOverrides({
-        @AdminPresentationOverride(name = "priceList.friendlyName", value = @AdminPresentation(excluded = false, friendlyName = "PriceListImpl_Friendly_Name", order=1, group = "SearchFacetRangeImpl_Description", prominent=true, visibility = VisibilityEnum.FORM_HIDDEN))
-})
-public class SearchFacetRangeImpl implements SearchFacetRange,Serializable {
+public class SearchFacetRangeImpl implements SearchFacetRange, Serializable {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @Column(name = "SEARCH_FACET_RANGE_ID")
+  @GeneratedValue(generator = "SearchFacetRangeId")
+  @GenericGenerator(
+    name       = "SearchFacetRangeId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "SearchFacetRangeImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Id
-    @GeneratedValue(generator = "SearchFacetRangeId")
-    @GenericGenerator(
-        name="SearchFacetRangeId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="SearchFacetRangeImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl")
-        }
-    )
-    @Column(name = "SEARCH_FACET_RANGE_ID")
-    protected Long id;
-    
-    @ManyToOne(targetEntity = SearchFacetImpl.class)
-    @JoinColumn(name = "SEARCH_FACET_ID")
-    @Index(name="SEARCH_FACET_INDEX", columnNames={"SEARCH_FACET_ID"})
-    @AdminPresentation(excluded = true, visibility = VisibilityEnum.HIDDEN_ALL)
-    protected SearchFacet searchFacet = new SearchFacetImpl();
-    
-    @Column(name = "MIN_VALUE", precision=19, scale=5, nullable = false) 
-    @AdminPresentation(friendlyName = "SearchFacetRangeImpl_minValue", order=2, group = "SearchFacetRangeImpl_Description", prominent=true)
-    protected BigDecimal minValue;
-    
-    @Column(name = "MAX_VALUE", precision=19, scale=5)
-    @AdminPresentation(friendlyName = "SearchFacetRangeImpl_maxValue", order=3, group = "SearchFacetRangeImpl_Description", prominent=true)
-    protected BigDecimal maxValue;
-    
-    @Override
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    excluded   = true,
+    visibility = VisibilityEnum.HIDDEN_ALL
+  )
+  @Index(
+    name        = "SEARCH_FACET_INDEX",
+    columnNames = { "SEARCH_FACET_ID" }
+  )
+  @JoinColumn(name = "SEARCH_FACET_ID")
+  @ManyToOne(targetEntity = SearchFacetImpl.class)
+  protected SearchFacet searchFacet = new SearchFacetImpl();
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    @Override
-    public SearchFacet getSearchFacet() {
-        return searchFacet;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "SearchFacetRangeImpl_minValue",
+    order        = 2,
+    group        = "SearchFacetRangeImpl_Description",
+    prominent    = true
+  )
+  @Column(
+    name      = "MIN_VALUE",
+    precision = 19,
+    scale     = 5,
+    nullable  = false
+  )
+  protected BigDecimal minValue;
 
-    @Override
-    public void setSearchFacet(SearchFacet searchFacet) {
-        this.searchFacet = searchFacet;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "SearchFacetRangeImpl_maxValue",
+    order        = 3,
+    group        = "SearchFacetRangeImpl_Description",
+    prominent    = true
+  )
+  @Column(
+    name      = "MAX_VALUE",
+    precision = 19,
+    scale     = 5
+  )
+  protected BigDecimal maxValue;
 
-    @Override
-    public BigDecimal getMinValue() {
-        return minValue;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setMinValue(BigDecimal minValue) {
-        this.minValue = minValue;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public BigDecimal getMaxValue() {
-        return maxValue;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#getSearchFacet()
+   */
+  @Override public SearchFacet getSearchFacet() {
+    return searchFacet;
+  }
 
-    @Override
-    public void setMaxValue(BigDecimal maxValue) {
-        this.maxValue = maxValue;
-    }
-    
-}
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#setSearchFacet(org.broadleafcommerce.core.search.domain.SearchFacet)
+   */
+  @Override public void setSearchFacet(SearchFacet searchFacet) {
+    this.searchFacet = searchFacet;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#getMinValue()
+   */
+  @Override public BigDecimal getMinValue() {
+    return minValue;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#setMinValue(java.math.BigDecimal)
+   */
+  @Override public void setMinValue(BigDecimal minValue) {
+    this.minValue = minValue;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#getMaxValue()
+   */
+  @Override public BigDecimal getMaxValue() {
+    return maxValue;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.SearchFacetRange#setMaxValue(java.math.BigDecimal)
+   */
+  @Override public void setMaxValue(BigDecimal maxValue) {
+    this.maxValue = maxValue;
+  }
+
+} // end class SearchFacetRangeImpl

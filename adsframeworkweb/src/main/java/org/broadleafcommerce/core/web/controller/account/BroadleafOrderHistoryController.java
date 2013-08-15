@@ -16,45 +16,108 @@
 
 package org.broadleafcommerce.core.web.controller.account;
 
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.profile.web.core.CustomerState;
-import org.springframework.ui.Model;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
+
+import org.broadleafcommerce.profile.web.core.CustomerState;
+
+import org.springframework.ui.Model;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class BroadleafOrderHistoryController extends AbstractAccountController {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    protected static String orderHistoryView = "account/orderHistory";
-    protected static String orderDetailsView = "account/partials/orderDetails";
-    protected static String orderDetailsRedirectView = "account/partials/orderDetails";
-    
-    public String viewOrderHistory(HttpServletRequest request, Model model) {
-        List<Order> orders = orderService.findOrdersForCustomer(CustomerState.getCustomer(), OrderStatus.SUBMITTED);
-        model.addAttribute("orders", orders);
-        return getOrderHistoryView();
+  /** DOCUMENT ME! */
+  protected static String orderHistoryView         = "account/orderHistory";
+
+  /** DOCUMENT ME! */
+  protected static String orderDetailsView         = "account/partials/orderDetails";
+
+  /** DOCUMENT ME! */
+  protected static String orderDetailsRedirectView = "account/partials/orderDetails";
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOrderDetailsRedirectView() {
+    return orderDetailsRedirectView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOrderDetailsView() {
+    return orderDetailsView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOrderHistoryView() {
+    return orderHistoryView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request      DOCUMENT ME!
+   * @param   model        DOCUMENT ME!
+   * @param   orderNumber  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  IllegalArgumentException  DOCUMENT ME!
+   */
+  public String viewOrderDetails(HttpServletRequest request, Model model, String orderNumber) {
+    Order order = orderService.findOrderByOrderNumber(orderNumber);
+
+    if (order == null) {
+      throw new IllegalArgumentException("The orderNumber provided is not valid");
     }
 
-    public String viewOrderDetails(HttpServletRequest request, Model model, String orderNumber) {
-        Order order = orderService.findOrderByOrderNumber(orderNumber);
-        if (order == null) {
-            throw new IllegalArgumentException("The orderNumber provided is not valid");
-        }
-        model.addAttribute("order", order);
-        return isAjaxRequest(request) ? getOrderDetailsView() : getOrderDetailsRedirectView();
-    }
+    model.addAttribute("order", order);
 
-    public String getOrderHistoryView() {
-        return orderHistoryView;
-    }
+    return isAjaxRequest(request) ? getOrderDetailsView() : getOrderDetailsRedirectView();
+  }
 
-    public String getOrderDetailsView() {
-        return orderDetailsView;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getOrderDetailsRedirectView() {
-        return orderDetailsRedirectView;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   * @param   model    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String viewOrderHistory(HttpServletRequest request, Model model) {
+    List<Order> orders = orderService.findOrdersForCustomer(CustomerState.getCustomer(), OrderStatus.SUBMITTED);
+    model.addAttribute("orders", orders);
+
+    return getOrderHistoryView();
+  }
+} // end class BroadleafOrderHistoryController

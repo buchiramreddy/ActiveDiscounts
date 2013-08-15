@@ -16,30 +16,41 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib.tei;
 
-import org.broadleafcommerce.core.web.catalog.taglib.CategoryTag;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.jsp.tagext.TagData;
 import javax.servlet.jsp.tagext.TagExtraInfo;
 import javax.servlet.jsp.tagext.VariableInfo;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.broadleafcommerce.core.web.catalog.taglib.CategoryTag;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CategoryTei extends TagExtraInfo {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public VariableInfo[] getVariableInfo(TagData tagData) {
-        List<VariableInfo> infos = new ArrayList<VariableInfo>(2);
+  /**
+   * @see  javax.servlet.jsp.tagext.TagExtraInfo#getVariableInfo(javax.servlet.jsp.tagext.TagData)
+   */
+  @Override public VariableInfo[] getVariableInfo(TagData tagData) {
+    List<VariableInfo> infos = new ArrayList<VariableInfo>(2);
 
-        String variableName = tagData.getAttributeString("var");
-        infos.add(new VariableInfo(variableName, String.class.getName(), true, VariableInfo.NESTED));
+    String variableName = tagData.getAttributeString("var");
+    infos.add(new VariableInfo(variableName, String.class.getName(), true, VariableInfo.NESTED));
 
-        variableName = tagData.getAttributeString("categoryId");
+    variableName = tagData.getAttributeString("categoryId");
 
-        if (variableName != null) {
-            variableName = CategoryTag.toVariableName(variableName);
-            infos.add(new VariableInfo(variableName, String.class.getName(), true, VariableInfo.NESTED));
-        }
-
-        return infos.toArray(new VariableInfo[infos.size()]);
+    if (variableName != null) {
+      variableName = CategoryTag.toVariableName(variableName);
+      infos.add(new VariableInfo(variableName, String.class.getName(), true, VariableInfo.NESTED));
     }
+
+    return infos.toArray(new VariableInfo[infos.size()]);
+  }
 }

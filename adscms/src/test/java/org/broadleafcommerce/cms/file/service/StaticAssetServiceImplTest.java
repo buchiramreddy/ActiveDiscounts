@@ -18,33 +18,43 @@ package org.broadleafcommerce.cms.file.service;
 
 import junit.framework.TestCase;
 
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class StaticAssetServiceImplTest extends TestCase {
-    
-    public void testConvertURLProperties() throws Exception {
-        StaticAssetServiceImpl staticAssetService = new StaticAssetServiceImpl();
-        staticAssetService.setStaticAssetUrlPrefix("cmsstatic");
-        staticAssetService.setStaticAssetEnvironmentUrlPrefix("http://images.mysite.com/myapp/cmsstatic");
-        
-        String url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg","myapp", false);
-        assertTrue(url.equals("http://images.mysite.com/myapp/cmsstatic/product.jpg"));
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        staticAssetService.setStaticAssetEnvironmentUrlPrefix("http://images.mysite.com");
-        url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg","myapp", false);
-        assertTrue(url.equals("http://images.mysite.com/product.jpg"));
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testConvertURLProperties() throws Exception {
+    StaticAssetServiceImpl staticAssetService = new StaticAssetServiceImpl();
+    staticAssetService.setStaticAssetUrlPrefix("cmsstatic");
+    staticAssetService.setStaticAssetEnvironmentUrlPrefix("http://images.mysite.com/myapp/cmsstatic");
 
-        url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg","myapp", true);
-        assertTrue(url.equals("https://images.mysite.com/product.jpg"));
+    String url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg", "myapp", false);
+    assertTrue(url.equals("http://images.mysite.com/myapp/cmsstatic/product.jpg"));
+
+    staticAssetService.setStaticAssetEnvironmentUrlPrefix("http://images.mysite.com");
+    url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg", "myapp", false);
+    assertTrue(url.equals("http://images.mysite.com/product.jpg"));
+
+    url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg", "myapp", true);
+    assertTrue(url.equals("https://images.mysite.com/product.jpg"));
 
 
-        staticAssetService.setStaticAssetEnvironmentUrlPrefix(null);
-        url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg","myapp", true);
-        assertTrue(url.equals("/myapp/cmsstatic/product.jpg"));
+    staticAssetService.setStaticAssetEnvironmentUrlPrefix(null);
+    url = staticAssetService.convertAssetPath("/cmsstatic/product.jpg", "myapp", true);
+    assertTrue(url.equals("/myapp/cmsstatic/product.jpg"));
 
-        url = staticAssetService.convertAssetPath("cmsstatic/product.jpg","myapp", true);
-        assertTrue(url.equals("/myapp/cmsstatic/product.jpg"));
+    url = staticAssetService.convertAssetPath("cmsstatic/product.jpg", "myapp", true);
+    assertTrue(url.equals("/myapp/cmsstatic/product.jpg"));
 
-    }
-}
+  }
+} // end class StaticAssetServiceImplTest

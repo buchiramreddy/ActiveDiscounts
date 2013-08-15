@@ -16,20 +16,66 @@
 
 package org.broadleafcommerce.core.util.service;
 
-import org.broadleafcommerce.core.util.domain.CodeType;
-
 import java.util.List;
 
-@Deprecated
-public interface CodeTypeService {
+import org.broadleafcommerce.core.util.domain.CodeType;
 
-    public List<CodeType> findAllCodeTypes();
 
-    public CodeType save(CodeType codeType);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Deprecated public interface CodeTypeService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<CodeType> lookupCodeTypeByKey(String key);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  codeTypeId  DOCUMENT ME!
+   */
+  void deleteCodeType(CodeType codeTypeId);
 
-    public void deleteCodeType(CodeType codeTypeId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CodeType lookupCodeTypeById(Long codeTypeId);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CodeType> findAllCodeTypes();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   codeTypeId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CodeType lookupCodeTypeById(Long codeTypeId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   key  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CodeType> lookupCodeTypeByKey(String key);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   codeType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CodeType save(CodeType codeType);
+} // end interface CodeTypeService

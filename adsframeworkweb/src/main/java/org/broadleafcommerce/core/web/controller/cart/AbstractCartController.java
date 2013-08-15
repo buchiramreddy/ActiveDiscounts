@@ -16,32 +16,40 @@
 
 package org.broadleafcommerce.core.web.controller.cart;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
+
 import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.core.offer.service.OfferService;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.web.service.UpdateCartService;
 
-import javax.annotation.Resource;
 
 /**
- * An abstract controller that provides convenience methods and resource declarations for its
- * children. Operations that are shared between controllers that deal with the catalog belong here.
- * 
- * @author apazzolini
+ * An abstract controller that provides convenience methods and resource declarations for its children. Operations that
+ * are shared between controllers that deal with the catalog belong here.
+ *
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 public abstract class AbstractCartController extends BroadleafAbstractController {
-    
-    @Resource(name = "blCatalogService")
-    protected CatalogService catalogService;
-    
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
-    
-    @Resource(name = "blOfferService")
-    protected OfferService offerService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blUpdateCartService")
-    protected UpdateCartService updateCartService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCatalogService")
+  protected CatalogService catalogService;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blOfferService")
+  protected OfferService offerService;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blUpdateCartService")
+  protected UpdateCartService updateCartService;
 
 }

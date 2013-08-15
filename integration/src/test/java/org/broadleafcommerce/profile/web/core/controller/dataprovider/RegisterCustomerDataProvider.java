@@ -21,25 +21,42 @@ import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm;
+
 import org.testng.annotations.DataProvider;
 
-public class RegisterCustomerDataProvider {
 
-    @DataProvider(name = "setupCustomerControllerData")
-    public static Object[][] createCustomer() {
-        Customer customer = new CustomerImpl();
-        customer.setEmailAddress("testCase@test.com");
-        customer.setFirstName("TestFirstName");
-        customer.setLastName("TestLastName");
-        customer.setUsername("TestCase");
-        ChallengeQuestion question = new ChallengeQuestionImpl();
-        question.setId(1L);
-        customer.setChallengeQuestion(question);
-        customer.setChallengeAnswer("Challenge CandidateItemOfferAnswer");
-        RegisterCustomerForm registerCustomer = new RegisterCustomerForm();
-        registerCustomer.setCustomer(customer);
-        registerCustomer.setPassword("TestPassword");
-        registerCustomer.setPasswordConfirm("TestPassword");
-        return new Object[][] { new Object[] { registerCustomer } };
-    }
-}
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class RegisterCustomerDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupCustomerControllerData")
+  public static Object[][] createCustomer() {
+    Customer customer = new CustomerImpl();
+    customer.setEmailAddress("testCase@test.com");
+    customer.setFirstName("TestFirstName");
+    customer.setLastName("TestLastName");
+    customer.setUsername("TestCase");
+
+    ChallengeQuestion question = new ChallengeQuestionImpl();
+    question.setId(1L);
+    customer.setChallengeQuestion(question);
+    customer.setChallengeAnswer("Challenge CandidateItemOfferAnswer");
+
+    RegisterCustomerForm registerCustomer = new RegisterCustomerForm();
+    registerCustomer.setCustomer(customer);
+    registerCustomer.setPassword("TestPassword");
+    registerCustomer.setPasswordConfirm("TestPassword");
+
+    return new Object[][] { new Object[] { registerCustomer } };
+  }
+} // end class RegisterCustomerDataProvider

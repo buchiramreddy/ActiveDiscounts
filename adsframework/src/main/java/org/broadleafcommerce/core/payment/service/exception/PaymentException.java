@@ -16,24 +16,48 @@
 
 package org.broadleafcommerce.core.payment.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new PaymentException object.
+   */
+  public PaymentException() {
+    super();
+  }
 
-    public PaymentException() {
-        super();
-    }
+  /**
+   * Creates a new PaymentException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public PaymentException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public PaymentException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new PaymentException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public PaymentException(String message) {
+    super(message);
+  }
 
-    public PaymentException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new PaymentException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public PaymentException(Throwable cause) {
+    super(cause);
+  }
 
-    public PaymentException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class PaymentException

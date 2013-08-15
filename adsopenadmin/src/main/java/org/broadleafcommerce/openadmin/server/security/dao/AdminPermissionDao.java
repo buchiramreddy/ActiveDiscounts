@@ -16,25 +16,95 @@
 
 package org.broadleafcommerce.openadmin.server.security.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
 
-import java.util.List;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AdminPermissionDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<AdminPermission> readAllAdminPermissions();
-    public AdminPermission readAdminPermissionById(Long id);
-    public AdminPermission readAdminPermissionByName(String name);
-    public AdminPermission saveAdminPermission(AdminPermission permission);
-    public void deleteAdminPermission(AdminPermission permission);
-    public boolean isUserQualifiedForOperationOnCeilingEntity(AdminUser adminUser, PermissionType permissionType, String ceilingEntityFullyQualifiedName);
-    public boolean doesOperationExistForCeilingEntity(PermissionType permissionType, String ceilingEntityFullyQualifiedName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  permission  DOCUMENT ME!
+   */
+  void deleteAdminPermission(AdminPermission permission);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   permissionType                   DOCUMENT ME!
+   * @param   ceilingEntityFullyQualifiedName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean doesOperationExistForCeilingEntity(PermissionType permissionType, String ceilingEntityFullyQualifiedName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   adminUser                        DOCUMENT ME!
+   * @param   permissionType                   DOCUMENT ME!
+   * @param   ceilingEntityFullyQualifiedName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isUserQualifiedForOperationOnCeilingEntity(AdminUser adminUser, PermissionType permissionType,
+    String ceilingEntityFullyQualifiedName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminPermission readAdminPermissionById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminPermission readAdminPermissionByName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminPermission> readAllAdminPermissions();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   permission  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminPermission saveAdminPermission(AdminPermission permission);
+
+} // end interface AdminPermissionDao

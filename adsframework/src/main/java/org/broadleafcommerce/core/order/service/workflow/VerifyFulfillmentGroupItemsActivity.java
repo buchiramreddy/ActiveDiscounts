@@ -16,24 +16,34 @@
 
 package org.broadleafcommerce.core.order.service.workflow;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.strategy.FulfillmentGroupItemStrategy;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class VerifyFulfillmentGroupItemsActivity extends BaseActivity<CartOperationContext> {
-    
-    @Resource(name = "blFulfillmentGroupItemStrategy")
-    protected FulfillmentGroupItemStrategy fgItemStrategy;
+  /** DOCUMENT ME! */
+  @Resource(name = "blFulfillmentGroupItemStrategy")
+  protected FulfillmentGroupItemStrategy fgItemStrategy;
 
-    @Override
-    public CartOperationContext execute(CartOperationContext context) throws Exception {
-        CartOperationRequest request = context.getSeedData();
-        
-        request = fgItemStrategy.verify(request);
-        
-        context.setSeedData(request);
-        return context;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.order.service.workflow.CartOperationContext)
+   */
+  @Override public CartOperationContext execute(CartOperationContext context) throws Exception {
+    CartOperationRequest request = context.getSeedData();
+
+    request = fgItemStrategy.verify(request);
+
+    context.setSeedData(request);
+
+    return context;
+  }
 
 }

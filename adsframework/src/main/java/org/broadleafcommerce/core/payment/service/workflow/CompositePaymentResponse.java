@@ -16,19 +16,40 @@
 
 package org.broadleafcommerce.core.payment.service.workflow;
 
+import java.util.Map;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 import org.broadleafcommerce.core.payment.service.module.PaymentResponse;
 
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CompositePaymentResponse {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<PaymentInfo, Referenced> getInfos();
 
-    public Map<PaymentInfo, Referenced> getInfos();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Order getOrder();
 
-    public Order getOrder();
-
-    public PaymentResponse getPaymentResponse();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentResponse getPaymentResponse();
 
 }

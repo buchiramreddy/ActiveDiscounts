@@ -16,12 +16,6 @@
 
 package org.broadleafcommerce.core.rating.domain;
 
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -34,77 +28,136 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_RATING_DETAIL")
 public class RatingDetailImpl implements RatingDetail {
-
-    @Id
-    @GeneratedValue(generator = "RatingDetailId")
-    @GenericGenerator(
-        name="RatingDetailId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="RatingDetailImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.rating.domain.RatingDetailImpl")
-        }
-    )
-    @Column(name = "RATING_DETAIL_ID")
-    private Long id;
-
-    @Column(name = "RATING", nullable = false)
-    protected Double rating;
-
-    @Column(name = "RATING_SUBMITTED_DATE", nullable = false)
-    protected Date ratingSubmittedDate;
-
-    @ManyToOne(targetEntity = CustomerImpl.class, optional = false)
-    @JoinColumn(name = "CUSTOMER_ID")
-    @Index(name="RATING_CUSTOMER_INDEX", columnNames={"CUSTOMER_ID"})
-    protected Customer customer;
-
-    @ManyToOne(optional = false, targetEntity = RatingSummaryImpl.class)
-    @JoinColumn(name = "RATING_SUMMARY_ID")
-    protected RatingSummary ratingSummary;
-
-    public RatingDetailImpl() {
+  @Column(name = "RATING_DETAIL_ID")
+  @GeneratedValue(generator = "RatingDetailId")
+  @GenericGenerator(
+    name       = "RatingDetailId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "RatingDetailImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.rating.domain.RatingDetailImpl"
+      )
     }
+  )
+  @Id private Long id;
 
-    public RatingDetailImpl(RatingSummary ratingSummary, Double rating, Date ratingSubmittedDate, Customer customer) {
-        super();
-        this.ratingSummary = ratingSummary;
-        this.rating = rating;
-        this.ratingSubmittedDate = ratingSubmittedDate;
-        this.customer = customer;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "RATING",
+    nullable = false
+  )
+  protected Double rating;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "RATING_SUBMITTED_DATE",
+    nullable = false
+  )
+  protected Date ratingSubmittedDate;
 
-    @Override
-    public Double getRating() {
-        return rating;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "RATING_CUSTOMER_INDEX",
+    columnNames = { "CUSTOMER_ID" }
+  )
+  @JoinColumn(name = "CUSTOMER_ID")
+  @ManyToOne(
+    targetEntity = CustomerImpl.class,
+    optional     = false
+  )
+  protected Customer customer;
 
-    @Override
-    public Date getRatingSubmittedDate() {
-        return ratingSubmittedDate;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "RATING_SUMMARY_ID")
+  @ManyToOne(
+    optional     = false,
+    targetEntity = RatingSummaryImpl.class
+  )
+  protected RatingSummary ratingSummary;
 
-    @Override
-    public Customer getCustomer() {
-        return customer;
-    }
+  /**
+   * Creates a new RatingDetailImpl object.
+   */
+  public RatingDetailImpl() { }
 
-    @Override
-    public void setRating(Double newRating) {
-        this.rating = newRating;
-    }
+  /**
+   * Creates a new RatingDetailImpl object.
+   *
+   * @param  ratingSummary        DOCUMENT ME!
+   * @param  rating               DOCUMENT ME!
+   * @param  ratingSubmittedDate  DOCUMENT ME!
+   * @param  customer             DOCUMENT ME!
+   */
+  public RatingDetailImpl(RatingSummary ratingSummary, Double rating, Date ratingSubmittedDate, Customer customer) {
+    super();
+    this.ratingSummary       = ratingSummary;
+    this.rating              = rating;
+    this.ratingSubmittedDate = ratingSubmittedDate;
+    this.customer            = customer;
+  }
 
-    @Override
-    public RatingSummary getRatingSummary() {
-        return ratingSummary;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.RatingDetail#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.RatingDetail#getRating()
+   */
+  @Override public Double getRating() {
+    return rating;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.RatingDetail#getRatingSubmittedDate()
+   */
+  @Override public Date getRatingSubmittedDate() {
+    return ratingSubmittedDate;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.RatingDetail#getCustomer()
+   */
+  @Override public Customer getCustomer() {
+    return customer;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.RatingDetail#setRating(java.lang.Double)
+   */
+  @Override public void setRating(Double newRating) {
+    this.rating = newRating;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.rating.domain.RatingDetail#getRatingSummary()
+   */
+  @Override public RatingSummary getRatingSummary() {
+    return ratingSummary;
+  }
+} // end class RatingDetailImpl

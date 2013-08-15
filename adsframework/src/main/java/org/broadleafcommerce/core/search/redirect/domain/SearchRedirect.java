@@ -17,33 +17,105 @@
 package org.broadleafcommerce.core.search.redirect.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SearchRedirect extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getSearchTerm();
 
-    public String getSearchTerm();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  searchTerm  DOCUMENT ME!
+   */
+  void setSearchTerm(String searchTerm);
 
-    public void setSearchTerm(String searchTerm);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUrl();
 
-    public String getUrl();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  url  DOCUMENT ME!
+   */
+  void setUrl(String url);
 
-    public void setUrl(String url);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getSearchPriority();
 
-    public Integer getSearchPriority() ;
-    
-    public void setSearchPriority(Integer searchPriority);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  searchPriority  DOCUMENT ME!
+   */
+  void setSearchPriority(Integer searchPriority);
 
-    public Date getActiveStartDate() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getActiveStartDate();
 
-    public void setActiveStartDate(Date activeStartDate);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  activeStartDate  DOCUMENT ME!
+   */
+  void setActiveStartDate(Date activeStartDate);
 
-    public Date getActiveEndDate() ;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getActiveEndDate();
 
-    public void setActiveEndDate(Date activeEndDate);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  activeEndDate  DOCUMENT ME!
+   */
+  void setActiveEndDate(Date activeEndDate);
 
-    public boolean isActive();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isActive();
+} // end interface SearchRedirect

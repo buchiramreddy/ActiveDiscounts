@@ -16,42 +16,61 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceException;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.FieldProviderResponse;
+
 import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blDefaultFieldPersistenceProvider")
 @Scope("prototype")
 public class DefaultFieldPersistenceProvider extends FieldPersistenceProviderAdapter {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public FieldProviderResponse populateValue(PopulateValueRequest populateValueRequest, Serializable instance) throws PersistenceException {
-        try {
-            populateValueRequest.getFieldManager().setFieldValue(instance,
-                    populateValueRequest.getProperty().getName(), populateValueRequest.getRequestedValue());
-        } catch (Exception e) {
-            throw new PersistenceException(e);
-        }
-        return FieldProviderResponse.HANDLED;
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProviderAdapter#extractValue(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest,
+   *       org.broadleafcommerce.openadmin.dto.Property)
+   */
+  @Override public FieldProviderResponse extractValue(ExtractValueRequest extractValueRequest, Property property)
+    throws PersistenceException {
+    if (extractValueRequest.getRequestedValue() != null) {
+      String val = extractValueRequest.getRequestedValue().toString();
+      property.setValue(val);
+      property.setDisplayValue(extractValueRequest.getDisplayVal());
     }
 
-    @Override
-    public FieldProviderResponse extractValue(ExtractValueRequest extractValueRequest, Property property) throws PersistenceException {
-        if (extractValueRequest.getRequestedValue() != null) {
-            String val = extractValueRequest.getRequestedValue().toString();
-            property.setValue(val);
-            property.setDisplayValue(extractValueRequest.getDisplayVal());
-        }
-        return FieldProviderResponse.HANDLED;
+    return FieldProviderResponse.HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProviderAdapter#populateValue(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest,
+   *       java.io.Serializable)
+   */
+  @Override public FieldProviderResponse populateValue(PopulateValueRequest populateValueRequest, Serializable instance)
+    throws PersistenceException {
+    try {
+      populateValueRequest.getFieldManager().setFieldValue(instance,
+        populateValueRequest.getProperty().getName(), populateValueRequest.getRequestedValue());
+    } catch (Exception e) {
+      throw new PersistenceException(e);
     }
 
-}
+    return FieldProviderResponse.HANDLED;
+  }
+
+} // end class DefaultFieldPersistenceProvider

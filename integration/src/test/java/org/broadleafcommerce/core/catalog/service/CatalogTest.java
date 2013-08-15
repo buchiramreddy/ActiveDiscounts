@@ -16,9 +16,17 @@
 
 package org.broadleafcommerce.core.catalog.service;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.media.domain.MediaImpl;
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
@@ -29,204 +37,228 @@ import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @SuppressWarnings("deprecation")
 public class CatalogTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource
-    private CatalogService catalogService;
+  @Resource private CatalogService catalogService;
 
-    @Test(groups = {"testCatalog"})
-    @Transactional
-    public void testCatalog() throws Exception {
-        Category category = new CategoryImpl();
-        category.setName("Soaps");
-        category = catalogService.saveCategory(category);
-        Category category2 = new CategoryImpl();
-        category2.setName("Towels");
-        category2 = catalogService.saveCategory(category2);
-        Category category3 = new CategoryImpl();
-        category3.setName("SuperCategory");
-        category3 = catalogService.saveCategory(category3);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        CategoryXref temp = new CategoryXrefImpl();
-        temp.setCategory(category);
-        temp.setSubCategory(category3);
-        category3.getAllParentCategoryXrefs().add(temp);
-        category3 = catalogService.saveCategory(category3);
-        
-        // Test category hierarchy
-        Long cat3Id = category3.getId();
-        category3 = null;
-        category3 = catalogService.findCategoryById(cat3Id);
-        category3.getAllParentCategoryXrefs().clear();
-        CategoryXref temp2 = new CategoryXrefImpl();
-        temp2.setCategory(category);
-        temp2.setSubCategory(category3);
-        category3.getAllParentCategoryXrefs().add(temp2);
-        CategoryXref temp3 = new CategoryXrefImpl();
-        temp3.setCategory(category2);
-        temp3.setSubCategory(category3);
-        category3.getAllParentCategoryXrefs().add(temp3);
-        category3 = catalogService.saveCategory(category3);
-        assert category3.getAllParentCategoryXrefs().size() == 2;
-        
-        Product newProduct = new ProductImpl();
-        Sku newDefaultSku = new SkuImpl();
-        newDefaultSku = catalogService.saveSku(newDefaultSku);
-        newProduct.setDefaultSku(newDefaultSku);
-        newProduct.setName("Lavender Soap");
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test(groups = { "testCatalog" })
+  @Transactional public void testCatalog() throws Exception {
+    Category category = new CategoryImpl();
+    category.setName("Soaps");
+    category = catalogService.saveCategory(category);
 
-        Calendar activeStartCal = Calendar.getInstance();
-        activeStartCal.add(Calendar.DAY_OF_YEAR, -2);
-        newProduct.setActiveStartDate(activeStartCal.getTime());
-//        newProduct.setAllParentCategories(allParentCategories);
-        newProduct.setDefaultCategory(category);
-        newProduct.getAllParentCategoryXrefs().clear();
-        newProduct = catalogService.saveProduct(newProduct);
+    Category category2 = new CategoryImpl();
+    category2.setName("Towels");
+    category2 = catalogService.saveCategory(category2);
 
-        CategoryProductXref categoryXref = new CategoryProductXrefImpl();
-        categoryXref.setProduct(newProduct);
-        categoryXref.setCategory(category);
-        newProduct.getAllParentCategoryXrefs().add(categoryXref);
+    Category category3 = new CategoryImpl();
+    category3.setName("SuperCategory");
+    category3 = catalogService.saveCategory(category3);
 
-        CategoryProductXref categoryXref2 = new CategoryProductXrefImpl();
-        categoryXref2.setProduct(newProduct);
-        categoryXref2.setCategory(category2);
-        newProduct.getAllParentCategoryXrefs().add(categoryXref2);
-        newProduct = catalogService.saveProduct(newProduct);
+    CategoryXref temp = new CategoryXrefImpl();
+    temp.setCategory(category);
+    temp.setSubCategory(category3);
+    category3.getAllParentCategoryXrefs().add(temp);
+    category3 = catalogService.saveCategory(category3);
 
-        Long newProductId = newProduct.getId();
+    // Test category hierarchy
+    Long cat3Id = category3.getId();
+    category3 = null;
+    category3 = catalogService.findCategoryById(cat3Id);
+    category3.getAllParentCategoryXrefs().clear();
 
-        Product testProduct = catalogService.findProductById(newProductId);
-        assert testProduct.getId().equals(testProduct.getId());
+    CategoryXref temp2 = new CategoryXrefImpl();
+    temp2.setCategory(category);
+    temp2.setSubCategory(category3);
+    category3.getAllParentCategoryXrefs().add(temp2);
 
-        Category testCategory = catalogService.findCategoryByName("Soaps");
-        assert testCategory.getId().equals(category.getId());
+    CategoryXref temp3 = new CategoryXrefImpl();
+    temp3.setCategory(category2);
+    temp3.setSubCategory(category3);
+    category3.getAllParentCategoryXrefs().add(temp3);
+    category3 = catalogService.saveCategory(category3);
+    assert category3.getAllParentCategoryXrefs().size() == 2;
 
-        testCategory = catalogService.findCategoryById(category.getId());
-        assert testCategory.getId().equals(category.getId());
-                
-        Map<String, Media> categoryMedia = testCategory.getCategoryMedia();
-        Media media = new MediaImpl();
-        media.setAltText("test");
-        media.setTitle("large");
-        media.setUrl("http://myUrl");
-        categoryMedia.put("large", media);
-        catalogService.saveCategory(testCategory);
+    Product newProduct    = new ProductImpl();
+    Sku     newDefaultSku = new SkuImpl();
+    newDefaultSku = catalogService.saveSku(newDefaultSku);
+    newProduct.setDefaultSku(newDefaultSku);
+    newProduct.setName("Lavender Soap");
 
-        testCategory = catalogService.findCategoryById(category.getId());
-        assert(testCategory.getCategoryMedia().get("large") != null);
+    Calendar activeStartCal = Calendar.getInstance();
+    activeStartCal.add(Calendar.DAY_OF_YEAR, -2);
+    newProduct.setActiveStartDate(activeStartCal.getTime());
+// newProduct.setAllParentCategories(allParentCategories);
+    newProduct.setDefaultCategory(category);
+    newProduct.getAllParentCategoryXrefs().clear();
+    newProduct = catalogService.saveProduct(newProduct);
 
-        List<Category> categories = catalogService.findAllCategories();
-        assert categories != null && categories.size() == 3;
+    CategoryProductXref categoryXref = new CategoryProductXrefImpl();
+    categoryXref.setProduct(newProduct);
+    categoryXref.setCategory(category);
+    newProduct.getAllParentCategoryXrefs().add(categoryXref);
 
-        List<Product> products = catalogService.findAllProducts();
-        boolean foundProduct = false;
+    CategoryProductXref categoryXref2 = new CategoryProductXrefImpl();
+    categoryXref2.setProduct(newProduct);
+    categoryXref2.setCategory(category2);
+    newProduct.getAllParentCategoryXrefs().add(categoryXref2);
+    newProduct = catalogService.saveProduct(newProduct);
 
-        for (Product product : products ) {
-            if (product.getId().equals(newProductId)) {
-                foundProduct = true;
-            }
-        }
-        assert foundProduct == true;
+    Long newProductId = newProduct.getId();
 
+    Product testProduct = catalogService.findProductById(newProductId);
+    assert testProduct.getId().equals(testProduct.getId());
 
-        products = catalogService.findProductsByName(newProduct.getName());
-        foundProduct = false;
+    Category testCategory = catalogService.findCategoryByName("Soaps");
+    assert testCategory.getId().equals(category.getId());
 
-        for (Product product : products ) {
-            if (product.getId().equals(newProductId)) {
-                foundProduct = true;
-            }
-        }
-        assert foundProduct == true;
+    testCategory = catalogService.findCategoryById(category.getId());
+    assert testCategory.getId().equals(category.getId());
 
+    Map<String, Media> categoryMedia = testCategory.getCategoryMedia();
+    Media              media         = new MediaImpl();
+    media.setAltText("test");
+    media.setTitle("large");
+    media.setUrl("http://myUrl");
+    categoryMedia.put("large", media);
+    catalogService.saveCategory(testCategory);
 
-        Sku newSku = new SkuImpl();
-        newSku.setName("Under Armor T-Shirt -- Red");
-        newSku.setRetailPrice(new Money(14.99));
-        newSku.setActiveStartDate(activeStartCal.getTime());
-        newSku = catalogService.saveSku(newSku);
-        List<Sku> allSkus = new ArrayList<Sku>();
-        allSkus.add(newSku);
-        newProduct.setAdditionalSkus(allSkus);
-        newProduct = catalogService.saveProduct(newProduct);
-        Long skuId = newProduct.getSkus().get(0).getId();
+    testCategory = catalogService.findCategoryById(category.getId());
+    assert (testCategory.getCategoryMedia().get("large") != null);
 
-        Sku testSku = catalogService.findSkuById(skuId);
-        assert testSku.getId().equals(skuId);
+    List<Category> categories = catalogService.findAllCategories();
+    assert (categories != null) && (categories.size() == 3);
 
-        List<Sku> testSkus = catalogService.findAllSkus();
-        boolean foundSku = false;
+    List<Product> products     = catalogService.findAllProducts();
+    boolean       foundProduct = false;
 
-        for (Sku sku : testSkus) {
-            if (sku.getId().equals(skuId)) {
-                foundSku = true;
-            }
-        }
-
-        assert foundSku == true;
-
-        List<Long> skuIds = new ArrayList<Long>();
-        skuIds.add(skuId);
-        testSkus = catalogService.findSkusByIds(skuIds);
-        foundSku = false;
-
-        for (Sku sku : testSkus) {
-            if (sku.getId().equals(skuId)) {
-                foundSku = true;
-            }
-        }
-
-        assert foundSku == true;
-
+    for (Product product : products) {
+      if (product.getId().equals(newProductId)) {
+        foundProduct = true;
+      }
     }
 
-    @Test
-    public void testSkus() throws Exception {
-        Sku sku = new SkuImpl();
-        String longDescription = "This is a great product that will help the Longhorns win.";
-        String description = "This is a great product.";
-        sku.setLongDescription(longDescription);
-        assert sku.getLongDescription().equals(longDescription);
-        sku.setDescription(description);
-        assert sku.getDescription().equals(description);
-
-        assert sku.isTaxable() == null;
-        sku.setTaxable(null);
-        assert sku.isTaxable() == null;
-        sku.setTaxable(true);
-        assert sku.isTaxable() == true;
-        sku.setTaxable(false);
-        assert sku.isTaxable() == false;
-
-        sku.setDiscountable(null);
-        assert sku.isDiscountable() == false;
-        sku.setDiscountable(true);
-        assert sku.isDiscountable() == true;
-        sku.setDiscountable(false);
-        assert sku.isDiscountable() == false;
-
-        assert sku.isAvailable() == null;
-        sku.setAvailable(null);
-        assert sku.isAvailable() == null;
-        sku.setAvailable(true);
-        assert sku.isAvailable() == true;
-        sku.setAvailable(false);
-        assert sku.isAvailable() == false;
-
-        assert sku.getName() == null;
+    assert foundProduct == true;
 
 
+    products     = catalogService.findProductsByName(newProduct.getName());
+    foundProduct = false;
+
+    for (Product product : products) {
+      if (product.getId().equals(newProductId)) {
+        foundProduct = true;
+      }
     }
-}
+
+    assert foundProduct == true;
+
+
+    Sku newSku = new SkuImpl();
+    newSku.setName("Under Armor T-Shirt -- Red");
+    newSku.setRetailPrice(new Money(14.99));
+    newSku.setActiveStartDate(activeStartCal.getTime());
+    newSku = catalogService.saveSku(newSku);
+
+    List<Sku> allSkus = new ArrayList<Sku>();
+    allSkus.add(newSku);
+    newProduct.setAdditionalSkus(allSkus);
+    newProduct = catalogService.saveProduct(newProduct);
+
+    Long skuId = newProduct.getSkus().get(0).getId();
+
+    Sku testSku = catalogService.findSkuById(skuId);
+    assert testSku.getId().equals(skuId);
+
+    List<Sku> testSkus = catalogService.findAllSkus();
+    boolean   foundSku = false;
+
+    for (Sku sku : testSkus) {
+      if (sku.getId().equals(skuId)) {
+        foundSku = true;
+      }
+    }
+
+    assert foundSku == true;
+
+    List<Long> skuIds = new ArrayList<Long>();
+    skuIds.add(skuId);
+    testSkus = catalogService.findSkusByIds(skuIds);
+    foundSku = false;
+
+    for (Sku sku : testSkus) {
+      if (sku.getId().equals(skuId)) {
+        foundSku = true;
+      }
+    }
+
+    assert foundSku == true;
+
+  } // end method testCatalog
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test public void testSkus() throws Exception {
+    Sku    sku             = new SkuImpl();
+    String longDescription = "This is a great product that will help the Longhorns win.";
+    String description     = "This is a great product.";
+    sku.setLongDescription(longDescription);
+    assert sku.getLongDescription().equals(longDescription);
+    sku.setDescription(description);
+    assert sku.getDescription().equals(description);
+
+    assert sku.isTaxable() == null;
+    sku.setTaxable(null);
+    assert sku.isTaxable() == null;
+    sku.setTaxable(true);
+    assert sku.isTaxable() == true;
+    sku.setTaxable(false);
+    assert sku.isTaxable() == false;
+
+    sku.setDiscountable(null);
+    assert sku.isDiscountable() == false;
+    sku.setDiscountable(true);
+    assert sku.isDiscountable() == true;
+    sku.setDiscountable(false);
+    assert sku.isDiscountable() == false;
+
+    assert sku.isAvailable() == null;
+    sku.setAvailable(null);
+    assert sku.isAvailable() == null;
+    sku.setAvailable(true);
+    assert sku.isAvailable() == true;
+    sku.setAvailable(false);
+    assert sku.isAvailable() == false;
+
+    assert sku.getName() == null;
+
+
+  } // end method testSkus
+} // end class CatalogTest

@@ -17,11 +17,13 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public enum ForeignKeyRestrictionType {
-    ID_EQ,
-    COLLECTION_SIZE_EQ
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  ID_EQ, COLLECTION_SIZE_EQ
 }

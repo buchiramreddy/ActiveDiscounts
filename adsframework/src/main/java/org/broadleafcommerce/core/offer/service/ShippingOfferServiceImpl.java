@@ -16,28 +16,39 @@
 
 package org.broadleafcommerce.core.offer.service;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
+
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Service("blShippingOfferService")
 public class ShippingOfferServiceImpl implements ShippingOfferService {
-    
-    @Resource(name="blOfferService")
-    protected OfferService offerService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void reviewOffers(Order order) throws PricingException {
-        List<Offer> offers = offerService.buildOfferListForOrder(order);
-        offerService.applyFulfillmentGroupOffersToOrder(offers, order);
-    }
+  /** DOCUMENT ME! */
+  @Resource(name = "blOfferService")
+  protected OfferService offerService;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.ShippingOfferService#reviewOffers(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public void reviewOffers(Order order) throws PricingException {
+    List<Offer> offers = offerService.buildOfferListForOrder(order);
+    offerService.applyFulfillmentGroupOffersToOrder(offers, order);
+  }
 
 }

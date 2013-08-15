@@ -16,33 +16,40 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
+import java.io.Serializable;
+
+import java.util.Map;
+
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.Map;
+import org.springframework.stereotype.Component;
 
 
 /**
- * Validates a field against a configured 'regularExpression' item
- * 
- * @author Phillip Verheyden
+ * Validates a field against a configured 'regularExpression' item.
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 @Component("blRegexPropertyValidator")
 public class RegexPropertyValidator extends ValidationConfigurationBasedPropertyValidator {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean validateInternal(Entity entity,
-            Serializable instance,
-            Map<String, FieldMetadata> entityFieldMetadata,
-            Map<String, String> validationConfiguration,
-            BasicFieldMetadata propertyMetadata,
-            String propertyName,
-            String value) {
-        String expression = validationConfiguration.get("regularExpression");
-        return (value == null) ? true : value.matches(expression);
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.validation.ValidationConfigurationBasedPropertyValidator#validateInternal(org.broadleafcommerce.openadmin.dto.Entity,
+   *       java.io.Serializable, java.util.Map, java.util.Map, org.broadleafcommerce.openadmin.dto.BasicFieldMetadata,
+   *       java.lang.String, java.lang.String)
+   */
+  @Override public boolean validateInternal(Entity entity,
+    Serializable instance, Map<String, FieldMetadata> entityFieldMetadata, Map<String, String> validationConfiguration,
+    BasicFieldMetadata propertyMetadata,
+    String propertyName,
+    String value) {
+    String expression = validationConfiguration.get("regularExpression");
+
+    return (value == null) ? true : value.matches(expression);
+  }
 
 }

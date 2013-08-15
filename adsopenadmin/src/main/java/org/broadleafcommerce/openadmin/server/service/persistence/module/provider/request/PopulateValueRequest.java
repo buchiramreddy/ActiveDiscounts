@@ -22,62 +22,138 @@ import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceMan
 import org.broadleafcommerce.openadmin.server.service.persistence.module.DataFormatProvider;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
 
+
 /**
  * Contains the requested value, instance and support classes.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class PopulateValueRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final Boolean setId;
-    private final FieldManager fieldManager;
-    private final Property property;
-    private final BasicFieldMetadata metadata;
-    private final Class<?> returnType;
-    private final String requestedValue;
-    private final PersistenceManager persistenceManager;
-    private final DataFormatProvider dataFormatProvider;
+  private final DataFormatProvider dataFormatProvider;
+  private final FieldManager       fieldManager;
+  private final BasicFieldMetadata metadata;
+  private final PersistenceManager persistenceManager;
+  private final Property           property;
+  private final String             requestedValue;
+  private final Class<?>           returnType;
 
-    public PopulateValueRequest(Boolean setId, FieldManager fieldManager, Property property, BasicFieldMetadata metadata, Class<?> returnType, String requestedValue, PersistenceManager persistenceManager, DataFormatProvider dataFormatProvider) {
-        this.setId = setId;
-        this.fieldManager = fieldManager;
-        this.property = property;
-        this.metadata = metadata;
-        this.returnType = returnType;
-        this.requestedValue = requestedValue;
-        this.persistenceManager = persistenceManager;
-        this.dataFormatProvider = dataFormatProvider;
-    }
+  private final Boolean setId;
 
-    public Boolean getSetId() {
-        return setId;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public FieldManager getFieldManager() {
-        return fieldManager;
-    }
+  /**
+   * Creates a new PopulateValueRequest object.
+   *
+   * @param  setId               DOCUMENT ME!
+   * @param  fieldManager        DOCUMENT ME!
+   * @param  property            DOCUMENT ME!
+   * @param  metadata            DOCUMENT ME!
+   * @param  returnType          DOCUMENT ME!
+   * @param  requestedValue      DOCUMENT ME!
+   * @param  persistenceManager  DOCUMENT ME!
+   * @param  dataFormatProvider  DOCUMENT ME!
+   */
+  public PopulateValueRequest(Boolean setId, FieldManager fieldManager, Property property, BasicFieldMetadata metadata,
+    Class<?> returnType, String requestedValue, PersistenceManager persistenceManager,
+    DataFormatProvider dataFormatProvider) {
+    this.setId              = setId;
+    this.fieldManager       = fieldManager;
+    this.property           = property;
+    this.metadata           = metadata;
+    this.returnType         = returnType;
+    this.requestedValue     = requestedValue;
+    this.persistenceManager = persistenceManager;
+    this.dataFormatProvider = dataFormatProvider;
+  }
 
-    public Property getProperty() {
-        return property;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public BasicFieldMetadata getMetadata() {
-        return metadata;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DataFormatProvider getDataFormatProvider() {
+    return dataFormatProvider;
+  }
 
-    public Class<?> getReturnType() {
-        return returnType;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getRequestedValue() {
-        return requestedValue;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldManager getFieldManager() {
+    return fieldManager;
+  }
 
-    public PersistenceManager getPersistenceManager() {
-        return persistenceManager;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public DataFormatProvider getDataFormatProvider() {
-        return dataFormatProvider;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BasicFieldMetadata getMetadata() {
+    return metadata;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistenceManager getPersistenceManager() {
+    return persistenceManager;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Property getProperty() {
+    return property;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRequestedValue() {
+    return requestedValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Class<?> getReturnType() {
+    return returnType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getSetId() {
+    return setId;
+  }
+} // end class PopulateValueRequest

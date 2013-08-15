@@ -16,6 +16,13 @@
 
 package org.broadleafcommerce.core.payment.service.workflow;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
@@ -24,53 +31,79 @@ import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.ProcessContextFactory;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentProcessContextFactory implements ProcessContextFactory {
+  /** DOCUMENT ME! */
+  @Resource(name = "blSecurePaymentInfoService")
+  protected SecurePaymentInfoService securePaymentInfoService;
 
-    @Resource(name = "blSecurePaymentInfoService")
-    protected SecurePaymentInfoService securePaymentInfoService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
+  /** DOCUMENT ME! */
+  protected PaymentActionType paymentActionType;
 
-    protected PaymentActionType paymentActionType;
-
-    public ProcessContext createContext(Object seedData) throws WorkflowException {
-        if (!(seedData instanceof PaymentSeed)) {
-            throw new WorkflowException("Seed data instance is incorrect. " + "Required class is " + PaymentSeed.class.getName() + " " + "but found class: " + seedData.getClass().getName());
-        }
-        PaymentSeed paymentSeed = (PaymentSeed) seedData;
-        Map<PaymentInfo, Referenced> secureMap = paymentSeed.getInfos();
-        if (secureMap == null) {
-            secureMap = new HashMap<PaymentInfo, Referenced>();
-            List<PaymentInfo> paymentInfoList = orderService.findPaymentInfosForOrder(paymentSeed.getOrder());
-            if (paymentInfoList == null || paymentInfoList.size() == 0) {
-                throw new WorkflowException("No payment info instances associated with the order -- id: " + paymentSeed.getOrder().getId());
-            }
-            Iterator<PaymentInfo> infos = paymentInfoList.iterator();
-            while (infos.hasNext()) {
-                PaymentInfo info = infos.next();
-                secureMap.put(info, securePaymentInfoService.findSecurePaymentInfo(info.getReferenceNumber(), info.getType()));
-            }
-        }
-        CombinedPaymentContextSeed combinedSeed = new CombinedPaymentContextSeed(secureMap, paymentActionType, paymentSeed.getOrder().getTotal(), paymentSeed.getPaymentResponse(), paymentSeed.getTransactionAmount());
-        WorkflowPaymentContext response = new WorkflowPaymentContext();
-        response.setSeedData(combinedSeed);
-
-        return response;
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContextFactory#createContext(java.lang.Object)
+   */
+  @Override public ProcessContext createContext(Object seedData) throws WorkflowException {
+    if (!(seedData instanceof PaymentSeed)) {
+      throw new WorkflowException("Seed data instance is incorrect. " + "Required class is "
+        + PaymentSeed.class.getName() + " " + "but found class: " + seedData.getClass().getName());
     }
 
-    public PaymentActionType getPaymentActionType() {
-        return paymentActionType;
+    PaymentSeed                  paymentSeed = (PaymentSeed) seedData;
+    Map<PaymentInfo, Referenced> secureMap   = paymentSeed.getInfos();
+
+    if (secureMap == null) {
+      secureMap = new HashMap<PaymentInfo, Referenced>();
+
+      List<PaymentInfo> paymentInfoList = orderService.findPaymentInfosForOrder(paymentSeed.getOrder());
+
+      if ((paymentInfoList == null) || (paymentInfoList.size() == 0)) {
+        throw new WorkflowException("No payment info instances associated with the order -- id: "
+          + paymentSeed.getOrder().getId());
+      }
+
+      Iterator<PaymentInfo> infos = paymentInfoList.iterator();
+
+      while (infos.hasNext()) {
+        PaymentInfo info = infos.next();
+        secureMap.put(info, securePaymentInfoService.findSecurePaymentInfo(info.getReferenceNumber(), info.getType()));
+      }
     }
 
-    public void setPaymentActionType(PaymentActionType paymentActionType) {
-        this.paymentActionType = paymentActionType;
-    }
+    CombinedPaymentContextSeed combinedSeed = new CombinedPaymentContextSeed(secureMap, paymentActionType,
+        paymentSeed.getOrder().getTotal(), paymentSeed.getPaymentResponse(), paymentSeed.getTransactionAmount());
+    WorkflowPaymentContext     response     = new WorkflowPaymentContext();
+    response.setSeedData(combinedSeed);
 
-}
+    return response;
+  } // end method createContext
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PaymentActionType getPaymentActionType() {
+    return paymentActionType;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentActionType  DOCUMENT ME!
+   */
+  public void setPaymentActionType(PaymentActionType paymentActionType) {
+    this.paymentActionType = paymentActionType;
+  }
+
+} // end class PaymentProcessContextFactory

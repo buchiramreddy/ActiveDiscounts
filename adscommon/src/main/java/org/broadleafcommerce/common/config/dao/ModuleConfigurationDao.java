@@ -16,40 +16,102 @@
 
 package org.broadleafcommerce.common.config.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
 import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ModuleConfigurationDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ModuleConfiguration readById(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  config  DOCUMENT ME!
+   */
+  void delete(ModuleConfiguration config);
 
-    public ModuleConfiguration save(ModuleConfiguration config);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void delete(ModuleConfiguration config);
+  /**
+   * Returns the number of milliseconds that the current date/time will be cached for queries before refreshing. This
+   * aids in query caching, otherwise every query that utilized current date would be different and caching would be
+   * ineffective.
+   *
+   * @return  the milliseconds to cache the current date/time
+   */
+  Long getCurrentDateResolution();
 
-    public List<ModuleConfiguration> readAllByType(ModuleConfigurationType type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<ModuleConfiguration> readActiveByType(ModuleConfigurationType type);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ModuleConfiguration> readActiveByType(ModuleConfigurationType type);
 
-    public List<ModuleConfiguration> readByType(Class<? extends ModuleConfiguration> type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the number of milliseconds that the current date/time will be cached for queries before refreshing.
-     * This aids in query caching, otherwise every query that utilized current date would be different and caching
-     * would be ineffective.
-     *
-     * @return the milliseconds to cache the current date/time
-     */
-    public Long getCurrentDateResolution();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ModuleConfiguration> readAllByType(ModuleConfigurationType type);
 
-    /**
-     * Sets the number of milliseconds that the current date/time will be cached for queries before refreshing.
-     * This aids in query caching, otherwise every query that utilized current date would be different and caching
-     * would be ineffective.
-     *
-     * @param currentDateResolution the milliseconds to cache the current date/time
-     */
-    public void setCurrentDateResolution(Long currentDateResolution);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ModuleConfiguration readById(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ModuleConfiguration> readByType(Class<? extends ModuleConfiguration> type);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   config  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ModuleConfiguration save(ModuleConfiguration config);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the number of milliseconds that the current date/time will be cached for queries before refreshing. This aids
+   * in query caching, otherwise every query that utilized current date would be different and caching would be
+   * ineffective.
+   *
+   * @param  currentDateResolution  the milliseconds to cache the current date/time
+   */
+  void setCurrentDateResolution(Long currentDateResolution);
+} // end interface ModuleConfigurationDao

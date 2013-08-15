@@ -17,16 +17,51 @@
 package org.broadleafcommerce.core.offer.domain;
 
 import java.io.Serializable;
+
 import java.util.Map;
 
-public interface OfferInfo extends Serializable{
 
-    public Long getId();
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface OfferInfo extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, String> getFieldValues();
 
-    public Map<String, String> getFieldValues();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setFieldValues(Map<String, String> fieldValues);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldValues  DOCUMENT ME!
+   */
+  void setFieldValues(Map<String, String> fieldValues);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+} // end interface OfferInfo

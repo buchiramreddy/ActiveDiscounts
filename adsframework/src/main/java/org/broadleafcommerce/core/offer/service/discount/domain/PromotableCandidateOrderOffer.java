@@ -16,28 +16,71 @@
 
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.Offer;
-import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
-
 import java.io.Serializable;
+
 import java.util.HashMap;
 import java.util.List;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.offer.domain.Offer;
+import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PromotableCandidateOrderOffer extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableOrder getPromotableOrder();
 
-    PromotableOrder getPromotableOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
 
-    Offer getOffer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getPotentialSavings();
 
-    Money getPotentialSavings();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  HashMap<OfferItemCriteria, List<PromotableOrderItem>> getCandidateQualifiersMap();
 
-    HashMap<OfferItemCriteria, List<PromotableOrderItem>> getCandidateQualifiersMap();
-    
-    boolean isTotalitarian();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isTotalitarian();
 
-    boolean isCombinable();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isCombinable();
 
-    int getPriority();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int getPriority();
 
-}
+} // end interface PromotableCandidateOrderOffer

@@ -16,31 +16,60 @@
 
 package org.broadleafcommerce.core.order.service.manipulation;
 
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderItemSplitContainer {
-    
-    protected OrderItem key;
-    protected List<PromotableOrderItem> splitItems = new ArrayList<PromotableOrderItem>();
-    
-    public OrderItem getKey() {
-        return key;
-    }
-    
-    public void setKey(OrderItem key) {
-        this.key = key;
-    }
-    
-    public List<PromotableOrderItem> getSplitItems() {
-        return splitItems;
-    }
-    
-    public void setSplitItems(List<PromotableOrderItem> splitItems) {
-        this.splitItems = splitItems;
-    }
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem;
+import org.broadleafcommerce.core.order.domain.OrderItem;
 
-}
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class OrderItemSplitContainer {
+  /** DOCUMENT ME! */
+  protected OrderItem                 key;
+
+  /** DOCUMENT ME! */
+  protected List<PromotableOrderItem> splitItems = new ArrayList<PromotableOrderItem>();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public OrderItem getKey() {
+    return key;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key  DOCUMENT ME!
+   */
+  public void setKey(OrderItem key) {
+    this.key = key;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<PromotableOrderItem> getSplitItems() {
+    return splitItems;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  splitItems  DOCUMENT ME!
+   */
+  public void setSplitItems(List<PromotableOrderItem> splitItems) {
+    this.splitItems = splitItems;
+  }
+
+} // end class OrderItemSplitContainer

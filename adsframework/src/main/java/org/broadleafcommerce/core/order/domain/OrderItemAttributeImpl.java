@@ -16,15 +16,6 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.lang.reflect.Method;
 
 import javax.persistence.Column;
@@ -37,139 +28,225 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
  * Arbitrary attributes to add to an order-item.
  *
- * @see OrderItemAttribute
+ * @see      OrderItemAttribute
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(friendlyName = "OrderItemAttributeImpl_baseProductAttribute")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name="BLC_ORDER_ITEM_ATTRIBUTE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blOrderElements")
-@AdminPresentationClass(friendlyName = "OrderItemAttributeImpl_baseProductAttribute")
+@Table(name = "BLC_ORDER_ITEM_ATTRIBUTE")
 public class OrderItemAttributeImpl implements OrderItemAttribute {
+  /** DOCUMENT ME! */
+  public static final Log   LOG              = LogFactory.getLog(OrderItemAttributeImpl.class);
+  private static final long serialVersionUID = 1L;
 
-    public static final Log LOG = LogFactory.getLog(OrderItemAttributeImpl.class);
-    private static final long serialVersionUID = 1L;
-    
-    @Id
-    @GeneratedValue(generator= "OrderItemAttributeId")
-    @GenericGenerator(
-        name="OrderItemAttributeId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="OrderItemAttributeImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.catalog.domain.OrderItemAttributeImpl")
-        }
-    )
-    @Column(name = "ORDER_ITEM_ATTRIBUTE_ID")
-    protected Long id;
-    
-    @Column(name = "NAME", nullable=false)
-    @AdminPresentation(excluded = true)
-    protected String name;
+  /** DOCUMENT ME! */
+  @Column(name = "ORDER_ITEM_ATTRIBUTE_ID")
+  @GeneratedValue(generator = "OrderItemAttributeId")
+  @GenericGenerator(
+    name       = "OrderItemAttributeId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "OrderItemAttributeImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.catalog.domain.OrderItemAttributeImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Column(name = "VALUE", nullable=false)
-    @AdminPresentation(friendlyName = "OrderItemAttributeImpl_Attribute_Value", order=2, group = "OrderItemAttributeImpl_Description", prominent=true)
-    protected String value;
-    
-    @ManyToOne(targetEntity = OrderItemImpl.class, optional=false)
-    @JoinColumn(name = "ORDER_ITEM_ID")
-    protected OrderItem orderItem;
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @Column(
+    name     = "NAME",
+    nullable = false
+  )
+  protected String name;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "OrderItemAttributeImpl_Attribute_Value",
+    order        = 2,
+    group        = "OrderItemAttributeImpl_Description",
+    prominent    = true
+  )
+  @Column(
+    name     = "VALUE",
+    nullable = false
+  )
+  protected String value;
+
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "ORDER_ITEM_ID")
+  @ManyToOne(
+    targetEntity = OrderItemImpl.class,
+    optional     = false
+  )
+  protected OrderItem orderItem;
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderItemAttribute#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderItemAttribute#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#getValue()
+   */
+  @Override public String getValue() {
+    return value;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#setValue(java.lang.String)
+   */
+  @Override public void setValue(String value) {
+    this.value = value;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.value.ValueAssignable#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
+   * @see  java.lang.Object#toString()
+   */
+  @Override public String toString() {
+    return value;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderItemAttribute#getOrderItem()
+   */
+  @Override public OrderItem getOrderItem() {
+    return orderItem;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderItemAttribute#setOrderItem(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public void setOrderItem(OrderItem orderItem) {
+    this.orderItem = orderItem;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemAttribute  DOCUMENT ME!
+   *
+   * @throws  CloneNotSupportedException  DOCUMENT ME!
+   * @throws  SecurityException           DOCUMENT ME!
+   * @throws  NoSuchMethodException       DOCUMENT ME!
+   */
+  public void checkCloneable(OrderItemAttribute itemAttribute) throws CloneNotSupportedException, SecurityException,
+    NoSuchMethodException {
+    Method cloneMethod = itemAttribute.getClass().getMethod("clone", new Class[] {});
+
+    if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce")
+          && !itemAttribute.getClass().getName().startsWith("org.broadleafcommerce")) {
+      // subclass is not implementing the clone method
+      throw new CloneNotSupportedException(
+        "Custom extensions and implementations should implement clone in order to guarantee split and merge operations are performed accurately");
+    }
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderItemAttribute#clone()
+   */
+  @Override public OrderItemAttribute clone() {
+    // instantiate from the fully qualified name via reflection
+    OrderItemAttribute itemAttribute;
+
+    try {
+      itemAttribute = (OrderItemAttribute) Class.forName(this.getClass().getName()).newInstance();
+
+      try {
+        checkCloneable(itemAttribute);
+      } catch (CloneNotSupportedException e) {
+        LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: "
+          + itemAttribute.getClass().getName(), e);
+      }
+
+      itemAttribute.setName(name);
+      itemAttribute.setOrderItem(orderItem);
+      itemAttribute.setValue(value);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    return itemAttribute;
+  }
+
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    return value.hashCode();
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public String getValue() {
-        return value;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public void setValue(String value) {
-        this.value = value;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public String getName() {
-        return name;
+    if (value == null) {
+      return false;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public OrderItem getOrderItem() {
-        return orderItem;
-    }
-
-    @Override
-    public void setOrderItem(OrderItem orderItem) {
-        this.orderItem = orderItem;
-    }
-
-    public void checkCloneable(OrderItemAttribute itemAttribute) throws CloneNotSupportedException, SecurityException, NoSuchMethodException {
-        Method cloneMethod = itemAttribute.getClass().getMethod("clone", new Class[]{});
-        if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce") && !itemAttribute.getClass().getName().startsWith("org.broadleafcommerce")) {
-            //subclass is not implementing the clone method
-            throw new CloneNotSupportedException("Custom extensions and implementations should implement clone in order to guarantee split and merge operations are performed accurately");
-        }
-    }
-
-    @Override
-    public OrderItemAttribute clone() {
-        //instantiate from the fully qualified name via reflection
-        OrderItemAttribute itemAttribute;
-        try {
-            itemAttribute = (OrderItemAttribute) Class.forName(this.getClass().getName()).newInstance();
-            try {
-                checkCloneable(itemAttribute);
-            } catch (CloneNotSupportedException e) {
-                LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: " + itemAttribute.getClass().getName(), e);
-            }            
-            itemAttribute.setName(name);
-            itemAttribute.setOrderItem(orderItem);
-            itemAttribute.setValue(value);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return itemAttribute;
-    }
-
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        
-        if (value == null) {
-            return false;
-        }
-        
-        return value.equals(((OrderAttribute) obj).getValue());
-    }
-}
+    return value.equals(((OrderAttribute) obj).getValue());
+  }
+} // end class OrderItemAttributeImpl

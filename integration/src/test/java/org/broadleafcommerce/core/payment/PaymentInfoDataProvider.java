@@ -16,22 +16,40 @@
 
 package org.broadleafcommerce.core.payment;
 
+import java.math.BigDecimal;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.PaymentInfoImpl;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
+
 import org.testng.annotations.DataProvider;
 
-import java.math.BigDecimal;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentInfoDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "basicPaymentInfo")
-    public static Object[][] provideBasicSalesPaymentInfo() {
-        PaymentInfo sop = new PaymentInfoImpl();
-        sop.setAmount(new Money(BigDecimal.valueOf(10.99)));
-        sop.setReferenceNumber("987654321");
-        sop.setType(PaymentInfoType.CREDIT_CARD);
-        return new Object[][] { { sop } };
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicPaymentInfo")
+  public static Object[][] provideBasicSalesPaymentInfo() {
+    PaymentInfo sop = new PaymentInfoImpl();
+    sop.setAmount(new Money(BigDecimal.valueOf(10.99)));
+    sop.setReferenceNumber("987654321");
+    sop.setType(PaymentInfoType.CREDIT_CARD);
+
+    return new Object[][] {
+        { sop }
+      };
+  }
 }

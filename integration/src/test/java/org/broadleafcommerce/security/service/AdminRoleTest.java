@@ -16,27 +16,53 @@
 
 package org.broadleafcommerce.security.service;
 
-import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
-import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
-import org.broadleafcommerce.security.service.dataprovider.AdminRoleDataProvider;
-import org.broadleafcommerce.test.BaseTest;
-import org.springframework.test.annotation.Rollback;
-import org.testng.annotations.Test;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
+
+import org.broadleafcommerce.security.service.dataprovider.AdminRoleDataProvider;
+
+import org.broadleafcommerce.test.BaseTest;
+
+import org.springframework.test.annotation.Rollback;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AdminRoleTest extends BaseTest {
-    @Resource
-    AdminSecurityService adminSecurityService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Test(groups =  {"testAdminRoleSave"}, dataProvider = "setupAdminRole", dataProviderClass = AdminRoleDataProvider.class)
-    @Rollback(true)
-    public void testAdminRoleSave(AdminRole role) throws Exception {
-        AdminRole newRole = adminSecurityService.saveAdminRole(role);
+  /** DOCUMENT ME! */
+  @Resource AdminSecurityService adminSecurityService;
 
-        AdminRole roleFromDB = adminSecurityService.readAdminRoleById(newRole.getId());
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        assert(roleFromDB != null);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   role  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Rollback(true)
+  @Test(
+    groups            = { "testAdminRoleSave" },
+    dataProvider      = "setupAdminRole",
+    dataProviderClass = AdminRoleDataProvider.class
+  )
+  public void testAdminRoleSave(AdminRole role) throws Exception {
+    AdminRole newRole = adminSecurityService.saveAdminRole(role);
 
-}
+    AdminRole roleFromDB = adminSecurityService.readAdminRoleById(newRole.getId());
+
+    assert (roleFromDB != null);
+  }
+
+} // end class AdminRoleTest

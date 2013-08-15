@@ -19,23 +19,47 @@ package org.broadleafcommerce.openadmin.server.service.handler;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class DefaultCustomPersistenceHandlerFilter implements CustomPersistenceHandlerFilter {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected List<String> filterCustomPersistenceHandlerClassnames = new ArrayList<String>();
+  /** DOCUMENT ME! */
+  protected List<String> filterCustomPersistenceHandlerClassnames = new ArrayList<String>();
 
-    @Override
-    public boolean shouldUseHandler(String handlerClassName) {
-        return !filterCustomPersistenceHandlerClassnames.contains(handlerClassName);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<String> getFilterCustomPersistenceHandlerClassnames() {
-        return filterCustomPersistenceHandlerClassnames;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getFilterCustomPersistenceHandlerClassnames() {
+    return filterCustomPersistenceHandlerClassnames;
+  }
 
-    public void setFilterCustomPersistenceHandlerClassnames(List<String> filterCustomPersistenceHandlerClassnames) {
-        this.filterCustomPersistenceHandlerClassnames = filterCustomPersistenceHandlerClassnames;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  filterCustomPersistenceHandlerClassnames  DOCUMENT ME!
+   */
+  public void setFilterCustomPersistenceHandlerClassnames(List<String> filterCustomPersistenceHandlerClassnames) {
+    this.filterCustomPersistenceHandlerClassnames = filterCustomPersistenceHandlerClassnames;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandlerFilter#shouldUseHandler(java.lang.String)
+   */
+  @Override public boolean shouldUseHandler(String handlerClassName) {
+    return !filterCustomPersistenceHandlerClassnames.contains(handlerClassName);
+  }
+} // end class DefaultCustomPersistenceHandlerFilter

@@ -16,82 +16,131 @@
 
 package org.broadleafcommerce.core.search.domain;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
- * An extensible enumeration of entities that are used for searching and reporting
- * 
- * @author Andre Azzolini (apazzolini)
+ * An extensible enumeration of entities that are used for searching and reporting.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class FieldEntity implements Serializable, BroadleafEnumerationType {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  private static final Map<String, FieldEntity> TYPES = new LinkedHashMap<String, FieldEntity>();
 
-    private static final Map<String, FieldEntity> TYPES = new LinkedHashMap<String, FieldEntity>();
+  /** DOCUMENT ME! */
+  public static final FieldEntity PRODUCT   = new FieldEntity("PRODUCT", "product");
 
-    public static final FieldEntity PRODUCT = new FieldEntity("PRODUCT", "product");
-    public static final FieldEntity CUSTOMER = new FieldEntity("CUSTOMER", "customer");
-    public static final FieldEntity ORDER = new FieldEntity("ORDER", "order");
-    public static final FieldEntity ORDERITEM = new FieldEntity("ORDERITEM", "orderItem");
-    public static final FieldEntity OFFER = new FieldEntity("OFFER", "offer");
+  /** DOCUMENT ME! */
+  public static final FieldEntity CUSTOMER  = new FieldEntity("CUSTOMER", "customer");
 
-    public static FieldEntity getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final FieldEntity ORDER     = new FieldEntity("ORDER", "order");
+
+  /** DOCUMENT ME! */
+  public static final FieldEntity ORDERITEM = new FieldEntity("ORDERITEM", "orderItem");
+
+  /** DOCUMENT ME! */
+  public static final FieldEntity OFFER = new FieldEntity("OFFER", "offer");
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static FieldEntity getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  private String type;
+  private String friendlyType;
+
+  /**
+   * Creates a new FieldEntity object.
+   */
+  public FieldEntity() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new FieldEntity object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public FieldEntity(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public FieldEntity() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public FieldEntity(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    FieldEntity other = (FieldEntity) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
-
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        FieldEntity other = (FieldEntity) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-}
+    return true;
+  } // end method equals
+} // end class FieldEntity

@@ -18,66 +18,147 @@ package org.broadleafcommerce.common.security.util;
 
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class PasswordChange extends PasswordReset {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String currentPassword;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private String newPassword;
+  private String challengeAnswer;
 
-    private String newPasswordConfirm;
+  private String challengeQuestion;
 
-    private String challengeQuestion;
+  private String currentPassword;
 
-    private String challengeAnswer;
+  private String newPassword;
 
-    public PasswordChange(String username) {
-        super(username);
-    }
+  private String newPasswordConfirm;
 
-    public String getChallengeQuestion() {
-        return challengeQuestion;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public void setChallengeQuestion(String challengeQuestion) {
-        this.challengeQuestion = challengeQuestion;
-    }
+  /**
+   * Creates a new PasswordChange object.
+   *
+   * @param  username  DOCUMENT ME!
+   */
+  public PasswordChange(String username) {
+    super(username);
+  }
 
-    public String getChallengeAnswer() {
-        return challengeAnswer;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setChallengeAnswer(String challengeAnswer) {
-        this.challengeAnswer = challengeAnswer;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getChallengeAnswer() {
+    return challengeAnswer;
+  }
 
-    public String getCurrentPassword() {
-        return currentPassword;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getChallengeQuestion() {
+    return challengeQuestion;
+  }
 
-    public String getNewPassword() {
-        return newPassword;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCurrentPassword() {
+    return currentPassword;
+  }
 
-    public String getNewPasswordConfirm() {
-        return newPasswordConfirm;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setNewPasswordConfirm(String newPasswordConfirm) {
-        this.newPasswordConfirm = newPasswordConfirm;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getNewPassword() {
+    return newPassword;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getNewPasswordConfirm() {
+    return newPasswordConfirm;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  challengeAnswer  DOCUMENT ME!
+   */
+  public void setChallengeAnswer(String challengeAnswer) {
+    this.challengeAnswer = challengeAnswer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  challengeQuestion  DOCUMENT ME!
+   */
+  public void setChallengeQuestion(String challengeQuestion) {
+    this.challengeQuestion = challengeQuestion;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currentPassword  DOCUMENT ME!
+   */
+  public void setCurrentPassword(String currentPassword) {
+    this.currentPassword = currentPassword;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  newPassword  DOCUMENT ME!
+   */
+  public void setNewPassword(String newPassword) {
+    this.newPassword = newPassword;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  newPasswordConfirm  DOCUMENT ME!
+   */
+  public void setNewPasswordConfirm(String newPasswordConfirm) {
+    this.newPasswordConfirm = newPasswordConfirm;
+  }
+
+} // end class PasswordChange

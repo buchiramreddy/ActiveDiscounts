@@ -16,25 +16,49 @@
 
 package org.broadleafcommerce.core.order.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OrderServiceException extends RuntimeException {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    
 
-    public OrderServiceException() {
-        super();
-    }
+  /**
+   * Creates a new OrderServiceException object.
+   */
+  public OrderServiceException() {
+    super();
+  }
 
-    public OrderServiceException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new OrderServiceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public OrderServiceException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public OrderServiceException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new OrderServiceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public OrderServiceException(String message) {
+    super(message);
+  }
 
-    public OrderServiceException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new OrderServiceException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public OrderServiceException(Throwable cause) {
+    super(cause);
+  }
 
-}
+} // end class OrderServiceException

@@ -16,72 +16,116 @@
 
 package org.broadleafcommerce.core.order.service;
 
+import java.util.Date;
+
 import org.apache.commons.lang.time.DateUtils;
+
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.exception.AddToCartException;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
+
 import org.broadleafcommerce.test.CommonSetupBaseTest;
 
-import java.util.Date;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OrderBaseTest extends CommonSetupBaseTest {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    protected Customer createNamedCustomer() {
-        Customer customer = customerService.createCustomerFromId(null);
-        customer.setUsername(String.valueOf(customer.getId()));
-        return customer;
-    }
-    
-    public Order setUpNamedOrder() throws AddToCartException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  AddToCartException  DOCUMENT ME!
+   */
+  public Order setUpCartWithActiveSku() throws AddToCartException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
 
-        Order order = orderService.createNamedOrderForCustomer("Boxes Named Order", customer);
-        
-        Product newProduct = addTestProduct("Cube Box", "Boxes");        
-        Category newCategory = newProduct.getDefaultCategory();
-        
-        order = orderService.addItem(order.getId(), 
-                new OrderItemRequestDTO(newProduct.getId(), newProduct.getDefaultSku().getId(), newCategory.getId(), 2), 
-                true);
+    Order order = orderService.createNewCartForCustomer(customer);
 
-        return order;
-    }
-    
-    public Order setUpCartWithActiveSku() throws AddToCartException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+    Product  newProduct  = addTestProduct("Plastic Crate Active", "Crates");
+    Category newCategory = newProduct.getDefaultCategory();
 
-        Order order = orderService.createNewCartForCustomer(customer);
+    order = orderService.addItem(order.getId(),
+        new OrderItemRequestDTO(newProduct.getId(), newProduct.getDefaultSku().getId(), newCategory.getId(), 1),
+        true);
 
-        Product newProduct = addTestProduct("Plastic Crate Active", "Crates");
-        Category newCategory = newProduct.getDefaultCategory();
-        
-        order = orderService.addItem(order.getId(), 
-                new OrderItemRequestDTO(newProduct.getId(), newProduct.getDefaultSku().getId(), newCategory.getId(), 1), 
-                true);
+    return order;
+  }
 
-        return order;
-    }
-    
-    public Order setUpCartWithInactiveSku() throws AddToCartException {
-        Customer customer = customerService.saveCustomer(createNamedCustomer());
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        Order order = orderService.createNewCartForCustomer(customer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  AddToCartException  DOCUMENT ME!
+   */
+  public Order setUpCartWithInactiveSku() throws AddToCartException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
 
-        Product newProduct = addTestProduct("Plastic Crate Should Be Inactive", "Crates");
-        Category newCategory = newProduct.getDefaultCategory();
-        
-        order = orderService.addItem(order.getId(), 
-                new OrderItemRequestDTO(newProduct.getId(), newProduct.getDefaultSku().getId(), newCategory.getId(), 1), 
-                true);
-        
-        // Make the SKU inactive
-        newProduct.getDefaultSku().setActiveEndDate(DateUtils.addDays(new Date(), -1));
-        catalogService.saveSku(newProduct.getDefaultSku());
+    Order order = orderService.createNewCartForCustomer(customer);
 
-        return order;
-    }
-    
-}
+    Product  newProduct  = addTestProduct("Plastic Crate Should Be Inactive", "Crates");
+    Category newCategory = newProduct.getDefaultCategory();
+
+    order = orderService.addItem(order.getId(),
+        new OrderItemRequestDTO(newProduct.getId(), newProduct.getDefaultSku().getId(), newCategory.getId(), 1),
+        true);
+
+    // Make the SKU inactive
+    newProduct.getDefaultSku().setActiveEndDate(DateUtils.addDays(new Date(), -1));
+    catalogService.saveSku(newProduct.getDefaultSku());
+
+    return order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  AddToCartException  DOCUMENT ME!
+   */
+  public Order setUpNamedOrder() throws AddToCartException {
+    Customer customer = customerService.saveCustomer(createNamedCustomer());
+
+    Order order = orderService.createNamedOrderForCustomer("Boxes Named Order", customer);
+
+    Product  newProduct  = addTestProduct("Cube Box", "Boxes");
+    Category newCategory = newProduct.getDefaultCategory();
+
+    order = orderService.addItem(order.getId(),
+        new OrderItemRequestDTO(newProduct.getId(), newProduct.getDefaultSku().getId(), newCategory.getId(), 2),
+        true);
+
+    return order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Customer createNamedCustomer() {
+    Customer customer = customerService.createCustomerFromId(null);
+    customer.setUsername(String.valueOf(customer.getId()));
+
+    return customer;
+  }
+
+} // end class OrderBaseTest

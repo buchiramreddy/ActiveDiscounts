@@ -19,19 +19,37 @@ package org.broadleafcommerce.openadmin.server.security.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Class to hold the admin menus and sections for which the passed in user has permissions to view.
- * @author bpolster 
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class AdminMenu {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private List<AdminModule> adminModules = new ArrayList<AdminModule>();
+  private List<AdminModule> adminModules = new ArrayList<AdminModule>();
 
-    public List<AdminModule> getAdminModules() {
-        return adminModules;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setAdminModule(List<AdminModule> adminModules) {
-        this.adminModules = adminModules;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<AdminModule> getAdminModules() {
+    return adminModules;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  adminModules  DOCUMENT ME!
+   */
+  public void setAdminModule(List<AdminModule> adminModules) {
+    this.adminModules = adminModules;
+  }
+} // end class AdminMenu

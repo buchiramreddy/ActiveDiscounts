@@ -16,31 +16,43 @@
 
 package org.broadleafcommerce.common.security.channel;
 
+import java.io.IOException;
+
+import java.util.Collection;
+
+import javax.servlet.ServletException;
+
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.channel.SecureChannelProcessor;
+
 import org.springframework.util.Assert;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.Collection;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class ProtoSecureChannelProcessor extends SecureChannelProcessor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void decide(FilterInvocation invocation, Collection<ConfigAttribute> config) throws IOException, ServletException {
-        Assert.isTrue((invocation != null) && (config != null), "Nulls cannot be provided");
+  /**
+   * @see  org.springframework.security.web.access.channel.SecureChannelProcessor#decide(org.springframework.security.web.FilterInvocation,
+   *       java.util.Collection)
+   */
+  @Override public void decide(FilterInvocation invocation, Collection<ConfigAttribute> config) throws IOException,
+    ServletException {
+    Assert.isTrue((invocation != null) && (config != null), "Nulls cannot be provided");
 
-        for (ConfigAttribute attribute : config) {
-            if (supports(attribute)) {
-                if (invocation.getHttpRequest().getHeader("X-Forwarded-Proto").equals("http")) {
-                    getEntryPoint().commence(invocation.getRequest(), invocation.getResponse());
-                }
-            }
+    for (ConfigAttribute attribute : config) {
+      if (supports(attribute)) {
+        if (invocation.getHttpRequest().getHeader("X-Forwarded-Proto").equals("http")) {
+          getEntryPoint().commence(invocation.getRequest(), invocation.getResponse());
         }
+      }
     }
+  }
 
 }

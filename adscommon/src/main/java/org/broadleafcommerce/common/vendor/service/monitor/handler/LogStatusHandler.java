@@ -18,21 +18,35 @@ package org.broadleafcommerce.common.vendor.service.monitor.handler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.vendor.service.monitor.StatusHandler;
 import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class LogStatusHandler implements StatusHandler {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(LogStatusHandler.class);
+  private static final Log LOG = LogFactory.getLog(LogStatusHandler.class);
 
-    public void handleStatus(String serviceName, ServiceStatusType status) {
-        if (status.equals(ServiceStatusType.DOWN)) {
-            LOG.error(serviceName + " is reporting a status of DOWN");
-        } else if (status.equals(ServiceStatusType.PAUSED)) {
-            LOG.warn(serviceName + " is reporting a status of PAUSED");
-        } else {
-            LOG.info(serviceName + " is reporting a status of UP");
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.vendor.service.monitor.StatusHandler#handleStatus(java.lang.String, org.broadleafcommerce.common.vendor.service.type.ServiceStatusType)
+   */
+  @Override public void handleStatus(String serviceName, ServiceStatusType status) {
+    if (status.equals(ServiceStatusType.DOWN)) {
+      LOG.error(serviceName + " is reporting a status of DOWN");
+    } else if (status.equals(ServiceStatusType.PAUSED)) {
+      LOG.warn(serviceName + " is reporting a status of PAUSED");
+    } else {
+      LOG.info(serviceName + " is reporting a status of UP");
     }
+  }
 
 }

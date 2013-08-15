@@ -16,18 +16,28 @@
 
 package org.broadleafcommerce.common.web;
 
+import java.util.TimeZone;
+
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.TimeZone;
 
 /**
  * Responsible for returning the TimeZone to use for the current request.
  *
- * @author Priyesh Patel
+ * @author   Priyesh Patel
+ * @version  $Revision$, $Date$
  */
-public interface BroadleafTimeZoneResolver  {
+public interface BroadleafTimeZoneResolver {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
 
-    public TimeZone resolveTimeZone(WebRequest request);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  TimeZone resolveTimeZone(WebRequest request);
 
 }

@@ -20,14 +20,22 @@ import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.ProcessContextFactory;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CheckoutProcessContextFactory implements ProcessContextFactory<CheckoutSeed> {
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContextFactory#createContext(org.broadleafcommerce.core.checkout.service.workflow.CheckoutSeed)
+   */
+  @Override public ProcessContext createContext(CheckoutSeed seedData) throws WorkflowException {
+    CheckoutContext context = new CheckoutContext();
+    context.setSeedData(seedData);
 
-    @Override
-    public ProcessContext createContext(CheckoutSeed seedData) throws WorkflowException {
-        CheckoutContext context = new CheckoutContext();
-        context.setSeedData(seedData);
-
-        return context;
-    }
+    return context;
+  }
 
 }

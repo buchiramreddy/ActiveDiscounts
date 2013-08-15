@@ -17,22 +17,68 @@
 package org.broadleafcommerce.cms.field.domain;
 
 import java.io.Serializable;
+
 import java.util.List;
 
+
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface FieldEnumeration extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    List<FieldEnumerationItem> getEnumerationItems();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FieldEnumerationItem> getEnumerationItems();
 
-    void setEnumerationItems(List<FieldEnumerationItem> enumerationItems);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    void setName(String name);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  enumerationItems  DOCUMENT ME!
+   */
+  void setEnumerationItems(List<FieldEnumerationItem> enumerationItems);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+} // end interface FieldEnumeration

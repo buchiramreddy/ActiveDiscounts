@@ -16,16 +16,47 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.profile.core.domain.Country;
-
 import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.Country;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CountryDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<Country> findCountries();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Country> findCountries();
 
-    public Country findCountryByAbbreviation(String abbreviation);
-    
-    public Country save(Country country);
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   abbreviation  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Country findCountryByAbbreviation(String abbreviation);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   country  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Country save(Country country);
+
+} // end interface CountryDao

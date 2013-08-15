@@ -15,73 +15,102 @@
  */
 package org.broadleafcommerce.core.web.processor;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
+
 import org.broadleafcommerce.common.web.dialect.AbstractModelVariableModifierProcessor;
+
 import org.broadleafcommerce.core.rating.domain.RatingSummary;
 import org.broadleafcommerce.core.rating.domain.ReviewDetail;
 import org.broadleafcommerce.core.rating.service.RatingService;
 import org.broadleafcommerce.core.rating.service.type.RatingType;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.web.core.CustomerState;
+
 import org.springframework.stereotype.Component;
+
 import org.thymeleaf.Arguments;
+
 import org.thymeleaf.dom.Element;
+
 import org.thymeleaf.standard.expression.StandardExpressionProcessor;
 
-import javax.annotation.Resource;
 
 /**
- * A Thymeleaf processor that will add the product ratings and reviews to the model
+ * A Thymeleaf processor that will add the product ratings and reviews to the model.
  *
- * @author jfridye
+ * @author   jfridye
+ * @version  $Revision$, $Date$
  */
 @Component("blRatingsProcessor")
 public class RatingsProcessor extends AbstractModelVariableModifierProcessor {
-    
-    @Resource(name = "blRatingService")
-    protected RatingService ratingService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the name of this processor to be used in Thymeleaf template
-     *
-     * NOTE: Thymeleaf normalizes the attribute names by converting all to lower-case
-     * we will use the underscore instead of camel case to avoid confusion
-     *
-     */
-    public RatingsProcessor() {
-        super("ratings");
+  /** DOCUMENT ME! */
+  @Resource(name = "blRatingService")
+  protected RatingService ratingService;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the name of this processor to be used in Thymeleaf template.
+   *
+   * <p>NOTE: Thymeleaf normalizes the attribute names by converting all to lower-case we will use the underscore
+   * instead of camel case to avoid confusion</p>
+   */
+  public RatingsProcessor() {
+    super("ratings");
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.AbstractProcessor#getPrecedence()
+   */
+  @Override public int getPrecedence() {
+    return 10000;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.dialect.AbstractModelVariableModifierProcessor#modifyModelAttributes(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element)
+   */
+  @Override protected void modifyModelAttributes(Arguments arguments, Element element) {
+    String        itemId        = String.valueOf(StandardExpressionProcessor.processExpression(arguments,
+          element.getAttributeValue("itemId")));
+    RatingSummary ratingSummary = ratingService.readRatingSummary(itemId, RatingType.PRODUCT);
+
+    if (ratingSummary != null) {
+      addToModel(arguments, getRatingsVar(element), ratingSummary);
     }
 
-    @Override
-    public int getPrecedence() {
-        return 10000;
+    Customer     customer     = CustomerState.getCustomer();
+    ReviewDetail reviewDetail = null;
+
+    if (!customer.isAnonymous()) {
+      reviewDetail = ratingService.readReviewByCustomerAndItem(customer, itemId);
     }
 
-    @Override
-    protected void modifyModelAttributes(Arguments arguments, Element element) {
-        String itemId = String.valueOf(StandardExpressionProcessor.processExpression(arguments, element.getAttributeValue("itemId")));
-        RatingSummary ratingSummary = ratingService.readRatingSummary(itemId, RatingType.PRODUCT);
-        if (ratingSummary != null) {
-            addToModel(arguments, getRatingsVar(element), ratingSummary);
-        }
-        
-        Customer customer = CustomerState.getCustomer();
-        ReviewDetail reviewDetail = null;
-        if (!customer.isAnonymous()) {
-            reviewDetail = ratingService.readReviewByCustomerAndItem(customer, itemId);
-        }
-        if (reviewDetail != null) {
-            addToModel(arguments, "currentCustomerReview", reviewDetail);
-        }
-        
-    }
-    
-    private String getRatingsVar(Element element) {
-        String ratingsVar = element.getAttributeValue("ratingsVar");
-        if (StringUtils.isNotEmpty(ratingsVar)) {
-            return ratingsVar;
-        } 
-        return "ratingSummary";
+    if (reviewDetail != null) {
+      addToModel(arguments, "currentCustomerReview", reviewDetail);
     }
 
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private String getRatingsVar(Element element) {
+    String ratingsVar = element.getAttributeValue("ratingsVar");
+
+    if (StringUtils.isNotEmpty(ratingsVar)) {
+      return ratingsVar;
+    }
+
+    return "ratingSummary";
+  }
+
+} // end class RatingsProcessor

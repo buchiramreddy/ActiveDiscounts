@@ -17,13 +17,13 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public enum OperationType {
-    NONDESTRUCTIVEREMOVE,
-    BASIC,
-    ADORNEDTARGETLIST,
-    MAP
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  NONDESTRUCTIVEREMOVE, BASIC, ADORNEDTARGETLIST, MAP
 }

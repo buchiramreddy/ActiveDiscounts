@@ -16,72 +16,110 @@
 
 package org.broadleafcommerce.openadmin.web.processor;
 
-import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldWrapper;
-import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
-import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor;
-import org.thymeleaf.spring3.context.SpringWebContext;
-import org.thymeleaf.standard.expression.StandardExpressionProcessor;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldWrapper;
+import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
+import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldServiceFactory;
+
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.stereotype.Component;
+
+import org.thymeleaf.Arguments;
+
+import org.thymeleaf.dom.Element;
+
+import org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor;
+
+import org.thymeleaf.spring3.context.SpringWebContext;
+
+import org.thymeleaf.standard.expression.StandardExpressionProcessor;
+
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 @Component("blAdminFieldBuilderProcessor")
 public class AdminFieldBuilderProcessor extends AbstractLocalVariableDefinitionElementProcessor {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private RuleBuilderFieldServiceFactory ruleBuilderFieldServiceFactory;
+  private RuleBuilderFieldServiceFactory ruleBuilderFieldServiceFactory;
 
-    /**
-     * Sets the name of this processor to be used in Thymeleaf template
-     */
-    public AdminFieldBuilderProcessor() {
-        super("admin_field_builder");
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the name of this processor to be used in Thymeleaf template.
+   */
+  public AdminFieldBuilderProcessor() {
+    super("admin_field_builder");
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.AbstractProcessor#getPrecedence()
+   */
+  @Override public int getPrecedence() {
+    return 100;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor#getNewLocalVariables(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element)
+   */
+  @Override protected Map<String, Object> getNewLocalVariables(Arguments arguments, Element element) {
+    initServices(arguments);
+
+    FieldWrapper fieldWrapper = new FieldWrapper();
+
+    String fieldBuilder = (String) StandardExpressionProcessor.processExpression(arguments,
+        element.getAttributeValue("fieldBuilder"));
+
+    if (fieldBuilder != null) {
+      RuleBuilderFieldService ruleBuilderFieldService = ruleBuilderFieldServiceFactory.createInstance(fieldBuilder);
+
+      if (ruleBuilderFieldService != null) {
+        fieldWrapper = ruleBuilderFieldService.buildFields();
+      }
     }
 
-    @Override
-    public int getPrecedence() {
-        return 100;
+    Map<String, Object> newVars = new HashMap<String, Object>();
+    newVars.put("fieldWrapper", fieldWrapper);
+
+    return newVars;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  arguments  DOCUMENT ME!
+   */
+  protected void initServices(Arguments arguments) {
+    final ApplicationContext applicationContext = ((SpringWebContext) arguments.getContext()).getApplicationContext();
+
+    if (ruleBuilderFieldServiceFactory == null) {
+      ruleBuilderFieldServiceFactory = (RuleBuilderFieldServiceFactory) applicationContext.getBean(
+          "blRuleBuilderFieldServiceFactory");
     }
 
-    protected void initServices(Arguments arguments) {
-        final ApplicationContext applicationContext = ((SpringWebContext) arguments.getContext()).getApplicationContext();
+  }
 
-        if (ruleBuilderFieldServiceFactory == null) {
-            ruleBuilderFieldServiceFactory = (RuleBuilderFieldServiceFactory)
-                    applicationContext.getBean("blRuleBuilderFieldServiceFactory");
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    }
-
-    @Override
-    protected Map<String, Object> getNewLocalVariables(Arguments arguments, Element element) {
-        initServices(arguments);
-        FieldWrapper fieldWrapper = new FieldWrapper();
-
-        String fieldBuilder = (String) StandardExpressionProcessor.processExpression(arguments,
-            element.getAttributeValue("fieldBuilder"));
-
-        if (fieldBuilder != null) {
-            RuleBuilderFieldService ruleBuilderFieldService = ruleBuilderFieldServiceFactory.createInstance(fieldBuilder);
-            if (ruleBuilderFieldService != null) {
-                fieldWrapper = ruleBuilderFieldService.buildFields();
-            }
-        }
-        
-        Map<String, Object> newVars = new HashMap<String, Object>();
-        newVars.put("fieldWrapper", fieldWrapper);
-        return newVars;
-    }
-
-    @Override
-    protected boolean removeHostElement(Arguments arguments, Element element) {
-        return false;
-    }
-}
+  /**
+   * @see  org.thymeleaf.processor.element.AbstractLocalVariableDefinitionElementProcessor#removeHostElement(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element)
+   */
+  @Override protected boolean removeHostElement(Arguments arguments, Element element) {
+    return false;
+  }
+} // end class AdminFieldBuilderProcessor

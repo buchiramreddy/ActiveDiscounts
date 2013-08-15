@@ -16,27 +16,90 @@
 
 package org.broadleafcommerce.openadmin.server.security.domain;
 
-import org.broadleafcommerce.openadmin.server.service.type.ContextType;
-
 import java.io.Serializable;
+
 import java.util.Set;
 
+import org.broadleafcommerce.openadmin.server.service.type.ContextType;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface AdminSecurityContext extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ContextType getContextType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Set<AdminPermission> getAllPermissions();
 
-    public void setContextType(ContextType contextType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getContextKey();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Set<AdminRole> getAllRoles();
 
-    public void setContextKey(String contextKey);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Set<AdminRole> getAllRoles();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getContextKey();
 
-    public void setAllRoles(Set<AdminRole> allRoles);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Set<AdminPermission> getAllPermissions();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ContextType getContextType();
 
-    public void setAllPermissions(Set<AdminPermission> allPermissions);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  allPermissions  DOCUMENT ME!
+   */
+  void setAllPermissions(Set<AdminPermission> allPermissions);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  allRoles  DOCUMENT ME!
+   */
+  void setAllRoles(Set<AdminRole> allRoles);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  contextKey  DOCUMENT ME!
+   */
+  void setContextKey(String contextKey);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  contextType  DOCUMENT ME!
+   */
+  void setContextType(ContextType contextType);
+
+} // end interface AdminSecurityContext

@@ -16,33 +16,77 @@
 
 package org.broadleafcommerce.profile.core.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.service.exception.AddressVerificationException;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface AddressService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Address saveAddress(Address address);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address create();
 
-    public Address readAddressById(Long addressId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Address create();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  void delete(Address address);
 
-    public void delete(Address address);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Verifies the address and returns a collection of addresses. If the address was 
-     * invalid but close to a match, this method should return a list of one or more addresses that may be valid. 
-     * If the address is valid, implementations should return the valid address in the list. 
-     * Implementations may set the tokenized address, zip four, and verification level. If the address could not 
-     * be validated, implementors should throw an <code>AddressValidationException</code>.
-     * 
-     * For example, an address may be close, but missing zip four. This service should return 
-     * the address in question with zip four populated.
-     * @param address
-     * @return
-     */
-    public List<Address> verifyAddress(Address address) throws AddressVerificationException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   addressId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address readAddressById(Long addressId);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   address  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address saveAddress(Address address);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Verifies the address and returns a collection of addresses. If the address was invalid but close to a match, this
+   * method should return a list of one or more addresses that may be valid. If the address is valid, implementations
+   * should return the valid address in the list. Implementations may set the tokenized address, zip four, and
+   * verification level. If the address could not be validated, implementors should throw an <code>
+   * AddressValidationException</code>.
+   *
+   * <p>For example, an address may be close, but missing zip four. This service should return the address in question
+   * with zip four populated.</p>
+   *
+   * @param   address  DOCUMENT ME!
+   *
+   * @return  verifies the address and returns a collection of addresses.
+   *
+   * @throws  AddressVerificationException  DOCUMENT ME!
+   */
+  List<Address> verifyAddress(Address address) throws AddressVerificationException;
+
+} // end interface AddressService

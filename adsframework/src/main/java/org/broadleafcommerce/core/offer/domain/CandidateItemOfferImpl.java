@@ -16,19 +16,8 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-import org.broadleafcommerce.core.order.domain.OrderItemImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.lang.reflect.Method;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -41,165 +30,292 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.OrderItem;
+import org.broadleafcommerce.core.order.domain.OrderItemImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CANDIDATE_ITEM_OFFER")
-@Inheritance(strategy=InheritanceType.JOINED)
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
 public class CandidateItemOfferImpl implements CandidateItemOffer, Cloneable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final Log LOG = LogFactory.getLog(CandidateItemOfferImpl.class);
-    public static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  public static final Log  LOG              = LogFactory.getLog(CandidateItemOfferImpl.class);
 
-    @Id
-    @GeneratedValue(generator= "CandidateItemOfferId")
-    @GenericGenerator(
-        name="CandidateItemOfferId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CandidateItemOfferImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.offer.domain.CandidateItemOfferImpl")
-        }
-    )
-    @Column(name = "CANDIDATE_ITEM_OFFER_ID")
-    protected Long id;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    @ManyToOne(targetEntity = OrderItemImpl.class)
-    @JoinColumn(name = "ORDER_ITEM_ID")
-    @Index(name="CANDIDATE_ITEM_INDEX", columnNames={"ORDER_ITEM_ID"})
-    protected OrderItem orderItem;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @ManyToOne(targetEntity = OfferImpl.class, optional=false)
-    @JoinColumn(name = "OFFER_ID")
-    @Index(name="CANDIDATE_ITEMOFFER_INDEX", columnNames={"OFFER_ID"})
-    protected Offer offer;
+  /** DOCUMENT ME! */
+  @Column(name = "CANDIDATE_ITEM_OFFER_ID")
+  @GeneratedValue(generator = "CandidateItemOfferId")
+  @GenericGenerator(
+    name       = "CandidateItemOfferId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CandidateItemOfferImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.offer.domain.CandidateItemOfferImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Column(name = "DISCOUNTED_PRICE", precision=19, scale=5)
-    private BigDecimal discountedPrice;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CANDIDATE_ITEMOFFER_INDEX",
+    columnNames = { "OFFER_ID" }
+  )
+  @JoinColumn(name = "OFFER_ID")
+  @ManyToOne(
+    targetEntity = OfferImpl.class,
+    optional     = false
+  )
+  protected Offer offer;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CANDIDATE_ITEM_INDEX",
+    columnNames = { "ORDER_ITEM_ID" }
+  )
+  @JoinColumn(name = "ORDER_ITEM_ID")
+  @ManyToOne(targetEntity = OrderItemImpl.class)
+  protected OrderItem orderItem;
+
+  @Column(
+    name      = "DISCOUNTED_PRICE",
+    precision = 19,
+    scale     = 5
+  )
+  private BigDecimal discountedPrice;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemOffer  DOCUMENT ME!
+   *
+   * @throws  CloneNotSupportedException  DOCUMENT ME!
+   * @throws  SecurityException           DOCUMENT ME!
+   * @throws  NoSuchMethodException       DOCUMENT ME!
+   */
+  public void checkCloneable(CandidateItemOffer itemOffer) throws CloneNotSupportedException, SecurityException,
+    NoSuchMethodException {
+    Method cloneMethod = itemOffer.getClass().getMethod("clone", new Class[] {});
+
+    if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce")
+          && !itemOffer.getClass().getName().startsWith("org.broadleafcommerce")) {
+      // subclass is not implementing the clone method
+      throw new CloneNotSupportedException(
+        "Custom extensions and implementations should implement clone in order to guarantee split and merge operations are performed accurately");
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#clone()
+   */
+  @Override public CandidateItemOffer clone() {
+    // instantiate from the fully qualified name via reflection
+    CandidateItemOffer candidateItemOffer;
+
+    try {
+      candidateItemOffer = (CandidateItemOffer) Class.forName(this.getClass().getName()).newInstance();
+
+      try {
+        checkCloneable(candidateItemOffer);
+      } catch (CloneNotSupportedException e) {
+        LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: "
+          + candidateItemOffer.getClass().getName(), e);
+      }
+
+      // candidateItemOffer.setCandidateQualifiersMap(getCandidateQualifiersMap());
+      // candidateItemOffer.setCandidateTargets(getCandidateTargets());
+      candidateItemOffer.setOffer(offer);
+      candidateItemOffer.setOrderItem(orderItem);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    return candidateItemOffer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public OrderItem getOrderItem() {
-        return orderItem;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public void setOrderItem(OrderItem orderItem) {
-        this.orderItem = orderItem;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setOffer(Offer offer) {
-        this.offer = offer;
+    CandidateItemOfferImpl other = (CandidateItemOfferImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public int getPriority() {
-        return offer.getPriority();
+    if (discountedPrice == null) {
+      if (other.discountedPrice != null) {
+        return false;
+      }
+    } else if (!discountedPrice.equals(other.discountedPrice)) {
+      return false;
     }
 
-    @Override
-    public Offer getOffer() {
-        return offer;
-    }
-    
-    @Override
-    public Money getDiscountedPrice() {
-        return discountedPrice == null ? null : BroadleafCurrencyUtils.getMoney(discountedPrice, getOrderItem().getOrder().getCurrency());
-    }
-    
-    @Override
-    public void setDiscountedPrice(Money discountedPrice) {
-        this.discountedPrice = discountedPrice.getAmount();
-    }
-    
-    public void checkCloneable(CandidateItemOffer itemOffer) throws CloneNotSupportedException, SecurityException, NoSuchMethodException {
-        Method cloneMethod = itemOffer.getClass().getMethod("clone", new Class[]{});
-        if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce") && !itemOffer.getClass().getName().startsWith("org.broadleafcommerce")) {
-            //subclass is not implementing the clone method
-            throw new CloneNotSupportedException("Custom extensions and implementations should implement clone in order to guarantee split and merge operations are performed accurately");
-        }
-    }
-    
-    @Override
-    public CandidateItemOffer clone() {
-        //instantiate from the fully qualified name via reflection
-        CandidateItemOffer candidateItemOffer;
-        try {
-            candidateItemOffer = (CandidateItemOffer) Class.forName(this.getClass().getName()).newInstance();
-            try {
-                checkCloneable(candidateItemOffer);
-            } catch (CloneNotSupportedException e) {
-                LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: " + candidateItemOffer.getClass().getName(), e);
-            }
-            //candidateItemOffer.setCandidateQualifiersMap(getCandidateQualifiersMap());
-            //candidateItemOffer.setCandidateTargets(getCandidateTargets());
-            candidateItemOffer.setOffer(offer);
-            candidateItemOffer.setOrderItem(orderItem);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        
-        return candidateItemOffer;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((discountedPrice == null) ? 0 : discountedPrice.hashCode());
-        result = prime * result + ((offer == null) ? 0 : offer.hashCode());
-        result = prime * result + ((orderItem == null) ? 0 : orderItem.hashCode());
-        return result;
+    if (offer == null) {
+      if (other.offer != null) {
+        return false;
+      }
+    } else if (!offer.equals(other.offer)) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        CandidateItemOfferImpl other = (CandidateItemOfferImpl) obj;
-
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
-
-        if (discountedPrice == null) {
-            if (other.discountedPrice != null) {
-                return false;
-            }
-        } else if (!discountedPrice.equals(other.discountedPrice)) {
-            return false;
-        }
-        if (offer == null) {
-            if (other.offer != null) {
-                return false;
-            }
-        } else if (!offer.equals(other.offer)) {
-            return false;
-        }
-        if (orderItem == null) {
-            if (other.orderItem != null) {
-                return false;
-            }
-        } else if (!orderItem.equals(other.orderItem)) {
-            return false;
-        }
-        return true;
+    if (orderItem == null) {
+      if (other.orderItem != null) {
+        return false;
+      }
+    } else if (!orderItem.equals(other.orderItem)) {
+      return false;
     }
 
-}
+    return true;
+  } // end method equals
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#getDiscountedPrice()
+   */
+  @Override public Money getDiscountedPrice() {
+    return (discountedPrice == null)
+      ? null : BroadleafCurrencyUtils.getMoney(discountedPrice, getOrderItem().getOrder().getCurrency());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#getOffer()
+   */
+  @Override public Offer getOffer() {
+    return offer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#getOrderItem()
+   */
+  @Override public OrderItem getOrderItem() {
+    return orderItem;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#getPriority()
+   */
+  @Override public int getPriority() {
+    return offer.getPriority();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((discountedPrice == null) ? 0 : discountedPrice.hashCode());
+    result = (prime * result) + ((offer == null) ? 0 : offer.hashCode());
+    result = (prime * result) + ((orderItem == null) ? 0 : orderItem.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#setDiscountedPrice(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setDiscountedPrice(Money discountedPrice) {
+    this.discountedPrice = discountedPrice.getAmount();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#setOffer(org.broadleafcommerce.core.offer.domain.Offer)
+   */
+  @Override public void setOffer(Offer offer) {
+    this.offer = offer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateItemOffer#setOrderItem(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public void setOrderItem(OrderItem orderItem) {
+    this.orderItem = orderItem;
+  }
+
+} // end class CandidateItemOfferImpl

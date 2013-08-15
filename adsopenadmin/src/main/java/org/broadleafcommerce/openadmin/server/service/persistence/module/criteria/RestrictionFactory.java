@@ -17,10 +17,22 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface RestrictionFactory {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    Restriction getRestriction(String type, String propertyId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type        DOCUMENT ME!
+   * @param   propertyId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Restriction getRestriction(String type, String propertyId);
 
 }

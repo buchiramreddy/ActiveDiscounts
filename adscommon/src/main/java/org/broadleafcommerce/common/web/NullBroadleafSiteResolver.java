@@ -16,28 +16,37 @@
 
 package org.broadleafcommerce.common.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.site.domain.Site;
+
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * Returns null for the Site (typical for non-multi-site implementations of
- * Broadleaf Commerce.
+ * Returns null for the Site (typical for non-multi-site implementations of Broadleaf Commerce.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class NullBroadleafSiteResolver implements BroadleafSiteResolver {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Site resolveSite(HttpServletRequest request) {
-        return resolveSite(new ServletWebRequest(request));
-    }
-    
-    @Override
-    public Site resolveSite(WebRequest request) {
-        return null;
-    }
-    
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafSiteResolver#resolveSite(javax.servlet.http.HttpServletRequest)
+   */
+  @Override public Site resolveSite(HttpServletRequest request) {
+    return resolveSite(new ServletWebRequest(request));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafSiteResolver#resolveSite(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public Site resolveSite(WebRequest request) {
+    return null;
+  }
+
 }

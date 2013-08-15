@@ -16,166 +16,239 @@
 
 package org.broadleafcommerce.profile.web.core.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.web.AbstractBroadleafWebRequestProcessor;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.core.service.CustomerService;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.WebRequest;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.web.AbstractBroadleafWebRequestProcessor;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.service.CustomerService;
+
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.context.request.WebRequest;
+
 
 /**
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.profile.web.core.security.CustomerStateFilter}
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.profile.web.core.security.CustomerStateFilter}
+ * @version  $Revision$, $Date$
  */
 @Component("blCustomerStateRequestProcessor")
-public class CustomerStateRequestProcessor extends AbstractBroadleafWebRequestProcessor implements ApplicationEventPublisherAware {
+public class CustomerStateRequestProcessor extends AbstractBroadleafWebRequestProcessor
+  implements ApplicationEventPublisherAware {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    /** Logger for this class and subclasses */
-    protected final Log logger = LogFactory.getLog(getClass());
+  /** DOCUMENT ME! */
+  public static final String BLC_RULE_MAP_PARAM = "blRuleMap";
 
-    public static final String BLC_RULE_MAP_PARAM = "blRuleMap";
+  /** DOCUMENT ME! */
+  protected static String     customerRequestAttributeName                 = "customer";
 
-    @Resource(name="blCustomerService")
-    protected CustomerService customerService;
+  /** DOCUMENT ME! */
+  public static final String  ANONYMOUS_CUSTOMER_SESSION_ATTRIBUTE_NAME    = "_blc_anonymousCustomer";
+  private static final String LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME = "_blc_lastPublishedEvent";
 
-    private ApplicationEventPublisher eventPublisher;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected static String customerRequestAttributeName = "customer";
-    public static final String ANONYMOUS_CUSTOMER_SESSION_ATTRIBUTE_NAME="_blc_anonymousCustomer";
-    private static final String LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME="_blc_lastPublishedEvent";
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  protected CustomerService customerService;
 
-    @Override
-    public void process(WebRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Customer customer = null;
-        if ((authentication != null) && !(authentication instanceof AnonymousAuthenticationToken)) {
-            String userName = authentication.getName();
-            customer = (Customer) request.getAttribute(customerRequestAttributeName, WebRequest.SCOPE_REQUEST);
-            if (userName != null && (customer == null || !userName.equals(customer.getUsername()))) {
-                // can only get here if the authenticated user does not match the user in session
-                customer = customerService.readCustomerByUsername(userName);
-                if (logger.isDebugEnabled() && customer != null) {
-                    logger.debug("Customer found by username " + userName);
-                }
+  /** Logger for this class and subclasses. */
+  protected final Log logger = LogFactory.getLog(getClass());
+
+  private ApplicationEventPublisher eventPublisher;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String getCustomerRequestAttributeName() {
+    return customerRequestAttributeName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerRequestAttributeName  DOCUMENT ME!
+   */
+  public static void setCustomerRequestAttributeName(
+    String customerRequestAttributeName) {
+    CustomerStateRequestProcessor.customerRequestAttributeName = customerRequestAttributeName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the session attribute to store the anonymous customer. Some implementations may wish to have a different
+   * anonymous customer instance (and as a result a different cart).
+   *
+   * @return  the session attribute to store the anonymous customer.
+   */
+  public String getAnonymousCustomerAttributeName() {
+    return ANONYMOUS_CUSTOMER_SESSION_ATTRIBUTE_NAME;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafWebRequestProcessor#process(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public void process(WebRequest request) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Customer       customer       = null;
+
+    if ((authentication != null) && !(authentication instanceof AnonymousAuthenticationToken)) {
+      String userName = authentication.getName();
+      customer = (Customer) request.getAttribute(customerRequestAttributeName, WebRequest.SCOPE_REQUEST);
+
+      if ((userName != null) && ((customer == null) || !userName.equals(customer.getUsername()))) {
+        // can only get here if the authenticated user does not match the user in session
+        customer = customerService.readCustomerByUsername(userName);
+
+        if (logger.isDebugEnabled() && (customer != null)) {
+          logger.debug("Customer found by username " + userName);
+        }
+      }
+
+      if (customer != null) {
+        ApplicationEvent lastPublishedEvent = (ApplicationEvent) request.getAttribute(
+            LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME, WebRequest.SCOPE_REQUEST);
+
+        if (authentication instanceof RememberMeAuthenticationToken) {
+          // set transient property of customer
+          customer.setCookied(true);
+
+          boolean publishRememberMeEvent = true;
+
+          if ((lastPublishedEvent != null) && (lastPublishedEvent instanceof CustomerAuthenticatedFromCookieEvent)) {
+            CustomerAuthenticatedFromCookieEvent cookieEvent = (CustomerAuthenticatedFromCookieEvent)
+              lastPublishedEvent;
+
+            if (userName.equals(cookieEvent.getCustomer().getUsername())) {
+              publishRememberMeEvent = false;
             }
-            if (customer != null) {
-                ApplicationEvent lastPublishedEvent = (ApplicationEvent) request.getAttribute(LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME, WebRequest.SCOPE_REQUEST);
-                if (authentication instanceof RememberMeAuthenticationToken) {
-                    // set transient property of customer
-                    customer.setCookied(true);
-                    boolean publishRememberMeEvent = true;
-                    if (lastPublishedEvent != null && lastPublishedEvent instanceof CustomerAuthenticatedFromCookieEvent) {
-                        CustomerAuthenticatedFromCookieEvent cookieEvent = (CustomerAuthenticatedFromCookieEvent) lastPublishedEvent;
-                        if (userName.equals(cookieEvent.getCustomer().getUsername())) {
-                            publishRememberMeEvent = false;
-                        }
-                    }
-                    if (publishRememberMeEvent) {
-                        CustomerAuthenticatedFromCookieEvent cookieEvent = new CustomerAuthenticatedFromCookieEvent(customer, this.getClass().getName()); 
-                        eventPublisher.publishEvent(cookieEvent);
-                        request.setAttribute(LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME, cookieEvent, WebRequest.SCOPE_REQUEST);
-                    }                       
-                } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-                    customer.setLoggedIn(true);
-                    boolean publishLoggedInEvent = true;
-                    if (lastPublishedEvent != null && lastPublishedEvent instanceof CustomerLoggedInEvent) {
-                        CustomerLoggedInEvent loggedInEvent = (CustomerLoggedInEvent) lastPublishedEvent;
-                        if (userName.equals(loggedInEvent.getCustomer().getUsername())) {
-                            publishLoggedInEvent= false;
-                        }
-                    }
-                    if (publishLoggedInEvent) {
-                        CustomerLoggedInEvent loggedInEvent = new CustomerLoggedInEvent(customer, this.getClass().getName()); 
-                        eventPublisher.publishEvent(loggedInEvent);
-                        request.setAttribute(LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME, loggedInEvent, WebRequest.SCOPE_REQUEST);
-                    }                        
-                } else {
-                    customer = resolveAuthenticatedCustomer(authentication);
-                }
+          }
+
+          if (publishRememberMeEvent) {
+            CustomerAuthenticatedFromCookieEvent cookieEvent = new CustomerAuthenticatedFromCookieEvent(customer,
+                this.getClass().getName());
+            eventPublisher.publishEvent(cookieEvent);
+            request.setAttribute(LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME, cookieEvent, WebRequest.SCOPE_REQUEST);
+          }
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+          customer.setLoggedIn(true);
+
+          boolean publishLoggedInEvent = true;
+
+          if ((lastPublishedEvent != null) && (lastPublishedEvent instanceof CustomerLoggedInEvent)) {
+            CustomerLoggedInEvent loggedInEvent = (CustomerLoggedInEvent) lastPublishedEvent;
+
+            if (userName.equals(loggedInEvent.getCustomer().getUsername())) {
+              publishLoggedInEvent = false;
             }
-        }
+          }
 
-        if (customer == null) {
-            // This is an anonymous customer.
-            // TODO: Handle a custom cookie (different than remember me) that is just for anonymous users.  
-            // This can be used to remember their cart from a previous visit.
-            // Cookie logic probably needs to be configurable - with TCS as the exception.
+          if (publishLoggedInEvent) {
+            CustomerLoggedInEvent loggedInEvent = new CustomerLoggedInEvent(customer, this.getClass().getName());
+            eventPublisher.publishEvent(loggedInEvent);
+            request.setAttribute(LAST_PUBLISHED_EVENT_SESSION_ATTRIBUTED_NAME, loggedInEvent, WebRequest.SCOPE_REQUEST);
+          }
+        } else {
+          customer = resolveAuthenticatedCustomer(authentication);
+        } // end if-else
+      } // end if
+    } // end if
 
-            customer = resolveAnonymousCustomer(request);
-        }
-        request.setAttribute(customerRequestAttributeName, customer, WebRequest.SCOPE_REQUEST);
+    if (customer == null) {
+      // This is an anonymous customer.
+      // TODO: Handle a custom cookie (different than remember me) that is just for anonymous users.
+      // This can be used to remember their cart from a previous visit.
+      // Cookie logic probably needs to be configurable - with TCS as the exception.
 
-        // Setup customer for content rule processing
-        Map<String,Object> ruleMap = (Map<String, Object>) request.getAttribute(BLC_RULE_MAP_PARAM, WebRequest.SCOPE_REQUEST);
-        if (ruleMap == null) {
-            ruleMap = new HashMap<String,Object>();
-        }
-        ruleMap.put("customer", customer);
-        request.setAttribute(BLC_RULE_MAP_PARAM, ruleMap, WebRequest.SCOPE_REQUEST);
-        
-    }
-    
-    /**
-     * Subclasses can extend to resolve other types of Authentication tokens
-     * @param authentication
-     * @return
-     */
-    public Customer resolveAuthenticatedCustomer(Authentication authentication) {
-        return null;
+      customer = resolveAnonymousCustomer(request);
     }
 
-    /**
-     * Implementors can subclass to change how anonymous customers are created.
-     * @param request
-     * @return
-     */
-    public Customer resolveAnonymousCustomer(WebRequest request) {
-        Customer customer;
-        customer = (Customer) request.getAttribute(getAnonymousCustomerAttributeName(), WebRequest.SCOPE_GLOBAL_SESSION);
-        if (customer == null) { 
-            customer = customerService.createNewCustomer();
-            customer.setAnonymous(true);
-            request.setAttribute(getAnonymousCustomerAttributeName(), customer, WebRequest.SCOPE_GLOBAL_SESSION);
-        }
-        return customer;
+    request.setAttribute(customerRequestAttributeName, customer, WebRequest.SCOPE_REQUEST);
+
+    // Setup customer for content rule processing
+    Map<String, Object> ruleMap = (Map<String, Object>) request.getAttribute(BLC_RULE_MAP_PARAM,
+        WebRequest.SCOPE_REQUEST);
+
+    if (ruleMap == null) {
+      ruleMap = new HashMap<String, Object>();
     }
 
-    /**
-     * Returns the session attribute to store the anonymous customer.
-     * Some implementations may wish to have a different anonymous customer instance (and as a result a different cart). 
-     * @return
-     */
-    public String getAnonymousCustomerAttributeName() {
-        return ANONYMOUS_CUSTOMER_SESSION_ATTRIBUTE_NAME;
+    ruleMap.put("customer", customer);
+    request.setAttribute(BLC_RULE_MAP_PARAM, ruleMap, WebRequest.SCOPE_REQUEST);
+
+  } // end method process
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Implementors can subclass to change how anonymous customers are created.
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  implementors can subclass to change how anonymous customers are created.
+   */
+  public Customer resolveAnonymousCustomer(WebRequest request) {
+    Customer customer;
+    customer = (Customer) request.getAttribute(getAnonymousCustomerAttributeName(), WebRequest.SCOPE_GLOBAL_SESSION);
+
+    if (customer == null) {
+      customer = customerService.createNewCustomer();
+      customer.setAnonymous(true);
+      request.setAttribute(getAnonymousCustomerAttributeName(), customer, WebRequest.SCOPE_GLOBAL_SESSION);
     }
 
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
-        this.eventPublisher = eventPublisher;
-    }
+    return customer;
+  }
 
-    public static String getCustomerRequestAttributeName() {
-        return customerRequestAttributeName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static void setCustomerRequestAttributeName(
-            String customerRequestAttributeName) {
-        CustomerStateRequestProcessor.customerRequestAttributeName = customerRequestAttributeName;
-    }
+  /**
+   * Subclasses can extend to resolve other types of Authentication tokens.
+   *
+   * @param   authentication  DOCUMENT ME!
+   *
+   * @return  subclasses can extend to resolve other types of Authentication tokens.
+   */
+  public Customer resolveAuthenticatedCustomer(Authentication authentication) {
+    return null;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.ApplicationEventPublisherAware#setApplicationEventPublisher(org.springframework.context.ApplicationEventPublisher)
+   */
+  @Override public void setApplicationEventPublisher(ApplicationEventPublisher eventPublisher) {
+    this.eventPublisher = eventPublisher;
+  }
+
+} // end class CustomerStateRequestProcessor

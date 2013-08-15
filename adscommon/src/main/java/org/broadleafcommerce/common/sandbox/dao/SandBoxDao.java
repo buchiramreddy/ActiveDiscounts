@@ -20,16 +20,72 @@ import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.sandbox.domain.SandBoxType;
 import org.broadleafcommerce.common.site.domain.Site;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SandBoxDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public SandBox retrieve(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   site         DOCUMENT ME!
+   * @param   sandBoxName  DOCUMENT ME!
+   * @param   sandBoxType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox createSandBox(Site site, String sandBoxName, SandBoxType sandBoxType);
 
-    public SandBox retrieveSandBoxByType(Site site, SandBoxType sandboxType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBox retrieveNamedSandBox(Site site, SandBoxType sandboxType, String sandboxName);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entity  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox persist(SandBox entity);
 
-    public SandBox persist(SandBox entity);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBox createSandBox(Site site, String sandBoxName, SandBoxType sandBoxType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox retrieve(Long id);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   site         DOCUMENT ME!
+   * @param   sandboxType  DOCUMENT ME!
+   * @param   sandboxName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox retrieveNamedSandBox(Site site, SandBoxType sandboxType, String sandboxName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   site         DOCUMENT ME!
+   * @param   sandboxType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox retrieveSandBoxByType(Site site, SandBoxType sandboxType);
+
+} // end interface SandBoxDao

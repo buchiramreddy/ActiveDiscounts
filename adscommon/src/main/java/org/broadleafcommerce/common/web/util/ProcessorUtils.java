@@ -16,57 +16,74 @@
 
 package org.broadleafcommerce.common.web.util;
 
-import org.broadleafcommerce.common.web.resource.BroadleafResourceHttpRequestHandler;
-import org.springframework.context.ApplicationContext;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.spring3.context.SpringWebContext;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.web.resource.BroadleafResourceHttpRequestHandler;
+
+import org.springframework.context.ApplicationContext;
+
+import org.thymeleaf.Arguments;
+
+import org.thymeleaf.spring3.context.SpringWebContext;
+
+
 /**
- * Note that the utility methods to return a js or css request handler cannot be replaced with @Resource
- * annotations due to these beans only existing in a web application context, whereas the callers of these
- * resources may exist in both web and non-web application contexts.
- * 
- * @author Andre Azzolini (apazzolini)
+ * Note that the utility methods to return a js or css request handler cannot be replaced with @Resource annotations due
+ * to these beans only existing in a web application context, whereas the callers of these resources may exist in both
+ * web and non-web application contexts.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class ProcessorUtils {
-    
-    protected static Map<String, Object> cachedBeans = new HashMap<String, Object>();
-    
-    /**
-     * Note: See the class level comment for {@link org.broadleafcommerce.common.web.util.ProcessorUtils}
-     * 
-     * @param arguments
-     * @return the "blJsResources" bean
-     */
-    public static BroadleafResourceHttpRequestHandler getJsRequestHandler(Arguments arguments) {
-        String key = "blJsResources";
-        BroadleafResourceHttpRequestHandler reqHandler = (BroadleafResourceHttpRequestHandler) cachedBeans.get(key);
-        if (reqHandler == null) {
-            final ApplicationContext appCtx = ((SpringWebContext) arguments.getContext()).getApplicationContext();
-            reqHandler = (BroadleafResourceHttpRequestHandler) appCtx.getBean(key);
-            cachedBeans.put(key, reqHandler);
-        }
-        return reqHandler;
-    }
-    
-    /**
-     * Note: See the class level comment for {@link org.broadleafcommerce.common.web.util.ProcessorUtils}
-     * 
-     * @param arguments
-     * @return the "blCssResources" bean
-     */
-    public static BroadleafResourceHttpRequestHandler getCssRequestHandler(Arguments arguments) {
-        String key = "blCssResources";
-        BroadleafResourceHttpRequestHandler reqHandler = (BroadleafResourceHttpRequestHandler) cachedBeans.get(key);
-        if (reqHandler == null) {
-            final ApplicationContext appCtx = ((SpringWebContext) arguments.getContext()).getApplicationContext();
-            reqHandler = (BroadleafResourceHttpRequestHandler) appCtx.getBean(key);
-            cachedBeans.put(key, reqHandler);
-        }
-        return reqHandler;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected static Map<String, Object> cachedBeans = new HashMap<String, Object>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Note: See the class level comment for {@link org.broadleafcommerce.common.web.util.ProcessorUtils}
+   *
+   * @param   arguments  DOCUMENT ME!
+   *
+   * @return  the "blCssResources" bean
+   */
+  public static BroadleafResourceHttpRequestHandler getCssRequestHandler(Arguments arguments) {
+    String                              key        = "blCssResources";
+    BroadleafResourceHttpRequestHandler reqHandler = (BroadleafResourceHttpRequestHandler) cachedBeans.get(key);
+
+    if (reqHandler == null) {
+      final ApplicationContext appCtx = ((SpringWebContext) arguments.getContext()).getApplicationContext();
+      reqHandler = (BroadleafResourceHttpRequestHandler) appCtx.getBean(key);
+      cachedBeans.put(key, reqHandler);
     }
 
-}
+    return reqHandler;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Note: See the class level comment for {@link org.broadleafcommerce.common.web.util.ProcessorUtils}
+   *
+   * @param   arguments  DOCUMENT ME!
+   *
+   * @return  the "blJsResources" bean
+   */
+  public static BroadleafResourceHttpRequestHandler getJsRequestHandler(Arguments arguments) {
+    String                              key        = "blJsResources";
+    BroadleafResourceHttpRequestHandler reqHandler = (BroadleafResourceHttpRequestHandler) cachedBeans.get(key);
+
+    if (reqHandler == null) {
+      final ApplicationContext appCtx = ((SpringWebContext) arguments.getContext()).getApplicationContext();
+      reqHandler = (BroadleafResourceHttpRequestHandler) appCtx.getBean(key);
+      cachedBeans.put(key, reqHandler);
+    }
+
+    return reqHandler;
+  }
+
+} // end class ProcessorUtils

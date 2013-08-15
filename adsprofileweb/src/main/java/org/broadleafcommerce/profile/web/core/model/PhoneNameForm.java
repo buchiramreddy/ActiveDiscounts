@@ -18,32 +18,62 @@ package org.broadleafcommerce.profile.web.core.model;
 
 import org.broadleafcommerce.profile.core.domain.Phone;
 
+
 /**
- * The Form Backing Bean used by the CustomerPhoneController.  This design was chosen instead
- * of placing multiple values on the request.  This is a smaller scenario since there are not many
- * properties for the CustomerPhoneController, but to be consistent, we did not put a large amount of
- * unnecessary parameters on the request.
- * 
- * @author sconlon
+ * The Form Backing Bean used by the CustomerPhoneController. This design was chosen instead of placing multiple values
+ * on the request. This is a smaller scenario since there are not many properties for the CustomerPhoneController, but
+ * to be consistent, we did not put a large amount of unnecessary parameters on the request.
  *
+ * @author   sconlon
+ * @version  $Revision$, $Date$
  */
 public class PhoneNameForm {
-    private Phone phone;
-    private String phoneName;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Phone getPhone() {
-        return phone;
-    }
+  private Phone  phone;
+  private String phoneName;
 
-    public String getPhoneName() {
-        return phoneName;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setPhone(Phone phone) {
-        this.phone = phone;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Phone getPhone() {
+    return phone;
+  }
 
-    public void setPhoneName(String phoneName) {
-        this.phoneName = phoneName;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPhoneName() {
+    return phoneName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  public void setPhone(Phone phone) {
+    this.phone = phone;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phoneName  DOCUMENT ME!
+   */
+  public void setPhoneName(String phoneName) {
+    this.phoneName = phoneName;
+  }
+} // end class PhoneNameForm

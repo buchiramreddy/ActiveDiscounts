@@ -18,92 +18,125 @@ package org.broadleafcommerce.openadmin.server.factory;
 
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
+
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
+
 import org.springframework.stereotype.Service;
 
+
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Service("blPersistencePackageFactory")
 public class PersistencePackageFactoryImpl implements PersistencePackageFactory {
-    
-    @Override
-    public PersistencePackage create(PersistencePackageRequest request) {
-        PersistencePerspective persistencePerspective = new PersistencePerspective();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        persistencePerspective.setAdditionalForeignKeys(request.getAdditionalForeignKeys());
-        persistencePerspective.setAdditionalNonPersistentProperties(new String[] {});
-        
-        if (request.getForeignKey() != null) {
-            persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY, 
-                    request.getForeignKey());
-        }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactory#create(org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest)
+   */
+  @Override public PersistencePackage create(PersistencePackageRequest request) {
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
 
-        switch (request.getType()) {
-            case STANDARD:
-                persistencePerspective.setOperationTypes(getDefaultOperationTypes());
-                break;
+    persistencePerspective.setAdditionalForeignKeys(request.getAdditionalForeignKeys());
+    persistencePerspective.setAdditionalNonPersistentProperties(new String[] {});
 
-            case ADORNED:
-                if (request.getAdornedList() == null) {
-                    throw new IllegalArgumentException("ADORNED type requires the adornedList to be set");
-                }
-
-                persistencePerspective.setOperationTypes(getOperationTypes(OperationType.ADORNEDTARGETLIST));
-                persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
-                        request.getAdornedList());
-                break;
-
-            case MAP:
-                if (request.getMapStructure() == null) {
-                    throw new IllegalArgumentException("MAP type requires the mapStructure to be set");
-                }
-
-                persistencePerspective.setOperationTypes(getOperationTypes(OperationType.MAP));
-                persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
-                        request.getMapStructure());
-                break;
-        }
-
-        if (request.getOperationTypesOverride() != null) {
-            persistencePerspective.setOperationTypes(request.getOperationTypesOverride());
-        }
-
-        PersistencePackage pp = new PersistencePackage();
-        pp.setCeilingEntityFullyQualifiedClassname(request.getCeilingEntityClassname());
-        pp.setFetchTypeFullyQualifiedClassname(null);
-        pp.setPersistencePerspective(persistencePerspective);
-        pp.setCustomCriteria(request.getCustomCriteria());
-        pp.setCsrfToken(null);
-
-        if (request.getEntity() != null) {
-            pp.setEntity(request.getEntity());
-        }
-
-        return pp;
+    if (request.getForeignKey() != null) {
+      persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.FOREIGNKEY,
+        request.getForeignKey());
     }
 
-    protected OperationTypes getDefaultOperationTypes() {
-        OperationTypes operationTypes = new OperationTypes();
-        operationTypes.setFetchType(OperationType.BASIC);
-        operationTypes.setRemoveType(OperationType.BASIC);
-        operationTypes.setAddType(OperationType.BASIC);
-        operationTypes.setUpdateType(OperationType.BASIC);
-        operationTypes.setInspectType(OperationType.BASIC);
-        return operationTypes;
-    }
-    
-    protected OperationTypes getOperationTypes(OperationType nonInspectOperationType) {
-        OperationTypes operationTypes = new OperationTypes();
-        operationTypes.setFetchType(nonInspectOperationType);
-        operationTypes.setRemoveType(nonInspectOperationType);
-        operationTypes.setAddType(nonInspectOperationType);
-        operationTypes.setUpdateType(nonInspectOperationType);
-        operationTypes.setInspectType(OperationType.BASIC);
-        return operationTypes;
+    switch (request.getType()) {
+      case STANDARD: {
+        persistencePerspective.setOperationTypes(getDefaultOperationTypes());
+
+        break;
+      }
+
+      case ADORNED: {
+        if (request.getAdornedList() == null) {
+          throw new IllegalArgumentException("ADORNED type requires the adornedList to be set");
+        }
+
+        persistencePerspective.setOperationTypes(getOperationTypes(OperationType.ADORNEDTARGETLIST));
+        persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.ADORNEDTARGETLIST,
+          request.getAdornedList());
+
+        break;
+      }
+
+      case MAP: {
+        if (request.getMapStructure() == null) {
+          throw new IllegalArgumentException("MAP type requires the mapStructure to be set");
+        }
+
+        persistencePerspective.setOperationTypes(getOperationTypes(OperationType.MAP));
+        persistencePerspective.addPersistencePerspectiveItem(PersistencePerspectiveItemType.MAPSTRUCTURE,
+          request.getMapStructure());
+
+        break;
+      }
+    } // end switch
+
+    if (request.getOperationTypesOverride() != null) {
+      persistencePerspective.setOperationTypes(request.getOperationTypesOverride());
     }
 
-}
+    PersistencePackage pp = new PersistencePackage();
+    pp.setCeilingEntityFullyQualifiedClassname(request.getCeilingEntityClassname());
+    pp.setFetchTypeFullyQualifiedClassname(null);
+    pp.setPersistencePerspective(persistencePerspective);
+    pp.setCustomCriteria(request.getCustomCriteria());
+    pp.setCsrfToken(null);
+
+    if (request.getEntity() != null) {
+      pp.setEntity(request.getEntity());
+    }
+
+    return pp;
+  } // end method create
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected OperationTypes getDefaultOperationTypes() {
+    OperationTypes operationTypes = new OperationTypes();
+    operationTypes.setFetchType(OperationType.BASIC);
+    operationTypes.setRemoveType(OperationType.BASIC);
+    operationTypes.setAddType(OperationType.BASIC);
+    operationTypes.setUpdateType(OperationType.BASIC);
+    operationTypes.setInspectType(OperationType.BASIC);
+
+    return operationTypes;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   nonInspectOperationType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected OperationTypes getOperationTypes(OperationType nonInspectOperationType) {
+    OperationTypes operationTypes = new OperationTypes();
+    operationTypes.setFetchType(nonInspectOperationType);
+    operationTypes.setRemoveType(nonInspectOperationType);
+    operationTypes.setAddType(nonInspectOperationType);
+    operationTypes.setUpdateType(nonInspectOperationType);
+    operationTypes.setInspectType(OperationType.BASIC);
+
+    return operationTypes;
+  }
+
+} // end class PersistencePackageFactoryImpl

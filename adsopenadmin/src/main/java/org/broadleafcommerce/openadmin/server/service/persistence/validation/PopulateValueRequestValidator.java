@@ -16,41 +16,54 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
-import org.broadleafcommerce.openadmin.dto.Entity;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider;
-import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
-
 import java.io.Serializable;
+
+import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 
 
 /**
- * <p>
- * This is injected into the {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule} and invoked prior to any attempts to actually populate values
- * from the {@link org.broadleafcommerce.openadmin.dto.Entity} DTO representation into the Hibernate entity using the {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider} paradigm.
+ * <p>This is injected into the
+ * {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule} and invoked prior to
+ * any attempts to actually populate values from the {@link org.broadleafcommerce.openadmin.dto.Entity} DTO
+ * representation into the Hibernate entity using the
+ * {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider} paradigm.
  * </p>
- * <p>
- * An example validator would ensure that Booleans are actually booleans, integers are actually integers, etc. since all
- * values come in as Strings by default
- * </p>
- * 
- * @author Phillip Verheyden (phillipuniverse)
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest}
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
+ *
+ * <p>An example validator would ensure that Booleans are actually booleans, integers are actually integers, etc. since
+ * all values come in as Strings by default</p>
+ *
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @see      {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest}
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.openadmin.server.service.persistence.module.BasicPersistenceModule#createPopulatedInstance(java.io.Serializable, org.broadleafcommerce.openadmin.dto.Entity, java.util.Map, Boolean)}
+ * @version  $Revision$, $Date$
  */
 public interface PopulateValueRequestValidator {
-    
-    /**
-     * Validates a population request prior to invoking any {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}s. If no validation could be
-     * performed for the given {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest} then return <b>true</b> to let it pass on to a different
-     * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PopulateValueRequestValidator} or on to a {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}.
-     * 
-     * @param populateValueRequest the {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest} that should be validated
-     * @param instance the Hibernate entity that will attempt to be populated
-     * @return false if the {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest} failed validation. In this case, the request should not be passed
-     * to any {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}s.
-     */
-    public PropertyValidationResult validate(PopulateValueRequest populateValueRequest, Serializable instance);
-    
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Validates a population request prior to invoking any
+   * {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}s. If no
+   * validation could be performed for the given
+   * {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest}
+   * then return <b>true</b> to let it pass on to a different
+   * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PopulateValueRequestValidator} or on
+   * to a {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}.
+   *
+   * @param   populateValueRequest  the
+   *                                {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest}
+   *                                that should be validated
+   * @param   instance              the Hibernate entity that will attempt to be populated
+   *
+   * @return  false if the
+   *          {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest}
+   *          failed validation. In this case, the request should not be passed to any
+   *          {@link org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider}s.
+   */
+  PropertyValidationResult validate(PopulateValueRequest populateValueRequest, Serializable instance);
+
+} // end interface PopulateValueRequestValidator

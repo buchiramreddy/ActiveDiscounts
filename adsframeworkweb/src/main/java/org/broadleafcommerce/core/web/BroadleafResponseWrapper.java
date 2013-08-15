@@ -16,307 +16,507 @@
 
 package org.broadleafcommerce.core.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import java.util.Locale;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Locale;
+
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class BroadleafResponseWrapper implements HttpServletResponse {
-    
-    private HttpServletResponse response;
-    private int status;
-    
-    public BroadleafResponseWrapper(HttpServletResponse response) {
-        this.response = response;
-    }
-    
-    public int getStatus() {
-        return status;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @see javax.servlet.http.HttpServletResponse#addCookie(javax.servlet.http.Cookie)
-     */
-    public void addCookie(Cookie arg0) {
-        response.addCookie(arg0);
-    }
+  private HttpServletResponse response;
+  private int                 status;
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @see javax.servlet.http.HttpServletResponse#addDateHeader(String, long)
-     */
-    public void addDateHeader(String arg0, long arg1) {
-        response.addDateHeader(arg0, arg1);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @see javax.servlet.http.HttpServletResponse#addHeader(String, String)
-     */
-    public void addHeader(String arg0, String arg1) {
-        response.addHeader(arg0, arg1);
-    }
+  /**
+   * Creates a new BroadleafResponseWrapper object.
+   *
+   * @param  response  DOCUMENT ME!
+   */
+  public BroadleafResponseWrapper(HttpServletResponse response) {
+    this.response = response;
+  }
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @see javax.servlet.http.HttpServletResponse#addIntHeader(String, int)
-     */
-    public void addIntHeader(String arg0, int arg1) {
-        response.addIntHeader(arg0, arg1);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @return
-     * @see javax.servlet.http.HttpServletResponse#containsHeader(String)
-     */
-    public boolean containsHeader(String arg0) {
-        return response.containsHeader(arg0);
-    }
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#addCookie(javax.servlet.http.Cookie)
+   */
+  @Override public void addCookie(Cookie arg0) {
+    response.addCookie(arg0);
+  }
 
-    /**
-     * @param arg0
-     * @return
-     * @deprecated
-     * @see javax.servlet.http.HttpServletResponse#encodeRedirectUrl(String)
-     */
-    public String encodeRedirectUrl(String arg0) {
-        return response.encodeRedirectUrl(arg0);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @return
-     * @see javax.servlet.http.HttpServletResponse#encodeRedirectURL(String)
-     */
-    public String encodeRedirectURL(String arg0) {
-        return response.encodeRedirectURL(arg0);
-    }
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#addDateHeader(String, long)
+   */
+  @Override public void addDateHeader(String arg0, long arg1) {
+    response.addDateHeader(arg0, arg1);
+  }
 
-    /**
-     * @param arg0
-     * @return
-     * @deprecated
-     * @see javax.servlet.http.HttpServletResponse#encodeUrl(String)
-     */
-    public String encodeUrl(String arg0) {
-        return response.encodeUrl(arg0);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @return
-     * @see javax.servlet.http.HttpServletResponse#encodeURL(String)
-     */
-    public String encodeURL(String arg0) {
-        return response.encodeURL(arg0);
-    }
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#addHeader(String, String)
+   */
+  @Override public void addHeader(String arg0, String arg1) {
+    response.addHeader(arg0, arg1);
+  }
 
-    /**
-     * @throws java.io.IOException
-     * @see javax.servlet.ServletResponse#flushBuffer()
-     */
-    public void flushBuffer() throws IOException {
-        response.flushBuffer();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return
-     * @see javax.servlet.ServletResponse#getBufferSize()
-     */
-    public int getBufferSize() {
-        return response.getBufferSize();
-    }
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#addIntHeader(String, int)
+   */
+  @Override public void addIntHeader(String arg0, int arg1) {
+    response.addIntHeader(arg0, arg1);
+  }
 
-    /**
-     * @return
-     * @see javax.servlet.ServletResponse#getCharacterEncoding()
-     */
-    public String getCharacterEncoding() {
-        return response.getCharacterEncoding();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return
-     * @see javax.servlet.ServletResponse#getContentType()
-     */
-    public String getContentType() {
-        return response.getContentType();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   arg0  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.http.HttpServletResponse#containsHeader(String)
+   */
+  @Override public boolean containsHeader(String arg0) {
+    return response.containsHeader(arg0);
+  }
 
-    /**
-     * @return
-     * @see javax.servlet.ServletResponse#getLocale()
-     */
-    public Locale getLocale() {
-        return response.getLocale();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return
-     * @throws java.io.IOException
-     * @see javax.servlet.ServletResponse#getOutputStream()
-     */
-    public ServletOutputStream getOutputStream() throws IOException {
-        return response.getOutputStream();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param       arg0  DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  DOCUMENT ME!
+   * @see         javax.servlet.http.HttpServletResponse#encodeRedirectUrl(String)
+   */
+  @Override public String encodeRedirectUrl(String arg0) {
+    return response.encodeRedirectUrl(arg0);
+  }
 
-    /**
-     * @return
-     * @throws java.io.IOException
-     * @see javax.servlet.ServletResponse#getWriter()
-     */
-    public PrintWriter getWriter() throws IOException {
-        return response.getWriter();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return
-     * @see javax.servlet.ServletResponse#isCommitted()
-     */
-    public boolean isCommitted() {
-        return response.isCommitted();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   arg0  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.http.HttpServletResponse#encodeRedirectURL(String)
+   */
+  @Override public String encodeRedirectURL(String arg0) {
+    return response.encodeRedirectURL(arg0);
+  }
 
-    /**
-     * 
-     * @see javax.servlet.ServletResponse#reset()
-     */
-    public void reset() {
-        response.reset();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * 
-     * @see javax.servlet.ServletResponse#resetBuffer()
-     */
-    public void resetBuffer() {
-        response.resetBuffer();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param       arg0  DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  DOCUMENT ME!
+   * @see         javax.servlet.http.HttpServletResponse#encodeUrl(String)
+   */
+  @Override public String encodeUrl(String arg0) {
+    return response.encodeUrl(arg0);
+  }
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @throws java.io.IOException
-     * @see javax.servlet.http.HttpServletResponse#sendError(int, String)
-     */
-    public void sendError(int arg0, String arg1) throws IOException {
-        response.sendError(arg0, arg1);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @throws java.io.IOException
-     * @see javax.servlet.http.HttpServletResponse#sendError(int)
-     */
-    public void sendError(int arg0) throws IOException {
-        response.sendError(arg0);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   arg0  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.http.HttpServletResponse#encodeURL(String)
+   */
+  @Override public String encodeURL(String arg0) {
+    return response.encodeURL(arg0);
+  }
 
-    /**
-     * @param arg0
-     * @throws java.io.IOException
-     * @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
-     */
-    public void sendRedirect(String arg0) throws IOException {
-        response.sendRedirect(arg0);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @see javax.servlet.ServletResponse#setBufferSize(int)
-     */
-    public void setBufferSize(int arg0) {
-        response.setBufferSize(arg0);
-    }
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @throws  java.io.IOException
+   *
+   * @see     javax.servlet.ServletResponse#flushBuffer()
+   */
+  @Override public void flushBuffer() throws IOException {
+    response.flushBuffer();
+  }
 
-    /**
-     * @param arg0
-     * @see javax.servlet.ServletResponse#setCharacterEncoding(String)
-     */
-    public void setCharacterEncoding(String arg0) {
-        response.setCharacterEncoding(arg0);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @see javax.servlet.ServletResponse#setContentLength(int)
-     */
-    public void setContentLength(int arg0) {
-        response.setContentLength(arg0);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.ServletResponse#getBufferSize()
+   */
+  @Override public int getBufferSize() {
+    return response.getBufferSize();
+  }
 
-    /**
-     * @param arg0
-     * @see javax.servlet.ServletResponse#setContentType(String)
-     */
-    public void setContentType(String arg0) {
-        response.setContentType(arg0);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @see javax.servlet.http.HttpServletResponse#setDateHeader(String, long)
-     */
-    public void setDateHeader(String arg0, long arg1) {
-        response.setDateHeader(arg0, arg1);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.ServletResponse#getCharacterEncoding()
+   */
+  @Override public String getCharacterEncoding() {
+    return response.getCharacterEncoding();
+  }
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @see javax.servlet.http.HttpServletResponse#setHeader(String, String)
-     */
-    public void setHeader(String arg0, String arg1) {
-        response.setHeader(arg0, arg1);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @see javax.servlet.http.HttpServletResponse#setIntHeader(String, int)
-     */
-    public void setIntHeader(String arg0, int arg1) {
-        response.setIntHeader(arg0, arg1);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.ServletResponse#getContentType()
+   */
+  @Override public String getContentType() {
+    return response.getContentType();
+  }
 
-    /**
-     * @param arg0
-     * @see javax.servlet.ServletResponse#setLocale(java.util.Locale)
-     */
-    public void setLocale(Locale arg0) {
-        response.setLocale(arg0);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @param arg0
-     * @param arg1
-     * @deprecated
-     * @see javax.servlet.http.HttpServletResponse#setStatus(int, String)
-     */
-    public void setStatus(int arg0, String arg1) {
-        this.status = arg0;
-        response.setStatus(arg0, arg1);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.ServletResponse#getLocale()
+   */
+  @Override public Locale getLocale() {
+    return response.getLocale();
+  }
 
-    /**
-     * @param arg0
-     * @see javax.servlet.http.HttpServletResponse#setStatus(int)
-     */
-    public void setStatus(int arg0) {
-        this.status = arg0;
-        response.setStatus(arg0);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  java.io.IOException
+   *
+   * @see     javax.servlet.ServletResponse#getOutputStream()
+   */
+  @Override public ServletOutputStream getOutputStream() throws IOException {
+    return response.getOutputStream();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getStatus() {
+    return status;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  java.io.IOException
+   *
+   * @see     javax.servlet.ServletResponse#getWriter()
+   */
+  @Override public PrintWriter getWriter() throws IOException {
+    return response.getWriter();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     javax.servlet.ServletResponse#isCommitted()
+   */
+  @Override public boolean isCommitted() {
+    return response.isCommitted();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.ServletResponse#reset()
+   */
+  @Override public void reset() {
+    response.reset();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.ServletResponse#resetBuffer()
+   */
+  @Override public void resetBuffer() {
+    response.resetBuffer();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param   arg0  DOCUMENT ME!
+   *
+   * @throws  java.io.IOException
+   *
+   * @see     javax.servlet.http.HttpServletResponse#sendError(int)
+   */
+  @Override public void sendError(int arg0) throws IOException {
+    response.sendError(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param   arg0  DOCUMENT ME!
+   * @param   arg1  DOCUMENT ME!
+   *
+   * @throws  java.io.IOException
+   *
+   * @see     javax.servlet.http.HttpServletResponse#sendError(int, String)
+   */
+  @Override public void sendError(int arg0, String arg1) throws IOException {
+    response.sendError(arg0, arg1);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param   arg0  DOCUMENT ME!
+   *
+   * @throws  java.io.IOException
+   *
+   * @see     javax.servlet.http.HttpServletResponse#sendRedirect(String)
+   */
+  @Override public void sendRedirect(String arg0) throws IOException {
+    response.sendRedirect(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   *
+   * @see    javax.servlet.ServletResponse#setBufferSize(int)
+   */
+  @Override public void setBufferSize(int arg0) {
+    response.setBufferSize(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   *
+   * @see    javax.servlet.ServletResponse#setCharacterEncoding(String)
+   */
+  @Override public void setCharacterEncoding(String arg0) {
+    response.setCharacterEncoding(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   *
+   * @see    javax.servlet.ServletResponse#setContentLength(int)
+   */
+  @Override public void setContentLength(int arg0) {
+    response.setContentLength(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   *
+   * @see    javax.servlet.ServletResponse#setContentType(String)
+   */
+  @Override public void setContentType(String arg0) {
+    response.setContentType(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#setDateHeader(String, long)
+   */
+  @Override public void setDateHeader(String arg0, long arg1) {
+    response.setDateHeader(arg0, arg1);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#setHeader(String, String)
+   */
+  @Override public void setHeader(String arg0, String arg1) {
+    response.setHeader(arg0, arg1);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#setIntHeader(String, int)
+   */
+  @Override public void setIntHeader(String arg0, int arg1) {
+    response.setIntHeader(arg0, arg1);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   *
+   * @see    javax.servlet.ServletResponse#setLocale(java.util.Locale)
+   */
+  @Override public void setLocale(Locale arg0) {
+    response.setLocale(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  arg0  DOCUMENT ME!
+   *
+   * @see    javax.servlet.http.HttpServletResponse#setStatus(int)
+   */
+  @Override public void setStatus(int arg0) {
+    this.status = arg0;
+    response.setStatus(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       arg0  DOCUMENT ME!
+   * @param       arg1  DOCUMENT ME!
+   *
+   * @deprecated  DOCUMENT ME!
+   * @see         javax.servlet.http.HttpServletResponse#setStatus(int, String)
+   */
+  @Override public void setStatus(int arg0, String arg1) {
+    this.status = arg0;
+    response.setStatus(arg0, arg1);
+  }
+
+} // end class BroadleafResponseWrapper

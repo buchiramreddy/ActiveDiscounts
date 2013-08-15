@@ -16,9 +16,38 @@
 
 package org.broadleafcommerce.core.search.domain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SearchSynonym {
-    public String getTerm();
-    public void setTerm(String term);
-    public String[] getSynonyms();
-    public void setSynonyms(String[] synonyms);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTerm();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  term  DOCUMENT ME!
+   */
+  void setTerm(String term);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String[] getSynonyms();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  synonyms  DOCUMENT ME!
+   */
+  void setSynonyms(String[] synonyms);
+} // end interface SearchSynonym

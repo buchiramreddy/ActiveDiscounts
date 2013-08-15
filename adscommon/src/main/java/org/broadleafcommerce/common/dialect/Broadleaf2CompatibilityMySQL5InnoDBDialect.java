@@ -18,14 +18,22 @@ package org.broadleafcommerce.common.dialect;
 
 import org.hibernate.dialect.MySQL5InnoDBDialect;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class Broadleaf2CompatibilityMySQL5InnoDBDialect extends MySQL5InnoDBDialect {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public Broadleaf2CompatibilityMySQL5InnoDBDialect() {
-        super();
-        registerColumnType( java.sql.Types.BOOLEAN, "bit" );
-    }
+  /**
+   * Creates a new Broadleaf2CompatibilityMySQL5InnoDBDialect object.
+   */
+  public Broadleaf2CompatibilityMySQL5InnoDBDialect() {
+    super();
+    registerColumnType(java.sql.Types.BOOLEAN, "bit");
+  }
 
 }

@@ -16,23 +16,69 @@
 package org.broadleafcommerce.common.site.domain;
 
 import java.io.Serializable;
+
 import java.util.List;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface Catalog extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    List<Site> getSites();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Site> getSites();
 
-    void setSites(List<Site> sites);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sites  DOCUMENT ME!
+   */
+  void setSites(List<Site> sites);
+
+} // end interface Catalog

@@ -16,100 +16,159 @@
 
 package org.broadleafcommerce.common.currency.util;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.broadleafcommerce.common.money.Money;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+
 import java.util.Currency;
+
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.money.Money;
 
 
 /**
- * Utility methods for common currency operations
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.common.currency.domain.BroadleafCurrency}
+ * Utility methods for common currency operations.
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.common.currency.domain.BroadleafCurrency}
+ * @version  $Revision$, $Date$
  */
 public class BroadleafCurrencyUtils {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final MathContext ROUND_FLOOR_MATH_CONTEXT = new MathContext(0, RoundingMode.FLOOR);
+  /** DOCUMENT ME! */
+  public static final MathContext ROUND_FLOOR_MATH_CONTEXT = new MathContext(0, RoundingMode.FLOOR);
 
-    public static Money getMoney(BigDecimal amount, BroadleafCurrency currency) {
-        if (amount == null) {
-            return null;
-        }
-        
-        if (currency != null) {
-            return new Money(amount, currency.getCurrencyCode());
-        } else {
-            return new Money(amount);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the remainder amount if the passed in totalAmount was divided by the quantity taking into account the
+   * normal unit of the currency (e.g. .01 for US).
+   *
+   * @param   totalAmount  currency
+   * @param   quantity     DOCUMENT ME!
+   *
+   * @return  the remainder amount if the passed in totalAmount was divided by the quantity taking into account the
+   *          normal unit of the currency (e.g.
+   */
+  public static int calculateRemainder(Money totalAmount, int quantity) {
+    if ((totalAmount == null) || totalAmount.isZero() || (quantity == 0)) {
+      return 0;
     }
 
-    public static Money getMoney(BroadleafCurrency currency) {
-        if (currency != null) {
-            return new Money(0,currency.getCurrencyCode());
-        } else {
-            return new Money();
-        }
+    // Use this to convert to a whole number (e.g. 1.05 becomes 105 in US currency).
+    BigDecimal multiplier = new BigDecimal(10).pow(totalAmount.getAmount().scale());
+    BigDecimal amount     = totalAmount.getAmount().multiply(multiplier);
+
+    BigDecimal remainder = amount.remainder(new BigDecimal(quantity), ROUND_FLOOR_MATH_CONTEXT);
+
+    return remainder.toBigInteger().intValue();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   money  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Currency getCurrency(Money money) {
+    if (money == null) {
+      return Money.defaultCurrency();
     }
 
-    public static Currency getCurrency(Money money) {
-        if (money == null) {
-            return Money.defaultCurrency();
-        }
-        return (money.getCurrency() == null) ? Money.defaultCurrency() : money.getCurrency();
+    return (money.getCurrency() == null) ? Money.defaultCurrency() : money.getCurrency();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   currency  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Currency getCurrency(BroadleafCurrency currency) {
+    return (currency == null) ? Money.defaultCurrency() : Currency.getInstance(currency.getCurrencyCode());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   currency  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Money getMoney(BroadleafCurrency currency) {
+    if (currency != null) {
+      return new Money(0, currency.getCurrencyCode());
+    } else {
+      return new Money();
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   amount    DOCUMENT ME!
+   * @param   currency  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Money getMoney(BigDecimal amount, BroadleafCurrency currency) {
+    if (amount == null) {
+      return null;
     }
 
-    public static Currency getCurrency(BroadleafCurrency currency) {
-        return (currency == null) ? Money.defaultCurrency() : Currency.getInstance(currency.getCurrencyCode());
+    if (currency != null) {
+      return new Money(amount, currency.getCurrencyCode());
+    } else {
+      return new Money(amount);
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the unit amount (e.g. .01 for US and all other 2 decimal currencies)
+   *
+   * @param   difference  currency
+   *
+   * @return  the unit amount (e.g.
+   */
+  public static Money getUnitAmount(Money difference) {
+    Currency   currency   = BroadleafCurrencyUtils.getCurrency(difference);
+    BigDecimal divisor    = new BigDecimal(Math.pow(10, currency.getDefaultFractionDigits()));
+    BigDecimal unitAmount = new BigDecimal("1").divide(divisor);
+
+    if (difference.lessThan(BigDecimal.ZERO)) {
+      unitAmount = unitAmount.negate();
     }
 
-    /**
-     * Returns the unit amount (e.g. .01 for US and all other 2 decimal currencies)
-     * @param currency
-     * @return
-     */
-    public static Money getUnitAmount(Money difference) {
-        Currency currency = BroadleafCurrencyUtils.getCurrency(difference);
-        BigDecimal divisor = new BigDecimal(Math.pow(10, currency.getDefaultFractionDigits()));
-        BigDecimal unitAmount = new BigDecimal("1").divide(divisor);
+    return new Money(unitAmount, currency);
+  }
 
-        if (difference.lessThan(BigDecimal.ZERO)) {
-            unitAmount = unitAmount.negate();
-        }
-        return new Money(unitAmount, currency);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the unit amount (e.g. .01 for US and all other 2 decimal currencies)
-     * @param currency
-     * @return
-     */
-    public static Money getUnitAmount(BroadleafCurrency blCurrency) {
-        Currency currency = getCurrency(blCurrency);
-        BigDecimal divisor = new BigDecimal(Math.pow(10, currency.getDefaultFractionDigits()));
-        BigDecimal unitAmount = new BigDecimal("1").divide(divisor);
-        return new Money(unitAmount, currency);
-    }
+  /**
+   * Returns the unit amount (e.g. .01 for US and all other 2 decimal currencies)
+   *
+   * @param   blCurrency  DOCUMENT ME!
+   *
+   * @return  the unit amount (e.g.
+   */
+  public static Money getUnitAmount(BroadleafCurrency blCurrency) {
+    Currency   currency   = getCurrency(blCurrency);
+    BigDecimal divisor    = new BigDecimal(Math.pow(10, currency.getDefaultFractionDigits()));
+    BigDecimal unitAmount = new BigDecimal("1").divide(divisor);
 
-    /**
-     * Returns the remainder amount if the passed in totalAmount was divided by the
-     * quantity taking into account the normal unit of the currency (e.g. .01 for US).
-     * @param currency
-     * @return
-     */
-    public static int calculateRemainder(Money totalAmount, int quantity) {
-        if (totalAmount == null || totalAmount.isZero() || quantity == 0) {
-            return 0;
-        }
-
-        // Use this to convert to a whole number (e.g. 1.05 becomes 105 in US currency).
-        BigDecimal multiplier = new BigDecimal(10).pow(totalAmount.getAmount().scale());
-        BigDecimal amount = totalAmount.getAmount().multiply(multiplier);
-
-        BigDecimal remainder = amount.remainder(new BigDecimal(quantity), ROUND_FLOOR_MATH_CONTEXT);
-        return remainder.toBigInteger().intValue();
-    }
-}
+    return new Money(unitAmount, currency);
+  }
+} // end class BroadleafCurrencyUtils

@@ -16,43 +16,77 @@
 
 package org.broadleafcommerce.profile.web.core.service;
 
-import org.broadleafcommerce.profile.core.domain.Phone;
-import org.broadleafcommerce.profile.core.service.PhoneService;
-import org.broadleafcommerce.profile.dataprovider.PhoneDataProvider;
-import org.broadleafcommerce.test.BaseTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.Test;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.profile.core.domain.Phone;
+import org.broadleafcommerce.profile.core.service.PhoneService;
+import org.broadleafcommerce.profile.dataprovider.PhoneDataProvider;
+
+import org.broadleafcommerce.test.BaseTest;
+
+import org.springframework.test.annotation.Rollback;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PhoneTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource
-    private PhoneService phoneService;
+  /** DOCUMENT ME! */
+  List<Long> phoneIds = new ArrayList<Long>();
 
-    List<Long> phoneIds = new ArrayList<Long>();
-    String userName = new String();
+  /** DOCUMENT ME! */
+  String     userName = new String();
 
-    private Long phoneId;
+  private Long phoneId;
 
-    @Test(groups = { "createPhone" }, dataProvider = "setupPhone", dataProviderClass = PhoneDataProvider.class, dependsOnGroups = { "readCustomer" })
-    @Transactional
-    @Rollback(false)
-    public void createPhone(Phone phone) {
-        userName = "customer1";
-        assert phone.getId() == null;
-        phone = phoneService.savePhone(phone);
-        assert phone.getId() != null;
-        phoneId = phone.getId();
-    }
+  @Resource private PhoneService phoneService;
 
-    @Test(groups = { "readPhoneById" }, dependsOnGroups = { "createPhone" })
-    public void readPhoneById() {
-        Phone phone = phoneService.readPhoneById(phoneId);
-        assert phone != null;
-        assert phone.getId() == phoneId;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = { "createPhone" },
+    dataProvider      = "setupPhone",
+    dataProviderClass = PhoneDataProvider.class,
+    dependsOnGroups   = { "readCustomer" }
+  )
+  @Transactional public void createPhone(Phone phone) {
+    userName = "customer1";
+    assert phone.getId() == null;
+    phone = phoneService.savePhone(phone);
+    assert phone.getId() != null;
+    phoneId = phone.getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readPhoneById" },
+    dependsOnGroups = { "createPhone" }
+  )
+  public void readPhoneById() {
+    Phone phone = phoneService.readPhoneById(phoneId);
+    assert phone != null;
+    assert phone.getId() == phoneId;
+  }
+} // end class PhoneTest

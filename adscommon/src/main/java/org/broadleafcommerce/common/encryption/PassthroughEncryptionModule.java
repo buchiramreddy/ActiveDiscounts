@@ -18,37 +18,59 @@ package org.broadleafcommerce.common.encryption;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
 import org.broadleafcommerce.common.config.RuntimeEnvironmentKeyResolver;
 import org.broadleafcommerce.common.config.SystemPropertyRuntimeEnvironmentKeyResolver;
 
+
 /**
- * The default encryption module simply passes through the decrypt and encrypt text.
- * A real implementation should adhere to PCI compliance, which requires robust key
- * management, including regular key rotation. An excellent solution would be a module
- * for interacting with the StrongKey solution. Refer to this discussion:
- * 
- * http://www.strongauth.com/forum/index.php?topic=44.0
- * 
- * @author jfischer
+ * The default encryption module simply passes through the decrypt and encrypt text. A real implementation should adhere
+ * to PCI compliance, which requires robust key management, including regular key rotation. An excellent solution would
+ * be a module for interacting with the StrongKey solution. Refer to this discussion:
  *
+ * <p>http://www.strongauth.com/forum/index.php?topic=44.0</p>
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class PassthroughEncryptionModule implements EncryptionModule {
-    protected static final Logger LOG = LogManager.getLogger(PassthroughEncryptionModule.class);
-    
-    protected RuntimeEnvironmentKeyResolver keyResolver = new SystemPropertyRuntimeEnvironmentKeyResolver();
-    
-    public PassthroughEncryptionModule() {
-        if ("production".equals(keyResolver.resolveRuntimeEnvironmentKey())) {
-            LOG.warn("This passthrough encryption module provides NO ENCRYPTION and should NOT be used in production.");
-        }
-    }
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public String decrypt(String cipherText) {
-        return cipherText;
-    }
+  /** DOCUMENT ME! */
+  protected static final Logger LOG = LogManager.getLogger(PassthroughEncryptionModule.class);
 
-    public String encrypt(String plainText) {
-        return plainText;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-}
+  /** DOCUMENT ME! */
+  protected RuntimeEnvironmentKeyResolver keyResolver = new SystemPropertyRuntimeEnvironmentKeyResolver();
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new PassthroughEncryptionModule object.
+   */
+  public PassthroughEncryptionModule() {
+    if ("production".equals(keyResolver.resolveRuntimeEnvironmentKey())) {
+      LOG.warn("This passthrough encryption module provides NO ENCRYPTION and should NOT be used in production.");
+    }
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.encryption.EncryptionModule#decrypt(java.lang.String)
+   */
+  @Override public String decrypt(String cipherText) {
+    return cipherText;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.encryption.EncryptionModule#encrypt(java.lang.String)
+   */
+  @Override public String encrypt(String plainText) {
+    return plainText;
+  }
+
+} // end class PassthroughEncryptionModule

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008-2013 the original author or authors.
  *
@@ -20,74 +19,186 @@ package org.broadleafcommerce.openadmin.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * DTO object to represent the components of a Section (a Module has many of these)
- * 
+ * DTO object to represent the components of a Section (a Module has many of these).
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class Section {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String sectionTitle;
-    protected String sectionViewKey;
-    protected String sectionViewClass;
-    protected String sectionPresenterKey;
-    protected String sectionPresenterClass;
-    protected List<String> sectionPermissions;
+  /** DOCUMENT ME! */
+  protected List<String> sectionPermissions;
 
-    public Section(String sectionTitle, String sectionViewKey, String sectionViewClass, String sectionPresenterKey, String sectionPresenterClass, List<String> sectionPermissions) {
-        this.sectionTitle = sectionTitle;
-        this.sectionViewKey = sectionViewKey;
-        this.sectionViewClass = sectionViewClass;
-        this.sectionPresenterKey = sectionPresenterKey;
-        this.sectionPresenterClass = sectionPresenterClass;
-        this.sectionPermissions = new ArrayList<String>(sectionPermissions);
-    }
+  /** DOCUMENT ME! */
+  protected String       sectionPresenterClass;
 
-    public String getSectionTitle() {
-        return sectionTitle;
-    }
+  /** DOCUMENT ME! */
+  protected String       sectionPresenterKey;
 
-    public void setSectionTitle(String sectionTitle) {
-        this.sectionTitle = sectionTitle;
-    }
+  /** DOCUMENT ME! */
+  protected String sectionTitle;
 
-    public String getSectionViewKey() {
-        return sectionViewKey;
-    }
+  /** DOCUMENT ME! */
+  protected String sectionViewClass;
 
-    public void setSectionViewKey(String sectionViewKey) {
-        this.sectionViewKey = sectionViewKey;
-    }
+  /** DOCUMENT ME! */
+  protected String sectionViewKey;
 
-    public String getSectionViewClass() {
-        return sectionViewClass;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public void setSectionViewClass(String sectionViewClass) {
-        this.sectionViewClass = sectionViewClass;
-    }
+  /**
+   * Creates a new Section object.
+   *
+   * @param  sectionTitle           DOCUMENT ME!
+   * @param  sectionViewKey         DOCUMENT ME!
+   * @param  sectionViewClass       DOCUMENT ME!
+   * @param  sectionPresenterKey    DOCUMENT ME!
+   * @param  sectionPresenterClass  DOCUMENT ME!
+   * @param  sectionPermissions     DOCUMENT ME!
+   */
+  public Section(String sectionTitle, String sectionViewKey, String sectionViewClass, String sectionPresenterKey,
+    String sectionPresenterClass, List<String> sectionPermissions) {
+    this.sectionTitle          = sectionTitle;
+    this.sectionViewKey        = sectionViewKey;
+    this.sectionViewClass      = sectionViewClass;
+    this.sectionPresenterKey   = sectionPresenterKey;
+    this.sectionPresenterClass = sectionPresenterClass;
+    this.sectionPermissions    = new ArrayList<String>(sectionPermissions);
+  }
 
-    public String getSectionPresenterKey() {
-        return sectionPresenterKey;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setSectionPresenterKey(String sectionPresenterKey) {
-        this.sectionPresenterKey = sectionPresenterKey;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getSectionPermissions() {
+    return sectionPermissions;
+  }
 
-    public String getSectionPresenterClass() {
-        return sectionPresenterClass;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSectionPresenterClass(String sectionPresenterClass) {
-        this.sectionPresenterClass = sectionPresenterClass;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSectionPresenterClass() {
+    return sectionPresenterClass;
+  }
 
-    public List<String> getSectionPermissions() {
-        return sectionPermissions;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSectionPermissions(List<String> sectionPermissions) {
-        this.sectionPermissions = sectionPermissions;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSectionPresenterKey() {
+    return sectionPresenterKey;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSectionTitle() {
+    return sectionTitle;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSectionViewClass() {
+    return sectionViewClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSectionViewKey() {
+    return sectionViewKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sectionPermissions  DOCUMENT ME!
+   */
+  public void setSectionPermissions(List<String> sectionPermissions) {
+    this.sectionPermissions = sectionPermissions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sectionPresenterClass  DOCUMENT ME!
+   */
+  public void setSectionPresenterClass(String sectionPresenterClass) {
+    this.sectionPresenterClass = sectionPresenterClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sectionPresenterKey  DOCUMENT ME!
+   */
+  public void setSectionPresenterKey(String sectionPresenterKey) {
+    this.sectionPresenterKey = sectionPresenterKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sectionTitle  DOCUMENT ME!
+   */
+  public void setSectionTitle(String sectionTitle) {
+    this.sectionTitle = sectionTitle;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sectionViewClass  DOCUMENT ME!
+   */
+  public void setSectionViewClass(String sectionViewClass) {
+    this.sectionViewClass = sectionViewClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sectionViewKey  DOCUMENT ME!
+   */
+  public void setSectionViewKey(String sectionViewKey) {
+    this.sectionViewKey = sectionViewKey;
+  }
+
+} // end class Section

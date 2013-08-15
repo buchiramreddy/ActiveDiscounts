@@ -16,16 +16,6 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -38,134 +28,240 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.currency.util.BroadleafCurrencyUtils;
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CANDIDATE_FG_OFFER")
-@Inheritance(strategy=InheritanceType.JOINED)
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
 public class CandidateFulfillmentGroupOfferImpl implements CandidateFulfillmentGroupOffer {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator= "CandidateFGOfferId")
-    @GenericGenerator(
-        name="CandidateFGOfferId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CandidateFulfillmentGroupOfferImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOfferImpl")
-        }
-    )
-    @Column(name = "CANDIDATE_FG_OFFER_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @ManyToOne(targetEntity = FulfillmentGroupImpl.class)
-    @JoinColumn(name = "FULFILLMENT_GROUP_ID")
-    @Index(name="CANDIDATE_FG_INDEX", columnNames={"FULFILLMENT_GROUP_ID"})
-    protected FulfillmentGroup fulfillmentGroup;
+  /** DOCUMENT ME! */
+  @Column(
+    name      = "DISCOUNTED_PRICE",
+    precision = 19,
+    scale     = 5
+  )
+  protected BigDecimal discountedPrice;
 
-    @ManyToOne(targetEntity = OfferImpl.class, optional=false)
-    @JoinColumn(name = "OFFER_ID")
-    @Index(name="CANDIDATE_FGOFFER_INDEX", columnNames={"OFFER_ID"})
-    protected Offer offer;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CANDIDATE_FG_INDEX",
+    columnNames = { "FULFILLMENT_GROUP_ID" }
+  )
+  @JoinColumn(name = "FULFILLMENT_GROUP_ID")
+  @ManyToOne(targetEntity = FulfillmentGroupImpl.class)
+  protected FulfillmentGroup fulfillmentGroup;
 
-    @Column(name = "DISCOUNTED_PRICE", precision=19, scale=5)
-    protected BigDecimal discountedPrice;
+  /** DOCUMENT ME! */
+  @Column(name = "CANDIDATE_FG_OFFER_ID")
+  @GeneratedValue(generator = "CandidateFGOfferId")
+  @GenericGenerator(
+    name       = "CandidateFGOfferId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CandidateFulfillmentGroupOfferImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOfferImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CANDIDATE_FGOFFER_INDEX",
+    columnNames = { "OFFER_ID" }
+  )
+  @JoinColumn(name = "OFFER_ID")
+  @ManyToOne(
+    targetEntity = OfferImpl.class,
+    optional     = false
+  )
+  protected Offer offer;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public Offer getOffer() {
-        return offer;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setOffer(Offer offer) {
-        this.offer = offer;
-        discountedPrice = null;
+    CandidateFulfillmentGroupOfferImpl other = (CandidateFulfillmentGroupOfferImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public Money getDiscountedPrice() {
-        return discountedPrice == null ? null : BroadleafCurrencyUtils.getMoney(discountedPrice, getFulfillmentGroup().getOrder().getCurrency());
-    }
-    
-    @Override
-    public void setDiscountedPrice(Money discountedPrice) {
-        this.discountedPrice = discountedPrice.getAmount();
+    if (discountedPrice == null) {
+      if (other.discountedPrice != null) {
+        return false;
+      }
+    } else if (!discountedPrice.equals(other.discountedPrice)) {
+      return false;
     }
 
-    @Override
-    public FulfillmentGroup getFulfillmentGroup() {
-        return fulfillmentGroup;
+    if (fulfillmentGroup == null) {
+      if (other.fulfillmentGroup != null) {
+        return false;
+      }
+    } else if (!fulfillmentGroup.equals(other.fulfillmentGroup)) {
+      return false;
     }
 
-    @Override
-    public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
-        this.fulfillmentGroup = fulfillmentGroup;
-        discountedPrice = null;
+    if (offer == null) {
+      if (other.offer != null) {
+        return false;
+      }
+    } else if (!offer.equals(other.offer)) {
+      return false;
     }
 
-    @Override
-    public int getPriority() {
-        return offer.getPriority();
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((discountedPrice == null) ? 0 : discountedPrice.hashCode());
-        result = prime * result + ((fulfillmentGroup == null) ? 0 : fulfillmentGroup.hashCode());
-        result = prime * result + ((offer == null) ? 0 : offer.hashCode());
-        return result;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        CandidateFulfillmentGroupOfferImpl other = (CandidateFulfillmentGroupOfferImpl) obj;
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer#getDiscountedPrice()
+   */
+  @Override public Money getDiscountedPrice() {
+    return (discountedPrice == null)
+      ? null : BroadleafCurrencyUtils.getMoney(discountedPrice, getFulfillmentGroup().getOrder().getCurrency());
+  }
 
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (discountedPrice == null) {
-            if (other.discountedPrice != null) {
-                return false;
-            }
-        } else if (!discountedPrice.equals(other.discountedPrice)) {
-            return false;
-        }
-        if (fulfillmentGroup == null) {
-            if (other.fulfillmentGroup != null) {
-                return false;
-            }
-        } else if (!fulfillmentGroup.equals(other.fulfillmentGroup)) {
-            return false;
-        }
-        if (offer == null) {
-            if (other.offer != null) {
-                return false;
-            }
-        } else if (!offer.equals(other.offer)) {
-            return false;
-        }
-        return true;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer#getFulfillmentGroup()
+   */
+  @Override public FulfillmentGroup getFulfillmentGroup() {
+    return fulfillmentGroup;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer#getOffer()
+   */
+  @Override public Offer getOffer() {
+    return offer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer#getPriority()
+   */
+  @Override public int getPriority() {
+    return offer.getPriority();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((discountedPrice == null) ? 0 : discountedPrice.hashCode());
+    result = (prime * result) + ((fulfillmentGroup == null) ? 0 : fulfillmentGroup.hashCode());
+    result = (prime * result) + ((offer == null) ? 0 : offer.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer#setDiscountedPrice(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setDiscountedPrice(Money discountedPrice) {
+    this.discountedPrice = discountedPrice.getAmount();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer#setFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
+    this.fulfillmentGroup = fulfillmentGroup;
+    discountedPrice       = null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer#setOffer(org.broadleafcommerce.core.offer.domain.Offer)
+   */
+  @Override public void setOffer(Offer offer) {
+    this.offer      = offer;
+    discountedPrice = null;
+  }
+
+} // end class CandidateFulfillmentGroupOfferImpl

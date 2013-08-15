@@ -18,25 +18,69 @@ package org.broadleafcommerce.common.config.domain;
 
 import java.io.Serializable;
 
+
 /**
- * This interface represents a System Property (name/value pair) stored in the database.  It can be used to override
+ * This interface represents a System Property (name/value pair) stored in the database. It can be used to override
  * Spring-injected properties that are injected using the @Value annotation.
- * <p/>
- * User: Kelly Tisdell
- * Date: 6/20/12
+ *
+ * <p>User: Kelly Tisdell Date: 6/20/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface SystemProperty extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getValue();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getValue();
 
-    public void setValue(String value);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  value  DOCUMENT ME!
+   */
+  void setValue(String value);
+
+} // end interface SystemProperty

@@ -17,37 +17,47 @@ package org.broadleafcommerce.common.extensibility.context.merge;
 
 import org.springframework.core.Ordered;
 
+
 /**
- * Use this merge processor for merging duties that should take place later in the Spring startup lifecycle.
- * This would include items that should be merged after the initialization of the persistence layer, like beans
- * that rely on EntityManager injection in some way. This is the most commonly used merge processor. Less
- * commonly used is the {@link org.broadleafcommerce.common.extensibility.context.merge.EarlyStageMergeBeanPostProcessor}. See {@link org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor} for
- * usage information.
+ * Use this merge processor for merging duties that should take place later in the Spring startup lifecycle. This would
+ * include items that should be merged after the initialization of the persistence layer, like beans that rely on
+ * EntityManager injection in some way. This is the most commonly used merge processor. Less commonly used is the
+ * {@link org.broadleafcommerce.common.extensibility.context.merge.EarlyStageMergeBeanPostProcessor}. See
+ * {@link org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor} for usage
+ * information.
  *
- * @see org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor
- * @author Jeff Fischer
+ * @see      org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class LateStageMergeBeanPostProcessor extends AbstractMergeBeanPostProcessor implements Ordered {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected int order = Integer.MAX_VALUE;
+  /** DOCUMENT ME! */
+  protected int order = Integer.MAX_VALUE;
 
-    /**
-     * The regular ordering for this post processor in relation to other post processors. The default
-     * value is Integer.MAX_VALUE.
-     */
-    @Override
-    public int getOrder() {
-        return order;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * The regular ordering for this post processor in relation to other post processors. The default
-     * value is Integer.MAX_VALUE.
-     *
-     * @param order the regular ordering
-     */
-    public void setOrder(int order) {
-        this.order = order;
-    }
+  /**
+   * The regular ordering for this post processor in relation to other post processors. The default value is
+   * Integer.MAX_VALUE.
+   *
+   * @return  the regular ordering for this post processor in relation to other post processors.
+   */
+  @Override public int getOrder() {
+    return order;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The regular ordering for this post processor in relation to other post processors. The default value is
+   * Integer.MAX_VALUE.
+   *
+   * @param  order  the regular ordering
+   */
+  public void setOrder(int order) {
+    this.order = order;
+  }
+
+} // end class LateStageMergeBeanPostProcessor

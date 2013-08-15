@@ -16,52 +16,111 @@
 
 package org.broadleafcommerce.profile.web.core.service;
 
-import org.broadleafcommerce.profile.core.domain.Country;
-import org.broadleafcommerce.profile.core.domain.State;
-import org.broadleafcommerce.test.CommonSetupBaseTest;
-import org.testng.annotations.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.Country;
+import org.broadleafcommerce.profile.core.domain.State;
+
+import org.broadleafcommerce.test.CommonSetupBaseTest;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AddressTest extends CommonSetupBaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    List<Long> addressIds = new ArrayList<Long>();
-    String userName = new String();
-    Long userId;
+  /** DOCUMENT ME! */
+  List<Long> addressIds = new ArrayList<Long>();
 
-    @Test(groups = "createCountry")
-    public void createCountry() {
-        super.createCountry();
-    }
+  /** DOCUMENT ME! */
+  Long       userId;
 
-    @Test(groups = "findCountries", dependsOnGroups = "createCountry")
-    public void findCountries() {
-        List<Country> countries = countryService.findCountries();
-        assert countries.size() > 0;
-    }
+  /** DOCUMENT ME! */
+  String     userName = new String();
 
-    @Test(groups = "findCountryByShortName", dependsOnGroups = "createCountry")
-    public void findCountryByShortName() {
-        Country country = countryService.findCountryByAbbreviation("US");
-        assert country != null;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Test(groups = "createState")
-    public void createState() {
-        super.createState();
-    }
+  /**
+   * @see  org.broadleafcommerce.test.CommonSetupBaseTest#createCountry()
+   */
+  @Override
+  @Test(groups = "createCountry")
+  public void createCountry() {
+    super.createCountry();
+  }
 
-    @Test(groups = "findStates", dependsOnGroups = "createState")
-    public void findStates() {
-        List<State> states = stateService.findStates();
-        assert states.size() > 0;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Test(groups = "findStateByAbbreviation", dependsOnGroups = "findStates")
-    public void findStateByAbbreviation() {
-        State state = stateService.findStateByAbbreviation("KY");
-        assert state != null;
-    }
+  /**
+   * @see  org.broadleafcommerce.test.CommonSetupBaseTest#createState()
+   */
+  @Override
+  @Test(groups = "createState")
+  public void createState() {
+    super.createState();
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = "findCountries",
+    dependsOnGroups = "createCountry"
+  )
+  public void findCountries() {
+    List<Country> countries = countryService.findCountries();
+    assert countries.size() > 0;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = "findCountryByShortName",
+    dependsOnGroups = "createCountry"
+  )
+  public void findCountryByShortName() {
+    Country country = countryService.findCountryByAbbreviation("US");
+    assert country != null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = "findStateByAbbreviation",
+    dependsOnGroups = "findStates"
+  )
+  public void findStateByAbbreviation() {
+    State state = stateService.findStateByAbbreviation("KY");
+    assert state != null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = "findStates",
+    dependsOnGroups = "createState"
+  )
+  public void findStates() {
+    List<State> states = stateService.findStates();
+    assert states.size() > 0;
+  }
+
+} // end class AddressTest

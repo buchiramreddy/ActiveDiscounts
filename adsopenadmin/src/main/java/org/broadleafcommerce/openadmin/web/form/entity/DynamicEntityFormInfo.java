@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008-2013 the original author or authors.
  *
@@ -17,63 +16,173 @@
 
 package org.broadleafcommerce.openadmin.web.form.entity;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class DynamicEntityFormInfo {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String criteriaName;
-    protected String propertyName;
-    protected String propertyValue;
-    protected String ceilingClassName;
-    
-    public DynamicEntityFormInfo withCriteriaName(String criteriaName) {
-        setCriteriaName(criteriaName);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  protected String ceilingClassName;
 
-    public DynamicEntityFormInfo withPropertyName(String propertyName) {
-        setPropertyName(propertyName);
-        return this;
-    }
-    
-    public DynamicEntityFormInfo withPropertyValue(String propertyValue) {
-        setPropertyValue(propertyValue);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  protected String criteriaName;
 
-    public DynamicEntityFormInfo withCeilingClassName(String ceilingClassName) {
-        setCeilingClassName(ceilingClassName);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  protected String propertyName;
 
-    public String getCriteriaName() {
-        return criteriaName;
-    }
+  /** DOCUMENT ME! */
+  protected String propertyValue;
 
-    public void setCriteriaName(String criteriaName) {
-        this.criteriaName = criteriaName;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getPropertyName() {
-        return propertyName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCeilingClassName() {
+    return ceilingClassName;
+  }
 
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-    
-    public String getPropertyValue() {
-        return propertyValue;
-    }
-    
-    public void setPropertyValue(String propertyValue) {
-        this.propertyValue = propertyValue;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getCeilingClassName() {
-        return ceilingClassName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCriteriaName() {
+    return criteriaName;
+  }
 
-    public void setCeilingClassName(String ceilingClassName) {
-        this.ceilingClassName = ceilingClassName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyName() {
+    return propertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyValue() {
+    return propertyValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ceilingClassName  DOCUMENT ME!
+   */
+  public void setCeilingClassName(String ceilingClassName) {
+    this.ceilingClassName = ceilingClassName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  criteriaName  DOCUMENT ME!
+   */
+  public void setCriteriaName(String criteriaName) {
+    this.criteriaName = criteriaName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  propertyName  DOCUMENT ME!
+   */
+  public void setPropertyName(String propertyName) {
+    this.propertyName = propertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  propertyValue  DOCUMENT ME!
+   */
+  public void setPropertyValue(String propertyValue) {
+    this.propertyValue = propertyValue;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   ceilingClassName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityFormInfo withCeilingClassName(String ceilingClassName) {
+    setCeilingClassName(ceilingClassName);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   criteriaName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityFormInfo withCriteriaName(String criteriaName) {
+    setCriteriaName(criteriaName);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   propertyName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityFormInfo withPropertyName(String propertyName) {
+    setPropertyName(propertyName);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   propertyValue  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DynamicEntityFormInfo withPropertyValue(String propertyValue) {
+    setPropertyValue(propertyValue);
+
+    return this;
+  }
+
+} // end class DynamicEntityFormInfo

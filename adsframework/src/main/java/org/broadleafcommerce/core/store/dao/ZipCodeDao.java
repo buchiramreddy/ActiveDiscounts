@@ -18,10 +18,34 @@ package org.broadleafcommerce.core.store.dao;
 
 import org.broadleafcommerce.core.store.domain.ZipCode;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ZipCodeDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   zipCode  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ZipCode findZipCodeByZipCode(Integer zipCode);
 
-    public ZipCode findZipCodeByZipCode(Integer zipCode);
-
-    public ZipCode findBestZipCode(String pCity, String pCounty, String pState, Integer pZipCode, Long pZipGeo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   pCity     DOCUMENT ME!
+   * @param   pCounty   DOCUMENT ME!
+   * @param   pState    DOCUMENT ME!
+   * @param   pZipCode  DOCUMENT ME!
+   * @param   pZipGeo   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ZipCode findBestZipCode(String pCity, String pCounty, String pState, Integer pZipCode, Long pZipGeo);
 
 }

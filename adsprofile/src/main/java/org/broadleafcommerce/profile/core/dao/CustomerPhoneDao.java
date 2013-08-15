@@ -16,26 +16,99 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.profile.core.domain.CustomerPhone;
-
 import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.CustomerPhone;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerPhoneDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<CustomerPhone> readActiveCustomerPhonesByCustomerId(Long customerId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone create();
 
-    public CustomerPhone save(CustomerPhone customerPhone);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerPhone readCustomerPhoneById(Long customerPhoneId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPhoneId  DOCUMENT ME!
+   */
+  void deleteCustomerPhoneById(Long customerPhoneId);
 
-    public void makeCustomerPhoneDefault(Long customerPhoneId, Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void deleteCustomerPhoneById(Long customerPhoneId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone findDefaultCustomerPhone(Long customerId);
 
-    public CustomerPhone findDefaultCustomerPhone(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<CustomerPhone> readAllCustomerPhonesByCustomerId(Long customerId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPhoneId  DOCUMENT ME!
+   * @param  customerId       DOCUMENT ME!
+   */
+  void makeCustomerPhoneDefault(Long customerPhoneId, Long customerId);
 
-    public CustomerPhone create();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPhone> readActiveCustomerPhonesByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPhone> readAllCustomerPhonesByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPhoneId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone readCustomerPhoneById(Long customerPhoneId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPhone  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone save(CustomerPhone customerPhone);
+
+} // end interface CustomerPhoneDao

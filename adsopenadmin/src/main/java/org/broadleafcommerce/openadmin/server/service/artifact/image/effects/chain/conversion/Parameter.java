@@ -16,37 +16,62 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class Parameter {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Class parameterClass;
-    private Object parameterInstance;
-    
-    /**
-     * @return the parameterClass
-     */
-    public Class getParameterClass() {
-        return parameterClass;
-    }
-    
-    /**
-     * @param parameterClass the parameterClass to set
-     */
-    public void setParameterClass(Class parameterClass) {
-        this.parameterClass = parameterClass;
-    }
-    
-    /**
-     * @return the parameterInstance
-     */
-    public Object getParameterInstance() {
-        return parameterInstance;
-    }
-    
-    /**
-     * @param parameterInstance the parameterInstance to set
-     */
-    public void setParameterInstance(Object parameterInstance) {
-        this.parameterInstance = parameterInstance;
-    }
-    
-}
+  private Class  parameterClass;
+  private Object parameterInstance;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * The parameterClass.
+   *
+   * @return  the parameterClass
+   */
+  public Class getParameterClass() {
+    return parameterClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The parameterInstance.
+   *
+   * @return  the parameterInstance
+   */
+  public Object getParameterInstance() {
+    return parameterInstance;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  parameterClass  the parameterClass to set
+   */
+  public void setParameterClass(Class parameterClass) {
+    this.parameterClass = parameterClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  parameterInstance  the parameterInstance to set
+   */
+  public void setParameterInstance(Object parameterInstance) {
+    this.parameterInstance = parameterInstance;
+  }
+
+} // end class Parameter

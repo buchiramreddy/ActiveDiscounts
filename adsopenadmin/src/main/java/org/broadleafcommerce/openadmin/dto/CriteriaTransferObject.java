@@ -21,96 +21,132 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * Generic persistent entity criteria transfer object.
- * Provides a storage mechanism for query related information regarding an entity.
- * 
- * @author Jeff Fischer
+ * Generic persistent entity criteria transfer object. Provides a storage mechanism for query related information
+ * regarding an entity.
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class CriteriaTransferObject {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Integer firstResult;
-    private Integer maxResults;
-    
-    private Map<String, FilterAndSortCriteria> criteriaMap = new HashMap<String, FilterAndSortCriteria>();
-    
-    /**
-     * The index of records in the database for which a fetch will start.
-     *
-     * @return the index to start, or null
-     */
-    public Integer getFirstResult() {
-        return firstResult;
+  private Map<String, FilterAndSortCriteria> criteriaMap = new HashMap<String, FilterAndSortCriteria>();
+
+  private Integer firstResult;
+  private Integer maxResults;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Add a {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instance. Contains information about which
+   * records are retrieved and in what direction they're sorted.
+   *
+   * @param  criteria {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria}
+   */
+  public void add(FilterAndSortCriteria criteria) {
+    criteriaMap.put(criteria.getPropertyId(), criteria);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Add all {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances. Contains information about
+   * which records are retrieved and in what direction they're sorted.
+   *
+   * @param  criterias  the list of {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances to add
+   */
+  public void addAll(Collection<FilterAndSortCriteria> criterias) {
+    for (FilterAndSortCriteria fasc : criterias) {
+      add(fasc);
     }
-    
-    /**
-     * The index of records in the datastore for which a fetch will start.
-     *
-     * @param firstResult the index to start, or null
-     */
-    public void setFirstResult(Integer firstResult) {
-        this.firstResult = firstResult;
-    }
-    
-    /**
-     * The max number of records from the datastore to return.
-     *
-     * @return the max records, or null
-     */
-    public Integer getMaxResults() {
-        return maxResults;
-    }
-    
-    /**
-     * The max number of records from the datastore to return.
-     *
-     * @param maxResults the max records, or null
-     */
-    public void setMaxResults(Integer maxResults) {
-        this.maxResults = maxResults;
-    }
-    
-    /**
-     * Add a {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instance. Contains information about which records are retrieved
-     * and in what direction they're sorted.
-     * 
-     * @param criteria {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria}
-     */
-    public void add(FilterAndSortCriteria criteria) {
-        criteriaMap.put(criteria.getPropertyId(), criteria);
-    }
-    
-    /**
-     * Add all {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances. Contains information about which records are retrieved
-     * and in what direction they're sorted.
-     * 
-     * @param criterias the list of {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances to add
-     */
-    public void addAll(Collection<FilterAndSortCriteria> criterias) {
-        for (FilterAndSortCriteria fasc : criterias) {
-            add(fasc);
-        }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FilterAndSortCriteria get(String name) {
+    if (criteriaMap.containsKey(name)) {
+      return criteriaMap.get(name);
     }
 
-    /**
-     * Retrieve the added {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances organized into a map
-     *
-     * @return the {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances as a map
-     */
-    public Map<String, FilterAndSortCriteria> getCriteriaMap() {
-        return criteriaMap;
-    }
-    
-    public void setCriteriaMap(Map<String, FilterAndSortCriteria> criteriaMap) {
-        this.criteriaMap = criteriaMap;
-    }
+    FilterAndSortCriteria criteria = new FilterAndSortCriteria(name);
+    criteriaMap.put(name, criteria);
 
-    public FilterAndSortCriteria get(String name) {
-        if (criteriaMap.containsKey(name)) {
-            return criteriaMap.get(name);
-        }
-        FilterAndSortCriteria criteria = new FilterAndSortCriteria(name);
-        criteriaMap.put(name, criteria);
-        return criteriaMap.get(name);
-    }
-}
+    return criteriaMap.get(name);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Retrieve the added {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances organized into a
+   * map.
+   *
+   * @return  the {@link org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria} instances as a map
+   */
+  public Map<String, FilterAndSortCriteria> getCriteriaMap() {
+    return criteriaMap;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The index of records in the database for which a fetch will start.
+   *
+   * @return  the index to start, or null
+   */
+  public Integer getFirstResult() {
+    return firstResult;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The max number of records from the datastore to return.
+   *
+   * @return  the max records, or null
+   */
+  public Integer getMaxResults() {
+    return maxResults;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  criteriaMap  DOCUMENT ME!
+   */
+  public void setCriteriaMap(Map<String, FilterAndSortCriteria> criteriaMap) {
+    this.criteriaMap = criteriaMap;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The index of records in the datastore for which a fetch will start.
+   *
+   * @param  firstResult  the index to start, or null
+   */
+  public void setFirstResult(Integer firstResult) {
+    this.firstResult = firstResult;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The max number of records from the datastore to return.
+   *
+   * @param  maxResults  the max records, or null
+   */
+  public void setMaxResults(Integer maxResults) {
+    this.maxResults = maxResults;
+  }
+} // end class CriteriaTransferObject

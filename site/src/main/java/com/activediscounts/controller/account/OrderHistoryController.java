@@ -17,35 +17,68 @@
 package com.activediscounts.controller.account;
 
 import javax.annotation.Resource;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController;
+
 import org.broadleafcommerce.profile.core.service.CountryService;
 import org.broadleafcommerce.profile.core.service.StateService;
+
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Controller
 @RequestMapping("/account/orders")
 public class OrderHistoryController extends BroadleafOrderHistoryController {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blStateService")
-    StateService stateService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCountryService")
+  CountryService countryService;
 
-    @Resource(name = "blCountryService")
-    CountryService countryService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blStateService")
+  StateService stateService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String viewOrderHistory(HttpServletRequest request, Model model) {
-        return super.viewOrderHistory(request, model); 
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @RequestMapping(value = "/{orderNumber}", method = RequestMethod.GET)
-    public String viewOrderDetails(HttpServletRequest request, Model model, @PathVariable("orderNumber") String orderNumber) {
-        return super.viewOrderDetails(request, model, orderNumber);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController#viewOrderDetails(javax.servlet.http.HttpServletRequest,
+   *       org.springframework.ui.Model, java.lang.String)
+   */
+  @Override
+  @RequestMapping(
+    value  = "/{orderNumber}",
+    method = RequestMethod.GET
+  )
+  public String viewOrderDetails(HttpServletRequest request, Model model,
+    @PathVariable("orderNumber") String orderNumber) {
+    return super.viewOrderDetails(request, model, orderNumber);
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.controller.account.BroadleafOrderHistoryController#viewOrderHistory(javax.servlet.http.HttpServletRequest,
+   *       org.springframework.ui.Model)
+   */
+  @Override
+  @RequestMapping(method = RequestMethod.GET)
+  public String viewOrderHistory(HttpServletRequest request, Model model) {
+    return super.viewOrderHistory(request, model);
+  }
+
+} // end class OrderHistoryController

@@ -17,63 +17,119 @@
 package org.broadleafcommerce.core.offer.domain;
 
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.OrderItemPriceDetail;
+
 
 /**
  * Records the actual adjustments that were made to an OrderItemPriceDetail.
- * 
- * @author bpolster
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface OrderItemPriceDetailAdjustment extends Adjustment {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Stores the offer name at the time the adjustment was made.   Primarily to simplify display 
-     * within the admin.
-     * 
-     * @return
-     */
-    public String getOfferName();
+  /**
+   * Stores the offer name at the time the adjustment was made. Primarily to simplify display within the admin.
+   *
+   * @return  stores the offer name at the time the adjustment was made.
+   */
+  String getOfferName();
 
-    /**
-     * Returns the name of the offer at the time the adjustment was made.
-     * @param offerName
-     */
-    public void setOfferName(String offerName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public OrderItemPriceDetail getOrderItemPriceDetail();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItemPriceDetail getOrderItemPriceDetail();
 
-    public void init(OrderItemPriceDetail orderItemPriceDetail, Offer offer, String reason);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOrderItemPriceDetail(OrderItemPriceDetail orderItemPriceDetail);
+  /**
+   * Value of this adjustment relative to the retail price.
+   *
+   * @return  value of this adjustment relative to the retail price.
+   */
+  Money getRetailPriceValue();
 
-    /**
-     * Even for items that are on sale, it is possible that an adjustment was made
-     * to the retail price that gave the customer a better offer.
-     *
-     * Since some offers can be applied to the sale price and some only to the
-     * retail price, this setting provides the required value.
-     *
-     * @return true if this adjustment was applied to the sale price
-     */
-    public boolean isAppliedToSalePrice();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAppliedToSalePrice(boolean appliedToSalePrice);
+  /**
+   * Value of this adjustment relative to the sale price.
+   *
+   * @return  value of this adjustment relative to the sale price.
+   */
+  Money getSalesPriceValue();
 
-    /**
-     * Value of this adjustment relative to the retail price.
-     * @return
-     */
-    public Money getRetailPriceValue();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setRetailPriceValue(Money retailPriceValue);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItemPriceDetail  DOCUMENT ME!
+   * @param  offer                 DOCUMENT ME!
+   * @param  reason                DOCUMENT ME!
+   */
+  void init(OrderItemPriceDetail orderItemPriceDetail, Offer offer, String reason);
 
-    /**
-     * Value of this adjustment relative to the sale price.
-     *
-     * @return
-     */
-    public Money getSalesPriceValue();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSalesPriceValue(Money salesPriceValue);
-}
+  /**
+   * Even for items that are on sale, it is possible that an adjustment was made to the retail price that gave the
+   * customer a better offer.
+   *
+   * <p>Since some offers can be applied to the sale price and some only to the retail price, this setting provides the
+   * required value.</p>
+   *
+   * @return  true if this adjustment was applied to the sale price
+   */
+  boolean isAppliedToSalePrice();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  appliedToSalePrice  DOCUMENT ME!
+   */
+  void setAppliedToSalePrice(boolean appliedToSalePrice);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the name of the offer at the time the adjustment was made.
+   *
+   * @param  offerName  DOCUMENT ME!
+   */
+  void setOfferName(String offerName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItemPriceDetail  DOCUMENT ME!
+   */
+  void setOrderItemPriceDetail(OrderItemPriceDetail orderItemPriceDetail);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  retailPriceValue  DOCUMENT ME!
+   */
+  void setRetailPriceValue(Money retailPriceValue);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  salesPriceValue  DOCUMENT ME!
+   */
+  void setSalesPriceValue(Money salesPriceValue);
+} // end interface OrderItemPriceDetailAdjustment

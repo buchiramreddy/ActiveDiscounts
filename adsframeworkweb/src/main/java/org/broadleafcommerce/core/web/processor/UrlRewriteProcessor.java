@@ -16,97 +16,145 @@
 
 package org.broadleafcommerce.core.web.processor;
 
-import org.broadleafcommerce.cms.file.service.StaticAssetService;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
-import org.springframework.stereotype.Component;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor;
-import org.thymeleaf.standard.expression.StandardExpressionProcessor;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.broadleafcommerce.cms.file.service.StaticAssetService;
+
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
+import org.springframework.stereotype.Component;
+
+import org.thymeleaf.Arguments;
+
+import org.thymeleaf.dom.Element;
+
+import org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor;
+
+import org.thymeleaf.standard.expression.StandardExpressionProcessor;
+
 
 /**
  * A Thymeleaf processor that processes the given url through the StaticAssetService's
- * {@link org.broadleafcommerce.cms.file.service.StaticAssetService#convertAssetPath(String, String, boolean)} method to determine
- * the appropriate URL for the asset to be served from.
- * 
- * @author apazzolini
+ * {@link org.broadleafcommerce.cms.file.service.StaticAssetService#convertAssetPath(String, String, boolean)} method to
+ * determine the appropriate URL for the asset to be served from.
+ *
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 @Component("blUrlRewriteProcessor")
 public class UrlRewriteProcessor extends AbstractAttributeModifierAttrProcessor {
-    
-    @Resource(name = "blStaticAssetService")
-    protected StaticAssetService staticAssetService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the name of this processor to be used in Thymeleaf template
+  /** DOCUMENT ME! */
+  @Resource(name = "blStaticAssetService")
+  protected StaticAssetService staticAssetService;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the name of this processor to be used in Thymeleaf template.
+   */
+  public UrlRewriteProcessor() {
+    super("src");
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.AbstractProcessor#getPrecedence()
+   */
+  @Override public int getPrecedence() {
+    return 1000;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor#getModificationType(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element, java.lang.String, java.lang.String)
+   */
+  @Override protected ModificationType getModificationType(Arguments arguments, Element element, String attributeName,
+    String newAttributeName) {
+    return ModificationType.SUBSTITUTION;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+
+  /**
+   * @see  org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor#getModifiedAttributeValues(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element, java.lang.String)
+   */
+  @Override protected Map<String, String> getModifiedAttributeValues(Arguments arguments, Element element,
+    String attributeName) {
+    Map<String, String> attrs   = new HashMap<String, String>();
+    HttpServletRequest  request = BroadleafRequestContext.getBroadleafRequestContext().getRequest();
+
+    boolean secureRequest = isRequestSecure(request);
+    String  assetPath     = (String) StandardExpressionProcessor.processExpression(arguments,
+        element.getAttributeValue(attributeName));
+    // String assetPath = element.getAttributeValue(attributeName);
+
+    assetPath = staticAssetService.convertAssetPath(assetPath, request.getContextPath(), secureRequest);
+
+    attrs.put("src", assetPath);
+
+
+    /*
+    SearchFacetResultDTO result = (SearchFacetResultDTO) StandardExpressionProcessor.processExpression(arguments, element.getAttributeValue(attributeName));
+    String value = result.getFacet().getSearchFacet().getFieldName() + "[RESULT-VALUE]";
+    if (result.getValue() != null) {
+        value = value.replace("RESULT-VALUE", result.getValue());
+    } else {
+        value = value.replace("RESULT-VALUE", result.getMinValue() + "-" + result.getMaxValue());
+    }
      */
-    public UrlRewriteProcessor() {
-        super("src");
-    }
-    
-    @Override
-    public int getPrecedence() {
-        return 1000;
-    }
-    
-    /**
-     * @return true if the current request.scheme = HTTPS or if the request.isSecure value is true.
+
+    /*
+    attrs.put("id", value);
+    attrs.put("name", value);
      */
-    protected boolean isRequestSecure(HttpServletRequest request) {
-        return ("HTTPS".equalsIgnoreCase(request.getScheme()) || request.isSecure());
-    } 
 
-    
-    @Override
-    protected Map<String, String> getModifiedAttributeValues(Arguments arguments, Element element, String attributeName) {
-        Map<String, String> attrs = new HashMap<String, String>();
-        HttpServletRequest request = BroadleafRequestContext.getBroadleafRequestContext().getRequest();
-        
-        boolean secureRequest = isRequestSecure(request);
-        String assetPath = (String) StandardExpressionProcessor.processExpression(arguments, element.getAttributeValue(attributeName));
-        //String assetPath = element.getAttributeValue(attributeName);
-        
-        assetPath = staticAssetService.convertAssetPath(assetPath, request.getContextPath(), secureRequest);
-        
-        attrs.put("src", assetPath);
-        
-        
-        /*
-        SearchFacetResultDTO result = (SearchFacetResultDTO) StandardExpressionProcessor.processExpression(arguments, element.getAttributeValue(attributeName));
-        String value = result.getFacet().getSearchFacet().getFieldName() + "[RESULT-VALUE]";
-        if (result.getValue() != null) {
-            value = value.replace("RESULT-VALUE", result.getValue());
-        } else {
-            value = value.replace("RESULT-VALUE", result.getMinValue() + "-" + result.getMaxValue());
-        }
-        */
-        
-        /*
-        attrs.put("id", value);
-        attrs.put("name", value);
-        */
-        
-        return attrs;
-    }
+    return attrs;
+  } // end method getModifiedAttributeValues
 
-    @Override
-    protected ModificationType getModificationType(Arguments arguments, Element element, String attributeName, String newAttributeName) {
-        return ModificationType.SUBSTITUTION;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    protected boolean removeAttributeIfEmpty(Arguments arguments, Element element, String attributeName, String newAttributeName) {
-        return true;
-    }
+  /**
+   * True if the current request.scheme = HTTPS or if the request.isSecure value is true.
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  true if the current request.scheme = HTTPS or if the request.isSecure value is true.
+   */
+  protected boolean isRequestSecure(HttpServletRequest request) {
+    return ("HTTPS".equalsIgnoreCase(request.getScheme()) || request.isSecure());
+  }
 
-    @Override
-    protected boolean recomputeProcessorsAfterExecution(Arguments arguments, Element element, String attributeName) {
-        return false;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor#recomputeProcessorsAfterExecution(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element, java.lang.String)
+   */
+  @Override protected boolean recomputeProcessorsAfterExecution(Arguments arguments, Element element,
+    String attributeName) {
+    return false;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor#removeAttributeIfEmpty(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element, java.lang.String, java.lang.String)
+   */
+  @Override protected boolean removeAttributeIfEmpty(Arguments arguments, Element element, String attributeName,
+    String newAttributeName) {
+    return true;
+  }
+} // end class UrlRewriteProcessor

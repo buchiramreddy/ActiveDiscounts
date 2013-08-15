@@ -16,6 +16,11 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
+
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
@@ -24,39 +29,66 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.provide
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.FieldProviderResponse;
+
 import org.springframework.core.Ordered;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class FieldPersistenceProviderAdapter extends AbstractFieldPersistenceProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public FieldProviderResponse addSearchMapping(AddSearchMappingRequest addSearchMappingRequest, List<FilterMapping> filterMappings) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider#addSearchMapping(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.AddSearchMappingRequest,
+   *       java.util.List)
+   */
+  @Override public FieldProviderResponse addSearchMapping(AddSearchMappingRequest addSearchMappingRequest,
+    List<FilterMapping> filterMappings) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
 
-    @Override
-    public FieldProviderResponse populateValue(PopulateValueRequest populateValueRequest, Serializable instance) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public FieldProviderResponse extractValue(ExtractValueRequest extractValueRequest, Property property) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider#extractValue(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest,
+   *       org.broadleafcommerce.openadmin.dto.Property)
+   */
+  @Override public FieldProviderResponse extractValue(ExtractValueRequest extractValueRequest, Property property) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
 
-    @Override
-    public FieldProviderResponse filterProperties(AddFilterPropertiesRequest addFilterPropertiesRequest, Map<String, FieldMetadata> properties) {
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int getOrder() {
-        return Ordered.LOWEST_PRECEDENCE;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider#filterProperties(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.AddFilterPropertiesRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse filterProperties(AddFilterPropertiesRequest addFilterPropertiesRequest,
+    Map<String, FieldMetadata> properties) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.core.Ordered#getOrder()
+   */
+  @Override public int getOrder() {
+    return Ordered.LOWEST_PRECEDENCE;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.provider.FieldPersistenceProvider#populateValue(org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest,
+   *       java.io.Serializable)
+   */
+  @Override public FieldProviderResponse populateValue(PopulateValueRequest populateValueRequest,
+    Serializable instance) {
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+} // end class FieldPersistenceProviderAdapter

@@ -16,60 +16,80 @@
 
 package org.broadleafcommerce.core.inventory.service;
 
-import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
+
+
 /**
- * 
- * @deprecated This is no longer required and is instead implemented as a third-party inventory module
+ * DOCUMENT ME!
  *
+ * @deprecated  This is no longer required and is instead implemented as a third-party inventory module
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface AvailabilityService {
+@Deprecated public interface AvailabilityService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the availability status for this passed in skuId.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    public SkuAvailability lookupSKUAvailability(Long skuId, boolean realTime);
+  /**
+   * Returns the availability status for this passed in skuId. Implementations may choose to cache the status based upon
+   * the passed in realTime indicator.
+   *
+   * @param   skuId     DOCUMENT ME!
+   * @param   realTime  DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  SkuAvailability lookupSKUAvailability(Long skuId, boolean realTime);
 
-    /**
-     * Returns the availability status for a specific skuId and location.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param locationId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    public SkuAvailability lookupSKUAvailabilityForLocation(Long skuId, Long locationId, boolean realTime);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the availability status for this passed in skuId.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    public List<SkuAvailability> lookupSKUAvailability(List<Long> skuIds, boolean realTime);
+  /**
+   * Returns the availability status for this passed in skuId. Implementations may choose to cache the status based upon
+   * the passed in realTime indicator.
+   *
+   * @param   skuIds    DOCUMENT ME!
+   * @param   realTime  DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  List<SkuAvailability> lookupSKUAvailability(List<Long> skuIds, boolean realTime);
 
-    /**
-     * Returns the availability status for a specific skuId and location.   Implementations may choose
-     * to cache the status based upon the passed in realTime indicator.
-     *
-     * @param skuId
-     * @param locationId
-     * @param realTime
-     * @return String indicating the availabilityStatus (statuses are implementation specific)
-     */
-    public List<SkuAvailability> lookupSKUAvailabilityForLocation(List<Long> skuIds, Long locationId, boolean realTime);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void save(SkuAvailability skuAvailability);
-    
-}
+  /**
+   * Returns the availability status for a specific skuId and location. Implementations may choose to cache the status
+   * based upon the passed in realTime indicator.
+   *
+   * @param   skuId       DOCUMENT ME!
+   * @param   locationId  DOCUMENT ME!
+   * @param   realTime    DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  SkuAvailability lookupSKUAvailabilityForLocation(Long skuId, Long locationId, boolean realTime);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the availability status for a specific skuId and location. Implementations may choose to cache the status
+   * based upon the passed in realTime indicator.
+   *
+   * @param   skuIds      DOCUMENT ME!
+   * @param   locationId  DOCUMENT ME!
+   * @param   realTime    DOCUMENT ME!
+   *
+   * @return  String indicating the availabilityStatus (statuses are implementation specific)
+   */
+  List<SkuAvailability> lookupSKUAvailabilityForLocation(List<Long> skuIds, Long locationId, boolean realTime);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  skuAvailability  DOCUMENT ME!
+   */
+  void save(SkuAvailability skuAvailability);
+
+} // end interface AvailabilityService

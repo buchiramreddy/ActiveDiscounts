@@ -23,42 +23,50 @@ import junit.framework.TestCase;
 
 
 /**
- * 
+ * DOCUMENT ME!
  *
- * @author Phillip Verheyden (phillipuniverse)
+ * @author   Phillip Verheyden (phillipuniverse)
+ * @version  $Revision$, $Date$
  */
 public class PropertyValidatorTest extends TestCase {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void testRequiredValidator() {
-        RequiredPropertyValidator validator = new RequiredPropertyValidator();
-        BasicFieldMetadata md = new BasicFieldMetadata();
+  /**
+   * DOCUMENT ME!
+   */
+  public void testRequiredValidator() {
+    RequiredPropertyValidator validator = new RequiredPropertyValidator();
+    BasicFieldMetadata        md        = new BasicFieldMetadata();
 
-        md.setRequired(true);        
-        //null values aren't valid
-        assertFalse(validator.validate(null, null, null, md, null, null).isValid());
-        //empty strings aren't valid
-        assertFalse(validator.validate(null, null, null, md, null, "").isValid());
-        //anything else is
-        assertTrue(validator.validate(null, null, null, md, null, "testest").isValid());
-        assertTrue(validator.validate(null, null, null, md, null, "1.8832").isValid());
+    md.setRequired(true);
 
-        //non-required should pass null and empty
-        md.setRequired(false);
-        assertTrue(validator.validate(null, null, null, md, null, null).isValid());
-        assertTrue(validator.validate(null, null, null, md, null, "").isValid());
-        
-        //required override should always take precedence
-        md.setRequired(true);
-        md.setRequiredOverride(false);
-        assertTrue(validator.validate(null, null, null, md, null, null).isValid());
-        assertTrue(validator.validate(null, null, null, md, null, "").isValid());
-        assertTrue(validator.validate(null, null, null, md, null, "testtest").isValid());
-        
-        md.setRequired(false);
-        md.setRequiredOverride(true);
-        assertFalse(validator.validate(null, null, null, md, null, null).isValid());
-        assertFalse(validator.validate(null, null, null, md, null, "").isValid());
-        assertTrue(validator.validate(null, null, null, md, null, "testtest").isValid());
-    }
-    
-}
+    // null values aren't valid
+    assertFalse(validator.validate(null, null, null, md, null, null).isValid());
+
+    // empty strings aren't valid
+    assertFalse(validator.validate(null, null, null, md, null, "").isValid());
+
+    // anything else is
+    assertTrue(validator.validate(null, null, null, md, null, "testest").isValid());
+    assertTrue(validator.validate(null, null, null, md, null, "1.8832").isValid());
+
+    // non-required should pass null and empty
+    md.setRequired(false);
+    assertTrue(validator.validate(null, null, null, md, null, null).isValid());
+    assertTrue(validator.validate(null, null, null, md, null, "").isValid());
+
+    // required override should always take precedence
+    md.setRequired(true);
+    md.setRequiredOverride(false);
+    assertTrue(validator.validate(null, null, null, md, null, null).isValid());
+    assertTrue(validator.validate(null, null, null, md, null, "").isValid());
+    assertTrue(validator.validate(null, null, null, md, null, "testtest").isValid());
+
+    md.setRequired(false);
+    md.setRequiredOverride(true);
+    assertFalse(validator.validate(null, null, null, md, null, null).isValid());
+    assertFalse(validator.validate(null, null, null, md, null, "").isValid());
+    assertTrue(validator.validate(null, null, null, md, null, "testtest").isValid());
+  } // end method testRequiredValidator
+
+} // end class PropertyValidatorTest

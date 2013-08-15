@@ -18,21 +18,65 @@ package org.broadleafcommerce.common.currency.domain;
 
 import java.io.Serializable;
 
+
 /**
- * Author: jerryocanas
- * Date: 9/6/12
+ * Author: jerryocanas Date: 9/6/12
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafCurrency extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getCurrencyCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCurrencyCode();
 
-    public void setCurrencyCode(String code);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFriendlyName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean getDefaultFlag();
 
-    public void setFriendlyName(String friendlyName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean getDefaultFlag();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFriendlyName();
 
-    public void setDefaultFlag(boolean defaultFlag);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  code  DOCUMENT ME!
+   */
+  void setCurrencyCode(String code);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  defaultFlag  DOCUMENT ME!
+   */
+  void setDefaultFlag(boolean defaultFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  friendlyName  DOCUMENT ME!
+   */
+  void setFriendlyName(String friendlyName);
+} // end interface BroadleafCurrency

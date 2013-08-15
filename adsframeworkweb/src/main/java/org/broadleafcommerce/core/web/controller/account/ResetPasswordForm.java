@@ -18,46 +18,111 @@ package org.broadleafcommerce.core.web.controller.account;
 
 import java.io.Serializable;
 
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class ResetPasswordForm implements Serializable {
-    private static final long serialVersionUID = 1L;
-    
-    private String username;
-    private String token;
-    private String password;
-    private String passwordConfirm; 
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public String getUsername() {
-        return username;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getToken() {
-        return token;
-    }
+  private String password;
+  private String passwordConfirm;
+  private String token;
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  private String username;
 
-    public String getPassword() {
-        return password;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPassword() {
+    return password;
+  }
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPasswordConfirm() {
+    return passwordConfirm;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getToken() {
+    return token;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  password  DOCUMENT ME!
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordConfirm  DOCUMENT ME!
+   */
+  public void setPasswordConfirm(String passwordConfirm) {
+    this.passwordConfirm = passwordConfirm;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  token  DOCUMENT ME!
+   */
+  public void setToken(String token) {
+    this.token = token;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  username  DOCUMENT ME!
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
+} // end class ResetPasswordForm

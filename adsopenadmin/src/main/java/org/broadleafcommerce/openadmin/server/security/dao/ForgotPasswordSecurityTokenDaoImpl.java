@@ -16,35 +16,52 @@
 
 package org.broadleafcommerce.openadmin.server.security.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityToken;
-import org.springframework.stereotype.Repository;
-
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityToken;
+
+import org.springframework.stereotype.Repository;
+
+
 /**
- * 
- * @author bpolster
+ * DOCUMENT ME!
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 @Repository("blForgotPasswordSecurityTokenDao")
 public class ForgotPasswordSecurityTokenDaoImpl implements ForgotPasswordSecurityTokenDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Override
-    public ForgotPasswordSecurityToken readToken(String token) {
-        return (ForgotPasswordSecurityToken) em.find(entityConfiguration.lookupEntityClass("org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityToken"), token);        
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public ForgotPasswordSecurityToken saveToken(ForgotPasswordSecurityToken token) {
-        return em.merge(token);
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.ForgotPasswordSecurityTokenDao#readToken(java.lang.String)
+   */
+  @Override public ForgotPasswordSecurityToken readToken(String token) {
+    return (ForgotPasswordSecurityToken) em.find(entityConfiguration.lookupEntityClass(
+          "org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityToken"), token);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.ForgotPasswordSecurityTokenDao#saveToken(org.broadleafcommerce.openadmin.server.security.domain.ForgotPasswordSecurityToken)
+   */
+  @Override public ForgotPasswordSecurityToken saveToken(ForgotPasswordSecurityToken token) {
+    return em.merge(token);
+  }
+} // end class ForgotPasswordSecurityTokenDaoImpl

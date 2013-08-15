@@ -16,135 +16,324 @@
 
 package org.broadleafcommerce.cms.page.domain;
 
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-import org.broadleafcommerce.openadmin.audit.AdminAuditable;
-
-import javax.annotation.Nullable;
 import java.io.Serializable;
+
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+
+import org.broadleafcommerce.openadmin.audit.AdminAuditable;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface Page extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Page cloneEntity();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFullUrl();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getArchivedFlag();
 
-    public void setFullUrl(String fullUrl);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getDescription();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminAuditable getAuditable();
 
-    public void setDescription(String description);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public PageTemplate getPageTemplate();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getDeletedFlag();
 
-    public void setPageTemplate(PageTemplate pageTemplate);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Map<String, PageField> getPageFields();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDescription();
 
-    public void setPageFields(Map<String, PageField> pageFields);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getDeletedFlag();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFullUrl();
 
-    public void setDeletedFlag(Boolean deletedFlag);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getArchivedFlag();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setArchivedFlag(Boolean archivedFlag);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBox getSandbox();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getLockedFlag();
 
-    public void setSandbox(SandBox sandbox);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getLockedFlag();
+  /**
+   * Returns the offlineFlag. True indicates that the page should no longer appear on the site. The item will still
+   * appear within the content administration program but no longer be returned as part of the client facing APIs.
+   *
+   * @return  true if this item is offline
+   */
+  @Nullable Boolean getOfflineFlag();
 
-    public void setLockedFlag(Boolean lockedFlag);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getOriginalPageId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getOriginalPageId();
 
-    public void setOriginalPageId(Long originalPageId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBox getOriginalSandBox();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox getOriginalSandBox();
 
-    public void setOriginalSandBox(SandBox originalSandBox);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public AdminAuditable getAuditable();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, PageField> getPageFields();
 
-    public void setAuditable(AdminAuditable auditable);
-    
-    /**
-     * Returns the offlineFlag.   True indicates that the page should no longer appear on the site.
-     * The item will still appear within the content administration program but no longer
-     * be returned as part of the client facing APIs.
-     *
-     * @return true if this item is offline
-     */
-    @Nullable
-    public Boolean getOfflineFlag();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the offline flag.
-     *
-     * @param offlineFlag
-     */
-    public void setOfflineFlag(@Nullable Boolean offlineFlag);
-    
-    
-    /**
-     * Gets the integer priority of this content item.   Items with a lower priority should
-     * be displayed before items with a higher priority.
-     *
-     * @return the priority as a numeric value
-     */
-    @Nullable
-    public Integer getPriority();
+  /**
+   * Returns a map of the targeting rules associated with this page.
+   *
+   * <p>Targeting rules are defined in the content mangagement system and used to enforce which page is returned to the
+   * client.</p>
+   *
+   * @return  a map of the targeting rules associated with this page.
+   */
+  @Nullable Map<String, PageRule> getPageMatchRules();
 
-    /**
-     * Sets the display priority of this item.   Lower priorities should be displayed first.
-     *
-     * @param priority
-     */
-    public void setPriority(@Nullable Integer priority);
-    
-    /**
-     * Returns a map of the targeting rules associated with this page.
-     *
-     * Targeting rules are defined in the content mangagement system and used to
-     * enforce which page is returned to the client.
-     *
-     * @return
-     */
-    @Nullable
-    public Map<String, PageRule> getPageMatchRules();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the targeting rules for this content item.
-     *
-     * @param pageRules
-     */
-    public void setPageMatchRules(@Nullable Map<String, PageRule> pageRules);
-    
-    /**
-     * Returns the item (or cart) based rules associated with this content item.
-     *
-     * @return
-     */
-    @Nullable
-    public Set<PageItemCriteria> getQualifyingItemCriteria();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PageTemplate getPageTemplate();
 
-    /**
-     * Sets the item (e.g. cart) based rules associated with this content item.
-     *
-     * @param qualifyingItemCriteria
-     */
-    public void setQualifyingItemCriteria(@Nullable Set<PageItemCriteria> qualifyingItemCriteria);
-    
-    
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Page cloneEntity();
-}
+  /**
+   * Gets the integer priority of this content item. Items with a lower priority should be displayed before items with a
+   * higher priority.
+   *
+   * @return  the priority as a numeric value
+   */
+  @Nullable Integer getPriority();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the item (or cart) based rules associated with this content item.
+   *
+   * @return  the item (or cart) based rules associated with this content item.
+   */
+  @Nullable Set<PageItemCriteria> getQualifyingItemCriteria();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBox getSandbox();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archivedFlag  DOCUMENT ME!
+   */
+  void setArchivedFlag(Boolean archivedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(AdminAuditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  deletedFlag  DOCUMENT ME!
+   */
+  void setDeletedFlag(Boolean deletedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  void setDescription(String description);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fullUrl  DOCUMENT ME!
+   */
+  void setFullUrl(String fullUrl);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  lockedFlag  DOCUMENT ME!
+   */
+  void setLockedFlag(Boolean lockedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the offline flag.
+   *
+   * @param  offlineFlag  DOCUMENT ME!
+   */
+  void setOfflineFlag(@Nullable Boolean offlineFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  originalPageId  DOCUMENT ME!
+   */
+  void setOriginalPageId(Long originalPageId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  originalSandBox  DOCUMENT ME!
+   */
+  void setOriginalSandBox(SandBox originalSandBox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  pageFields  DOCUMENT ME!
+   */
+  void setPageFields(Map<String, PageField> pageFields);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the targeting rules for this content item.
+   *
+   * @param  pageRules  DOCUMENT ME!
+   */
+  void setPageMatchRules(@Nullable Map<String, PageRule> pageRules);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  pageTemplate  DOCUMENT ME!
+   */
+  void setPageTemplate(PageTemplate pageTemplate);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the display priority of this item. Lower priorities should be displayed first.
+   *
+   * @param  priority  DOCUMENT ME!
+   */
+  void setPriority(@Nullable Integer priority);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the item (e.g. cart) based rules associated with this content item.
+   *
+   * @param  qualifyingItemCriteria  DOCUMENT ME!
+   */
+  void setQualifyingItemCriteria(@Nullable Set<PageItemCriteria> qualifyingItemCriteria);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandbox  DOCUMENT ME!
+   */
+  void setSandbox(SandBox sandbox);
+} // end interface Page

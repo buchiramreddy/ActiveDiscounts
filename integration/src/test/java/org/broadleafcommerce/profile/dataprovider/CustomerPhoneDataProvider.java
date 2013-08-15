@@ -20,24 +20,38 @@ import org.broadleafcommerce.profile.core.domain.CustomerPhone;
 import org.broadleafcommerce.profile.core.domain.CustomerPhoneImpl;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+
 import org.testng.annotations.DataProvider;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CustomerPhoneDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "setupCustomerPhone")
-    public static Object[][] createCustomerPhone() {
-        CustomerPhone cp1 = new CustomerPhoneImpl();
-        Phone phone1 = new PhoneImpl();
-        phone1.setPhoneNumber("111-111-1111");
-        cp1.setPhone(phone1);
-        cp1.setPhoneName("phone1");
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupCustomerPhone")
+  public static Object[][] createCustomerPhone() {
+    CustomerPhone cp1    = new CustomerPhoneImpl();
+    Phone         phone1 = new PhoneImpl();
+    phone1.setPhoneNumber("111-111-1111");
+    cp1.setPhone(phone1);
+    cp1.setPhoneName("phone1");
 
-        CustomerPhone cp2 = new CustomerPhoneImpl();
-        Phone phone2 = new PhoneImpl();
-        phone1.setPhoneNumber("222-222-2222");
-        cp2.setPhone(phone2);
-        cp2.setPhoneName("phone2");
+    CustomerPhone cp2    = new CustomerPhoneImpl();
+    Phone         phone2 = new PhoneImpl();
+    phone1.setPhoneNumber("222-222-2222");
+    cp2.setPhone(phone2);
+    cp2.setPhoneName("phone2");
 
-        return new Object[][] { new Object[] { cp1 }, new Object[] { cp2 } };
-    }
-}
+    return new Object[][] { new Object[] { cp1 }, new Object[] { cp2 } };
+  }
+} // end class CustomerPhoneDataProvider

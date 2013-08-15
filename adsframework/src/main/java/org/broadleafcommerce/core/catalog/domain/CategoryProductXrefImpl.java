@@ -16,15 +16,6 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Polymorphism;
-import org.hibernate.annotations.PolymorphismType;
-
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -32,110 +23,153 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Polymorphism;
+import org.hibernate.annotations.PolymorphismType;
+
+
 /**
- * The Class CategoryProductXrefImpl is the default implmentation of {@link org.broadleafcommerce.core.catalog.domain.Category}.
- * This entity is only used for executing a named query.
+ * The Class CategoryProductXrefImpl is the default implmentation of
+ * {@link org.broadleafcommerce.core.catalog.domain.Category}. This entity is only used for executing a named query.
  *
- * If you want to add fields specific to your implementation of BroadLeafCommerce you should extend
- * this class and add your fields.  If you need to make significant changes to the class then you
- * should implement your own version of {@link org.broadleafcommerce.core.catalog.domain.Category}.
+ * <p>If you want to add fields specific to your implementation of BroadLeafCommerce you should extend this class and
+ * add your fields. If you need to make significant changes to the class then you should implement your own version of
+ * {@link org.broadleafcommerce.core.catalog.domain.Category}.<br>
  * <br>
- * <br>
- * This implementation uses a Hibernate implementation of JPA configured through annotations.
- * The Entity references the following tables:
- * BLC_CATEGORY_PRODUCT_XREF,
+ * This implementation uses a Hibernate implementation of JPA configured through annotations. The Entity references the
+ * following tables: BLC_CATEGORY_PRODUCT_XREF,</p>
  *
- * @see {@link org.broadleafcommerce.core.catalog.domain.Category}, {@link org.broadleafcommerce.core.catalog.domain.ProductImpl}
- * @author btaylor
+ * @see      {@link org.broadleafcommerce.core.catalog.domain.Category},
+ *           {@link org.broadleafcommerce.core.catalog.domain.ProductImpl}
+ * @author   btaylor
+ * @version  $Revision$, $Date$
  */
-@Entity
-@Polymorphism(type = PolymorphismType.EXPLICIT)
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "BLC_CATEGORY_PRODUCT_XREF")
 @AdminPresentationClass(excludeFromPolymorphism = false)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Polymorphism(type = PolymorphismType.EXPLICIT)
+@Table(name = "BLC_CATEGORY_PRODUCT_XREF")
 public class CategoryProductXrefImpl implements CategoryProductXref {
+  /** The Constant serialVersionUID. */
+  private static final long serialVersionUID = 1L;
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @EmbeddedId CategoryProductXrefPK categoryProductXref = new CategoryProductXrefPK();
 
-    @EmbeddedId
-    CategoryProductXrefPK categoryProductXref = new CategoryProductXrefPK();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public CategoryProductXrefPK getCategoryProductXref() {
+    return categoryProductXref;
+  }
 
-    public CategoryProductXrefPK getCategoryProductXref() {
-        return categoryProductXref;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  categoryProductXref  DOCUMENT ME!
+   */
+  public void setCategoryProductXref(CategoryProductXrefPK categoryProductXref) {
+    this.categoryProductXref = categoryProductXref;
+  }
+
+  /** The display order. */
+  @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
+  @Column(name = "DISPLAY_ORDER")
+  protected Long displayOrder;
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.catalog.domain.CategoryProductXref#getDisplayOrder()
+   */
+  @Override public Long getDisplayOrder() {
+    return displayOrder;
+  }
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.catalog.domain.CategoryProductXref#setDisplayOrder(java.lang.Integer)
+   */
+  @Override public void setDisplayOrder(Long displayOrder) {
+    this.displayOrder = displayOrder;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     CategoryProductXrefImpl.CategoryProductXrefPK#getCategory()
+   */
+  @Override public Category getCategory() {
+    return categoryProductXref.getCategory();
+  }
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   *
+   * @see    CategoryProductXrefImpl.CategoryProductXrefPK#setCategory(Category)
+   */
+  @Override public void setCategory(Category category) {
+    categoryProductXref.setCategory(category);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @see     CategoryProductXrefImpl.CategoryProductXrefPK#getProduct()
+   */
+  @Override public Product getProduct() {
+    return categoryProductXref.getProduct();
+  }
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  product  DOCUMENT ME!
+   *
+   * @see    CategoryProductXrefImpl.CategoryProductXrefPK#setProduct(Product)
+   */
+  @Override public void setProduct(Product product) {
+    categoryProductXref.setProduct(product);
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object o) {
+    if (o instanceof CategoryProductXrefImpl) {
+      CategoryProductXrefImpl that = (CategoryProductXrefImpl) o;
+
+      return new EqualsBuilder().append(categoryProductXref, that.categoryProductXref).build();
     }
 
-    public void setCategoryProductXref(CategoryProductXrefPK categoryProductXref) {
-        this.categoryProductXref = categoryProductXref;
-    }
+    return false;
+  }
 
-    /** The display order. */
-    @Column(name = "DISPLAY_ORDER")
-    @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Long displayOrder;
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    int result = (categoryProductXref != null) ? categoryProductXref.hashCode() : 0;
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.catalog.domain.CategoryProductXref#getDisplayOrder()
-     */
-    public Long getDisplayOrder() {
-        return displayOrder;
-    }
+    return result;
+  }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.catalog.domain.CategoryProductXref#setDisplayOrder(java.lang.Integer)
-     */
-    public void setDisplayOrder(Long displayOrder) {
-        this.displayOrder = displayOrder;
-    }
-
-    /**
-     * @return
-     * @see CategoryProductXrefImpl.CategoryProductXrefPK#getCategory()
-     */
-    public Category getCategory() {
-        return categoryProductXref.getCategory();
-    }
-
-    /**
-     * @param category
-     * @see CategoryProductXrefImpl.CategoryProductXrefPK#setCategory(Category)
-     */
-    public void setCategory(Category category) {
-        categoryProductXref.setCategory(category);
-    }
-
-    /**
-     * @return
-     * @see CategoryProductXrefImpl.CategoryProductXrefPK#getProduct()
-     */
-    public Product getProduct() {
-        return categoryProductXref.getProduct();
-    }
-
-    /**
-     * @param product
-     * @see CategoryProductXrefImpl.CategoryProductXrefPK#setProduct(Product)
-     */
-    public void setProduct(Product product) {
-        categoryProductXref.setProduct(product);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof CategoryProductXrefImpl) {
-            CategoryProductXrefImpl that = (CategoryProductXrefImpl) o;
-            return new EqualsBuilder()
-                .append(categoryProductXref, that.categoryProductXref)
-                .build();
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = categoryProductXref != null ? categoryProductXref.hashCode() : 0;
-        return result;
-    }
-
-}
+} // end class CategoryProductXrefImpl

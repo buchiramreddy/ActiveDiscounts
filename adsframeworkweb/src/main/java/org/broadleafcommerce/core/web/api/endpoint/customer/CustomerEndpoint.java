@@ -16,23 +16,29 @@
 
 package org.broadleafcommerce.core.web.api.endpoint.customer;
 
-import org.broadleafcommerce.core.web.api.endpoint.BaseEndpoint;
-import org.broadleafcommerce.profile.core.service.CustomerService;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.core.web.api.endpoint.BaseEndpoint;
+
+import org.broadleafcommerce.profile.core.service.CustomerService;
+
+
 /**
- * This endpoint depends on JAX-RS.  It should be extended by components that actually wish 
- * to provide an endpoint.  The annotations such as @Path, @Scope, @Context, @PathParam, @QueryParam, 
- * @GET, @POST, @PUT, and @DELETE are purposely not provided here to allow implementors finer control over 
- * the details of the endpoint.
- * <p/>
- * User: Kelly Tisdell
- * Date: 4/10/12
+ * This endpoint depends on JAX-RS. It should be extended by components that actually wish to provide an endpoint. The
+ * annotations such as @Path, @Scope, @Context, @PathParam, @QueryParam,
+ *
+ * @GET      , @POST, @PUT, and @DELETE are purposely not provided here to allow implementors finer control over the
+ *           details of the endpoint.
+ *
+ *           <p>User: Kelly Tisdell Date: 4/10/12</p>
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public abstract class CustomerEndpoint extends BaseEndpoint {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blCustomerService")
-    protected CustomerService customerService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  protected CustomerService customerService;
 
 }

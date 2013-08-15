@@ -16,23 +16,35 @@
 
 package org.broadleafcommerce.common.util.xml;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+
 /**
- *  This class allows us to round Big Decimals to 2 decimal places, generally for
- *  marshalling purposes.  This is to be used with <code>javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters</code>.
+ * This class allows us to round Big Decimals to 2 decimal places, generally for marshalling purposes. This is to be
+ * used with <code>javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters</code>.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class BigDecimalRoundingAdapter extends XmlAdapter<String, BigDecimal> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public BigDecimal unmarshal(String s) throws Exception {
-        return new BigDecimal(s);
-    }
+  /**
+   * @see  javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.math.BigDecimal)
+   */
+  @Override public String marshal(BigDecimal bigDecimal) throws Exception {
+    return bigDecimal.setScale(2, RoundingMode.UP).toString();
+  }
 
-    @Override
-    public String marshal(BigDecimal bigDecimal) throws Exception {
-        return bigDecimal.setScale(2, RoundingMode.UP).toString();
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.String)
+   */
+  @Override public BigDecimal unmarshal(String s) throws Exception {
+    return new BigDecimal(s);
+  }
 }

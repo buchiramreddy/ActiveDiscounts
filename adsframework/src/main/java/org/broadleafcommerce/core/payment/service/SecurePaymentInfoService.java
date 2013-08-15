@@ -20,16 +20,59 @@ import org.broadleafcommerce.core.payment.domain.Referenced;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SecurePaymentInfoService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   * @param   paymentInfoType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  WorkflowException  DOCUMENT ME!
+   */
+  Referenced findSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType) throws WorkflowException;
 
-    public Referenced findSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType) throws WorkflowException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   securePaymentInfo  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Referenced save(Referenced securePaymentInfo);
 
-    public Referenced save(Referenced securePaymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentInfoType  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Referenced create(PaymentInfoType paymentInfoType);
 
-    public Referenced create(PaymentInfoType paymentInfoType);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  securePaymentInfo  DOCUMENT ME!
+   */
+  void remove(Referenced securePaymentInfo);
 
-    public void remove(Referenced securePaymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   referenceNumber  DOCUMENT ME!
+   * @param   paymentInfoType  DOCUMENT ME!
+   *
+   * @throws  WorkflowException  DOCUMENT ME!
+   */
+  void findAndRemoveSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType) throws WorkflowException;
 
-    public void findAndRemoveSecurePaymentInfo(String referenceNumber, PaymentInfoType paymentInfoType) throws WorkflowException;
-
-}
+} // end interface SecurePaymentInfoService

@@ -16,64 +16,138 @@
 
 package org.broadleafcommerce.core.web.controller.account;
 
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.web.controller.BroadleafAbstractController;
+
 import org.broadleafcommerce.core.web.controller.account.validator.UpdateAccountValidator;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.web.core.CustomerState;
+
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class BroadleafUpdateAccountController extends BroadleafAbstractController {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Resource(name = "blCustomerService")
-    protected CustomerService customerService;
-    
-    @Resource(name = "blUpdateAccountValidator")
-    protected UpdateAccountValidator updateAccountValidator;
+  /** DOCUMENT ME! */
+  protected static String updateAccountView   = "account/updateAccount";
 
-    protected String accountUpdatedMessage = "Account successfully updated";
-    
-    protected static String updateAccountView = "account/updateAccount";
-    protected static String accountRedirectView = "redirect:/account";
+  /** DOCUMENT ME! */
+  protected static String accountRedirectView = "redirect:/account";
 
-    public String viewUpdateAccount(HttpServletRequest request, Model model, UpdateAccountForm form) {
-        Customer customer = CustomerState.getCustomer();
-        form.setEmailAddress(customer.getEmailAddress());
-        form.setFirstName(customer.getFirstName());
-        form.setLastName(customer.getLastName());
-        return getUpdateAccountView();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected String accountUpdatedMessage = "Account successfully updated";
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerService")
+  protected CustomerService customerService;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blUpdateAccountValidator")
+  protected UpdateAccountValidator updateAccountValidator;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getAccountRedirectView() {
+    return accountRedirectView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getAccountUpdatedMessage() {
+    return accountUpdatedMessage;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUpdateAccountView() {
+    return updateAccountView;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request             DOCUMENT ME!
+   * @param   model               DOCUMENT ME!
+   * @param   form                DOCUMENT ME!
+   * @param   result              DOCUMENT ME!
+   * @param   redirectAttributes  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  public String processUpdateAccount(HttpServletRequest request, Model model, UpdateAccountForm form,
+    BindingResult result, RedirectAttributes redirectAttributes) throws ServiceException {
+    updateAccountValidator.validate(form, result);
+
+    if (result.hasErrors()) {
+      return getUpdateAccountView();
     }
 
-    public String processUpdateAccount(HttpServletRequest request, Model model, UpdateAccountForm form, BindingResult result, RedirectAttributes redirectAttributes) throws ServiceException {
-        updateAccountValidator.validate(form, result);
-        if (result.hasErrors()) {
-            return getUpdateAccountView();
-        }
-        Customer customer = CustomerState.getCustomer();
-        customer.setEmailAddress(form.getEmailAddress());
-        customer.setFirstName(form.getFirstName());
-        customer.setLastName(form.getLastName());
-        customerService.saveCustomer(customer);
-        redirectAttributes.addFlashAttribute("successMessage", getAccountUpdatedMessage());
-        return getAccountRedirectView();
-    }
+    Customer customer = CustomerState.getCustomer();
+    customer.setEmailAddress(form.getEmailAddress());
+    customer.setFirstName(form.getFirstName());
+    customer.setLastName(form.getLastName());
+    customerService.saveCustomer(customer);
+    redirectAttributes.addFlashAttribute("successMessage", getAccountUpdatedMessage());
 
-    public String getUpdateAccountView() {
-        return updateAccountView;
-    }
-    
-    public String getAccountRedirectView() {
-        return accountRedirectView;
-    }
-    
-    public String getAccountUpdatedMessage() {
-        return accountUpdatedMessage;
-    }
+    return getAccountRedirectView();
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   * @param   model    DOCUMENT ME!
+   * @param   form     DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String viewUpdateAccount(HttpServletRequest request, Model model, UpdateAccountForm form) {
+    Customer customer = CustomerState.getCustomer();
+    form.setEmailAddress(customer.getEmailAddress());
+    form.setFirstName(customer.getFirstName());
+    form.setLastName(customer.getLastName());
+
+    return getUpdateAccountView();
+  }
+
+} // end class BroadleafUpdateAccountController

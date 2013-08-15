@@ -16,51 +16,73 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.profile.core.domain.Country;
-import org.broadleafcommerce.profile.core.service.CountryService;
-import org.springframework.context.ApplicationContext;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.profile.core.domain.Country;
+import org.broadleafcommerce.profile.core.service.CountryService;
+
+import org.springframework.context.ApplicationContext;
+
+
 /**
  * This is a JAXB wrapper around Country.
  *
- * User: Elbert Bautista
- * Date: 4/10/12
+ * <p>User: Elbert Bautista Date: 4/10/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "country")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "country")
 public class CountryWrapper extends BaseWrapper implements APIWrapper<Country>, APIUnwrapper<Country> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected String name;
+  /** DOCUMENT ME! */
+  @XmlElement protected String abbreviation;
 
-    @XmlElement
-    protected String abbreviation;
+  /** DOCUMENT ME! */
+  @XmlElement protected String name;
 
-    @Override
-    public void wrapDetails(Country model, HttpServletRequest request) {
-        this.name = model.getName();
-        this.abbreviation = model.getAbbreviation();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIUnwrapper#unwrap(javax.servlet.http.HttpServletRequest, org.springframework.context.ApplicationContext)
+   */
+  @Override public Country unwrap(HttpServletRequest request, ApplicationContext appContext) {
+    CountryService countryService = (CountryService) appContext.getBean("blCountryService");
+
+    if (this.abbreviation != null) {
+      Country country = countryService.findCountryByAbbreviation(this.abbreviation);
+
+      return country;
     }
 
-    @Override
-    public void wrapSummary(Country model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
+    return null;
+  }
 
-    @Override
-    public Country unwrap(HttpServletRequest request, ApplicationContext appContext) {
-        CountryService countryService = (CountryService) appContext.getBean("blCountryService");
-        if (this.abbreviation != null) {
-            Country country = countryService.findCountryByAbbreviation(this.abbreviation);
-            return country;
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return null;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.profile.core.domain.Country,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(Country model, HttpServletRequest request) {
+    this.name         = model.getName();
+    this.abbreviation = model.getAbbreviation();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.profile.core.domain.Country,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(Country model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class CountryWrapper

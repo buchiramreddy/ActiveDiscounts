@@ -16,20 +16,38 @@
 
 package org.broadleafcommerce.core.order;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.OrderImpl;
-import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.testng.annotations.DataProvider;
-
 import java.math.BigDecimal;
 
-public class OrderDataProvider {
+import org.broadleafcommerce.common.money.Money;
 
-    @DataProvider(name = "basicOrder")
-    public static Object[][] provideBasicSalesOrder() {
-        OrderImpl so = new OrderImpl();
-        so.setStatus(OrderStatus.IN_PROCESS);
-        so.setTotal(new Money(BigDecimal.valueOf(1000)));
-        return new Object[][] { { so } };
-    }
+import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
+
+import org.testng.annotations.DataProvider;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class OrderDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicOrder")
+  public static Object[][] provideBasicSalesOrder() {
+    OrderImpl so = new OrderImpl();
+    so.setStatus(OrderStatus.IN_PROCESS);
+    so.setTotal(new Money(BigDecimal.valueOf(1000)));
+
+    return new Object[][] {
+        { so }
+      };
+  }
 }

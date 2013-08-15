@@ -18,33 +18,79 @@ package org.broadleafcommerce.common.vendor.service.exception;
 
 import org.broadleafcommerce.common.vendor.service.message.TaxResponse;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class TaxException extends Exception {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected TaxResponse taxResponse;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public TaxException() {
-        super();
-    }
+  /** DOCUMENT ME! */
+  protected TaxResponse taxResponse;
 
-    public TaxException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public TaxException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new TaxException object.
+   */
+  public TaxException() {
+    super();
+  }
 
-    public TaxException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new TaxException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public TaxException(String message) {
+    super(message);
+  }
 
-    public TaxResponse getTaxResponse() {
-        return taxResponse;
-    }
+  /**
+   * Creates a new TaxException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public TaxException(Throwable cause) {
+    super(cause);
+  }
 
-    public void setTaxResponse(TaxResponse taxResponse) {
-        this.taxResponse = taxResponse;
-    }
-}
+  /**
+   * Creates a new TaxException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public TaxException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public TaxResponse getTaxResponse() {
+    return taxResponse;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  taxResponse  DOCUMENT ME!
+   */
+  public void setTaxResponse(TaxResponse taxResponse) {
+    this.taxResponse = taxResponse;
+  }
+} // end class TaxException

@@ -16,20 +16,31 @@
 
 package org.broadleafcommerce.profile.web.core.security;
 
-import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.filter.GenericFilterBean;
+import java.io.IOException;
 
 import javax.annotation.Resource;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
+import org.springframework.core.Ordered;
+
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.GenericFilterBean;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Component("blCustomerStateFilter")
 /**
  * <p>
@@ -43,21 +54,34 @@ import java.io.IOException;
  * @author bpolster
  */
 public class CustomerStateFilter extends GenericFilterBean implements Ordered {
-    
-    @Resource(name="blCustomerStateRequestProcessor")
-    protected CustomerStateRequestProcessor customerStateProcessor;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public void doFilter(ServletRequest baseRequest, ServletResponse baseResponse, FilterChain chain) throws IOException, ServletException {
-        customerStateProcessor.process(new ServletWebRequest((HttpServletRequest) baseRequest, (HttpServletResponse)baseResponse));
-        chain.doFilter(baseRequest, baseResponse);
-    }
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerStateRequestProcessor")
+  protected CustomerStateRequestProcessor customerStateProcessor;
 
-    @Override
-    public int getOrder() {
-        //FilterChainOrder has been dropped from Spring Security 3
-        //return FilterChainOrder.REMEMBER_ME_FILTER+1;
-        return 1501;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse,
+   *       javax.servlet.FilterChain)
+   */
+  @Override public void doFilter(ServletRequest baseRequest, ServletResponse baseResponse, FilterChain chain)
+    throws IOException, ServletException {
+    customerStateProcessor.process(new ServletWebRequest((HttpServletRequest) baseRequest,
+        (HttpServletResponse) baseResponse));
+    chain.doFilter(baseRequest, baseResponse);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.core.Ordered#getOrder()
+   */
+  @Override public int getOrder() {
+    // FilterChainOrder has been dropped from Spring Security 3
+    // return FilterChainOrder.REMEMBER_ME_FILTER+1;
+    return 1501;
+  }
+
+} // end class CustomerStateFilter

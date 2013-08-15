@@ -16,20 +16,34 @@
 
 package org.broadleafcommerce.openadmin.dto;
 
-import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor;
+
+
 /**
- * Simple marker interface for persistence perspective members
- * 
- * @author jfischer
+ * Simple marker interface for persistence perspective members.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface PersistencePerspectiveItem extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void accept(PersistencePerspectiveItemVisitor visitor);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  visitor  DOCUMENT ME!
+   */
+  void accept(PersistencePerspectiveItemVisitor visitor);
 
-    public PersistencePerspectiveItem clonePersistencePerspectiveItem();
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PersistencePerspectiveItem clonePersistencePerspectiveItem();
 
 }

@@ -16,37 +16,44 @@
 
 package org.broadleafcommerce.common.security;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.context.request.WebRequest;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.Authentication;
+
+import org.springframework.web.context.request.WebRequest;
+
+
 /**
- * Responsible for merging an anonymous cart with the currently logged in user's cart
- * 
- * @see {@link BroadleafAuthenticationSuccessHandler}
+ * Responsible for merging an anonymous cart with the currently logged in user's cart.
+ *
+ * @see      {@link BroadleafAuthenticationSuccessHandler}
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface MergeCartProcessor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Convenience method. This will wrap the given <b>request</b> and <b>response</b> inside of a {@link org.springframework.web.context.request.ServletWebRequest}
-     * and forward to {@link #execute(org.springframework.web.context.request.WebRequest, org.springframework.security.core.Authentication)}
-     * 
-     * @param request
-     * @param response
-     * @param authResult
-     */
-    public void execute(HttpServletRequest request, HttpServletResponse response, Authentication authResult);
-    
-    /**
-     * Merge the cart owned by the anonymous current session {@link Customer} with the {@link Customer} that has just
-     * logged in
-     * 
-     * @param request
-     * @param authResult
-     */
-    public void execute(WebRequest request, Authentication authResult);
+  /**
+   * Merge the cart owned by the anonymous current session {@link Customer} with the {@link Customer} that has just
+   * logged in.
+   *
+   * @param  request     DOCUMENT ME!
+   * @param  authResult  DOCUMENT ME!
+   */
+  void execute(WebRequest request, Authentication authResult);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Convenience method. This will wrap the given <b>request</b> and <b>response</b> inside of a
+   * {@link org.springframework.web.context.request.ServletWebRequest} and forward to
+   * {@link #execute(org.springframework.web.context.request.WebRequest, org.springframework.security.core.Authentication)}
+   *
+   * @param  request     DOCUMENT ME!
+   * @param  response    DOCUMENT ME!
+   * @param  authResult  DOCUMENT ME!
+   */
+  void execute(HttpServletRequest request, HttpServletResponse response, Authentication authResult);
+
+} // end interface MergeCartProcessor

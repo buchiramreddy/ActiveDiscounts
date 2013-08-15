@@ -20,43 +20,96 @@ import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class FulfillmentGroupItemRequest {
+  /** DOCUMENT ME! */
+  protected Order            order;
 
-    protected Order order;
-    protected FulfillmentGroup fulfillmentGroup;
-    protected OrderItem orderItem;
-    protected int quantity;
-    
-    public Order getOrder() {
-        return order;
-    }
+  /** DOCUMENT ME! */
+  protected FulfillmentGroup fulfillmentGroup;
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  /** DOCUMENT ME! */
+  protected OrderItem        orderItem;
 
-    public FulfillmentGroup getFulfillmentGroup() {
-        return fulfillmentGroup;
-    }
+  /** DOCUMENT ME! */
+  protected int              quantity;
 
-    public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
-        this.fulfillmentGroup = fulfillmentGroup;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Order getOrder() {
+    return order;
+  }
 
-    public OrderItem getOrderItem() {
-        return orderItem;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    public void setOrderItem(OrderItem orderItem) {
-        this.orderItem = orderItem;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FulfillmentGroup getFulfillmentGroup() {
+    return fulfillmentGroup;
+  }
 
-    public int getQuantity() {
-        return quantity;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
+    this.fulfillmentGroup = fulfillmentGroup;
+  }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public OrderItem getOrderItem() {
+    return orderItem;
+  }
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  public void setOrderItem(OrderItem orderItem) {
+    this.orderItem = orderItem;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getQuantity() {
+    return quantity;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
+} // end class FulfillmentGroupItemRequest

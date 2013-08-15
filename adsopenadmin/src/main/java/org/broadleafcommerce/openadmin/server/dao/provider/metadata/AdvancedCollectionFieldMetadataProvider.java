@@ -16,49 +16,82 @@
 
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
+import java.lang.reflect.ParameterizedType;
+
+import java.util.Map;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+
 import org.broadleafcommerce.common.presentation.AdminPresentationCollection;
 import org.broadleafcommerce.common.presentation.AdminPresentationMap;
+
 import org.broadleafcommerce.openadmin.dto.CollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest;
 import org.broadleafcommerce.openadmin.server.service.type.FieldProviderResponse;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.Map;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class AdvancedCollectionFieldMetadataProvider extends FieldMetadataProviderAdapter {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    protected boolean canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
-        AdminPresentationMap map = addMetadataFromFieldTypeRequest.getRequestedField().getAnnotation(AdminPresentationMap.class);
-        AdminPresentationCollection collection = addMetadataFromFieldTypeRequest.getRequestedField().getAnnotation(AdminPresentationCollection.class);
-        return map != null || collection != null;
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProviderAdapter#addMetadataFromFieldType(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse addMetadataFromFieldType(
+    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
+    if (!canHandleFieldForTypeMetadata(addMetadataFromFieldTypeRequest, metadata)) {
+      return FieldProviderResponse.NOT_HANDLED;
     }
 
-    @Override
-    public FieldProviderResponse addMetadataFromFieldType(AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
-        if (!canHandleFieldForTypeMetadata(addMetadataFromFieldTypeRequest, metadata)) {
-            return FieldProviderResponse.NOT_HANDLED;
-        }
-        CollectionMetadata fieldMetadata = (CollectionMetadata) addMetadataFromFieldTypeRequest.getPresentationAttribute();
-        if (StringUtils.isEmpty(fieldMetadata.getCollectionCeilingEntity())) {
-            ParameterizedType listType = (ParameterizedType) addMetadataFromFieldTypeRequest.getRequestedField().getGenericType();
-            Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
-            fieldMetadata.setCollectionCeilingEntity(listClass.getName());
-        }
-        if (addMetadataFromFieldTypeRequest.getTargetClass() != null) {
-            if (StringUtils.isEmpty(fieldMetadata.getInheritedFromType())) {
-                fieldMetadata.setInheritedFromType(addMetadataFromFieldTypeRequest.getTargetClass().getName());
-            }
-            if (ArrayUtils.isEmpty(fieldMetadata.getAvailableToTypes())) {
-                fieldMetadata.setAvailableToTypes(new String[]{addMetadataFromFieldTypeRequest.getTargetClass().getName()});
-            }
-        }
-        metadata.put(addMetadataFromFieldTypeRequest.getRequestedPropertyName(), fieldMetadata);
-        return FieldProviderResponse.HANDLED;
+    CollectionMetadata fieldMetadata = (CollectionMetadata) addMetadataFromFieldTypeRequest.getPresentationAttribute();
+
+    if (StringUtils.isEmpty(fieldMetadata.getCollectionCeilingEntity())) {
+      ParameterizedType listType  = (ParameterizedType) addMetadataFromFieldTypeRequest.getRequestedField()
+        .getGenericType();
+      Class<?>          listClass = (Class<?>) listType.getActualTypeArguments()[0];
+      fieldMetadata.setCollectionCeilingEntity(listClass.getName());
     }
-}
+
+    if (addMetadataFromFieldTypeRequest.getTargetClass() != null) {
+      if (StringUtils.isEmpty(fieldMetadata.getInheritedFromType())) {
+        fieldMetadata.setInheritedFromType(addMetadataFromFieldTypeRequest.getTargetClass().getName());
+      }
+
+      if (ArrayUtils.isEmpty(fieldMetadata.getAvailableToTypes())) {
+        fieldMetadata.setAvailableToTypes(new String[] { addMetadataFromFieldTypeRequest.getTargetClass().getName() });
+      }
+    }
+
+    metadata.put(addMetadataFromFieldTypeRequest.getRequestedPropertyName(), fieldMetadata);
+
+    return FieldProviderResponse.HANDLED;
+  } // end method addMetadataFromFieldType
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   addMetadataFromFieldTypeRequest  DOCUMENT ME!
+   * @param   metadata                         DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected boolean canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest,
+    Map<String, FieldMetadata> metadata) {
+    AdminPresentationMap        map        = addMetadataFromFieldTypeRequest.getRequestedField().getAnnotation(
+        AdminPresentationMap.class);
+    AdminPresentationCollection collection = addMetadataFromFieldTypeRequest.getRequestedField().getAnnotation(
+        AdminPresentationCollection.class);
+
+    return (map != null) || (collection != null);
+  }
+} // end class AdvancedCollectionFieldMetadataProvider

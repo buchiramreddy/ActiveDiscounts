@@ -18,27 +18,53 @@ package org.broadleafcommerce.core.order.service.workflow;
 
 import org.broadleafcommerce.core.workflow.ProcessContext;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CartOperationContext implements ProcessContext {
-    public final static long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    protected boolean stopEntireProcess = false;
-    protected CartOperationRequest seedData;
+  /** DOCUMENT ME! */
+  protected boolean              stopEntireProcess = false;
 
-    public void setSeedData(Object seedObject) {
-        seedData = (CartOperationRequest) seedObject;
-    }
+  /** DOCUMENT ME! */
+  protected CartOperationRequest seedData;
 
-    public boolean stopProcess() {
-        this.stopEntireProcess = true;
-        return stopEntireProcess;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#setSeedData(java.lang.Object)
+   */
+  @Override public void setSeedData(Object seedObject) {
+    seedData = (CartOperationRequest) seedObject;
+  }
 
-    public boolean isStopped() {
-        return stopEntireProcess;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#stopProcess()
+   */
+  @Override public boolean stopProcess() {
+    this.stopEntireProcess = true;
 
-    public CartOperationRequest getSeedData(){
-        return seedData;
-    }
+    return stopEntireProcess;
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContext#isStopped()
+   */
+  @Override public boolean isStopped() {
+    return stopEntireProcess;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public CartOperationRequest getSeedData() {
+    return seedData;
+  }
+
+} // end class CartOperationContext

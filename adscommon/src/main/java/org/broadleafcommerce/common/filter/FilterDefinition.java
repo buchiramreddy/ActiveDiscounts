@@ -18,36 +18,88 @@ package org.broadleafcommerce.common.filter;
 
 import java.util.List;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class FilterDefinition {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String name;
-    protected List<FilterParameter> params;
-    protected String entityImplementationClassName;
+  /** DOCUMENT ME! */
+  protected String entityImplementationClassName;
 
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  protected String                name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  /** DOCUMENT ME! */
+  protected List<FilterParameter> params;
 
-    public List<FilterParameter> getParams() {
-        return params;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setParams(List<FilterParameter> params) {
-        this.params = params;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEntityImplementationClassName() {
+    return entityImplementationClassName;
+  }
 
-    public String getEntityImplementationClassName() {
-        return entityImplementationClassName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setEntityImplementationClassName(String entityImplementationClassName) {
-        this.entityImplementationClassName = entityImplementationClassName;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<FilterParameter> getParams() {
+    return params;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entityImplementationClassName  DOCUMENT ME!
+   */
+  public void setEntityImplementationClassName(String entityImplementationClassName) {
+    this.entityImplementationClassName = entityImplementationClassName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  params  DOCUMENT ME!
+   */
+  public void setParams(List<FilterParameter> params) {
+    this.params = params;
+  }
+} // end class FilterDefinition

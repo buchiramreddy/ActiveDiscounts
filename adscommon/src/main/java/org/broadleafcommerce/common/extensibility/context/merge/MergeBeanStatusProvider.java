@@ -19,17 +19,26 @@ package org.broadleafcommerce.common.extensibility.context.merge;
 import org.springframework.context.ApplicationContext;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface MergeBeanStatusProvider {
-    
-    /**
-     * Typically used by the {@link org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor} class to determine whether or not certain
-     * lists should be processed or if they can be safely ignored.
-     * 
-     * @param bean
-     * @param beanName
-     * @param appCtx
-     * @return whether or not processing should be triggered
-     */
-    public boolean isProcessingEnabled(Object bean, String beanName, ApplicationContext appCtx);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Typically used by the
+   * {@link org.broadleafcommerce.common.extensibility.context.merge.AbstractMergeBeanPostProcessor} class to determine
+   * whether or not certain lists should be processed or if they can be safely ignored.
+   *
+   * @param   bean      DOCUMENT ME!
+   * @param   beanName  DOCUMENT ME!
+   * @param   appCtx    DOCUMENT ME!
+   *
+   * @return  whether or not processing should be triggered
+   */
+  boolean isProcessingEnabled(Object bean, String beanName, ApplicationContext appCtx);
 
 }

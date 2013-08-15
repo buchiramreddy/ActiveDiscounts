@@ -17,70 +17,128 @@
 package org.broadleafcommerce.checkout.service;
 
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
 import org.broadleafcommerce.core.payment.service.PaymentContext;
 import org.broadleafcommerce.core.payment.service.exception.PaymentException;
 import org.broadleafcommerce.core.payment.service.module.AbstractModule;
 import org.broadleafcommerce.core.payment.service.type.PaymentInfoType;
 
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class DummyCreditCardModule extends AbstractModule {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public PaymentResponseItem processAuthorize(PaymentContext paymentContext, Money amountToAuthorize, PaymentResponseItem responseItem) throws PaymentException {
-        return createResponse(paymentContext, responseItem);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#isValidCandidate(org.broadleafcommerce.core.payment.service.type.PaymentInfoType)
+   */
+  @Override public Boolean isValidCandidate(PaymentInfoType paymentType) {
+    return PaymentInfoType.CREDIT_CARD.equals(paymentType);
+  }
 
-    @Override
-    public PaymentResponseItem processAuthorizeAndDebit(PaymentContext paymentContext, Money amountToDebit, PaymentResponseItem responseItem) throws PaymentException {
-        return createResponse(paymentContext, responseItem);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public PaymentResponseItem processDebit(PaymentContext paymentContext, Money amountToDebit, PaymentResponseItem responseItem) throws PaymentException {
-        return createResponse(paymentContext, responseItem);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processAuthorize(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.common.money.Money, org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processAuthorize(PaymentContext paymentContext, Money amountToAuthorize,
+    PaymentResponseItem responseItem) throws PaymentException {
+    return createResponse(paymentContext, responseItem);
+  }
 
-    @Override
-    public PaymentResponseItem processCredit(PaymentContext paymentContext, Money amountToCredit, PaymentResponseItem responseItem) throws PaymentException {
-        return createResponse(paymentContext, responseItem);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public PaymentResponseItem processVoidPayment(PaymentContext paymentContext, Money amountToVoid, PaymentResponseItem responseItem) throws PaymentException {
-        return createResponse(paymentContext, responseItem);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processAuthorizeAndDebit(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.common.money.Money, org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processAuthorizeAndDebit(PaymentContext paymentContext, Money amountToDebit,
+    PaymentResponseItem responseItem) throws PaymentException {
+    return createResponse(paymentContext, responseItem);
+  }
 
-    @Override
-    public PaymentResponseItem processBalance(PaymentContext paymentContext, PaymentResponseItem responseItem) throws PaymentException {
-        return createResponse(paymentContext, responseItem);
-    }
-    
-    @Override
-    public PaymentResponseItem processReverseAuthorize(PaymentContext paymentContext, Money amountToReverseAuthorize, PaymentResponseItem responseItem) throws PaymentException {
-        return createResponse(paymentContext, responseItem);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public PaymentResponseItem processPartialPayment(PaymentContext paymentContext, Money amountToDebit, PaymentResponseItem responseItem) throws PaymentException {
-        throw new PaymentException("partial payment not implemented.");
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processBalance(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processBalance(PaymentContext paymentContext, PaymentResponseItem responseItem)
+    throws PaymentException {
+    return createResponse(paymentContext, responseItem);
+  }
 
-    private PaymentResponseItem createResponse(PaymentContext paymentContext, PaymentResponseItem responseItem) {
-        paymentContext.getPaymentInfo().setReferenceNumber("abc123");
-        responseItem.setReferenceNumber(paymentContext.getPaymentInfo().getReferenceNumber());
-        responseItem.setTransactionId(paymentContext.getPaymentInfo().getReferenceNumber());
-        responseItem.setTransactionSuccess(true);
-        responseItem.setTransactionAmount(paymentContext.getPaymentInfo().getAmount());
-        responseItem.setCurrency(paymentContext.getPaymentInfo().getCurrency());
-        return responseItem;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Boolean isValidCandidate(PaymentInfoType paymentType) {
-        return PaymentInfoType.CREDIT_CARD.equals(paymentType);
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processCredit(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.common.money.Money, org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processCredit(PaymentContext paymentContext, Money amountToCredit,
+    PaymentResponseItem responseItem) throws PaymentException {
+    return createResponse(paymentContext, responseItem);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processDebit(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.common.money.Money, org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processDebit(PaymentContext paymentContext, Money amountToDebit,
+    PaymentResponseItem responseItem) throws PaymentException {
+    return createResponse(paymentContext, responseItem);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processPartialPayment(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.common.money.Money, org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processPartialPayment(PaymentContext paymentContext, Money amountToDebit,
+    PaymentResponseItem responseItem) throws PaymentException {
+    throw new PaymentException("partial payment not implemented.");
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processReverseAuthorize(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.common.money.Money, org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processReverseAuthorize(PaymentContext paymentContext,
+    Money amountToReverseAuthorize, PaymentResponseItem responseItem) throws PaymentException {
+    return createResponse(paymentContext, responseItem);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.module.PaymentModule#processVoidPayment(org.broadleafcommerce.core.payment.service.PaymentContext,
+   *       org.broadleafcommerce.common.money.Money, org.broadleafcommerce.core.payment.domain.PaymentResponseItem)
+   */
+  @Override public PaymentResponseItem processVoidPayment(PaymentContext paymentContext, Money amountToVoid,
+    PaymentResponseItem responseItem) throws PaymentException {
+    return createResponse(paymentContext, responseItem);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private PaymentResponseItem createResponse(PaymentContext paymentContext, PaymentResponseItem responseItem) {
+    paymentContext.getPaymentInfo().setReferenceNumber("abc123");
+    responseItem.setReferenceNumber(paymentContext.getPaymentInfo().getReferenceNumber());
+    responseItem.setTransactionId(paymentContext.getPaymentInfo().getReferenceNumber());
+    responseItem.setTransactionSuccess(true);
+    responseItem.setTransactionAmount(paymentContext.getPaymentInfo().getAmount());
+    responseItem.setCurrency(paymentContext.getPaymentInfo().getCurrency());
+
+    return responseItem;
+  }
+} // end class DummyCreditCardModule

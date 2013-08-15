@@ -16,26 +16,68 @@
 
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.Offer;
-import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
-
 import java.util.HashMap;
 import java.util.List;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.offer.domain.Offer;
+import org.broadleafcommerce.core.offer.domain.OfferItemCriteria;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PromotableCandidateFulfillmentGroupOffer {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  HashMap<OfferItemCriteria, List<PromotableOrderItem>> getCandidateQualifiersMap();
 
-    public HashMap<OfferItemCriteria, List<PromotableOrderItem>> getCandidateQualifiersMap();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  candidateItemsMap  DOCUMENT ME!
+   */
+  void setCandidateQualifiersMap(HashMap<OfferItemCriteria, List<PromotableOrderItem>> candidateItemsMap);
 
-    public void setCandidateQualifiersMap(HashMap<OfferItemCriteria, List<PromotableOrderItem>> candidateItemsMap);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money computeDiscountedAmount();
 
-    public Money computeDiscountedAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getDiscountedPrice();
 
-    public Money getDiscountedPrice();
-    
-    public Offer getOffer();
-    
-    public PromotableFulfillmentGroup getFulfillmentGroup();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Offer getOffer();
 
-    public Money getDiscountedAmount();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PromotableFulfillmentGroup getFulfillmentGroup();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getDiscountedAmount();
+} // end interface PromotableCandidateFulfillmentGroupOffer

@@ -15,25 +15,66 @@
  */
 package org.broadleafcommerce.common.config.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.config.domain.SystemProperty;
 
-import java.util.List;
 
 /**
  * This DAO enables access to manage system properties that can be stored in the database.
- * <p/>
- * User: Kelly Tisdell
- * Date: 6/25/12
+ *
+ * <p>User: Kelly Tisdell Date: 6/25/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface SystemPropertiesDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public SystemProperty saveSystemProperty(SystemProperty systemProperty);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SystemProperty createNewSystemProperty();
 
-    public void deleteSystemProperty(SystemProperty systemProperty);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<SystemProperty> readAllSystemProperties();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  systemProperty  DOCUMENT ME!
+   */
+  void deleteSystemProperty(SystemProperty systemProperty);
 
-    public SystemProperty readSystemPropertyByName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SystemProperty createNewSystemProperty();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<SystemProperty> readAllSystemProperties();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SystemProperty readSystemPropertyByName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   systemProperty  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SystemProperty saveSystemProperty(SystemProperty systemProperty);
+} // end interface SystemPropertiesDao

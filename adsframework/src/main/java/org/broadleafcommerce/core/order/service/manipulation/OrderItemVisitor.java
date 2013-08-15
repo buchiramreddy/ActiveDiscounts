@@ -23,12 +23,57 @@ import org.broadleafcommerce.core.order.domain.GiftWrapOrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OrderItemVisitor {
-    
-    public void visit(OrderItem orderItem) throws PricingException;
-    public void visit(BundleOrderItem bundleOrderItem) throws PricingException;
-    public void visit(DiscreteOrderItem discreteOrderItem) throws PricingException;
-    public void visit(DynamicPriceDiscreteOrderItem dynamicPriceDiscreteOrderItem) throws PricingException;
-    public void visit(GiftWrapOrderItem giftWrapOrderItem) throws PricingException;
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   orderItem  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  void visit(OrderItem orderItem) throws PricingException;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   bundleOrderItem  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  void visit(BundleOrderItem bundleOrderItem) throws PricingException;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   discreteOrderItem  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  void visit(DiscreteOrderItem discreteOrderItem) throws PricingException;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   dynamicPriceDiscreteOrderItem  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  void visit(DynamicPriceDiscreteOrderItem dynamicPriceDiscreteOrderItem) throws PricingException;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   giftWrapOrderItem  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  void visit(GiftWrapOrderItem giftWrapOrderItem) throws PricingException;
+
+} // end interface OrderItemVisitor

@@ -20,13 +20,20 @@ import org.springframework.web.context.request.WebRequest;
 
 
 /**
- * Provides no-op implementations to optional methods
+ * Provides no-op implementations to optional methods.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public abstract class AbstractBroadleafWebRequestProcessor implements BroadleafWebRequestProcessor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    
-    public void postProcess(WebRequest request) {
-        // nada
-    }
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafWebRequestProcessor#postProcess(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public void postProcess(WebRequest request) {
+    // nada
+  }
 
 }

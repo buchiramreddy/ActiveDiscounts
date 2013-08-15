@@ -16,51 +16,86 @@
 
 package org.broadleafcommerce.common.config.service;
 
-import org.broadleafcommerce.common.config.dao.ModuleConfigurationDao;
-import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
-import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.common.config.dao.ModuleConfigurationDao;
+import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
+import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
+
+import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blModuleConfigurationService")
 @Transactional("blTransactionManager")
 public class ModuleConfigurationServiceImpl implements ModuleConfigurationService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blModuleConfigurationDao")
-    protected ModuleConfigurationDao moduleConfigDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blModuleConfigurationDao")
+  protected ModuleConfigurationDao moduleConfigDao;
 
-    @Override
-    public ModuleConfiguration findById(Long id) {
-        return moduleConfigDao.readById(id);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public ModuleConfiguration save(ModuleConfiguration config) {
-        return moduleConfigDao.save(config);
-    }
+  /**
+   * @see  org.broadleafcommerce.common.config.service.ModuleConfigurationService#delete(org.broadleafcommerce.common.config.domain.ModuleConfiguration)
+   */
+  @Override public void delete(ModuleConfiguration config) {
+    moduleConfigDao.delete(config);
+  }
 
-    @Override
-    public void delete(ModuleConfiguration config) {
-        moduleConfigDao.delete(config);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public List<ModuleConfiguration> findActiveConfigurationsByType(ModuleConfigurationType type) {
-        return moduleConfigDao.readActiveByType(type);
-    }
+  /**
+   * @see  org.broadleafcommerce.common.config.service.ModuleConfigurationService#findActiveConfigurationsByType(org.broadleafcommerce.common.config.service.type.ModuleConfigurationType)
+   */
+  @Override public List<ModuleConfiguration> findActiveConfigurationsByType(ModuleConfigurationType type) {
+    return moduleConfigDao.readActiveByType(type);
+  }
 
-    @Override
-    public List<ModuleConfiguration> findAllConfigurationByType(ModuleConfigurationType type) {
-        return moduleConfigDao.readAllByType(type);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public List<ModuleConfiguration> findByType(Class<? extends ModuleConfiguration> type) {
-        return moduleConfigDao.readByType(type);
-    }
+  /**
+   * @see  org.broadleafcommerce.common.config.service.ModuleConfigurationService#findAllConfigurationByType(org.broadleafcommerce.common.config.service.type.ModuleConfigurationType)
+   */
+  @Override public List<ModuleConfiguration> findAllConfigurationByType(ModuleConfigurationType type) {
+    return moduleConfigDao.readAllByType(type);
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.service.ModuleConfigurationService#findById(java.lang.Long)
+   */
+  @Override public ModuleConfiguration findById(Long id) {
+    return moduleConfigDao.readById(id);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.service.ModuleConfigurationService#findByType(java.lang.Class)
+   */
+  @Override public List<ModuleConfiguration> findByType(Class<? extends ModuleConfiguration> type) {
+    return moduleConfigDao.readByType(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.service.ModuleConfigurationService#save(org.broadleafcommerce.common.config.domain.ModuleConfiguration)
+   */
+  @Override public ModuleConfiguration save(ModuleConfiguration config) {
+    return moduleConfigDao.save(config);
+  }
+
+} // end class ModuleConfigurationServiceImpl

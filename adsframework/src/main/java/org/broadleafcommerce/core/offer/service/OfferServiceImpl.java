@@ -16,9 +16,17 @@
 
 package org.broadleafcommerce.core.offer.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.time.SystemTime;
+
 import org.broadleafcommerce.core.offer.dao.CustomerOfferDao;
 import org.broadleafcommerce.core.offer.dao.OfferAuditDao;
 import org.broadleafcommerce.core.offer.dao.OfferCodeDao;
@@ -38,377 +46,530 @@ import org.broadleafcommerce.core.offer.service.type.OfferType;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
 
 /**
  * The Class OfferServiceImpl.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Service("blOfferService")
 public class OfferServiceImpl implements OfferService {
-    
-    private static final Log LOG = LogFactory.getLog(OfferServiceImpl.class);
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    // should be called outside of Offer service after Offer service is executed
-    @Resource(name="blCustomerOfferDao")
-    protected CustomerOfferDao customerOfferDao;
+  private static final Log LOG = LogFactory.getLog(OfferServiceImpl.class);
 
-    @Resource(name="blOfferCodeDao")
-    protected OfferCodeDao offerCodeDao;
-    
-    @Resource(name="blOfferAuditDao")
-    protected OfferAuditDao offerAuditDao;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blOfferDao")
-    protected OfferDao offerDao;
-    
-    @Resource(name="blOrderOfferProcessor")
-    protected OrderOfferProcessor orderOfferProcessor;
-    
-    @Resource(name="blItemOfferProcessor")
-    protected ItemOfferProcessor itemOfferProcessor;
-    
-    @Resource(name="blFulfillmentGroupOfferProcessor")
-    protected FulfillmentGroupOfferProcessor fulfillmentGroupOfferProcessor;
-    
-    @Resource(name="blPromotableItemFactory")
-    protected PromotableItemFactory promotableItemFactory;
+  // should be called outside of Offer service after Offer service is executed
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerOfferDao")
+  protected CustomerOfferDao customerOfferDao;
 
-    @Resource(name = "blOfferServiceExtensionManager")
-    protected OfferServiceExtensionManager extensionManager;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOfferServiceExtensionManager")
+  protected OfferServiceExtensionManager extensionManager;
 
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blFulfillmentGroupOfferProcessor")
+  protected FulfillmentGroupOfferProcessor fulfillmentGroupOfferProcessor;
 
-    @Override
-    public List<Offer> findAllOffers() {
-        return offerDao.readAllOffers();
-    }
+  /** DOCUMENT ME! */
+  @Resource(name = "blItemOfferProcessor")
+  protected ItemOfferProcessor itemOfferProcessor;
 
-    @Override
-    @Transactional("blTransactionManager")
-    public Offer save(Offer offer) {
-        return offerDao.save(offer);
-    }
+  /** DOCUMENT ME! */
+  @Resource(name = "blOfferAuditDao")
+  protected OfferAuditDao offerAuditDao;
 
-    @Override
-    @Transactional("blTransactionManager")
-    public OfferCode saveOfferCode(OfferCode offerCode) {
-        offerCode.setOffer(offerDao.save(offerCode.getOffer()));
-        return offerCodeDao.save(offerCode);
-    }
+  /** DOCUMENT ME! */
+  @Resource(name = "blOfferCodeDao")
+  protected OfferCodeDao offerCodeDao;
 
-    /**
-     * Creates a list of offers that applies to this order.  All offers that are assigned to the customer,
-     * entered during checkout, or has a delivery type of automatic are added to the list.  The same offer
-     * cannot appear more than once in the list.
-     *
-     * @param code
-     * @return a List of offers that may apply to this order
-     */
-    @Override
-    public Offer lookupOfferByCode(String code) {
-        Offer offer = null;
-        OfferCode offerCode = offerCodeDao.readOfferCodeByCode(code);
-        if (offerCode != null) {
-            offer = offerCode.getOffer();
+  /** DOCUMENT ME! */
+  @Resource(name = "blOfferDao")
+  protected OfferDao offerDao;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderOfferProcessor")
+  protected OrderOfferProcessor orderOfferProcessor;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
+
+  /** DOCUMENT ME! */
+  @Resource(name = "blPromotableItemFactory")
+  protected PromotableItemFactory promotableItemFactory;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#applyFulfillmentGroupOffersToOrder(java.util.List, org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void applyFulfillmentGroupOffersToOrder(List<Offer> offers, Order order) throws PricingException {
+    OfferContext offerContext = OfferContext.getOfferContext();
+
+    if ((offerContext == null) || offerContext.executePromotionCalculation) {
+      PromotableOrder promotableOrder  = promotableItemFactory.createPromotableOrder(order, true);
+      List<Offer>     possibleFGOffers = new ArrayList<Offer>();
+
+      for (Offer offer : offers) {
+        if (offer.getType().getType().equals(OfferType.FULFILLMENT_GROUP.getType())) {
+          possibleFGOffers.add(offer);
         }
-        return offer;
-    }
-    
-    @Override
-    public OfferCode lookupOfferCodeByCode(String code){
-        return offerCodeDao.readOfferCodeByCode(code);
-    }
+      }
 
-    /**
-     * Creates a list of offers that applies to this order.  All offers that are assigned to the customer,
-     * entered during checkout, or has a delivery type of automatic are added to the list.  The same offer
-     * cannot appear more than once in the list.
-     *
-     * @param order
-     * @return a List of offers that may apply to this order
-     */
-    @Override
-    public List<Offer> buildOfferListForOrder(Order order) {
-        List<Offer> offers = new ArrayList<Offer>();
-        List<CustomerOffer> customerOffers = lookupOfferCustomerByCustomer(order.getCustomer());
-        for (CustomerOffer customerOffer : customerOffers) {
-            if (!offers.contains(customerOffer.getOffer())) {
-                offers.add(customerOffer.getOffer());
-            }
-        }
-        List<OfferCode> orderOfferCodes = order.getAddedOfferCodes();
-        orderOfferCodes = removeOutOfDateOfferCodes(orderOfferCodes);
-        for (OfferCode orderOfferCode : orderOfferCodes) {
-            if (!offers.contains(orderOfferCode.getOffer())) {
-                offers.add(orderOfferCode.getOffer());
-            }
-        }
-        List<Offer> globalOffers = lookupAutomaticDeliveryOffers();
-        for (Offer globalOffer : globalOffers) {
-            if (!offers.contains(globalOffer)) {
-                offers.add(globalOffer);
-            }
-        }
-        
-        if (extensionManager != null) {
-            extensionManager.getProxy().applyAdditionalFilters(offers);
-        }
-        
-        return offers;
-    }
+      List<Offer>                                    filteredOffers    = orderOfferProcessor.filterOffers(
+          possibleFGOffers, order.getCustomer());
+      List<PromotableCandidateFulfillmentGroupOffer> qualifiedFGOffers =
+        new ArrayList<PromotableCandidateFulfillmentGroupOffer>();
 
-    /**
-     * Private method used to retrieve all offers assigned to this customer.  These offers
-     * have a DeliveryType of MANUAL and are programmatically assigned to the customer.
-     *
-     * @param customer
-     * @return a List of offers assigned to the customer
-     */
-    protected List<CustomerOffer> lookupOfferCustomerByCustomer(Customer customer) {
-        List<CustomerOffer> offerCustomers = customerOfferDao.readCustomerOffersByCustomer(customer);
-        return offerCustomers;
-    }
+      for (Offer offer : filteredOffers) {
+        fulfillmentGroupOfferProcessor.filterFulfillmentGroupLevelOffer(promotableOrder, qualifiedFGOffers, offer);
+      }
 
-    /**
-     * Private method used to retrieve all offers with DeliveryType of AUTOMATIC
-     *
-     * @return a List of automatic delivery offers
-     */
-    protected List<Offer> lookupAutomaticDeliveryOffers() {
-        List<Offer> globalOffers = offerDao.readOffersByAutomaticDeliveryType();
-        return globalOffers;
-    }
+      if (!qualifiedFGOffers.isEmpty()) {
+        fulfillmentGroupOfferProcessor.applyAllFulfillmentGroupOffers(qualifiedFGOffers, promotableOrder);
+      }
 
-    /**
-     * Removes all out of date offerCodes based on the offerCode and its offer's start and end
-     * date.  If an offerCode has a later start date, that offerCode will be removed.
-     * OfferCodes without a start date will still be processed. If the offerCode
-     * has a end date that has already passed, that offerCode will be removed.  OfferCodes
-     * without a end date will be processed.  The start and end dates on the offer will
-     * still need to be evaluated.
-     *
-     * @param offerCodes
-     * @return a List of non-expired offers
-     */
-    protected List<OfferCode> removeOutOfDateOfferCodes(List<OfferCode> offerCodes){
-        Date now = SystemTime.asDate();
-        List<OfferCode> offerCodesToRemove = new ArrayList<OfferCode>();
-        for (OfferCode offerCode : offerCodes) {
-            if ((offerCode.getStartDate() != null) && (offerCode.getStartDate().after(now))){
-                offerCodesToRemove.add(offerCode);
-            } else if (offerCode.getEndDate() != null && offerCode.getEndDate().before(now)){
-                offerCodesToRemove.add(offerCode);
-            }
-        }
-        // remove all offers in the offersToRemove list from original offers list
-        for (OfferCode offerCode : offerCodesToRemove) {
-            offerCodes.remove(offerCode);
-        }
-        return offerCodes;
-    }
+      fulfillmentGroupOfferProcessor.calculateFulfillmentGroupTotal(promotableOrder);
+      orderOfferProcessor.synchronizeAdjustmentsAndPrices(promotableOrder);
 
+      orderService.save(order, false);
+    } // end if
+  } // end method applyFulfillmentGroupOffersToOrder
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /*
+   *
+   * Offers Logic:
+   * 1) Remove all existing offers in the Order (order, item, and fulfillment)
+   * 2) Check and remove offers
+   *    a) Remove out of date offers
+   *    b) Remove offers that do not apply to this customer
+   * 3) Loop through offers
+   *    a) Verifies type of offer (order, order item, fulfillment)
+   *    b) Verifies if offer can be applies
+   *    c) Assign offer to type (order, order item, or fulfillment)
+   * 4) Sorts the order and item offers list by priority and then discount
+   * 5) Identify the best offers to apply to order item and create adjustments for each item offer
+   * 6) Compare order item adjustment price to sales price, and remove adjustments if sale price is better
+   * 7) Identify the best offers to apply to the order and create adjustments for each order offer
+   * 8) If item contains non-combinable offers remove either the item or order adjustments based on discount value
+   * 9) Set final order item prices and reapply order offers
+   *
+   * Assumptions:
+   * 1) % off all items will be created as an item offer with no expression
+   * 2) $ off order will be created as an order offer
+   * 3) Order offers applies to the best price for each item (not just retail price)
+   * 4) Fulfillment offers apply to best price for each item (not just retail price)
+   * 5) Stackable only applies to the same offer type (i.e. a not stackable order offer can be used with item offers)
+   * 6) Fulfillment offers cannot be not combinable
+   * 7) Order offers cannot be FIXED_PRICE
+   * 8) FIXED_PRICE offers cannot be stackable
+   * 9) Non-combinable offers only apply to the order and order items, fulfillment group offers will always apply
+   *
+   */
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#applyOffersToOrder(java.util.List, org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public void applyOffersToOrder(List<Offer> offers, Order order) throws PricingException {
     /*
-     *
-     * Offers Logic:
-     * 1) Remove all existing offers in the Order (order, item, and fulfillment)
-     * 2) Check and remove offers
-     *    a) Remove out of date offers
-     *    b) Remove offers that do not apply to this customer
-     * 3) Loop through offers
-     *    a) Verifies type of offer (order, order item, fulfillment)
-     *    b) Verifies if offer can be applies
-     *    c) Assign offer to type (order, order item, or fulfillment)
-     * 4) Sorts the order and item offers list by priority and then discount
-     * 5) Identify the best offers to apply to order item and create adjustments for each item offer
-     * 6) Compare order item adjustment price to sales price, and remove adjustments if sale price is better
-     * 7) Identify the best offers to apply to the order and create adjustments for each order offer
-     * 8) If item contains non-combinable offers remove either the item or order adjustments based on discount value
-     * 9) Set final order item prices and reapply order offers
-     *
-     * Assumptions:
-     * 1) % off all items will be created as an item offer with no expression
-     * 2) $ off order will be created as an order offer
-     * 3) Order offers applies to the best price for each item (not just retail price)
-     * 4) Fulfillment offers apply to best price for each item (not just retail price)
-     * 5) Stackable only applies to the same offer type (i.e. a not stackable order offer can be used with item offers)
-     * 6) Fulfillment offers cannot be not combinable
-     * 7) Order offers cannot be FIXED_PRICE
-     * 8) FIXED_PRICE offers cannot be stackable
-     * 9) Non-combinable offers only apply to the order and order items, fulfillment group offers will always apply
-     *
+    TODO rather than a threadlocal, we should update the "shouldPrice" boolean on the service API to
+    use a richer object to describe the parameters of the pricing call. This object would include
+    the pricing boolean, but would also include a list of activities to include or exclude in the
+    call - see http://jira.broadleafcommerce.org/browse/BLC-664
      */
-    @Override
-    @Transactional("blTransactionManager")
-    public void applyOffersToOrder(List<Offer> offers, Order order) throws PricingException {
-        /*
-        TODO rather than a threadlocal, we should update the "shouldPrice" boolean on the service API to
-        use a richer object to describe the parameters of the pricing call. This object would include
-        the pricing boolean, but would also include a list of activities to include or exclude in the
-        call - see http://jira.broadleafcommerce.org/browse/BLC-664
-         */
-        OfferContext offerContext = OfferContext.getOfferContext();
-        if (offerContext == null || offerContext.executePromotionCalculation) {
-            order.updatePrices();
-            PromotableOrder promotableOrder = promotableItemFactory.createPromotableOrder(order, false);
-            List<Offer> filteredOffers = orderOfferProcessor.filterOffers(offers, order.getCustomer());
-            if ((filteredOffers == null) || (filteredOffers.isEmpty())) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("No offers applicable to this order.");
-                }
-            } else {
-                List<PromotableCandidateOrderOffer> qualifiedOrderOffers = new ArrayList<PromotableCandidateOrderOffer>();
-                List<PromotableCandidateItemOffer> qualifiedItemOffers = new ArrayList<PromotableCandidateItemOffer>();
+    OfferContext offerContext = OfferContext.getOfferContext();
 
-                itemOfferProcessor.filterOffers(promotableOrder, filteredOffers, qualifiedOrderOffers, qualifiedItemOffers);
+    if ((offerContext == null) || offerContext.executePromotionCalculation) {
+      order.updatePrices();
 
-                if (! (qualifiedItemOffers.isEmpty() && qualifiedOrderOffers.isEmpty())) {                
-                    // At this point, we should have a PromotableOrder that contains PromotableItems each of which
-                    // has a list of candidatePromotions that might be applied.
+      PromotableOrder promotableOrder = promotableItemFactory.createPromotableOrder(order, false);
+      List<Offer>     filteredOffers  = orderOfferProcessor.filterOffers(offers, order.getCustomer());
 
-                    // We also have a list of orderOffers that might apply and a list of itemOffers that might apply.
-                    itemOfferProcessor.applyAndCompareOrderAndItemOffers(promotableOrder, qualifiedOrderOffers, qualifiedItemOffers);
-                }
-            }
-            orderOfferProcessor.synchronizeAdjustmentsAndPrices(promotableOrder);
-            order.setSubTotal(order.calculateSubTotal());
-            order.finalizeItemPrices();
-
-            orderService.save(order, false);
+      if ((filteredOffers == null) || (filteredOffers.isEmpty())) {
+        if (LOG.isTraceEnabled()) {
+          LOG.trace("No offers applicable to this order.");
         }
-    }
+      } else {
+        List<PromotableCandidateOrderOffer> qualifiedOrderOffers = new ArrayList<PromotableCandidateOrderOffer>();
+        List<PromotableCandidateItemOffer>  qualifiedItemOffers  = new ArrayList<PromotableCandidateItemOffer>();
 
-    @Override
-    @Transactional("blTransactionManager")
-    public void applyFulfillmentGroupOffersToOrder(List<Offer> offers, Order order) throws PricingException {
-        OfferContext offerContext = OfferContext.getOfferContext();
-        if (offerContext == null || offerContext.executePromotionCalculation) {
-            PromotableOrder promotableOrder =
-                    promotableItemFactory.createPromotableOrder(order, true);
-            List<Offer> possibleFGOffers = new ArrayList<Offer>();
-            for (Offer offer : offers) {
-                if (offer.getType().getType().equals(OfferType.FULFILLMENT_GROUP.getType())) {
-                    possibleFGOffers.add(offer);
-                }
-            }
-            List<Offer> filteredOffers = orderOfferProcessor.filterOffers(possibleFGOffers, order.getCustomer());
-            List<PromotableCandidateFulfillmentGroupOffer> qualifiedFGOffers = new ArrayList<PromotableCandidateFulfillmentGroupOffer>();
-            for (Offer offer : filteredOffers) {
-                fulfillmentGroupOfferProcessor.filterFulfillmentGroupLevelOffer(promotableOrder, qualifiedFGOffers, offer);
-            }
-            if (!qualifiedFGOffers.isEmpty()) {
-                fulfillmentGroupOfferProcessor.applyAllFulfillmentGroupOffers(qualifiedFGOffers, promotableOrder);
-            }
-            fulfillmentGroupOfferProcessor.calculateFulfillmentGroupTotal(promotableOrder);
-            orderOfferProcessor.synchronizeAdjustmentsAndPrices(promotableOrder);
+        itemOfferProcessor.filterOffers(promotableOrder, filteredOffers, qualifiedOrderOffers, qualifiedItemOffers);
 
-            orderService.save(order, false);
+        if (!(qualifiedItemOffers.isEmpty() && qualifiedOrderOffers.isEmpty())) {
+          // At this point, we should have a PromotableOrder that contains PromotableItems each of which
+          // has a list of candidatePromotions that might be applied.
+
+          // We also have a list of orderOffers that might apply and a list of itemOffers that might apply.
+          itemOfferProcessor.applyAndCompareOrderAndItemOffers(promotableOrder, qualifiedOrderOffers,
+            qualifiedItemOffers);
         }
+      }
+
+      orderOfferProcessor.synchronizeAdjustmentsAndPrices(promotableOrder);
+      order.setSubTotal(order.calculateSubTotal());
+      order.finalizeItemPrices();
+
+      orderService.save(order, false);
+    } // end if
+  } // end method applyOffersToOrder
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a list of offers that applies to this order. All offers that are assigned to the customer, entered during
+   * checkout, or has a delivery type of automatic are added to the list. The same offer cannot appear more than once in
+   * the list.
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  a List of offers that may apply to this order
+   */
+  @Override public List<Offer> buildOfferListForOrder(Order order) {
+    List<Offer>         offers         = new ArrayList<Offer>();
+    List<CustomerOffer> customerOffers = lookupOfferCustomerByCustomer(order.getCustomer());
+
+    for (CustomerOffer customerOffer : customerOffers) {
+      if (!offers.contains(customerOffer.getOffer())) {
+        offers.add(customerOffer.getOffer());
+      }
     }
-    
-    @Override
-    public boolean verifyMaxCustomerUsageThreshold(Customer customer, Offer offer) {
-        if (customer != null && customer.getId() != null && offer != null && offer.getId() != null) {
-            if (offer.getMaxUsesPerCustomer() != null && offer.getMaxUsesPerCustomer() > 0) {                
-                Long currentUses = offerAuditDao.countUsesByCustomer(customer.getId(), offer.getId());
-                if (currentUses >= offer.getMaxUsesPerCustomer()) {
-                    return false;
-                }
-            }
+
+    List<OfferCode> orderOfferCodes = order.getAddedOfferCodes();
+    orderOfferCodes = removeOutOfDateOfferCodes(orderOfferCodes);
+
+    for (OfferCode orderOfferCode : orderOfferCodes) {
+      if (!offers.contains(orderOfferCode.getOffer())) {
+        offers.add(orderOfferCode.getOffer());
+      }
+    }
+
+    List<Offer> globalOffers = lookupAutomaticDeliveryOffers();
+
+    for (Offer globalOffer : globalOffers) {
+      if (!offers.contains(globalOffer)) {
+        offers.add(globalOffer);
+      }
+    }
+
+    if (extensionManager != null) {
+      extensionManager.getProxy().applyAdditionalFilters(offers);
+    }
+
+    return offers;
+  } // end method buildOfferListForOrder
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#findAllOffers()
+   */
+  @Override public List<Offer> findAllOffers() {
+    return offerDao.readAllOffers();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#findOfferCodeById(java.lang.Long)
+   */
+  @Override public OfferCode findOfferCodeById(Long id) {
+    return offerCodeDao.readOfferCodeById(id);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getCustomerOfferDao()
+   */
+  @Override public CustomerOfferDao getCustomerOfferDao() {
+    return customerOfferDao;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getFulfillmentGroupOfferProcessor()
+   */
+  @Override public FulfillmentGroupOfferProcessor getFulfillmentGroupOfferProcessor() {
+    return fulfillmentGroupOfferProcessor;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getItemOfferProcessor()
+   */
+  @Override public ItemOfferProcessor getItemOfferProcessor() {
+    return itemOfferProcessor;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getOfferCodeDao()
+   */
+  @Override public OfferCodeDao getOfferCodeDao() {
+    return offerCodeDao;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getOfferDao()
+   */
+  @Override public OfferDao getOfferDao() {
+    return offerDao;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getOrderOfferProcessor()
+   */
+  @Override public OrderOfferProcessor getOrderOfferProcessor() {
+    return orderOfferProcessor;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getOrderService()
+   */
+  @Override public OrderService getOrderService() {
+    return orderService;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#getPromotableItemFactory()
+   */
+  @Override public PromotableItemFactory getPromotableItemFactory() {
+    return promotableItemFactory;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a list of offers that applies to this order. All offers that are assigned to the customer, entered during
+   * checkout, or has a delivery type of automatic are added to the list. The same offer cannot appear more than once in
+   * the list.
+   *
+   * @param   code  DOCUMENT ME!
+   *
+   * @return  a List of offers that may apply to this order
+   */
+  @Override public Offer lookupOfferByCode(String code) {
+    Offer     offer     = null;
+    OfferCode offerCode = offerCodeDao.readOfferCodeByCode(code);
+
+    if (offerCode != null) {
+      offer = offerCode.getOffer();
+    }
+
+    return offer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#lookupOfferCodeByCode(java.lang.String)
+   */
+  @Override public OfferCode lookupOfferCodeByCode(String code) {
+    return offerCodeDao.readOfferCodeByCode(code);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#save(org.broadleafcommerce.core.offer.domain.Offer)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public Offer save(Offer offer) {
+    return offerDao.save(offer);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#saveOfferCode(org.broadleafcommerce.core.offer.domain.OfferCode)
+   */
+  @Override
+  @Transactional("blTransactionManager")
+  public OfferCode saveOfferCode(OfferCode offerCode) {
+    offerCode.setOffer(offerDao.save(offerCode.getOffer()));
+
+    return offerCodeDao.save(offerCode);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setCustomerOfferDao(org.broadleafcommerce.core.offer.dao.CustomerOfferDao)
+   */
+  @Override public void setCustomerOfferDao(CustomerOfferDao customerOfferDao) {
+    this.customerOfferDao = customerOfferDao;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setFulfillmentGroupOfferProcessor(org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessor)
+   */
+  @Override public void setFulfillmentGroupOfferProcessor(
+    FulfillmentGroupOfferProcessor fulfillmentGroupOfferProcessor) {
+    this.fulfillmentGroupOfferProcessor = fulfillmentGroupOfferProcessor;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setItemOfferProcessor(org.broadleafcommerce.core.offer.service.processor.ItemOfferProcessor)
+   */
+  @Override public void setItemOfferProcessor(ItemOfferProcessor itemOfferProcessor) {
+    this.itemOfferProcessor = itemOfferProcessor;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setOfferCodeDao(org.broadleafcommerce.core.offer.dao.OfferCodeDao)
+   */
+  @Override public void setOfferCodeDao(OfferCodeDao offerCodeDao) {
+    this.offerCodeDao = offerCodeDao;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setOfferDao(org.broadleafcommerce.core.offer.dao.OfferDao)
+   */
+  @Override public void setOfferDao(OfferDao offerDao) {
+    this.offerDao = offerDao;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setOrderOfferProcessor(org.broadleafcommerce.core.offer.service.processor.OrderOfferProcessor)
+   */
+  @Override public void setOrderOfferProcessor(OrderOfferProcessor orderOfferProcessor) {
+    this.orderOfferProcessor = orderOfferProcessor;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setOrderService(org.broadleafcommerce.core.order.service.OrderService)
+   */
+  @Override public void setOrderService(OrderService orderService) {
+    this.orderService = orderService;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#setPromotableItemFactory(org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactory)
+   */
+  @Override public void setPromotableItemFactory(PromotableItemFactory promotableItemFactory) {
+    this.promotableItemFactory = promotableItemFactory;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferService#verifyMaxCustomerUsageThreshold(org.broadleafcommerce.profile.core.domain.Customer,
+   *       org.broadleafcommerce.core.offer.domain.Offer)
+   */
+  @Override public boolean verifyMaxCustomerUsageThreshold(Customer customer, Offer offer) {
+    if ((customer != null) && (customer.getId() != null) && (offer != null) && (offer.getId() != null)) {
+      if ((offer.getMaxUsesPerCustomer() != null) && (offer.getMaxUsesPerCustomer() > 0)) {
+        Long currentUses = offerAuditDao.countUsesByCustomer(customer.getId(), offer.getId());
+
+        if (currentUses >= offer.getMaxUsesPerCustomer()) {
+          return false;
         }
-        return true;
-    }        
-
-    @Override
-    public CustomerOfferDao getCustomerOfferDao() {
-        return customerOfferDao;
+      }
     }
 
-    @Override
-    public void setCustomerOfferDao(CustomerOfferDao customerOfferDao) {
-        this.customerOfferDao = customerOfferDao;
+    return true;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Private method used to retrieve all offers with DeliveryType of AUTOMATIC.
+   *
+   * @return  a List of automatic delivery offers
+   */
+  protected List<Offer> lookupAutomaticDeliveryOffers() {
+    List<Offer> globalOffers = offerDao.readOffersByAutomaticDeliveryType();
+
+    return globalOffers;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Private method used to retrieve all offers assigned to this customer. These offers have a DeliveryType of MANUAL
+   * and are programmatically assigned to the customer.
+   *
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  a List of offers assigned to the customer
+   */
+  protected List<CustomerOffer> lookupOfferCustomerByCustomer(Customer customer) {
+    List<CustomerOffer> offerCustomers = customerOfferDao.readCustomerOffersByCustomer(customer);
+
+    return offerCustomers;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Removes all out of date offerCodes based on the offerCode and its offer's start and end date. If an offerCode has a
+   * later start date, that offerCode will be removed. OfferCodes without a start date will still be processed. If the
+   * offerCode has a end date that has already passed, that offerCode will be removed. OfferCodes without a end date
+   * will be processed. The start and end dates on the offer will still need to be evaluated.
+   *
+   * @param   offerCodes  DOCUMENT ME!
+   *
+   * @return  a List of non-expired offers
+   */
+  protected List<OfferCode> removeOutOfDateOfferCodes(List<OfferCode> offerCodes) {
+    Date            now                = SystemTime.asDate();
+    List<OfferCode> offerCodesToRemove = new ArrayList<OfferCode>();
+
+    for (OfferCode offerCode : offerCodes) {
+      if ((offerCode.getStartDate() != null) && (offerCode.getStartDate().after(now))) {
+        offerCodesToRemove.add(offerCode);
+      } else if ((offerCode.getEndDate() != null) && offerCode.getEndDate().before(now)) {
+        offerCodesToRemove.add(offerCode);
+      }
     }
 
-    @Override
-    public OfferCodeDao getOfferCodeDao() {
-        return offerCodeDao;
+    // remove all offers in the offersToRemove list from original offers list
+    for (OfferCode offerCode : offerCodesToRemove) {
+      offerCodes.remove(offerCode);
     }
 
-    @Override
-    public void setOfferCodeDao(OfferCodeDao offerCodeDao) {
-        this.offerCodeDao = offerCodeDao;
-    }
-
-    @Override
-    public OfferDao getOfferDao() {
-        return offerDao;
-    }
-
-    @Override
-    public void setOfferDao(OfferDao offerDao) {
-        this.offerDao = offerDao;
-    }
-
-    @Override
-    public OrderOfferProcessor getOrderOfferProcessor() {
-        return orderOfferProcessor;
-    }
-
-    @Override
-    public void setOrderOfferProcessor(OrderOfferProcessor orderOfferProcessor) {
-        this.orderOfferProcessor = orderOfferProcessor;
-    }
-
-    @Override
-    public ItemOfferProcessor getItemOfferProcessor() {
-        return itemOfferProcessor;
-    }
-
-    @Override
-    public void setItemOfferProcessor(ItemOfferProcessor itemOfferProcessor) {
-        this.itemOfferProcessor = itemOfferProcessor;
-    }
-
-    @Override
-    public FulfillmentGroupOfferProcessor getFulfillmentGroupOfferProcessor() {
-        return fulfillmentGroupOfferProcessor;
-    }
-
-    @Override
-    public void setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor fulfillmentGroupOfferProcessor) {
-        this.fulfillmentGroupOfferProcessor = fulfillmentGroupOfferProcessor;
-    }
-
-    @Override
-    public PromotableItemFactory getPromotableItemFactory() {
-        return promotableItemFactory;
-    }
-
-    @Override
-    public void setPromotableItemFactory(PromotableItemFactory promotableItemFactory) {
-        this.promotableItemFactory = promotableItemFactory;
-    }
-
-    @Override
-    public OfferCode findOfferCodeById(Long id) {
-        return offerCodeDao.readOfferCodeById(id);
-    }
-
-    @Override
-    public OrderService getOrderService() {
-        return orderService;
-    }
-
-    @Override
-    public void setOrderService(OrderService orderService) {
-        this.orderService = orderService;
-    }
-}
+    return offerCodes;
+  }
+} // end class OfferServiceImpl

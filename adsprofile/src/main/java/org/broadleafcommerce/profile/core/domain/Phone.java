@@ -18,21 +18,67 @@ package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface Phone extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPhoneNumber();
 
-    public String getPhoneNumber();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phoneNumber  DOCUMENT ME!
+   */
+  void setPhoneNumber(String phoneNumber);
 
-    public void setPhoneNumber(String phoneNumber);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isDefault();
 
-    public boolean isDefault();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isDefault  DOCUMENT ME!
+   */
+  void setDefault(boolean isDefault);
 
-    public void setDefault(boolean isDefault);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isActive();
 
-    public boolean isActive();
-
-    public void setActive(boolean isActive);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isActive  DOCUMENT ME!
+   */
+  void setActive(boolean isActive);
+} // end interface Phone

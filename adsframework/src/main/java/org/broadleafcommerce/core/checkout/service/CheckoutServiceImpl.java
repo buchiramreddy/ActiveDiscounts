@@ -16,6 +16,11 @@
 
 package org.broadleafcommerce.core.checkout.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.checkout.service.exception.CheckoutException;
 import org.broadleafcommerce.core.checkout.service.workflow.CheckoutResponse;
 import org.broadleafcommerce.core.checkout.service.workflow.CheckoutSeed;
@@ -26,68 +31,76 @@ import org.broadleafcommerce.core.payment.domain.Referenced;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 import org.broadleafcommerce.core.workflow.SequenceProcessor;
 import org.broadleafcommerce.core.workflow.WorkflowException;
+
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blCheckoutService")
 public class CheckoutServiceImpl implements CheckoutService {
+  /** DOCUMENT ME! */
+  @Resource(name = "blCheckoutWorkflow")
+  protected SequenceProcessor checkoutWorkflow;
 
-    @Resource(name="blCheckoutWorkflow")
-    protected SequenceProcessor checkoutWorkflow;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    @Resource(name="blOrderService")
-    protected OrderService orderService;
-
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.checkout.service.CheckoutService#performCheckout(org.broadleafcommerce.core.order.domain.Order, java.util.Map)
-     */
-    public CheckoutResponse performCheckout(Order order, final Map<PaymentInfo, Referenced> payments) throws CheckoutException {
-        if (payments != null) {
-            /*
-             * TODO add validation that checks the order and payment information for validity.
-             */
-            /*
-             * TODO remove this simple validation and encapsulate using our real validation strategy
-             */
-            for (PaymentInfo info : payments.keySet()) {
-                if (info.getReferenceNumber() == null) {
-                    throw new CheckoutException("PaymentInfo reference number cannot be null", null);
-                }
-            }
-            for (Referenced referenced : payments.values()) {
-                if (referenced.getReferenceNumber() == null) {
-                    throw new CheckoutException("Referenced reference number cannot be null", null);
-                }
-            }
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.checkout.service.CheckoutService#performCheckout(org.broadleafcommerce.core.order.domain.Order, java.util.Map)
+   */
+  @Override public CheckoutResponse performCheckout(Order order, final Map<PaymentInfo, Referenced> payments)
+    throws CheckoutException {
+    if (payments != null) {
+      /*
+       * TODO add validation that checks the order and payment information for validity.
+       */
+      /*
+       * TODO remove this simple validation and encapsulate using our real validation strategy
+       */
+      for (PaymentInfo info : payments.keySet()) {
+        if (info.getReferenceNumber() == null) {
+          throw new CheckoutException("PaymentInfo reference number cannot be null", null);
         }
+      }
 
-        CheckoutSeed seed = null;
-        try {
-            order = orderService.save(order, false);
-            seed = new CheckoutSeed(order, payments, new HashMap<String, Object>());
-
-            checkoutWorkflow.doActivities(seed);
-
-            // We need to pull the order off the seed and save it here in case any activity modified the order.
-            order = orderService.save(seed.getOrder(), false);
-            seed.setOrder(order);
-
-            return seed;
-        } catch (PricingException e) {
-            throw new CheckoutException("Unable to checkout order -- id: " + order.getId(), e, seed);
-        } catch (WorkflowException e) {
-            throw new CheckoutException("Unable to checkout order -- id: " + order.getId(), e.getRootCause(), seed);
+      for (Referenced referenced : payments.values()) {
+        if (referenced.getReferenceNumber() == null) {
+          throw new CheckoutException("Referenced reference number cannot be null", null);
         }
+      }
     }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.checkout.service.CheckoutService#performCheckout(org.broadleafcommerce.core.order.domain.Order)
-     */
-    public CheckoutResponse performCheckout(final Order order) throws CheckoutException {
-        return performCheckout(order, null);
-    }
+    CheckoutSeed seed = null;
 
-}
+    try {
+      order = orderService.save(order, false);
+      seed  = new CheckoutSeed(order, payments, new HashMap<String, Object>());
+
+      checkoutWorkflow.doActivities(seed);
+
+      // We need to pull the order off the seed and save it here in case any activity modified the order.
+      order = orderService.save(seed.getOrder(), false);
+      seed.setOrder(order);
+
+      return seed;
+    } catch (PricingException e) {
+      throw new CheckoutException("Unable to checkout order -- id: " + order.getId(), e, seed);
+    } catch (WorkflowException e) {
+      throw new CheckoutException("Unable to checkout order -- id: " + order.getId(), e.getRootCause(), seed);
+    }
+  } // end method performCheckout
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.checkout.service.CheckoutService#performCheckout(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public CheckoutResponse performCheckout(final Order order) throws CheckoutException {
+    return performCheckout(order, null);
+  }
+
+} // end class CheckoutServiceImpl

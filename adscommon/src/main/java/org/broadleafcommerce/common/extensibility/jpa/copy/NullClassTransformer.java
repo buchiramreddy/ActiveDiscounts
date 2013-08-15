@@ -16,31 +16,42 @@
 
 package org.broadleafcommerce.common.extensibility.jpa.copy;
 
-import org.broadleafcommerce.common.extensibility.jpa.convert.BroadleafClassTransformer;
-
 import java.lang.instrument.IllegalClassFormatException;
+
 import java.security.ProtectionDomain;
+
 import java.util.Properties;
 
+import org.broadleafcommerce.common.extensibility.jpa.convert.BroadleafClassTransformer;
+
+
 /**
- * This class transformer will do nothing. The main use case for this transformer is when you would prefer to not
- * have a module's template classes copied over, and would rather do it yourself. 
- * 
- * This transformer should not typically be used.
- * 
- * @author Andre Azzolini (apazzolini)
+ * This class transformer will do nothing. The main use case for this transformer is when you would prefer to not have a
+ * module's template classes copied over, and would rather do it yourself.
+ *
+ * <p>This transformer should not typically be used.</p>
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class NullClassTransformer implements BroadleafClassTransformer {
-    
-    @Override
-    public void compileJPAProperties(Properties props, Object key) throws Exception {
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, 
-            ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        return null;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.jpa.convert.BroadleafClassTransformer#compileJPAProperties(java.util.Properties,
+   *       java.lang.Object)
+   */
+  @Override public void compileJPAProperties(Properties props, Object key) throws Exception { }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.persistence.spi.ClassTransformer#transform(java.lang.ClassLoader, java.lang.String, java.lang.Class,
+   *       java.security.ProtectionDomain, byte[])
+   */
+  @Override public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
+    ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+    return null;
+  }
 
 }
-

@@ -17,13 +17,13 @@
 package org.broadleafcommerce.openadmin.dto;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public enum MergedPropertyType {
-    PRIMARY,
-    ADORNEDTARGETLIST,
-    MAPSTRUCTUREKEY,
-    MAPSTRUCTUREVALUE
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  PRIMARY, ADORNEDTARGETLIST, MAPSTRUCTUREKEY, MAPSTRUCTUREVALUE
 }

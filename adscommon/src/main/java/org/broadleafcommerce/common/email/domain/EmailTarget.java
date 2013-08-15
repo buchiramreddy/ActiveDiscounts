@@ -18,19 +18,67 @@ package org.broadleafcommerce.common.email.domain;
 
 import java.io.Serializable;
 
+
 /**
  * The EmailTarget interface is used to specify the recipients of the email.
  *
- * @see org.broadleafcommerce.common.email.domain.EmailTargetImpl
- * @author bpolster
+ * @see      org.broadleafcommerce.common.email.domain.EmailTargetImpl
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface EmailTarget extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getEmailAddress();
-    public void setEmailAddress(String emailAddress);
-    public String[] getCCAddresses();
-    public void setCCAddresses(String[] ccAddresses);
-    public String[] getBCCAddresses();
-    public void setBCCAddresses(String[] BCCAddresses);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String[] getBCCAddresses();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String[] getCCAddresses();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getEmailAddress();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  BCCAddresses  DOCUMENT ME!
+   */
+  void setBCCAddresses(String[] BCCAddresses);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ccAddresses  DOCUMENT ME!
+   */
+  void setCCAddresses(String[] ccAddresses);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailAddress  DOCUMENT ME!
+   */
+  void setEmailAddress(String emailAddress);
+
+} // end interface EmailTarget

@@ -20,28 +20,35 @@ import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.ProcessContextFactory;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 
+
 /**
- * Provides a method that creates the seed ProcessContext object for a cart
- * operation. The same seed object is used for add item, update item, and remove
- * item cart operations.
- * 
- * @author apazzolini
+ * Provides a method that creates the seed ProcessContext object for a cart operation. The same seed object is used for
+ * add item, update item, and remove item cart operations.
+ *
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 public class CartOperationProcessContextFactory implements ProcessContextFactory {
-
-    /**
-     * Creates the necessary context for cart operations
-     */
-    public ProcessContext createContext(Object seedData) throws WorkflowException {
-        if (!(seedData instanceof CartOperationRequest)){
-            throw new WorkflowException("Seed data instance is incorrect. " +
-                    "Required class is " + CartOperationRequest.class.getName() + " " +
-                    "but found class: " + seedData.getClass().getName());
-        }
-        
-        CartOperationContext context = new CartOperationContext();
-        context.setSeedData(seedData);
-        return context;
+  /**
+   * Creates the necessary context for cart operations.
+   *
+   * @param   seedData  DOCUMENT ME!
+   *
+   * @return  creates the necessary context for cart operations.
+   *
+   * @throws  WorkflowException  DOCUMENT ME!
+   */
+  @Override public ProcessContext createContext(Object seedData) throws WorkflowException {
+    if (!(seedData instanceof CartOperationRequest)) {
+      throw new WorkflowException("Seed data instance is incorrect. "
+        + "Required class is " + CartOperationRequest.class.getName() + " "
+        + "but found class: " + seedData.getClass().getName());
     }
+
+    CartOperationContext context = new CartOperationContext();
+    context.setSeedData(seedData);
+
+    return context;
+  }
 
 }

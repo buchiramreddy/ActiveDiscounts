@@ -18,57 +18,96 @@ package org.broadleafcommerce.common.exception;
 
 /**
  * Base exception class for BroadleafExceptions that understands root cause messages.
- * 
- * @author bpolster
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public abstract class BroadleafException extends Exception implements RootCauseAccessor {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Throwable rootCause;
+  private Throwable rootCause;
 
-    public BroadleafException() {
-        super();
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new BroadleafException object.
+   */
+  public BroadleafException() {
+    super();
+  }
+
+  /**
+   * Creates a new BroadleafException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public BroadleafException(String message) {
+    super(message);
+    this.rootCause = this;
+
+  }
+
+  /**
+   * Creates a new BroadleafException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public BroadleafException(Throwable cause) {
+    super(cause);
+
+    if (cause != null) {
+      rootCause = findRootCause(cause);
+    }
+  }
+
+  /**
+   * Creates a new BroadleafException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public BroadleafException(String message, Throwable cause) {
+    super(message, cause);
+
+    if (cause != null) {
+      rootCause = findRootCause(cause);
+    } else {
+      rootCause = this;
+    }
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.exception.RootCauseAccessor#getRootCause()
+   */
+  @Override public Throwable getRootCause() {
+    return rootCause;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.exception.RootCauseAccessor#getRootCauseMessage()
+   */
+  @Override public String getRootCauseMessage() {
+    if (rootCause != null) {
+      return rootCause.getMessage();
+    } else {
+      return getMessage();
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private Throwable findRootCause(Throwable cause) {
+    Throwable rootCause = cause;
+
+    while ((rootCause != null) && (rootCause.getCause() != null)) {
+      rootCause = rootCause.getCause();
     }
 
-    public BroadleafException(String message, Throwable cause) {
-        super(message, cause);
-        if (cause != null) {
-            rootCause = findRootCause(cause);
-        } else {
-            rootCause = this;
-        }
-    }
+    return rootCause;
+  }
 
-    private Throwable findRootCause(Throwable cause) {
-        Throwable rootCause = cause;
-        while (rootCause != null && rootCause.getCause() != null) {
-            rootCause = rootCause.getCause();
-        }
-        return rootCause;
-    }
-
-    public BroadleafException(String message) {
-        super(message);
-        this.rootCause = this;
-
-    }
-
-    public BroadleafException(Throwable cause) {
-        super(cause);
-        if (cause != null) {
-            rootCause = findRootCause(cause);
-        }
-    }
-
-    public Throwable getRootCause() {
-        return rootCause;
-    }
-
-    public String getRootCauseMessage() {
-        if (rootCause != null) {
-            return rootCause.getMessage();
-        } else {
-            return getMessage();
-        }
-    }
-
-}
+} // end class BroadleafException

@@ -18,33 +18,73 @@ package org.broadleafcommerce.common.i18n.service;
 
 /**
  * Container for ThreadLocal attributes that relate to Translation.
- * 
- * @author Andre Azzolini (apazzolini)
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class TranslationConsiderationContext {
-    
-    private static final ThreadLocal<TranslationService> translationService = new ThreadLocal<TranslationService>();
-    private static final ThreadLocal<Boolean> translationConsiderationContext = new ThreadLocal<Boolean>();
-    
-    public static boolean hasTranslation() {
-        return getTranslationConsiderationContext() != null && getTranslationConsiderationContext() && getTranslationService() != null;
-    }
-    
-    public static Boolean getTranslationConsiderationContext() {
-        Boolean val = TranslationConsiderationContext.translationConsiderationContext.get();
-        return val == null ? false : val;
-    }
-    
-    public static void setTranslationConsiderationContext(Boolean isEnabled) {
-        TranslationConsiderationContext.translationConsiderationContext.set(isEnabled);
-    }
-    
-    public static TranslationService getTranslationService() {
-        return TranslationConsiderationContext.translationService.get();
-    }
-    
-    public static void setTranslationService(TranslationService translationService) {
-        TranslationConsiderationContext.translationService.set(translationService);
-    }
-    
-}
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  private static final ThreadLocal<TranslationService> translationService              =
+    new ThreadLocal<TranslationService>();
+  private static final ThreadLocal<Boolean>            translationConsiderationContext = new ThreadLocal<Boolean>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static Boolean getTranslationConsiderationContext() {
+    Boolean val = TranslationConsiderationContext.translationConsiderationContext.get();
+
+    return (val == null) ? false : val;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static TranslationService getTranslationService() {
+    return TranslationConsiderationContext.translationService.get();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static boolean hasTranslation() {
+    return (getTranslationConsiderationContext() != null) && getTranslationConsiderationContext()
+      && (getTranslationService() != null);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isEnabled  DOCUMENT ME!
+   */
+  public static void setTranslationConsiderationContext(Boolean isEnabled) {
+    TranslationConsiderationContext.translationConsiderationContext.set(isEnabled);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  translationService  DOCUMENT ME!
+   */
+  public static void setTranslationService(TranslationService translationService) {
+    TranslationConsiderationContext.translationService.set(translationService);
+  }
+
+} // end class TranslationConsiderationContext

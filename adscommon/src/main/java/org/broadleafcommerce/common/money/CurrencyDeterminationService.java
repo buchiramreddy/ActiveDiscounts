@@ -18,13 +18,23 @@ package org.broadleafcommerce.common.money;
 
 import java.util.HashMap;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface CurrencyDeterminationService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getCurrencyCode(HashMap currencyConsiderations);
-    
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   currencyConsiderations  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCurrencyCode(HashMap currencyConsiderations);
+
 }

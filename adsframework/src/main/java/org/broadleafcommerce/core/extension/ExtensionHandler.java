@@ -18,31 +18,38 @@ package org.broadleafcommerce.core.extension;
 
 
 /**
- * An extension handler represents a generic pattern used in BroadleafCommerce when an out-of-box service
- * with complex logic provides implementation hooks.  
- * 
- * The pattern is primarily used internally by Broadleaf as a mechanism to provide extension points for 
- * Broadleaf modules.
- * 
- * Consumers of BroadleafCommerce framework typically would not need to use this pattern and instead would opt. 
- * for more typical extension patterns including overriding or extending the actual component for which 
- * alternate behavior is desired.
- * 
- * ExtensionHandler api methods should always return an instance of {@link org.broadleafcommerce.core.extension.ExtensionResultStatusType}.
- * 
- * @author bpolster
+ * An extension handler represents a generic pattern used in BroadleafCommerce when an out-of-box service with complex
+ * logic provides implementation hooks.
+ *
+ * <p>The pattern is primarily used internally by Broadleaf as a mechanism to provide extension points for Broadleaf
+ * modules.</p>
+ *
+ * <p>Consumers of BroadleafCommerce framework typically would not need to use this pattern and instead would opt. for
+ * more typical extension patterns including overriding or extending the actual component for which alternate behavior
+ * is desired.</p>
+ *
+ * <p>ExtensionHandler api methods should always return an instance of
+ * {@link org.broadleafcommerce.core.extension.ExtensionResultStatusType}.</p>
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface ExtensionHandler {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Determines the priority of this extension handler.
-     * @return
-     */
-    public int getPriority();
+  /**
+   * Determines the priority of this extension handler.
+   *
+   * @return  determines the priority of this extension handler.
+   */
+  int getPriority();
 
-    /**
-     * If false, the ExtensionManager should skip this Handler.
-     * @return
-     */
-    public boolean isEnabled();
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * If false, the ExtensionManager should skip this Handler.
+   *
+   * @return  if false, the ExtensionManager should skip this Handler.
+   */
+  boolean isEnabled();
 }

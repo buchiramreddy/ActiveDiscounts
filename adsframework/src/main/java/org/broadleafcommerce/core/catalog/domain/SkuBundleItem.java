@@ -16,56 +16,101 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
-import org.broadleafcommerce.common.money.Money;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+
 /**
- * Represents the {@link Sku} being sold in a bundle along with metadata
- * about the relationship itself like how many items should be included in the
- * bundle
+ * Represents the {@link Sku} being sold in a bundle along with metadata about the relationship itself like how many
+ * items should be included in the bundle.
  *
- * @author Phillip Verheyden
- * @see org.broadleafcommerce.core.catalog.domain.ProductBundle, Product
+ * @author   Phillip Verheyden
+ * @see      org.broadleafcommerce.core.catalog.domain.ProductBundle, Product
+ * @version  $Revision$, $Date$
  */
 public interface SkuBundleItem extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getQuantity();
 
-    public Integer getQuantity();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  void setQuantity(Integer quantity);
 
-    public void setQuantity(Integer quantity);
+  /**
+   * Allows for overriding the related Product's sale price. This is only used if the pricing model for the bundle is a
+   * composition of its parts getProduct().getDefaultSku().getSalePrice()
+   *
+   * @param  salePrice  The sale price for this bundle item
+   */
+  void setSalePrice(Money salePrice);
 
-    /**
-    * Allows for overriding the related Product's sale price. This is only used
-    * if the pricing model for the bundle is a composition of its parts
-    * getProduct().getDefaultSku().getSalePrice()
-    *
-    * @param itemSalePrice The sale price for this bundle item
-    */
-    public void setSalePrice(Money salePrice);
+  /**
+   * This itemSalePrice if it is set, getProduct().getDefaultSku().getSalePrice() if this item's itemSalePrice is null.
+   *
+   * @return  this itemSalePrice if it is set, getProduct().getDefaultSku().getSalePrice() if this item's itemSalePrice
+   *          is null
+   */
+  Money getSalePrice();
 
-    /**
-    * @return this itemSalePrice if it is set,
-    *         getProduct().getDefaultSku().getSalePrice() if this item's itemSalePrice is
-    *         null
-    */
-    public Money getSalePrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ProductBundle getBundle();
 
-    public ProductBundle getBundle();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bundle  DOCUMENT ME!
+   */
+  void setBundle(ProductBundle bundle);
 
-    public void setBundle(ProductBundle bundle);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getRetailPrice();
 
-    public Money getRetailPrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Sku getSku();
 
-    public Sku getSku();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sku  DOCUMENT ME!
+   */
+  void setSku(Sku sku);
 
-    public void setSku(Sku sku);
-
-    /**
-     * Removes any currently stored dynamic pricing
-     */
-    public void clearDynamicPrices();
-}
+  /**
+   * Removes any currently stored dynamic pricing.
+   */
+  void clearDynamicPrices();
+} // end interface SkuBundleItem

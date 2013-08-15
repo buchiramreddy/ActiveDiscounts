@@ -16,12 +16,6 @@
 
 package org.broadleafcommerce.common.config.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,67 +24,122 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * Allows the storage and retrieval of System Properties in the database
- * <p/>
- * User: Kelly Tisdell
- * Date: 6/20/12
+ * Allows the storage and retrieval of System Properties in the database.
+ *
+ * <p>User: Kelly Tisdell Date: 6/20/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@Entity
-@Table(name="BLC_SYSTEM_PROPERTY")
-@Inheritance(strategy = InheritanceType.JOINED)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
 @AdminPresentationClass(friendlyName = "SystemPropertyImpl")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "BLC_SYSTEM_PROPERTY")
 public class SystemPropertyImpl implements SystemProperty {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "SystemPropertyId")
-    @GenericGenerator(
-        name="SystemPropertyId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="SystemPropertyImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.common.config.domain.SystemPropertyImpl")
-        }
-    )
-    @Column(name = "BLC_SYSTEM_PROPERTY_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name= "PROPERTY_NAME", unique = true, nullable = false)
-    protected String name;
-
-    @Column(name= "PROPERTY_VALUE", nullable = false)
-    protected String value;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "BLC_SYSTEM_PROPERTY_ID")
+  @GeneratedValue(generator = "SystemPropertyId")
+  @GenericGenerator(
+    name       = "SystemPropertyId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "SystemPropertyImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.common.config.domain.SystemPropertyImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "PROPERTY_NAME",
+    unique   = true,
+    nullable = false
+  )
+  protected String name;
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "PROPERTY_VALUE",
+    nullable = false
+  )
+  protected String value;
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getValue() {
-        return value;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.config.domain.SystemProperty#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setValue(String value) {
-        this.value = value;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.domain.SystemProperty#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.domain.SystemProperty#getValue()
+   */
+  @Override public String getValue() {
+    return value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.domain.SystemProperty#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.domain.SystemProperty#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.domain.SystemProperty#setValue(java.lang.String)
+   */
+  @Override public void setValue(String value) {
+    this.value = value;
+  }
+} // end class SystemPropertyImpl

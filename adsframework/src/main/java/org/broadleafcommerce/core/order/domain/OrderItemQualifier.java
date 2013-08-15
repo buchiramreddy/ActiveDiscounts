@@ -16,57 +16,71 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.core.offer.domain.Offer;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.core.offer.domain.Offer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OrderItemQualifier extends Serializable {
-    
-    /**
-     * Unique id of the item qualifier.
-     * @return
-     */
-    Long getId();
+  /**
+   * Unique id of the item qualifier.
+   *
+   * @return  unique id of the item qualifier.
+   */
+  Long getId();
 
-    /**
-     * Sets the id for this OrderItemQualifier
-     * @param id
-     */
-    void setId(Long id);
+  /**
+   * Sets the id for this OrderItemQualifier.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    /**
-     * The related order item.
-     * @return
-     */
-    OrderItem getOrderItem();
+  /**
+   * The related order item.
+   *
+   * @return  the related order item.
+   */
+  OrderItem getOrderItem();
 
-    /**
-     * Sets the related order item.
-     * @param orderItem
-     */
-    void setOrderItem(OrderItem orderItem);
+  /**
+   * Sets the related order item.
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  void setOrderItem(OrderItem orderItem);
 
-    /**
-     * Sets the related offer.
-     * @param offer
-     */
-    void setOffer(Offer offer);
+  /**
+   * Sets the related offer.
+   *
+   * @param  offer  DOCUMENT ME!
+   */
+  void setOffer(Offer offer);
 
-    /**
-     * Returns the related offer
-     * @return
-     */
-    Offer getOffer();
+  /**
+   * Returns the related offer.
+   *
+   * @return  the related offer.
+   */
+  Offer getOffer();
 
-    /**
-     * Sets the quantity of the associated OrderItem that was used as a qualifier.
-     * @param quantity
-     */
-    void setQuantity(Long quantity);
+  /**
+   * Sets the quantity of the associated OrderItem that was used as a qualifier.
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  void setQuantity(Long quantity);
 
-    /**
-     * Returns the quantity of the associated OrderItem that was used as a qualifier.
-     * @return
-     */
-    Long getQuantity();
-}
+  /**
+   * Returns the quantity of the associated OrderItem that was used as a qualifier.
+   *
+   * @return  the quantity of the associated OrderItem that was used as a qualifier.
+   */
+  Long getQuantity();
+} // end interface OrderItemQualifier

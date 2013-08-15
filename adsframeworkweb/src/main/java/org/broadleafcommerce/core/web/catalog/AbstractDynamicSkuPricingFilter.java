@@ -16,40 +16,61 @@
 
 package org.broadleafcommerce.core.web.catalog;
 
-import org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import java.io.IOException;
+
+import org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext;
+
 
 /**
- * 
- * @author jfischer
- * @see {@link org.broadleafcommerce.core.web.catalog.DefaultDynamicSkuPricingFilter}
+ * DOCUMENT ME!
+ *
+ * @author   jfischer
+ * @see      {@link org.broadleafcommerce.core.web.catalog.DefaultDynamicSkuPricingFilter}
+ * @version  $Revision$, $Date$
  */
 public abstract class AbstractDynamicSkuPricingFilter implements DynamicSkuPricingFilter {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void destroy() {
-        //do nothing
+  /**
+   * @see  javax.servlet.Filter#destroy()
+   */
+  @Override public void destroy() {
+    // do nothing
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse,
+   *       javax.servlet.FilterChain)
+   */
+  @Override public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+    throws IOException, ServletException {
+    SkuPricingConsiderationContext.setSkuPricingConsiderationContext(getPricingConsiderations(request));
+    SkuPricingConsiderationContext.setSkuPricingService(getDynamicSkuPricingService(request));
+
+    try {
+      filterChain.doFilter(request, response);
+    } finally {
+      SkuPricingConsiderationContext.setSkuPricingConsiderationContext(null);
+      SkuPricingConsiderationContext.setSkuPricingService(null);
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        SkuPricingConsiderationContext.setSkuPricingConsiderationContext(getPricingConsiderations(request));
-        SkuPricingConsiderationContext.setSkuPricingService(getDynamicSkuPricingService(request));
-        try {
-            filterChain.doFilter(request, response);
-        } finally {
-            SkuPricingConsiderationContext.setSkuPricingConsiderationContext(null);
-            SkuPricingConsiderationContext.setSkuPricingService(null);
-        }
-        
-    }
+  }
 
-    public void init(FilterConfig config) throws ServletException {
-        //do nothing
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  javax.servlet.Filter#init(javax.servlet.FilterConfig)
+   */
+  @Override public void init(FilterConfig config) throws ServletException {
+    // do nothing
+  }
+
+} // end class AbstractDynamicSkuPricingFilter

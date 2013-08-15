@@ -18,28 +18,111 @@ package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface IdGeneration extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getBatchSize();
 
-    public void setType(String type);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getBegin();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getBatchStart();
 
-    public void setBegin(Long begin);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getEnd();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getBegin();
 
-    public void setEnd(Long end);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getBatchStart();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getEnd();
 
-    public void setBatchStart(Long batchStart);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getBatchSize();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getType();
 
-    public void setBatchSize(Long batchSize);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Integer getVersion();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getVersion();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  batchSize  DOCUMENT ME!
+   */
+  void setBatchSize(Long batchSize);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  batchStart  DOCUMENT ME!
+   */
+  void setBatchStart(Long batchStart);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  begin  DOCUMENT ME!
+   */
+  void setBegin(Long begin);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  end  DOCUMENT ME!
+   */
+  void setEnd(Long end);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  void setType(String type);
+
+} // end interface IdGeneration

@@ -18,39 +18,70 @@ package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
 
+
 /**
- * The DynamicEntityDao infrastructure provides a generic representation of an entity in 
- * the system.   Some utilities and services want both the generic representation and the
- * entity as it was persisted (e.g. the result of the <code>merge</code> call.
- * 
- * This object returns both properties.
- * 
- * @author bpolster
- * 
- * @see {@link org.broadleafcommerce.openadmin.dto.Entity}
- * @see {@link org.broadleafcommerce.openadmin.dto.Property}
+ * The DynamicEntityDao infrastructure provides a generic representation of an entity in the system. Some utilities and
+ * services want both the generic representation and the entity as it was persisted (e.g. the result of the <code>
+ * merge</code> call.
  *
+ * <p>This object returns both properties.</p>
+ *
+ * @author   bpolster
+ * @see      {@link org.broadleafcommerce.openadmin.dto.Entity}
+ * @see      {@link org.broadleafcommerce.openadmin.dto.Property}
+ * @version  $Revision$, $Date$
  */
 public class EntityResult implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private Entity entity;
-    private Object entityBackingObject;
-    
-    public Entity getEntity() {
-        return entity;
-    }
-    
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
-    
-    public Object getEntityBackingObject() {
-        return entityBackingObject;
-    }
-    
-    public void setEntityBackingObject(Object entityBackingObject) {
-        this.entityBackingObject = entityBackingObject;
-    }
-}
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private Entity entity;
+  private Object entityBackingObject;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Entity getEntity() {
+    return entity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Object getEntityBackingObject() {
+    return entityBackingObject;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entity  DOCUMENT ME!
+   */
+  public void setEntity(Entity entity) {
+    this.entity = entity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entityBackingObject  DOCUMENT ME!
+   */
+  public void setEntityBackingObject(Object entityBackingObject) {
+    this.entityBackingObject = entityBackingObject;
+  }
+} // end class EntityResult

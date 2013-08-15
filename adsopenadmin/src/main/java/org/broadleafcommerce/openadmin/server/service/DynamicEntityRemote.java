@@ -17,12 +17,28 @@
 package org.broadleafcommerce.openadmin.server.service;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface DynamicEntityRemote {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getPersistenceManagerRef();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPersistenceManagerRef();
 
-    public void setPersistenceManagerRef(String persistenceManagerRef);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  persistenceManagerRef  DOCUMENT ME!
+   */
+  void setPersistenceManagerRef(String persistenceManagerRef);
 
 }

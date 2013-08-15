@@ -16,14 +16,6 @@
 
 package org.broadleafcommerce.common.enumeration.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,97 +26,175 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(
+  populateToOneFields = PopulateToOneFieldsEnum.TRUE,
+  friendlyName        = "DataDrivenEnumerationImpl_friendyName"
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name="BLC_DATA_DRVN_ENUM_VAL")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE, friendlyName = "DataDrivenEnumerationImpl_friendyName")
+@Table(name = "BLC_DATA_DRVN_ENUM_VAL")
 public class DataDrivenEnumerationValueImpl implements DataDrivenEnumerationValue {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "DataDrivenEnumerationValueId")
-    @GenericGenerator(
-        name="DataDrivenEnumerationValueId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="DataDrivenEnumerationValueImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValueImpl")
-        }
-    )
-    @Column(name = "ENUM_VAL_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @ManyToOne(targetEntity = DataDrivenEnumerationImpl.class)
-    @JoinColumn(name = "ENUM_TYPE")
-    protected DataDrivenEnumeration type;
+  /** DOCUMENT ME! */
+  @Column(name = "DISPLAY")
+  protected String display;
 
-    @Column(name = "ENUM_KEY")
-    @Index(name = "ENUM_VAL_KEY_INDEX", columnNames = {"ENUM_KEY"})
-    protected String key;
+  /** DOCUMENT ME! */
+  @Column(name = "HIDDEN")
+  @Index(
+    name        = "HIDDEN_INDEX",
+    columnNames = { "HIDDEN" }
+  )
+  protected Boolean hidden = false;
 
-    @Column(name = "DISPLAY")
-    protected String display;
-
-    @Column(name = "HIDDEN")
-    @Index(name = "HIDDEN_INDEX", columnNames = {"HIDDEN"})
-    protected Boolean hidden = false;
-
-    @Override
-    public String getDisplay() {
-        return display;
+  /** DOCUMENT ME! */
+  @Column(name = "ENUM_VAL_ID")
+  @GeneratedValue(generator = "DataDrivenEnumerationValueId")
+  @GenericGenerator(
+    name       = "DataDrivenEnumerationValueId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "DataDrivenEnumerationValueImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValueImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setDisplay(String display) {
-        this.display = display;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "ENUM_KEY")
+  @Index(
+    name        = "ENUM_VAL_KEY_INDEX",
+    columnNames = { "ENUM_KEY" }
+  )
+  protected String key;
 
-    @Override
-    public Boolean getHidden() {
-        if (hidden == null) {
-            return Boolean.FALSE;
-        } else {
-            return hidden;
-        }
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "ENUM_TYPE")
+  @ManyToOne(targetEntity = DataDrivenEnumerationImpl.class)
+  protected DataDrivenEnumeration type;
 
-    @Override
-    public void setHidden(Boolean hidden) {
-        this.hidden = hidden;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#getDisplay()
+   */
+  @Override public String getDisplay() {
+    return display;
+  }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getKey() {
-        return key;
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#getHidden()
+   */
+  @Override public Boolean getHidden() {
+    if (hidden == null) {
+      return Boolean.FALSE;
+    } else {
+      return hidden;
     }
+  }
 
-    @Override
-    public void setKey(String key) {
-        this.key = key;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public DataDrivenEnumeration getType() {
-        return type;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setType(DataDrivenEnumeration type) {
-        this.type = type;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#getKey()
+   */
+  @Override public String getKey() {
+    return key;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#getType()
+   */
+  @Override public DataDrivenEnumeration getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#setDisplay(java.lang.String)
+   */
+  @Override public void setDisplay(String display) {
+    this.display = display;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#setHidden(java.lang.Boolean)
+   */
+  @Override public void setHidden(Boolean hidden) {
+    this.hidden = hidden;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#setKey(java.lang.String)
+   */
+  @Override public void setKey(String key) {
+    this.key = key;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValue#setType(org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumeration)
+   */
+  @Override public void setType(DataDrivenEnumeration type) {
+    this.type = type;
+  }
+} // end class DataDrivenEnumerationValueImpl

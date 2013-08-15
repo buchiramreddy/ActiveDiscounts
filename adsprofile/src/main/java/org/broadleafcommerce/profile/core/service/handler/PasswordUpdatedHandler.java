@@ -17,10 +17,26 @@
 package org.broadleafcommerce.profile.core.service.handler;
 
 import org.broadleafcommerce.common.security.util.PasswordReset;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 
-public interface PasswordUpdatedHandler {
 
-    public void passwordChanged(PasswordReset passwordReset, Customer customer, String newPassword);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface PasswordUpdatedHandler {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordReset  DOCUMENT ME!
+   * @param  customer       DOCUMENT ME!
+   * @param  newPassword    DOCUMENT ME!
+   */
+  void passwordChanged(PasswordReset passwordReset, Customer customer, String newPassword);
 
 }

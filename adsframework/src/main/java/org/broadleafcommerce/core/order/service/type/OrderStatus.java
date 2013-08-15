@@ -16,90 +16,138 @@
 
 package org.broadleafcommerce.core.order.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-import org.broadleafcommerce.core.order.domain.Order;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of order status types.
- * 
+ *
  * <ul>
- *  <li><b>NAMED</b> - Represents a  wishlist</li>
- *  <li><b>IN_PROCESS</b> - Represents a cart (non-submitted {@link org.broadleafcommerce.core.order.domain.Order}s)</li>
- *  <li><b>SUBMITTED</b> - Used to represent a completed {@link org.broadleafcommerce.core.order.domain.Order}. Note that this also means that the {@link org.broadleafcommerce.core.order.domain.Order}
- *  should have its {@link org.broadleafcommerce.core.order.domain.Order#getOrderNumber} set</li>
+ *   <li><b>NAMED</b> - Represents a wishlist</li>
+ *   <li><b>IN_PROCESS</b> - Represents a cart (non-submitted {@link org.broadleafcommerce.core.order.domain.Order}s)
+ *   </li>
+ *   <li><b>SUBMITTED</b> - Used to represent a completed {@link org.broadleafcommerce.core.order.domain.Order}. Note
+ *     that this also means that the {@link org.broadleafcommerce.core.order.domain.Order} should have its
+ *     {@link org.broadleafcommerce.core.order.domain.Order#getOrderNumber} set</li>
  * </ul>
- * 
- * @author jfischer
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class OrderStatus implements Serializable, BroadleafEnumerationType {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  private static final Map<String, OrderStatus> TYPES = new LinkedHashMap<String, OrderStatus>();
 
-    private static final Map<String, OrderStatus> TYPES = new LinkedHashMap<String, OrderStatus>();
+  /** DOCUMENT ME! */
+  public static final OrderStatus NAMED      = new OrderStatus("NAMED", "Named");
 
-    public static final OrderStatus NAMED = new OrderStatus("NAMED", "Named");
-    public static final OrderStatus IN_PROCESS = new OrderStatus("IN_PROCESS", "In Process");
-    public static final OrderStatus SUBMITTED = new OrderStatus("SUBMITTED", "Submitted");
-    public static final OrderStatus CANCELLED = new OrderStatus("CANCELLED", "Cancelled");
+  /** DOCUMENT ME! */
+  public static final OrderStatus IN_PROCESS = new OrderStatus("IN_PROCESS", "In Process");
 
-    public static OrderStatus getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final OrderStatus SUBMITTED = new OrderStatus("SUBMITTED", "Submitted");
+
+  /** DOCUMENT ME! */
+  public static final OrderStatus CANCELLED = new OrderStatus("CANCELLED", "Cancelled");
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static OrderStatus getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  private String type;
+  private String friendlyType;
+
+  /**
+   * Creates a new OrderStatus object.
+   */
+  public OrderStatus() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new OrderStatus object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public OrderStatus(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public OrderStatus() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public OrderStatus(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    OrderStatus other = (OrderStatus) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        OrderStatus other = (OrderStatus) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-
-}
+} // end class OrderStatus

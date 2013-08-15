@@ -18,37 +18,40 @@ package org.broadleafcommerce.core.catalog.domain;
 
 import org.broadleafcommerce.common.value.Searchable;
 
+
 /**
  * The Interface ProductAttribute.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface ProductAttribute extends Searchable<String> {
+  /**
+   * Gets the id.
+   *
+   * @return  the id
+   */
+  Long getId();
 
-    /**
-     * Gets the id.
-     * 
-     * @return the id
-     */
-    Long getId();
+  /**
+   * Sets the id.
+   *
+   * @param  id  the new id
+   */
+  void setId(Long id);
 
-    /**
-     * Sets the id.
-     * 
-     * @param id the new id
-     */
-    void setId(Long id);
+  /**
+   * Gets the product.
+   *
+   * @return  the product
+   */
+  Product getProduct();
 
-    /**
-     * Gets the product.
-     * 
-     * @return the product
-     */
-    Product getProduct();
+  /**
+   * Sets the product.
+   *
+   * @param  product  the new product
+   */
+  void setProduct(Product product);
 
-    /**
-     * Sets the product.
-     * 
-     * @param product the new product
-     */
-    void setProduct(Product product);
-
-}
+} // end interface ProductAttribute

@@ -16,43 +16,51 @@
 
 package org.broadleafcommerce.core.web;
 
-import junit.framework.TestCase;
+import java.util.Enumeration;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
-import java.util.Enumeration;
+
+import junit.framework.TestCase;
+
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class SpringTemporaryRedirectOverrideFilterTest extends TestCase {
-    
-    public void testFilter() throws Exception {
-        SpringTemporaryRedirectOverrideFilter filter = new SpringTemporaryRedirectOverrideFilter();
-        FilterConfig config = new FilterConfig() {
-            
-            public String getFilterName() {
-                return null;
-            }
-            
-            public String getInitParameter(String param) {
-                return "category/temp.*\n stellar/test/tester another/small/test";
-            }
-            
-            public Enumeration<String> getInitParameterNames() {
-                return null;
-            }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-            public ServletContext getServletContext() {
-                return null;
-            }
-        };
-        filter.init(config);
-        assertFalse(filter.isUrlMatch("nonsense/category/temp/mytest"));
-        assertTrue(filter.isUrlMatch("category/temp/mytest"));
-        assertTrue(filter.isUrlMatch("stellar/test/tester"));
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  public void testFilter() throws Exception {
+    SpringTemporaryRedirectOverrideFilter filter = new SpringTemporaryRedirectOverrideFilter();
+    FilterConfig                          config = new FilterConfig() {
+      @Override public String getFilterName() {
+        return null;
+      }
 
-}
+      @Override public String getInitParameter(String param) {
+        return "category/temp.*\n stellar/test/tester another/small/test";
+      }
+
+      @Override public Enumeration<String> getInitParameterNames() {
+        return null;
+      }
+
+      @Override public ServletContext getServletContext() {
+        return null;
+      }
+    };
+    filter.init(config);
+    assertFalse(filter.isUrlMatch("nonsense/category/temp/mytest"));
+    assertTrue(filter.isUrlMatch("category/temp/mytest"));
+    assertTrue(filter.isUrlMatch("stellar/test/tester"));
+  }
+
+} // end class SpringTemporaryRedirectOverrideFilterTest

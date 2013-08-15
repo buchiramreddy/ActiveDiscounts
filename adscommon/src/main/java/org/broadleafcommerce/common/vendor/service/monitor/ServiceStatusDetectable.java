@@ -16,16 +16,47 @@
 
 package org.broadleafcommerce.common.vendor.service.monitor;
 
-import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ServiceStatusDetectable<T extends Serializable> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ServiceStatusType getServiceStatus();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getServiceName();
 
-    public String getServiceName();
-    
-    public Object process(T arg) throws Exception;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ServiceStatusType getServiceStatus();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   arg  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  Object process(T arg) throws Exception;
+
+} // end interface ServiceStatusDetectable

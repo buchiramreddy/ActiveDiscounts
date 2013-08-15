@@ -18,139 +18,503 @@ package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface Address extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAddressLine1();
 
-    public Long getId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAddressLine1(String addressLine1);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAddressLine2();
 
-    public String getAddressLine1();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAddressLine2(String addressLine2);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getAddressLine3();
 
-    public String getAddressLine2();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setAddressLine3(String addressLine3);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCity();
 
-    public String getAddressLine3();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCity(String city);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCompanyName();
 
-    public String getCity();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setState(State state);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Country getCountry();
 
-    public State getState();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPostalCode(String postalCode);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCounty();
 
-    public String getPostalCode();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getCounty();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getEmailAddress();
 
-    public void setCounty(String county);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getZipFour();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  Should use {@link #getPhoneFax()} instead
+   * @see         {@link org.broadleafcommerce.profile.core.domain.Phone}
+   */
+  @Deprecated String getFax();
 
-    public void setZipFour(String zipFour);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCountry(Country country);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFirstName();
 
-    public Country getCountry();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getTokenizedAddress();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setTokenizedAddress(String tAddress);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getStandardized();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getLastName();
 
-    public void setStandardized(Boolean standardized);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getCompanyName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone getPhoneFax();
 
-    public void setCompanyName(String companyName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isDefault();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone getPhonePrimary();
 
-    public void setDefault(boolean isDefault);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFirstName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Phone getPhoneSecondary();
 
-    public void setFirstName(String firstName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getLastName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPostalCode();
 
-    public void setLastName(String lastName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @deprecated Should use {@link #getPhonePrimary()} instead
-     * @see {@link org.broadleafcommerce.profile.core.domain.Phone}
-     */
-    @Deprecated
-    public String getPrimaryPhone();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  Should use {@link #getPhonePrimary()} instead
+   * @see         {@link org.broadleafcommerce.profile.core.domain.Phone}
+   */
+  @Deprecated String getPrimaryPhone();
 
-    /**
-     * @deprecated Should use {@link #setPhonePrimary(org.broadleafcommerce.profile.core.domain.Phone)} instead
-     * @see {@link org.broadleafcommerce.profile.core.domain.Phone}
-     */
-    @Deprecated
-    public void setPrimaryPhone(String primaryPhone);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @deprecated Should use {@link #getPhoneSecondary()} instead
-     * @see {@link org.broadleafcommerce.profile.core.domain.Phone}
-     */
-    @Deprecated
-    public String getSecondaryPhone();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  Should use {@link #getPhoneSecondary()} instead
+   * @see         {@link org.broadleafcommerce.profile.core.domain.Phone}
+   */
+  @Deprecated String getSecondaryPhone();
 
-    /**
-     * @deprecated Should use {@link #setPhoneSecondary(org.broadleafcommerce.profile.core.domain.Phone)} instead
-     * @see {@link org.broadleafcommerce.profile.core.domain.Phone}
-     */
-    @Deprecated
-    public void setSecondaryPhone(String secondaryPhone);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @deprecated Should use {@link #getPhoneFax()} instead
-     * @see {@link org.broadleafcommerce.profile.core.domain.Phone}
-     */
-    @Deprecated
-    public String getFax();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getStandardized();
 
-    /**
-     * @deprecated Should use {@link #setPhoneFax(org.broadleafcommerce.profile.core.domain.Phone)} instead
-     * @see {@link org.broadleafcommerce.profile.core.domain.Phone}
-     */
-    @Deprecated
-    public void setFax(String fax);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Phone getPhonePrimary();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  State getState();
 
-    public void setPhonePrimary(Phone phonePrimary);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Phone getPhoneSecondary();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getTokenizedAddress();
 
-    public void setPhoneSecondary(Phone phoneSecondary);
-    
-    public Phone getPhoneFax();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPhoneFax(Phone phone);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getVerificationLevel();
 
-    public String getEmailAddress();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setEmailAddress(String emailAddress);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getZipFour();
 
-    public boolean isBusiness();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setBusiness(boolean isBusiness);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isActive();
 
-    public String getVerificationLevel();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setVerificationLevel(String verificationLevel);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isBusiness();
 
-    public boolean isActive();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setActive(boolean isActive);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isDefault();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isActive  DOCUMENT ME!
+   */
+  void setActive(boolean isActive);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addressLine1  DOCUMENT ME!
+   */
+  void setAddressLine1(String addressLine1);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addressLine2  DOCUMENT ME!
+   */
+  void setAddressLine2(String addressLine2);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addressLine3  DOCUMENT ME!
+   */
+  void setAddressLine3(String addressLine3);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isBusiness  DOCUMENT ME!
+   */
+  void setBusiness(boolean isBusiness);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  city  DOCUMENT ME!
+   */
+  void setCity(String city);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  companyName  DOCUMENT ME!
+   */
+  void setCompanyName(String companyName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  country  DOCUMENT ME!
+   */
+  void setCountry(Country country);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  county  DOCUMENT ME!
+   */
+  void setCounty(String county);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isDefault  DOCUMENT ME!
+   */
+  void setDefault(boolean isDefault);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailAddress  DOCUMENT ME!
+   */
+  void setEmailAddress(String emailAddress);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       fax  DOCUMENT ME!
+   *
+   * @deprecated  Should use {@link #setPhoneFax(org.broadleafcommerce.profile.core.domain.Phone)} instead
+   * @see         {@link org.broadleafcommerce.profile.core.domain.Phone}
+   */
+  @Deprecated void setFax(String fax);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  firstName  DOCUMENT ME!
+   */
+  void setFirstName(String firstName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  lastName  DOCUMENT ME!
+   */
+  void setLastName(String lastName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phone  DOCUMENT ME!
+   */
+  void setPhoneFax(Phone phone);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phonePrimary  DOCUMENT ME!
+   */
+  void setPhonePrimary(Phone phonePrimary);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phoneSecondary  DOCUMENT ME!
+   */
+  void setPhoneSecondary(Phone phoneSecondary);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  postalCode  DOCUMENT ME!
+   */
+  void setPostalCode(String postalCode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       primaryPhone  DOCUMENT ME!
+   *
+   * @deprecated  Should use {@link #setPhonePrimary(org.broadleafcommerce.profile.core.domain.Phone)} instead
+   * @see         {@link org.broadleafcommerce.profile.core.domain.Phone}
+   */
+  @Deprecated void setPrimaryPhone(String primaryPhone);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       secondaryPhone  DOCUMENT ME!
+   *
+   * @deprecated  Should use {@link #setPhoneSecondary(org.broadleafcommerce.profile.core.domain.Phone)} instead
+   * @see         {@link org.broadleafcommerce.profile.core.domain.Phone}
+   */
+  @Deprecated void setSecondaryPhone(String secondaryPhone);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  standardized  DOCUMENT ME!
+   */
+  void setStandardized(Boolean standardized);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  state  DOCUMENT ME!
+   */
+  void setState(State state);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  tAddress  DOCUMENT ME!
+   */
+  void setTokenizedAddress(String tAddress);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  verificationLevel  DOCUMENT ME!
+   */
+  void setVerificationLevel(String verificationLevel);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  zipFour  DOCUMENT ME!
+   */
+  void setZipFour(String zipFour);
+} // end interface Address

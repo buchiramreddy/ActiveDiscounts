@@ -16,30 +16,59 @@
 
 package org.broadleafcommerce.core.order.service.manipulation;
 
-import org.broadleafcommerce.core.order.domain.BundleOrderItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class BundleOrderItemSplitContainer {
-    
-    protected BundleOrderItem key;
-    protected List<BundleOrderItem> splitItems = new ArrayList<BundleOrderItem>();
-    
-    public BundleOrderItem getKey() {
-        return key;
-    }
-    
-    public void setKey(BundleOrderItem key) {
-        this.key = key;
-    }
-    
-    public List<BundleOrderItem> getSplitItems() {
-        return splitItems;
-    }
-    
-    public void setSplitItems(List<BundleOrderItem> splitItems) {
-        this.splitItems = splitItems;
-    }
+import org.broadleafcommerce.core.order.domain.BundleOrderItem;
 
-}
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class BundleOrderItemSplitContainer {
+  /** DOCUMENT ME! */
+  protected BundleOrderItem       key;
+
+  /** DOCUMENT ME! */
+  protected List<BundleOrderItem> splitItems = new ArrayList<BundleOrderItem>();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BundleOrderItem getKey() {
+    return key;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  key  DOCUMENT ME!
+   */
+  public void setKey(BundleOrderItem key) {
+    this.key = key;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<BundleOrderItem> getSplitItems() {
+    return splitItems;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  splitItems  DOCUMENT ME!
+   */
+  public void setSplitItems(List<BundleOrderItem> splitItems) {
+    this.splitItems = splitItems;
+  }
+
+} // end class BundleOrderItemSplitContainer

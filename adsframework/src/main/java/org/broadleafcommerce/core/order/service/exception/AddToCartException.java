@@ -16,24 +16,48 @@
 
 package org.broadleafcommerce.core.order.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AddToCartException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new AddToCartException object.
+   */
+  public AddToCartException() {
+    super();
+  }
 
-    public AddToCartException() {
-        super();
-    }
+  /**
+   * Creates a new AddToCartException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public AddToCartException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public AddToCartException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new AddToCartException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public AddToCartException(String message) {
+    super(message);
+  }
 
-    public AddToCartException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new AddToCartException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public AddToCartException(Throwable cause) {
+    super(cause);
+  }
 
-    public AddToCartException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class AddToCartException

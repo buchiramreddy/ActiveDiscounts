@@ -17,23 +17,44 @@
 package org.broadleafcommerce.common.config;
 
 /**
- * Determines the current runtime environment by reading a system property
- * (specified in environmentKey); if no system property is specified, a
- * (reasonable) default of "runtime.environment" is used.
+ * Determines the current runtime environment by reading a system property (specified in environmentKey); if no system
+ * property is specified, a (reasonable) default of "runtime.environment" is used.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class SystemPropertyRuntimeEnvironmentKeyResolver implements RuntimeEnvironmentKeyResolver {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String environmentKey = "runtime.environment";
+  /** DOCUMENT ME! */
+  protected String environmentKey = "runtime.environment";
 
-    public SystemPropertyRuntimeEnvironmentKeyResolver() {
-        // EMPTY
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public String resolveRuntimeEnvironmentKey() {
-        return System.getProperty(environmentKey);
-    }
+  /**
+   * Creates a new SystemPropertyRuntimeEnvironmentKeyResolver object.
+   */
+  public SystemPropertyRuntimeEnvironmentKeyResolver() {
+    // EMPTY
+  }
 
-    public void setEnvironmentKey(String environmentKey) {
-        this.environmentKey = environmentKey;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.config.RuntimeEnvironmentKeyResolver#resolveRuntimeEnvironmentKey()
+   */
+  @Override public String resolveRuntimeEnvironmentKey() {
+    return System.getProperty(environmentKey);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  environmentKey  DOCUMENT ME!
+   */
+  public void setEnvironmentKey(String environmentKey) {
+    this.environmentKey = environmentKey;
+  }
+} // end class SystemPropertyRuntimeEnvironmentKeyResolver

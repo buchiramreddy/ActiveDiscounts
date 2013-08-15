@@ -16,50 +16,83 @@
 
 package org.broadleafcommerce.openadmin.server.security.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
+
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Repository("blAdminRoleDao")
 public class AdminRoleDaoImpl implements AdminRoleDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    public void deleteAdminRole(AdminRole role) {
-        if (!em.contains(role)) {
-            role = readAdminRoleById(role.getId());
-        }
-        em.remove(role);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminRoleDao#deleteAdminRole(org.broadleafcommerce.openadmin.server.security.domain.AdminRole)
+   */
+  @Override public void deleteAdminRole(AdminRole role) {
+    if (!em.contains(role)) {
+      role = readAdminRoleById(role.getId());
     }
 
-    public AdminRole readAdminRoleById(Long id) {
-        return (AdminRole) em.find(entityConfiguration.lookupEntityClass("org.broadleafcommerce.openadmin.server.security.domain.AdminRole"), id);
-    }
+    em.remove(role);
+  }
 
-    public AdminRole saveAdminRole(AdminRole role) {
-        return em.merge(role);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
-    public List<AdminRole> readAllAdminRoles() {
-        Query query = em.createNamedQuery("BC_READ_ALL_ADMIN_ROLES");
-        List<AdminRole> roles = query.getResultList();
-        return roles;
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminRoleDao#readAdminRoleById(java.lang.Long)
+   */
+  @Override public AdminRole readAdminRoleById(Long id) {
+    return (AdminRole) em.find(entityConfiguration.lookupEntityClass(
+          "org.broadleafcommerce.openadmin.server.security.domain.AdminRole"), id);
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminRoleDao#readAllAdminRoles()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<AdminRole> readAllAdminRoles() {
+    Query           query = em.createNamedQuery("BC_READ_ALL_ADMIN_ROLES");
+    List<AdminRole> roles = query.getResultList();
+
+    return roles;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminRoleDao#saveAdminRole(org.broadleafcommerce.openadmin.server.security.domain.AdminRole)
+   */
+  @Override public AdminRole saveAdminRole(AdminRole role) {
+    return em.merge(role);
+  }
+
+} // end class AdminRoleDaoImpl

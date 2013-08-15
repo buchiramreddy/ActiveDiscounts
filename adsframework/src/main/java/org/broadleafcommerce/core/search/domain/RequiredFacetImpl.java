@@ -15,11 +15,6 @@
  */
 package org.broadleafcommerce.core.search.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,65 +25,103 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SEARCH_FACET_XREF")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
 public class RequiredFacetImpl implements RequiredFacet {
+  /** DOCUMENT ME! */
+  protected static final long serialVersionUID = 1L;
 
-    protected static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(generator= "RequiredFacetId")
-    @GenericGenerator(
-        name="RequiredFacetId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="RequiredFacetImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.search.domain.RequiredFacetImpl")
-        }
-    )
-    @Column(name = "ID")
-    protected Long id;
-
-    @ManyToOne(targetEntity = SearchFacetImpl.class)
-    @JoinColumn(name = "SEARCH_FACET_ID")
-    protected SearchFacet searchFacet;
-
-    @ManyToOne(targetEntity = SearchFacetImpl.class, optional=false)
-    @JoinColumn(name = "REQUIRED_FACET_ID", referencedColumnName = "SEARCH_FACET_ID")
-    protected SearchFacet requiredFacet;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "ID")
+  @GeneratedValue(generator = "RequiredFacetId")
+  @GenericGenerator(
+    name       = "RequiredFacetId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "RequiredFacetImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.search.domain.RequiredFacetImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "SEARCH_FACET_ID")
+  @ManyToOne(targetEntity = SearchFacetImpl.class)
+  protected SearchFacet searchFacet;
 
-    @Override
-    public SearchFacet getRequiredFacet() {
-        return requiredFacet;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(
+    name                 = "REQUIRED_FACET_ID",
+    referencedColumnName = "SEARCH_FACET_ID"
+  )
+  @ManyToOne(
+    targetEntity = SearchFacetImpl.class,
+    optional     = false
+  )
+  protected SearchFacet requiredFacet;
 
-    @Override
-    public void setRequiredFacet(SearchFacet requiredFacet) {
-        this.requiredFacet = requiredFacet;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.RequiredFacet#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public SearchFacet getSearchFacet() {
-        return searchFacet;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.RequiredFacet#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public void setSearchFacet(SearchFacet searchFacet) {
-        this.searchFacet = searchFacet;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.RequiredFacet#getRequiredFacet()
+   */
+  @Override public SearchFacet getRequiredFacet() {
+    return requiredFacet;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.RequiredFacet#setRequiredFacet(org.broadleafcommerce.core.search.domain.SearchFacet)
+   */
+  @Override public void setRequiredFacet(SearchFacet requiredFacet) {
+    this.requiredFacet = requiredFacet;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.RequiredFacet#getSearchFacet()
+   */
+  @Override public SearchFacet getSearchFacet() {
+    return searchFacet;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.RequiredFacet#setSearchFacet(org.broadleafcommerce.core.search.domain.SearchFacet)
+   */
+  @Override public void setSearchFacet(SearchFacet searchFacet) {
+    this.searchFacet = searchFacet;
+  }
+} // end class RequiredFacetImpl

@@ -23,26 +23,47 @@ import org.broadleafcommerce.core.order.domain.GiftWrapOrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OrderItemVisitorAdapter implements OrderItemVisitor {
+  /**
+   * @see  org.broadleafcommerce.core.order.service.manipulation.OrderItemVisitor#visit(org.broadleafcommerce.core.order.domain.BundleOrderItem)
+   */
+  @Override public void visit(BundleOrderItem bundleOrderItem) throws PricingException {
+    // do nothing
+  }
 
-    public void visit(BundleOrderItem bundleOrderItem) throws PricingException {
-        //do nothing
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.manipulation.OrderItemVisitor#visit(org.broadleafcommerce.core.order.domain.DiscreteOrderItem)
+   */
+  @Override public void visit(DiscreteOrderItem discreteOrderItem) throws PricingException {
+    // do nothing
+  }
 
-    public void visit(DiscreteOrderItem discreteOrderItem) throws PricingException {
-        //do nothing
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.manipulation.OrderItemVisitor#visit(org.broadleafcommerce.core.order.domain.DynamicPriceDiscreteOrderItem)
+   */
+  @Override public void visit(DynamicPriceDiscreteOrderItem dynamicPriceDiscreteOrderItem) throws PricingException {
+    // do nothing
+  }
 
-    public void visit(DynamicPriceDiscreteOrderItem dynamicPriceDiscreteOrderItem) throws PricingException {
-        //do nothing
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.manipulation.OrderItemVisitor#visit(org.broadleafcommerce.core.order.domain.GiftWrapOrderItem)
+   */
+  @Override public void visit(GiftWrapOrderItem giftWrapOrderItem) throws PricingException {
+    // do nothing
+  }
 
-    public void visit(GiftWrapOrderItem giftWrapOrderItem) throws PricingException {
-        //do nothing
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.service.manipulation.OrderItemVisitor#visit(org.broadleafcommerce.core.order.domain.OrderItem)
+   */
+  @Override public void visit(OrderItem orderItem) throws PricingException {
+    // do nothing
+  }
 
-    public void visit(OrderItem orderItem) throws PricingException {
-        //do nothing
-    }
-
-}
+} // end class OrderItemVisitorAdapter

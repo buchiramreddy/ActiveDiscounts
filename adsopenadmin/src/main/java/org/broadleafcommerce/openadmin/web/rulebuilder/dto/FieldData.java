@@ -18,99 +18,183 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
  *
- * A temporary container object used to load the data into a RuleBuilderFieldService
- * @see org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService
- * @see org.broadleafcommerce.openadmin.web.rulebuilder.service.OrderItemFieldServiceImpl
+ * @author   Elbert Bautista (elbertbautista)
  *
- *
+ *           <p>A temporary container object used to load the data into a RuleBuilderFieldService</p>
+ * @see      org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService
+ * @see      org.broadleafcommerce.openadmin.web.rulebuilder.service.OrderItemFieldServiceImpl
+ * @version  $Revision$, $Date$
  */
 public class FieldData {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String fieldLabel;
-    protected String fieldName;
-    protected String operators;
-    protected String options;
-    protected SupportedFieldType fieldType;
-    protected SupportedFieldType secondaryFieldType;
+  /** DOCUMENT ME! */
+  protected String             fieldLabel;
 
-    private FieldData(Builder builder) {
-        this.fieldLabel = builder.fieldLabel;
-        this.fieldName = builder.fieldName;
-        this.operators = builder.operators;
-        this.options = builder.options;
-        this.fieldType = builder.fieldType;
-        this.secondaryFieldType = builder.secondaryFieldType;
+  /** DOCUMENT ME! */
+  protected String             fieldName;
+
+  /** DOCUMENT ME! */
+  protected SupportedFieldType fieldType;
+
+  /** DOCUMENT ME! */
+  protected String             operators;
+
+  /** DOCUMENT ME! */
+  protected String             options;
+
+  /** DOCUMENT ME! */
+  protected SupportedFieldType secondaryFieldType;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  private FieldData(Builder builder) {
+    this.fieldLabel         = builder.fieldLabel;
+    this.fieldName          = builder.fieldName;
+    this.operators          = builder.operators;
+    this.options            = builder.options;
+    this.fieldType          = builder.fieldType;
+    this.secondaryFieldType = builder.secondaryFieldType;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFieldLabel() {
+    return fieldLabel;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFieldName() {
+    return fieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getFieldType() {
+    return fieldType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOperators() {
+    return operators;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOptions() {
+    return options;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SupportedFieldType getSecondaryFieldType() {
+    return secondaryFieldType;
+  }
+
+  //~ Inner Classes ----------------------------------------------------------------------------------------------------
+
+  public static class Builder {
+    //~ Instance fields ------------------------------------------------------------------------------------------------
+
+    protected String             fieldLabel         = null;
+    protected String             fieldName          = null;
+    protected SupportedFieldType fieldType          = null;
+    protected String             operators          = null;
+    protected String             options            = null;
+    protected SupportedFieldType secondaryFieldType = null;
+
+    //~ Constructors ---------------------------------------------------------------------------------------------------
+
+    public Builder() { }
+
+    //~ Methods --------------------------------------------------------------------------------------------------------
+
+    public FieldData build() {
+      return new FieldData(this);
     }
 
-    public static class Builder {
-        protected String fieldLabel = null;
-        protected String fieldName = null;
-        protected String operators = null;
-        protected String options = null;
-        protected SupportedFieldType fieldType = null;
-        protected SupportedFieldType secondaryFieldType = null;
+    //~ ----------------------------------------------------------------------------------------------------------------
 
-        public FieldData build() {
-            return new FieldData(this);
-        }
+    public Builder label(String fieldLabel) {
+      this.fieldLabel = fieldLabel;
 
-        public Builder() {}
-
-        public Builder label(String fieldLabel) {
-            this.fieldLabel = fieldLabel;
-            return this;
-        }
-
-        public Builder name(String fieldName) {
-            this.fieldName = fieldName;
-            return this;
-        }
-
-        public Builder operators(String operators) {
-            this.operators = operators;
-            return this;
-        }
-
-        public Builder options(String options) {
-            this.options = options;
-            return this;
-        }
-
-        public Builder type(SupportedFieldType fieldType) {
-            this.fieldType = fieldType;
-            return this;
-        }
-
-        public Builder secondaryType(SupportedFieldType fieldType) {
-            this.secondaryFieldType = fieldType;
-            return this;
-        }
+      return this;
     }
 
-    public String getFieldLabel() {
-        return fieldLabel;
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public Builder name(String fieldName) {
+      this.fieldName = fieldName;
+
+      return this;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public Builder operators(String operators) {
+      this.operators = operators;
+
+      return this;
     }
 
-    public String getOperators() {
-        return operators;
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public Builder options(String options) {
+      this.options = options;
+
+      return this;
     }
 
-    public String getOptions() {
-        return options;
+    //~ ----------------------------------------------------------------------------------------------------------------
+
+    public Builder secondaryType(SupportedFieldType fieldType) {
+      this.secondaryFieldType = fieldType;
+
+      return this;
     }
 
-    public SupportedFieldType getFieldType() {
-        return fieldType;
-    }
+    //~ ----------------------------------------------------------------------------------------------------------------
 
-    public SupportedFieldType getSecondaryFieldType() {
-        return secondaryFieldType;
+    public Builder type(SupportedFieldType fieldType) {
+      this.fieldType = fieldType;
+
+      return this;
     }
-}
+  } // end class Builder
+} // end class FieldData

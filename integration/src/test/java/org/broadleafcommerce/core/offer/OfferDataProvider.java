@@ -16,88 +16,107 @@
 
 package org.broadleafcommerce.core.offer;
 
+import java.math.BigDecimal;
+
+import java.sql.Date;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.broadleafcommerce.common.time.SystemTime;
+
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
 import org.broadleafcommerce.core.offer.service.type.OfferType;
+
 import org.testng.annotations.DataProvider;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @SuppressWarnings("deprecation")
 public class OfferDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "offerDataProvider")
-    public static Object[][] provideBasicOffer(){
-        List<Offer> allOffers = new ArrayList<Offer>();
-        OfferImpl o = new OfferImpl();
-        o.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-        o.setValue(new BigDecimal("5.00"));
-        o.setName("Some test offer");
-        o.setPriority(100);
-        o.setStackable(true);
-        o.setStartDate(SystemTime.asDate());
-        o.setEndDate(new Date(SystemTime.asMillis()+100000000));
-        o.setApplyDiscountToMarkedItems(false);
-        o.setTargetSystem("WEB");
-        o.setType(OfferType.ORDER_ITEM);
-        o.setAppliesToOrderRules(
-                "package org.broadleafcommerce.core.offer.service;"+
-                "import org.broadleafcommerce.core.offer.domain.Offer;"+
-                "import org.broadleafcommerce.core.order.domain.Order;"+
-                "import org.broadleafcommerce.core.order.domain.OrderItem;"+
-                "import org.broadleafcommerce.type.OfferType;"+
-                "import java.util.List;"+
-                "global List orderItems;"+
-                "global List offerPackages;"+
-                "rule \"Offer 1 Rule\" "+
-                "salience 100"+
-                "when "+
-                "  orderItem : OrderItem(sku == 1) "+
-                "  "+
-                " then"+
-                "   System.err.println(\"applying offer 1\");"+
-                "   orderItem.addRulesCandidateOffer"+
-        "end");
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "offerDataProvider")
+  public static Object[][] provideBasicOffer() {
+    List<Offer> allOffers = new ArrayList<Offer>();
+    OfferImpl   o         = new OfferImpl();
+    o.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    o.setValue(new BigDecimal("5.00"));
+    o.setName("Some test offer");
+    o.setPriority(100);
+    o.setStackable(true);
+    o.setStartDate(SystemTime.asDate());
+    o.setEndDate(new Date(SystemTime.asMillis() + 100000000));
+    o.setApplyDiscountToMarkedItems(false);
+    o.setTargetSystem("WEB");
+    o.setType(OfferType.ORDER_ITEM);
+    o.setAppliesToOrderRules(
+      "package org.broadleafcommerce.core.offer.service;"
+      + "import org.broadleafcommerce.core.offer.domain.Offer;"
+      + "import org.broadleafcommerce.core.order.domain.Order;"
+      + "import org.broadleafcommerce.core.order.domain.OrderItem;"
+      + "import org.broadleafcommerce.type.OfferType;"
+      + "import java.util.List;"
+      + "global List orderItems;"
+      + "global List offerPackages;"
+      + "rule \"Offer 1 Rule\" "
+      + "salience 100"
+      + "when "
+      + "  orderItem : OrderItem(sku == 1) "
+      + "  "
+      + " then"
+      + "   System.err.println(\"applying offer 1\");"
+      + "   orderItem.addRulesCandidateOffer"
+      + "end");
 
-        allOffers.add(o);
-        o = new OfferImpl();
-        o.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-        o.setValue(new BigDecimal("5.00"));
-        o.setName("Second test offer");
-        o.setPriority(100);
-        o.setStackable(false);
-        o.setStartDate(SystemTime.asDate());
-        o.setEndDate(new Date(SystemTime.asMillis()+100000000));
-        o.setApplyDiscountToMarkedItems(false);
-        o.setTargetSystem("WEB");
-        o.setType(OfferType.FULFILLMENT_GROUP);
-        o.setAppliesToOrderRules(
-                "package org.broadleafcommerce.core.offer.service;"+
-                "import org.broadleafcommerce.core.offer.domain.Offer;"+
-                "import org.broadleafcommerce.core.order.domain.Order;"+
-                "import org.broadleafcommerce.core.order.domain.OrderItem;"+
-                "import org.broadleafcommerce.type.OfferType;"+
-                "import java.util.List;"+
-                "global List orderItems;"+
-                "global List offerPackages;"+
-                "rule \"Offer 1 Rule\" "+
-                "salience 100"+
-                "when "+
-                "  orderItem : OrderItem(retailPrice &gt= 100)"+
-                " then"+
-                " System.err.println(\"applying offer 2\");"+
-                " insert(offer);"+
-        "end");
+    allOffers.add(o);
+    o = new OfferImpl();
+    o.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    o.setValue(new BigDecimal("5.00"));
+    o.setName("Second test offer");
+    o.setPriority(100);
+    o.setStackable(false);
+    o.setStartDate(SystemTime.asDate());
+    o.setEndDate(new Date(SystemTime.asMillis() + 100000000));
+    o.setApplyDiscountToMarkedItems(false);
+    o.setTargetSystem("WEB");
+    o.setType(OfferType.FULFILLMENT_GROUP);
+    o.setAppliesToOrderRules(
+      "package org.broadleafcommerce.core.offer.service;"
+      + "import org.broadleafcommerce.core.offer.domain.Offer;"
+      + "import org.broadleafcommerce.core.order.domain.Order;"
+      + "import org.broadleafcommerce.core.order.domain.OrderItem;"
+      + "import org.broadleafcommerce.type.OfferType;"
+      + "import java.util.List;"
+      + "global List orderItems;"
+      + "global List offerPackages;"
+      + "rule \"Offer 1 Rule\" "
+      + "salience 100"
+      + "when "
+      + "  orderItem : OrderItem(retailPrice &gt= 100)"
+      + " then"
+      + " System.err.println(\"applying offer 2\");"
+      + " insert(offer);"
+      + "end");
 
-        allOffers.add(o);
-        return new Object[][] {{allOffers}};
+    allOffers.add(o);
 
-    }
+    return new Object[][] {
+        { allOffers }
+      };
 
-}
+  } // end method provideBasicOffer
+
+} // end class OfferDataProvider

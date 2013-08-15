@@ -16,59 +16,76 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
-import org.broadleafcommerce.common.presentation.ConfigurationItem;
-import org.broadleafcommerce.common.presentation.ValidationConfiguration;
+import java.io.Serializable;
+
+import java.util.Map;
+
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 
-import java.io.Serializable;
-import java.util.Map;
-
 
 /**
- * <p>Interface for performing validation on a property. If you are attempting to write a validator based on the
- * @ValidationConfiguration component, (which is the normal use case) consider subclassing
- * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.ValidationConfigurationBasedPropertyValidator} and overriding
- * {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.ValidationConfigurationBasedPropertyValidator#validateInternal(org.broadleafcommerce.openadmin.dto.Entity, java.io.Serializable, java.util.Map, java.util.Map, org.broadleafcommerce.openadmin.dto.BasicFieldMetadata, String, String)}
- * as it provides a slightly more convenient step for getting the error message from the given configuration.</p>
- * 
- * <p>If instead you need to validate based on something else (like the field type, for instance) then you should instead
- * implement this interface directly so that you can provide your own error message.</p>
- * 
- * <p>Property validators are designed to be executed after an entity has been fully populated. If instead you would like
- * to validate {@link PopulationRequests} (which will be invoked immediately prior to populating a particular field on an
- * entity) then instead look at {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PopulateValueRequestValidator}.</p>
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.ValidationConfigurationBasedPropertyValidator}
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService}
- * @see {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.GlobalPropertyValidator}
+ * <p>Interface for performing validation on a property. If you are attempting to write a validator based on the</p>
+ *
+ * @ValidationConfiguration  component, (which is the normal use case) consider subclassing
+ *                           {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.ValidationConfigurationBasedPropertyValidator}
+ *                           and overriding
+ *                           {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.ValidationConfigurationBasedPropertyValidator#validateInternal(org.broadleafcommerce.openadmin.dto.Entity, java.io.Serializable, java.util.Map, java.util.Map, org.broadleafcommerce.openadmin.dto.BasicFieldMetadata, String, String)}
+ *                           as it provides a slightly more convenient step for getting the error message from the given
+ *                           configuration.
+ *
+ *                           <p>If instead you need to validate based on something else (like the field type, for
+ *                           instance) then you should instead implement this interface directly so that you can provide
+ *                           your own error message.</p>
+ *
+ *                           <p>Property validators are designed to be executed after an entity has been fully
+ *                           populated. If instead you would like to validate {@link PopulationRequests} (which will be
+ *                           invoked immediately prior to populating a particular field on an entity) then instead look
+ *                           at
+ *                           {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PopulateValueRequestValidator}.
+ *                           </p>
+ * @author                   Phillip Verheyden
+ * @see
+ *                           
+ *                           {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.ValidationConfigurationBasedPropertyValidator}
+ * @see
+ *                           
+ *                           {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.EntityValidatorService}
+ * @see
+ *                           
+ *                           {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.GlobalPropertyValidator}
+ * @version                  $Revision$, $Date$
  */
 public interface PropertyValidator {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Validates a property for an entity
-     * 
-     * @param entity Entity DTO of the entity attempting to save
-     * @param instance actual object representation of <b>entity</b>. This can be cast to entity interfaces (like Sku or
-     * Product)
-     * @param entityFieldMetadata complete field metadata for all properties in <b>entity</b>
-     * @param validationConfiguration the map represented by the set of {@link org.broadleafcommerce.common.presentation.ConfigurationItem} for a
-     * {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} on a property. This map could be null if this {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator} is being
-     * invoked outside of the context of a particular property (like a global validator)
-     * @param propertyMetadata {@link org.broadleafcommerce.openadmin.dto.BasicFieldMetadata} corresponding to the property that is being valid
-     * @param propertyName the property name of the value attempting to be saved (could be a sub-entity obtained via dot
-     * notation like 'defaultSku.name')
-     * @param value the value attempted to be saved
-     * @return <b>true</b> if this passes validation, <b>false</b> otherwise.
-     */
-    public PropertyValidationResult validate(Entity entity,
-                                             Serializable instance,
-                                             Map<String, FieldMetadata> entityFieldMetadata,
-                                             Map<String, String> validationConfiguration,
-                                             BasicFieldMetadata propertyMetadata,
-                                             String propertyName,
-                                             String value);
+  /**
+   * Validates a property for an entity.
+   *
+   * @param   entity                   Entity DTO of the entity attempting to save
+   * @param   instance                 actual object representation of <b>entity</b>. This can be cast to entity
+   *                                   interfaces (like Sku or Product)
+   * @param   entityFieldMetadata      complete field metadata for all properties in <b>entity</b>
+   * @param   validationConfiguration  the map represented by the set of
+   *                                   {@link org.broadleafcommerce.common.presentation.ConfigurationItem} for a
+   *                                   {@link org.broadleafcommerce.common.presentation.ValidationConfiguration} on a
+   *                                   property. This map could be null if this
+   *                                   {@link org.broadleafcommerce.openadmin.server.service.persistence.validation.PropertyValidator}
+   *                                   is being invoked outside of the context of a particular property (like a global
+   *                                   validator)
+   * @param   propertyMetadata {@link org.broadleafcommerce.openadmin.dto.BasicFieldMetadata} corresponding to the
+   *                                   property that is being valid
+   * @param   propertyName             the property name of the value attempting to be saved (could be a sub-entity
+   *                                   obtained via dot notation like 'defaultSku.name')
+   * @param   value                    the value attempted to be saved
+   *
+   * @return  <b>true</b> if this passes validation, <b>false</b> otherwise.
+   */
+  PropertyValidationResult validate(Entity entity,
+    Serializable instance, Map<String, FieldMetadata> entityFieldMetadata, Map<String, String> validationConfiguration,
+    BasicFieldMetadata propertyMetadata,
+    String propertyName,
+    String value);
 
-}
+} // end interface PropertyValidator

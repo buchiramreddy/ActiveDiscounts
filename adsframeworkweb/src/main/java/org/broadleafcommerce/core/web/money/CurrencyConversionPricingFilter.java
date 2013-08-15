@@ -16,17 +16,42 @@
 
 package org.broadleafcommerce.core.web.money;
 
-import org.broadleafcommerce.common.money.CurrencyConversionService;
+import java.util.HashMap;
 
 import javax.servlet.Filter;
 import javax.servlet.ServletRequest;
-import java.util.HashMap;
 
+import org.broadleafcommerce.common.money.CurrencyConversionService;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CurrencyConversionPricingFilter extends Filter {
-    
-    @SuppressWarnings("rawtypes")
-    public HashMap getCurrencyConversionContext(ServletRequest request);
-    
-    public CurrencyConversionService getCurrencyConversionService(ServletRequest request);
-    
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @SuppressWarnings("rawtypes")
+  HashMap getCurrencyConversionContext(ServletRequest request);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CurrencyConversionService getCurrencyConversionService(ServletRequest request);
+
+} // end interface CurrencyConversionPricingFilter

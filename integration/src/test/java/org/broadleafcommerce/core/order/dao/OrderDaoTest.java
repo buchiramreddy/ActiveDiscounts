@@ -16,63 +16,113 @@
 
 package org.broadleafcommerce.core.order.dao;
 
-import org.broadleafcommerce.core.order.OrderDataProvider;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.core.service.CustomerService;
-import org.broadleafcommerce.test.BaseTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-import org.testng.annotations.Test;
-
-import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.core.order.OrderDataProvider;
+import org.broadleafcommerce.core.order.domain.Order;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.service.CustomerService;
+
+import org.broadleafcommerce.test.BaseTest;
+
+import org.springframework.test.annotation.Rollback;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OrderDaoTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    String userName = new String();
-    Long orderId;
+  /** DOCUMENT ME! */
+  Long orderId;
 
-    @Resource
-    private OrderDao orderDao;
+  /** DOCUMENT ME! */
+  String userName = new String();
 
-    @Resource
-    private CustomerService customerService;
+  @Resource private CustomerService customerService;
 
-    @Test(groups = { "createOrder" }, dataProvider = "basicOrder", dataProviderClass = OrderDataProvider.class, dependsOnGroups = { "readCustomer", "createPhone" })
-    @Rollback(false)
-    @Transactional
-    public void createOrder(Order order) {
-        userName = "customer1";
-        Customer customer = customerService.readCustomerByUsername(userName);
-        assert order.getId() == null;
-        order.setCustomer(customer);
-        order = orderDao.save(order);
-        assert order.getId() != null;
-        orderId = order.getId();
-    }
+  @Resource private OrderDao orderDao;
 
-    @Test(groups = { "readOrder" }, dependsOnGroups = { "createOrder" })
-    public void readOrderById() {
-        Order result = orderDao.readOrderById(orderId);
-        assert result != null;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Test(groups = { "readOrdersForCustomer" }, dependsOnGroups = { "readCustomer", "createOrder" })
-    @Transactional
-    public void readOrdersForCustomer() {
-        userName = "customer1";
-        Customer user = customerService.readCustomerByUsername(userName);
-        List<Order> orders = orderDao.readOrdersForCustomer(user.getId());
-        assert orders.size() > 0;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = { "createOrder" },
+    dataProvider      = "basicOrder",
+    dataProviderClass = OrderDataProvider.class,
+    dependsOnGroups   = { "readCustomer", "createPhone" }
+  )
+  @Transactional public void createOrder(Order order) {
+    userName = "customer1";
 
-    @Test(groups = {"deleteOrderForCustomer"}, dependsOnGroups = {"readOrder"})
-    @Transactional
-    public void deleteOrderForCustomer(){
-        Order order = orderDao.readOrderById(orderId);
-        assert order != null;
-        assert order.getId() != null;
-        orderDao.delete(order);
-    }
-}
+    Customer customer = customerService.readCustomerByUsername(userName);
+    assert order.getId() == null;
+    order.setCustomer(customer);
+    order = orderDao.save(order);
+    assert order.getId() != null;
+    orderId = order.getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "deleteOrderForCustomer" },
+    dependsOnGroups = { "readOrder" }
+  )
+  @Transactional public void deleteOrderForCustomer() {
+    Order order = orderDao.readOrderById(orderId);
+    assert order != null;
+    assert order.getId() != null;
+    orderDao.delete(order);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readOrder" },
+    dependsOnGroups = { "createOrder" }
+  )
+  public void readOrderById() {
+    Order result = orderDao.readOrderById(orderId);
+    assert result != null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readOrdersForCustomer" },
+    dependsOnGroups = { "readCustomer", "createOrder" }
+  )
+  @Transactional public void readOrdersForCustomer() {
+    userName = "customer1";
+
+    Customer    user   = customerService.readCustomerByUsername(userName);
+    List<Order> orders = orderDao.readOrdersForCustomer(user.getId());
+    assert orders.size() > 0;
+  }
+} // end class OrderDaoTest

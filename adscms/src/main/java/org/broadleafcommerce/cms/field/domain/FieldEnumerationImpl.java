@@ -16,13 +16,6 @@
 
 package org.broadleafcommerce.cms.field.domain;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -36,67 +29,123 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blCMSElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_FLD_ENUM")
-@Cache(usage= CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blCMSElements")
 public class FieldEnumerationImpl implements FieldEnumeration {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "FieldEnumerationId")
-    @GenericGenerator(
-        name="FieldEnumerationId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FieldEnumerationImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.field.domain.FieldEnumerationImpl")
-        }
-    )
-    @Column(name = "FLD_ENUM_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column (name = "NAME")
-    protected String name;
+  /** DOCUMENT ME! */
+  @BatchSize(size = 20)
+  @Cache(
+    usage  = CacheConcurrencyStrategy.READ_WRITE,
+    region = "blCMSElements"
+  )
+  @Cascade(value = { org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+  @OneToMany(
+    mappedBy     = "fieldEnumeration",
+    targetEntity = FieldEnumerationItemImpl.class,
+    cascade      = { CascadeType.ALL }
+  )
+  @OrderColumn(name = "FLD_ORDER")
+  protected List<FieldEnumerationItem> enumerationItems;
 
-    @OneToMany(mappedBy = "fieldEnumeration", targetEntity = FieldEnumerationItemImpl.class, cascade = {CascadeType.ALL})
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blCMSElements")
-    @OrderColumn(name = "FLD_ORDER")
-    @BatchSize(size = 20)
-    protected List<FieldEnumerationItem> enumerationItems;
-
-    @Override
-    public List<FieldEnumerationItem> getEnumerationItems() {
-        return enumerationItems;
+  /** DOCUMENT ME! */
+  @Column(name = "FLD_ENUM_ID")
+  @GeneratedValue(generator = "FieldEnumerationId")
+  @GenericGenerator(
+    name       = "FieldEnumerationId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "FieldEnumerationImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.field.domain.FieldEnumerationImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setEnumerationItems(List<FieldEnumerationItem> enumerationItems) {
-        this.enumerationItems = enumerationItems;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "NAME")
+  protected String name;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumeration#getEnumerationItems()
+   */
+  @Override public List<FieldEnumerationItem> getEnumerationItems() {
+    return enumerationItems;
+  }
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumeration#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumeration#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumeration#setEnumerationItems(java.util.List)
+   */
+  @Override public void setEnumerationItems(List<FieldEnumerationItem> enumerationItems) {
+    this.enumerationItems = enumerationItems;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumeration#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldEnumeration#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+} // end class FieldEnumerationImpl

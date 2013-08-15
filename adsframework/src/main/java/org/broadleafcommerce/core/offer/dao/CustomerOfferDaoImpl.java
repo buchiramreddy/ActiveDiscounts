@@ -16,55 +16,98 @@
 
 package org.broadleafcommerce.core.offer.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.core.offer.domain.CustomerOffer;
-import org.broadleafcommerce.core.offer.domain.CustomerOfferImpl;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.core.offer.domain.CustomerOffer;
+import org.broadleafcommerce.core.offer.domain.CustomerOfferImpl;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+import org.hibernate.ejb.QueryHints;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blCustomerOfferDao")
 public class CustomerOfferDaoImpl implements CustomerOfferDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    public CustomerOffer create() {
-        return ((CustomerOffer) entityConfiguration.createEntityInstance(CustomerOffer.class.getName()));
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.dao.CustomerOfferDao#create()
+   */
+  @Override public CustomerOffer create() {
+    return ((CustomerOffer) entityConfiguration.createEntityInstance(CustomerOffer.class.getName()));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.dao.CustomerOfferDao#delete(org.broadleafcommerce.core.offer.domain.CustomerOffer)
+   */
+  @Override public void delete(CustomerOffer customerOffer) {
+    if (!em.contains(customerOffer)) {
+      customerOffer = readCustomerOfferById(customerOffer.getId());
     }
 
-    public void delete(CustomerOffer customerOffer) {
-        if (!em.contains(customerOffer)) {
-            customerOffer = readCustomerOfferById(customerOffer.getId());
-        }
-        em.remove(customerOffer);
-    }
+    em.remove(customerOffer);
+  }
 
-    public CustomerOffer save(final CustomerOffer customerOffer) {
-        return em.merge(customerOffer);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerOffer readCustomerOfferById(final Long customerOfferId) {
-        return (CustomerOffer) em.find(CustomerOfferImpl.class, customerOfferId);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.dao.CustomerOfferDao#readCustomerOfferById(java.lang.Long)
+   */
+  @Override public CustomerOffer readCustomerOfferById(final Long customerOfferId) {
+    return (CustomerOffer) em.find(CustomerOfferImpl.class, customerOfferId);
+  }
 
-    @SuppressWarnings("unchecked")
-    public List<CustomerOffer> readCustomerOffersByCustomer(final Customer customer) {
-        final Query query = em.createNamedQuery("BC_READ_CUSTOMER_OFFER_BY_CUSTOMER_ID");
-        query.setParameter("customerId", customer.getId());
-        query.setHint(QueryHints.HINT_CACHEABLE, true);
-        query.setHint(QueryHints.HINT_CACHE_REGION, "query.Catalog");
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        return query.getResultList();
-    }
+  /**
+   * @see  org.broadleafcommerce.core.offer.dao.CustomerOfferDao#readCustomerOffersByCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<CustomerOffer> readCustomerOffersByCustomer(final Customer customer) {
+    final Query query = em.createNamedQuery("BC_READ_CUSTOMER_OFFER_BY_CUSTOMER_ID");
+    query.setParameter("customerId", customer.getId());
+    query.setHint(QueryHints.HINT_CACHEABLE, true);
+    query.setHint(QueryHints.HINT_CACHE_REGION, "query.Catalog");
 
-}
+    return query.getResultList();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.dao.CustomerOfferDao#save(org.broadleafcommerce.core.offer.domain.CustomerOffer)
+   */
+  @Override public CustomerOffer save(final CustomerOffer customerOffer) {
+    return em.merge(customerOffer);
+  }
+
+} // end class CustomerOfferDaoImpl

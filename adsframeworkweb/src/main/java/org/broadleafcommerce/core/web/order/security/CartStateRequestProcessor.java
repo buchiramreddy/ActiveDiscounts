@@ -16,104 +16,142 @@
 
 package org.broadleafcommerce.core.web.order.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.web.AbstractBroadleafWebRequestProcessor;
-import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.service.OrderService;
-import org.broadleafcommerce.core.order.service.call.UpdateCartResponse;
-import org.broadleafcommerce.core.web.service.UpdateCartService;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.context.request.WebRequest;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.web.AbstractBroadleafWebRequestProcessor;
+
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.service.OrderService;
+import org.broadleafcommerce.core.order.service.call.UpdateCartResponse;
+import org.broadleafcommerce.core.web.service.UpdateCartService;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor;
+
+import org.springframework.stereotype.Component;
+
+import org.springframework.web.context.request.WebRequest;
+
+
 /**
- * Genericized version of the CartStateFilter. This was made to facilitate reuse between Servlet Filters, Portlet Filters and Spring MVC interceptors. Spring has an easy way of converting HttpRequests and PortletRequests into WebRequests via <br />
- * new ServletWebRequest(httpServletRequest); new PortletWebRequest(portletRequest); <br />
+ * Genericized version of the CartStateFilter. This was made to facilitate reuse between Servlet Filters, Portlet
+ * Filters and Spring MVC interceptors. Spring has an easy way of converting HttpRequests and PortletRequests into
+ * WebRequests via<br />
+ * new ServletWebRequest(httpServletRequest); new PortletWebRequest(portletRequest);<br />
  * For the interceptor pattern, you can simply implement a WebRequestInterceptor to invoke from there.
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.web.order.security.CartStateFilter}
- * @see {@link org.broadleafcommerce.common.web.BroadleafWebRequestProcessor}
- * @see {@link org.springframework.web.context.request.ServletWebRequest}
- * @see {@link org.springframework.web.portlet.context.PortletWebRequest}
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.core.web.order.security.CartStateFilter}
+ * @see      {@link org.broadleafcommerce.common.web.BroadleafWebRequestProcessor}
+ * @see      {@link org.springframework.web.context.request.ServletWebRequest}
+ * @see      {@link org.springframework.web.portlet.context.PortletWebRequest}
+ * @version  $Revision$, $Date$
  */
 @Component("blCartStateRequestProcessor")
 public class CartStateRequestProcessor extends AbstractBroadleafWebRequestProcessor {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    /** Logger for this class and subclasses */
-    protected final Log LOG = LogFactory.getLog(getClass());
+  /** DOCUMENT ME! */
+  public static final String BLC_RULE_MAP_PARAM = "blRuleMap";
 
-    public static final String BLC_RULE_MAP_PARAM = "blRuleMap";
+  /** DOCUMENT ME! */
+  protected static boolean copyCartWhenSpecifiedStateChanges = false;
 
-    protected static boolean copyCartWhenSpecifiedStateChanges = false;
+  /** DOCUMENT ME! */
+  protected static String cartRequestAttributeName = "cart";
 
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blUpdateCartService")
-    protected UpdateCartService updateCartService;
+  /** Logger for this class and subclasses. */
+  protected final Log LOG = LogFactory.getLog(getClass());
 
-    protected static String cartRequestAttributeName = "cart";
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
 
-    @Override
-    public void process(WebRequest request) {
-        Customer customer = (Customer) request.getAttribute(CustomerStateRequestProcessor.getCustomerRequestAttributeName(), WebRequest.SCOPE_REQUEST);
+  /** DOCUMENT ME! */
+  @Resource(name = "blUpdateCartService")
+  protected UpdateCartService updateCartService;
 
-        if (customer != null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Looking up cart for customer " + customer.getId());
-            }
-            Order cart = orderService.findCartForCustomer(customer);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-            if (cart == null) {
-                cart = orderService.getNullOrder();
-            } else {
-                try {
-                    updateCartService.validateCart(cart);
-                } catch (IllegalArgumentException e) {
-                    if (copyCartWhenSpecifiedStateChanges) {
-                        UpdateCartResponse updateCartResponse = updateCartService.copyCartToCurrentContext(cart);
-                        request.setAttribute("updateCartResponse", updateCartResponse, WebRequest.SCOPE_REQUEST);
-                    } else {
-                        orderService.cancelOrder(cart);
-                        cart = orderService.createNewCartForCustomer(customer);
-                    }
-                }
-            }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String getCartRequestAttributeName() {
+    return cartRequestAttributeName;
+  }
 
-            request.setAttribute(cartRequestAttributeName, cart, WebRequest.SCOPE_REQUEST);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-            // Setup cart for content rule processing
-            Map<String, Object> ruleMap = (Map<String, Object>) request.getAttribute(BLC_RULE_MAP_PARAM, WebRequest.SCOPE_REQUEST);
-            if (ruleMap == null) {
-                ruleMap = new HashMap<String, Object>();
-            }
-            ruleMap.put("order", cart);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cartRequestAttributeName  DOCUMENT ME!
+   */
+  public static void setCartRequestAttributeName(String cartRequestAttributeName) {
+    CartStateRequestProcessor.cartRequestAttributeName = cartRequestAttributeName;
+  }
 
-            // Leaving the following line in for backwards compatibility, but all rules should use order as the 
-            // variable name.
-            ruleMap.put("cart", cart);
-            request.setAttribute(BLC_RULE_MAP_PARAM, ruleMap, WebRequest.SCOPE_REQUEST);
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafWebRequestProcessor#process(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public void process(WebRequest request) {
+    Customer customer = (Customer) request.getAttribute(CustomerStateRequestProcessor.getCustomerRequestAttributeName(),
+        WebRequest.SCOPE_REQUEST);
+
+    if (customer != null) {
+      if (LOG.isTraceEnabled()) {
+        LOG.trace("Looking up cart for customer " + customer.getId());
+      }
+
+      Order cart = orderService.findCartForCustomer(customer);
+
+      if (cart == null) {
+        cart = orderService.getNullOrder();
+      } else {
+        try {
+          updateCartService.validateCart(cart);
+        } catch (IllegalArgumentException e) {
+          if (copyCartWhenSpecifiedStateChanges) {
+            UpdateCartResponse updateCartResponse = updateCartService.copyCartToCurrentContext(cart);
+            request.setAttribute("updateCartResponse", updateCartResponse, WebRequest.SCOPE_REQUEST);
+          } else {
+            orderService.cancelOrder(cart);
+            cart = orderService.createNewCartForCustomer(customer);
+          }
         }
+      }
 
-    }
-    
-    public static String getCartRequestAttributeName() {
-        return cartRequestAttributeName;
-    }
+      request.setAttribute(cartRequestAttributeName, cart, WebRequest.SCOPE_REQUEST);
 
-    public static void setCartRequestAttributeName(String cartRequestAttributeName) {
-        CartStateRequestProcessor.cartRequestAttributeName = cartRequestAttributeName;
-    }
+      // Setup cart for content rule processing
+      Map<String, Object> ruleMap = (Map<String, Object>) request.getAttribute(BLC_RULE_MAP_PARAM,
+          WebRequest.SCOPE_REQUEST);
+
+      if (ruleMap == null) {
+        ruleMap = new HashMap<String, Object>();
+      }
+
+      ruleMap.put("order", cart);
+
+      // Leaving the following line in for backwards compatibility, but all rules should use order as the
+      // variable name.
+      ruleMap.put("cart", cart);
+      request.setAttribute(BLC_RULE_MAP_PARAM, ruleMap, WebRequest.SCOPE_REQUEST);
+    } // end if
+
+  } // end method process
 
 
-}
+} // end class CartStateRequestProcessor

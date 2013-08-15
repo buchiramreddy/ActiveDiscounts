@@ -16,18 +16,6 @@
 
 package org.broadleafcommerce.cms.structure.domain;
 
-import org.broadleafcommerce.common.admin.domain.AdminMainEntity;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.broadleafcommerce.common.presentation.RequiredOverride;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,88 +26,178 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.admin.domain.AdminMainEntity;
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+import org.broadleafcommerce.common.presentation.RequiredOverride;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(
+  populateToOneFields = PopulateToOneFieldsEnum.TRUE,
+  friendlyName        = "StructuredContentTypeImpl_baseStructuredContentType"
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blCMSElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SC_TYPE")
-@Cache(usage= CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blCMSElements")
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE, friendlyName = "StructuredContentTypeImpl_baseStructuredContentType")
 public class StructuredContentTypeImpl implements StructuredContentType, AdminMainEntity {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "StructuredContentTypeId")
-    @GenericGenerator(
-        name="StructuredContentTypeId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="StructuredContentTypeImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.structure.domain.StructuredContentTypeImpl")
-        }
-    )
-    @Column(name = "SC_TYPE_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column (name = "NAME")
-    @AdminPresentation(friendlyName = "StructuredContentTypeImpl_Name", order = 1, gridOrder = 1, group = "StructuredContentTypeImpl_Details", prominent = true)
-    @Index(name="SC_TYPE_NAME_INDEX", columnNames={"NAME"})
-    protected String name;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "StructuredContentTypeImpl_Description",
+    order        = 2,
+    group        = "StructuredContentTypeImpl_Details",
+    prominent    = false
+  )
+  @Column(name = "DESCRIPTION")
+  protected String description;
 
-    @Column (name = "DESCRIPTION")
-    @AdminPresentation(friendlyName = "StructuredContentTypeImpl_Description", order=2, group = "StructuredContentTypeImpl_Details",prominent=false)
-    protected String description;
-
-    @ManyToOne(targetEntity = StructuredContentFieldTemplateImpl.class)
-    @JoinColumn(name="SC_FLD_TMPLT_ID")
-    @AdminPresentation(friendlyName = "StructuredContentTypeImpl_Content_Template", order=2, group = "StructuredContentTypeImpl_Details", requiredOverride = RequiredOverride.REQUIRED, visibility = VisibilityEnum.HIDDEN_ALL)
-    protected StructuredContentFieldTemplate structuredContentFieldTemplate;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "SC_TYPE_ID")
+  @GeneratedValue(generator = "StructuredContentTypeId")
+  @GenericGenerator(
+    name       = "StructuredContentTypeId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "StructuredContentTypeImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.structure.domain.StructuredContentTypeImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "StructuredContentTypeImpl_Name",
+    order        = 1,
+    gridOrder    = 1,
+    group        = "StructuredContentTypeImpl_Details",
+    prominent    = true
+  )
+  @Column(name = "NAME")
+  @Index(
+    name        = "SC_TYPE_NAME_INDEX",
+    columnNames = { "NAME" }
+  )
+  protected String name;
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName     = "StructuredContentTypeImpl_Content_Template",
+    order            = 2,
+    group            = "StructuredContentTypeImpl_Details",
+    requiredOverride = RequiredOverride.REQUIRED,
+    visibility       = VisibilityEnum.HIDDEN_ALL
+  )
+  @JoinColumn(name = "SC_FLD_TMPLT_ID")
+  @ManyToOne(targetEntity = StructuredContentFieldTemplateImpl.class)
+  protected StructuredContentFieldTemplate structuredContentFieldTemplate;
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#getDescription()
+   */
+  @Override public String getDescription() {
+    return description;
+  }
 
-    @Override
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public StructuredContentFieldTemplate getStructuredContentFieldTemplate() {
-        return structuredContentFieldTemplate;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setStructuredContentFieldTemplate(StructuredContentFieldTemplate scft) {
-        this.structuredContentFieldTemplate = scft;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getMainEntityName() {
-        return getName();
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.common.admin.domain.AdminMainEntity#getMainEntityName()
+   */
+  @Override public String getMainEntityName() {
+    return getName();
+  }
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#getStructuredContentFieldTemplate()
+   */
+  @Override public StructuredContentFieldTemplate getStructuredContentFieldTemplate() {
+    return structuredContentFieldTemplate;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#setDescription(java.lang.String)
+   */
+  @Override public void setDescription(String description) {
+    this.description = description;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentType#setStructuredContentFieldTemplate(org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplate)
+   */
+  @Override public void setStructuredContentFieldTemplate(StructuredContentFieldTemplate scft) {
+    this.structuredContentFieldTemplate = scft;
+  }
+} // end class StructuredContentTypeImpl

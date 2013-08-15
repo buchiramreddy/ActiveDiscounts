@@ -17,18 +17,42 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.service;
 
 import java.util.List;
 
+
 /**
- * Factory class that returns the appropriate RuleBuilderFieldService
- * given the service name. The services are injected into the factory defined in applicationContext-servlet-open-admin.xml
- * @see RuleBuilderFieldService
+ * Factory class that returns the appropriate RuleBuilderFieldService given the service name. The services are injected
+ * into the factory defined in applicationContext-servlet-open-admin.xml
  *
- * @author Jeff Fischer
+ * @see      RuleBuilderFieldService
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface RuleBuilderFieldServiceFactory {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    RuleBuilderFieldService createInstance(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   name  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RuleBuilderFieldService createInstance(String name);
 
-    List<RuleBuilderFieldService> getFieldServices();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    void setFieldServices(List<RuleBuilderFieldService> fieldServices);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<RuleBuilderFieldService> getFieldServices();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldServices  DOCUMENT ME!
+   */
+  void setFieldServices(List<RuleBuilderFieldService> fieldServices);
+} // end interface RuleBuilderFieldServiceFactory

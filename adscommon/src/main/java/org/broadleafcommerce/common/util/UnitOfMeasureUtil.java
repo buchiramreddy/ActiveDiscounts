@@ -19,80 +19,218 @@ package org.broadleafcommerce.common.util;
 import java.math.BigDecimal;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class UnitOfMeasureUtil {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public static BigDecimal convertKilogramsToPounds(BigDecimal kilograms) {
-        return kilograms.multiply(BigDecimal.valueOf(0.45359237));
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   feet  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertFeetToInches(BigDecimal feet) {
+    return feet.multiply(BigDecimal.valueOf(12));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   feet  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertFeetToMeters(BigDecimal feet) {
+    return feet.multiply(BigDecimal.valueOf(0.3048));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   inches  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertInchesToFeet(BigDecimal inches) {
+    return inches.multiply(BigDecimal.valueOf(0.083333));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   kilograms  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertKilogramsToPounds(BigDecimal kilograms) {
+    return kilograms.multiply(BigDecimal.valueOf(0.45359237));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   meters  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertMetersToFeet(BigDecimal meters) {
+    return meters.multiply(BigDecimal.valueOf(3.28084));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   ounces  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertOuncesToPounds(BigDecimal ounces) {
+    return ounces.multiply(BigDecimal.valueOf(0.0625));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   pounds  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertPoundsToKilograms(BigDecimal pounds) {
+    return pounds.multiply(BigDecimal.valueOf(2.20462262185));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   pounds  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal convertPoundsToOunces(BigDecimal pounds) {
+    return pounds.multiply(BigDecimal.valueOf(16));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   dimension  DOCUMENT ME!
+   * @param   type       DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal findInches(BigDecimal dimension, DimensionUnitOfMeasureType type) {
+    if (type.equals(DimensionUnitOfMeasureType.CENTIMETERS)) {
+      dimension = UnitOfMeasureUtil.convertFeetToInches(UnitOfMeasureUtil.convertMetersToFeet(
+            dimension.multiply(BigDecimal.valueOf(0.01))));
     }
 
-    public static BigDecimal convertPoundsToKilograms(BigDecimal pounds) {
-        return pounds.multiply(BigDecimal.valueOf(2.20462262185));
+    if (type.equals(DimensionUnitOfMeasureType.METERS)) {
+      dimension = UnitOfMeasureUtil.convertFeetToInches(UnitOfMeasureUtil.convertMetersToFeet(dimension));
     }
 
-    public static BigDecimal convertPoundsToOunces(BigDecimal pounds) {
-        return pounds.multiply(BigDecimal.valueOf(16));
+    if (type.equals(DimensionUnitOfMeasureType.FEET)) {
+      dimension = UnitOfMeasureUtil.convertFeetToInches(dimension);
     }
 
-    public static BigDecimal convertOuncesToPounds(BigDecimal ounces) {
-        return ounces.multiply(BigDecimal.valueOf(0.0625));
+    return dimension;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   weight  DOCUMENT ME!
+   * @param   type    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal findOunces(BigDecimal weight, WeightUnitOfMeasureType type) {
+    if (type.equals(WeightUnitOfMeasureType.KILOGRAMS)) {
+      weight = UnitOfMeasureUtil.convertKilogramsToPounds(weight);
     }
 
-    public static BigDecimal convertFeetToMeters(BigDecimal feet) {
-        return feet.multiply(BigDecimal.valueOf(0.3048));
+    BigDecimal ounces = UnitOfMeasureUtil.convertPoundsToOunces(weight);
+
+    return ounces;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   weight  DOCUMENT ME!
+   * @param   type    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal findPounds(BigDecimal weight, WeightUnitOfMeasureType type) {
+    if (type.equals(WeightUnitOfMeasureType.KILOGRAMS)) {
+      weight = UnitOfMeasureUtil.convertKilogramsToPounds(weight);
     }
 
-    public static BigDecimal convertMetersToFeet(BigDecimal meters) {
-        return meters.multiply(BigDecimal.valueOf(3.28084));
+    return weight;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   weight  DOCUMENT ME!
+   * @param   type    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static BigDecimal findRemainingOunces(BigDecimal weight, WeightUnitOfMeasureType type) {
+    if (type.equals(WeightUnitOfMeasureType.KILOGRAMS)) {
+      weight = UnitOfMeasureUtil.convertKilogramsToPounds(weight);
     }
 
-    public static BigDecimal convertInchesToFeet(BigDecimal inches) {
-        return inches.multiply(BigDecimal.valueOf(0.083333));
-    }
+    double     fractionalPounds = weight.doubleValue() - Math.floor(weight.doubleValue());
+    BigDecimal ounces           = UnitOfMeasureUtil.convertPoundsToOunces(BigDecimal.valueOf(fractionalPounds));
 
-    public static BigDecimal convertFeetToInches(BigDecimal feet) {
-        return feet.multiply(BigDecimal.valueOf(12));
-    }
+    return ounces;
+  }
 
-    public static int findWholePounds(BigDecimal weight, WeightUnitOfMeasureType type) {
-        weight = findPounds(weight, type);
-        int pounds = Double.valueOf(Math.floor(weight.doubleValue())).intValue();
-        return pounds;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static BigDecimal findPounds(BigDecimal weight, WeightUnitOfMeasureType type) {
-        if (type.equals(WeightUnitOfMeasureType.KILOGRAMS)) {
-            weight = UnitOfMeasureUtil.convertKilogramsToPounds(weight);
-        }
-        return weight;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   weight  DOCUMENT ME!
+   * @param   type    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static int findWholePounds(BigDecimal weight, WeightUnitOfMeasureType type) {
+    weight = findPounds(weight, type);
 
-    public static BigDecimal findRemainingOunces(BigDecimal weight, WeightUnitOfMeasureType type) {
-        if (type.equals(WeightUnitOfMeasureType.KILOGRAMS)) {
-            weight = UnitOfMeasureUtil.convertKilogramsToPounds(weight);
-        }
-        double fractionalPounds = weight.doubleValue() - Math.floor(weight.doubleValue());
-        BigDecimal ounces = UnitOfMeasureUtil.convertPoundsToOunces(BigDecimal.valueOf(fractionalPounds));
-        return ounces;
-    }
+    int pounds = Double.valueOf(Math.floor(weight.doubleValue())).intValue();
 
-    public static BigDecimal findOunces(BigDecimal weight, WeightUnitOfMeasureType type) {
-        if (type.equals(WeightUnitOfMeasureType.KILOGRAMS)) {
-            weight = UnitOfMeasureUtil.convertKilogramsToPounds(weight);
-        }
-        BigDecimal ounces = UnitOfMeasureUtil.convertPoundsToOunces(weight);
-        return ounces;
-    }
-
-    public static BigDecimal findInches(BigDecimal dimension, DimensionUnitOfMeasureType type) {
-        if (type.equals(DimensionUnitOfMeasureType.CENTIMETERS)) {
-            dimension = UnitOfMeasureUtil.convertFeetToInches(UnitOfMeasureUtil.convertMetersToFeet(dimension.multiply(BigDecimal.valueOf(0.01))));
-        }
-        if (type.equals(DimensionUnitOfMeasureType.METERS)) {
-            dimension = UnitOfMeasureUtil.convertFeetToInches(UnitOfMeasureUtil.convertMetersToFeet(dimension));
-        }
-        if (type.equals(DimensionUnitOfMeasureType.FEET)) {
-            dimension = UnitOfMeasureUtil.convertFeetToInches(dimension);
-        }
-        return dimension;
-    }
-}
+    return pounds;
+  }
+} // end class UnitOfMeasureUtil

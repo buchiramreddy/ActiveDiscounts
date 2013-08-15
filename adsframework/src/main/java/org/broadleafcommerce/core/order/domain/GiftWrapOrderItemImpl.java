@@ -16,10 +16,8 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.AdminPresentationCollection;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -28,72 +26,121 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.AdminPresentationCollection;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(friendlyName = "GiftWrapOrderItemImpl_giftWrapOrderItem")
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_GIFTWRAP_ORDER_ITEM")
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
-@AdminPresentationClass(friendlyName = "GiftWrapOrderItemImpl_giftWrapOrderItem")
 public class GiftWrapOrderItemImpl extends DiscreteOrderItemImpl implements GiftWrapOrderItem {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @AdminPresentationCollection(
+    friendlyName = "OrderItemImpl_Price_Details",
+    tab          = OrderItemImpl.Presentation.Tab.Name.Advanced,
+    tabOrder     = OrderItemImpl.Presentation.Tab.Order.Advanced
+  )
+  @Cache(
+    usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+    region = "blOrderElements"
+  )
+  @OneToMany(
+    fetch        = FetchType.LAZY,
+    mappedBy     = "giftWrapOrderItem",
+    targetEntity = OrderItemImpl.class,
+    cascade      = { CascadeType.MERGE, CascadeType.PERSIST }
+  )
+  protected List<OrderItem> wrappedItems = new ArrayList<OrderItem>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "giftWrapOrderItem", targetEntity = OrderItemImpl.class,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
-    @AdminPresentationCollection(friendlyName="OrderItemImpl_Price_Details",
-                tab = OrderItemImpl.Presentation.Tab.Name.Advanced, tabOrder = OrderItemImpl.Presentation.Tab.Order.Advanced)
-    protected List<OrderItem> wrappedItems = new ArrayList<OrderItem>();
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.GiftWrapOrderItem#getWrappedItems()
+   */
+  @Override public List<OrderItem> getWrappedItems() {
+    return wrappedItems;
+  }
 
-    public List<OrderItem> getWrappedItems() {
-        return wrappedItems;
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.GiftWrapOrderItem#setWrappedItems(java.util.List)
+   */
+  @Override public void setWrappedItems(List<OrderItem> wrappedItems) {
+    this.wrappedItems = wrappedItems;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl#clone()
+   */
+  @Override public OrderItem clone() {
+    GiftWrapOrderItem orderItem = (GiftWrapOrderItem) super.clone();
+
+    if (wrappedItems != null) {
+      orderItem.getWrappedItems().addAll(wrappedItems);
     }
 
-    public void setWrappedItems(List<OrderItem> wrappedItems) {
-        this.wrappedItems = wrappedItems;
+    return orderItem;
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = super.hashCode();
+    int       result = super.hashCode();
+    result = (prime * result) + ((wrappedItems == null) ? 0 : wrappedItems.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public OrderItem clone() {
-        GiftWrapOrderItem orderItem = (GiftWrapOrderItem) super.clone();
-        if (wrappedItems != null) orderItem.getWrappedItems().addAll(wrappedItems);
-        
-        return orderItem;
+    if (!super.equals(obj)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = super.hashCode();
-        int result = super.hashCode();
-        result = prime * result + ((wrappedItems == null) ? 0 : wrappedItems.hashCode());
-        return result;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        GiftWrapOrderItemImpl other = (GiftWrapOrderItemImpl) obj;
+    GiftWrapOrderItemImpl other = (GiftWrapOrderItemImpl) obj;
 
-        if (!super.equals(obj)) {
-            return false;
-        }
-        
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
-
-        if (wrappedItems == null) {
-            if (other.wrappedItems != null)
-                return false;
-        } else if (!wrappedItems.equals(other.wrappedItems))
-            return false;
-        return true;
+    if (!super.equals(obj)) {
+      return false;
     }
-}
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
+    }
+
+    if (wrappedItems == null) {
+      if (other.wrappedItems != null) {
+        return false;
+      }
+    } else if (!wrappedItems.equals(other.wrappedItems)) {
+      return false;
+    }
+
+    return true;
+  } // end method equals
+} // end class GiftWrapOrderItemImpl

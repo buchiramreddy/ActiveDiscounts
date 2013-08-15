@@ -16,110 +16,163 @@
 
 package org.broadleafcommerce.core.order.dao.legacy;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.FulfillmentGroupDataProvider;
 import org.broadleafcommerce.core.order.dao.FulfillmentGroupDao;
 import org.broadleafcommerce.core.order.dao.OrderDao;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
+
 import org.broadleafcommerce.profile.core.dao.CustomerAddressDao;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.Customer;
+
 import org.broadleafcommerce.test.legacy.LegacyCommonSetupBaseTest;
+
 import org.springframework.test.annotation.Rollback;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class LegacyFulfillmentGroupDaoTest extends LegacyCommonSetupBaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Long defaultFulfillmentGroupOrderId;
-    private Long defaultFulfillmentGroupId;
-    private Long fulfillmentGroupId;
+  @Resource private CustomerAddressDao customerAddressDao;
+  private Long                         defaultFulfillmentGroupId;
 
-    @Resource
-    private FulfillmentGroupDao fulfillmentGroupDao;
-    
-    @Resource
-    private FulfillmentGroupService fulfillmentGroupService;
+  private Long defaultFulfillmentGroupOrderId;
 
-    @Resource
-    private CustomerAddressDao customerAddressDao;
+  @Resource private FulfillmentGroupDao fulfillmentGroupDao;
+  private Long                          fulfillmentGroupId;
 
-    @Resource
-    private OrderDao orderDao;
+  @Resource private FulfillmentGroupService fulfillmentGroupService;
 
-    @Test(groups = "createDefaultFulfillmentGroupLegacy", dataProvider = "basicFulfillmentGroupLegacy", dataProviderClass = FulfillmentGroupDataProvider.class)
-    @Transactional
-    @Rollback(false)
-    public void createDefaultFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
-        Customer customer = createCustomerWithBasicOrderAndAddresses();
-        Address address = (customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId())).get(0).getAddress();
-        Order salesOrder = (orderDao.readOrdersForCustomer(customer.getId())).get(0);
+  @Resource private OrderDao orderDao;
 
-        FulfillmentGroup newFG = fulfillmentGroupDao.createDefault();
-        newFG.setAddress(address);
-        newFG.setRetailShippingPrice(fulfillmentGroup.getRetailShippingPrice());
-        newFG.setMethod(fulfillmentGroup.getMethod());
-        newFG.setService(fulfillmentGroup.getService());
-        newFG.setOrder(salesOrder);
-        newFG.setReferenceNumber(fulfillmentGroup.getReferenceNumber());
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        assert newFG.getId() == null;
-        fulfillmentGroup = fulfillmentGroupService.save(newFG);
-        assert fulfillmentGroup.getId() != null;
-        defaultFulfillmentGroupOrderId = salesOrder.getId();
-        defaultFulfillmentGroupId = fulfillmentGroup.getId();
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = "createDefaultFulfillmentGroupLegacy",
+    dataProvider      = "basicFulfillmentGroupLegacy",
+    dataProviderClass = FulfillmentGroupDataProvider.class
+  )
+  @Transactional public void createDefaultFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
+    Customer customer   = createCustomerWithBasicOrderAndAddresses();
+    Address  address    = (customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId())).get(0)
+      .getAddress();
+    Order    salesOrder = (orderDao.readOrdersForCustomer(customer.getId())).get(0);
 
-    @Test(groups = { "readDefaultFulfillmentGroupForOrderLegacy" }, dependsOnGroups = { "createDefaultFulfillmentGroupLegacy" })
-    @Transactional
-    public void readDefaultFulfillmentGroupForOrder() {
-        Order order = orderDao.readOrderById(defaultFulfillmentGroupOrderId);
-        assert order != null;
-        assert order.getId() == defaultFulfillmentGroupOrderId;
-        FulfillmentGroup fg = fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(order);
-        assert fg.getId() != null;
-        assert fg.getId().equals(defaultFulfillmentGroupId);
-    }
+    FulfillmentGroup newFG = fulfillmentGroupDao.createDefault();
+    newFG.setAddress(address);
+    newFG.setRetailShippingPrice(fulfillmentGroup.getRetailShippingPrice());
+    newFG.setMethod(fulfillmentGroup.getMethod());
+    newFG.setService(fulfillmentGroup.getService());
+    newFG.setOrder(salesOrder);
+    newFG.setReferenceNumber(fulfillmentGroup.getReferenceNumber());
 
-    @Test(groups = { "readDefaultFulfillmentGroupForIdLegacy" }, dependsOnGroups = { "createDefaultFulfillmentGroupLegacy" })
-    @Transactional
-    public void readDefaultFulfillmentGroupForId() {
-        FulfillmentGroup fg = fulfillmentGroupDao.readFulfillmentGroupById(defaultFulfillmentGroupId);
-        assert fg != null;
-        assert fg.getId() != null;
-        assert fg.getId().equals(defaultFulfillmentGroupId);
-    }
+    assert newFG.getId() == null;
+    fulfillmentGroup = fulfillmentGroupService.save(newFG);
+    assert fulfillmentGroup.getId() != null;
+    defaultFulfillmentGroupOrderId = salesOrder.getId();
+    defaultFulfillmentGroupId      = fulfillmentGroup.getId();
+  }
 
-    @Test(groups = "createFulfillmentGroupLegacy", dataProvider = "basicFulfillmentGroupLegacy", dataProviderClass = FulfillmentGroupDataProvider.class)
-    @Transactional
-    @Rollback(false)
-    public void createFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
-        Customer customer = createCustomerWithBasicOrderAndAddresses();
-        Address address = (customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId())).get(0).getAddress();
-        Order salesOrder = (orderDao.readOrdersForCustomer(customer.getId())).get(0);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        FulfillmentGroup newFG = fulfillmentGroupDao.create();
-        newFG.setAddress(address);
-        newFG.setRetailShippingPrice(fulfillmentGroup.getRetailShippingPrice());
-        newFG.setMethod(fulfillmentGroup.getMethod());
-        newFG.setService(fulfillmentGroup.getService());
-        newFG.setReferenceNumber(fulfillmentGroup.getReferenceNumber());
-        newFG.setOrder(salesOrder);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = "createFulfillmentGroupLegacy",
+    dataProvider      = "basicFulfillmentGroupLegacy",
+    dataProviderClass = FulfillmentGroupDataProvider.class
+  )
+  @Transactional public void createFulfillmentGroup(FulfillmentGroup fulfillmentGroup) {
+    Customer customer   = createCustomerWithBasicOrderAndAddresses();
+    Address  address    = (customerAddressDao.readActiveCustomerAddressesByCustomerId(customer.getId())).get(0)
+      .getAddress();
+    Order    salesOrder = (orderDao.readOrdersForCustomer(customer.getId())).get(0);
 
-        assert newFG.getId() == null;
-        fulfillmentGroup = fulfillmentGroupService.save(newFG);
-        assert fulfillmentGroup.getId() != null;
-        fulfillmentGroupId = fulfillmentGroup.getId();
-    }
+    FulfillmentGroup newFG = fulfillmentGroupDao.create();
+    newFG.setAddress(address);
+    newFG.setRetailShippingPrice(fulfillmentGroup.getRetailShippingPrice());
+    newFG.setMethod(fulfillmentGroup.getMethod());
+    newFG.setService(fulfillmentGroup.getService());
+    newFG.setReferenceNumber(fulfillmentGroup.getReferenceNumber());
+    newFG.setOrder(salesOrder);
 
-    @Test(groups = { "readFulfillmentGroupsForIdLegacy" }, dependsOnGroups = { "createFulfillmentGroupLegacy" })
-    @Transactional
-    public void readFulfillmentGroupsForId() {
-        FulfillmentGroup fg = fulfillmentGroupDao.readFulfillmentGroupById(fulfillmentGroupId);
-        assert fg != null;
-        assert fg.getId() != null;
-    }
-}
+    assert newFG.getId() == null;
+    fulfillmentGroup = fulfillmentGroupService.save(newFG);
+    assert fulfillmentGroup.getId() != null;
+    fulfillmentGroupId = fulfillmentGroup.getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readDefaultFulfillmentGroupForIdLegacy" },
+    dependsOnGroups = { "createDefaultFulfillmentGroupLegacy" }
+  )
+  @Transactional public void readDefaultFulfillmentGroupForId() {
+    FulfillmentGroup fg = fulfillmentGroupDao.readFulfillmentGroupById(defaultFulfillmentGroupId);
+    assert fg != null;
+    assert fg.getId() != null;
+    assert fg.getId().equals(defaultFulfillmentGroupId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readDefaultFulfillmentGroupForOrderLegacy" },
+    dependsOnGroups = { "createDefaultFulfillmentGroupLegacy" }
+  )
+  @Transactional public void readDefaultFulfillmentGroupForOrder() {
+    Order order = orderDao.readOrderById(defaultFulfillmentGroupOrderId);
+    assert order != null;
+    assert order.getId() == defaultFulfillmentGroupOrderId;
+
+    FulfillmentGroup fg = fulfillmentGroupDao.readDefaultFulfillmentGroupForOrder(order);
+    assert fg.getId() != null;
+    assert fg.getId().equals(defaultFulfillmentGroupId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readFulfillmentGroupsForIdLegacy" },
+    dependsOnGroups = { "createFulfillmentGroupLegacy" }
+  )
+  @Transactional public void readFulfillmentGroupsForId() {
+    FulfillmentGroup fg = fulfillmentGroupDao.readFulfillmentGroupById(fulfillmentGroupId);
+    assert fg != null;
+    assert fg.getId() != null;
+  }
+} // end class LegacyFulfillmentGroupDaoTest

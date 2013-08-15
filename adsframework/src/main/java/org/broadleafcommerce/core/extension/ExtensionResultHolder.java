@@ -17,32 +17,64 @@
 package org.broadleafcommerce.core.extension;
 
 /**
- * If a service extension using the {@link org.broadleafcommerce.core.extension.ExtensionManager} pattern expects a result from the extension, it should
- * pass in an instance of this class into the method call.   
- * 
- * The extension points can examine or update this class with response information.
- * 
- * @author bpolster
+ * If a service extension using the {@link org.broadleafcommerce.core.extension.ExtensionManager} pattern expects a
+ * result from the extension, it should pass in an instance of this class into the method call.
  *
+ * <p>The extension points can examine or update this class with response information.</p>
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public class ExtensionResultHolder {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    Object result;
-    Throwable throwable;
+  /** DOCUMENT ME! */
+  Object    result;
 
-    public Object getResult() {
-        return result;
-    }
+  /** DOCUMENT ME! */
+  Throwable throwable;
 
-    public void setResult(Object result) {
-        this.result = result;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Throwable getThrowable() {
-        return throwable;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Object getResult() {
+    return result;
+  }
 
-    public void setThrowable(Throwable throwable) {
-        this.throwable = throwable;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Throwable getThrowable() {
+    return throwable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  result  DOCUMENT ME!
+   */
+  public void setResult(Object result) {
+    this.result = result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  throwable  DOCUMENT ME!
+   */
+  public void setThrowable(Throwable throwable) {
+    this.throwable = throwable;
+  }
+} // end class ExtensionResultHolder

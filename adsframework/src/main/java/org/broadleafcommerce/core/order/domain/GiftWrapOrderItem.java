@@ -18,10 +18,26 @@ package org.broadleafcommerce.core.order.domain;
 
 import java.util.List;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface GiftWrapOrderItem extends DiscreteOrderItem {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<OrderItem> getWrappedItems();
 
-    public List<OrderItem> getWrappedItems();
-
-    public void setWrappedItems(List<OrderItem> wrappedItems);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  wrappedItems  DOCUMENT ME!
+   */
+  void setWrappedItems(List<OrderItem> wrappedItems);
 
 }

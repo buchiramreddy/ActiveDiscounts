@@ -16,22 +16,8 @@
 
 package org.broadleafcommerce.openadmin.server.security.domain;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.lang.reflect.Method;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,176 +37,371 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(friendlyName = "AdminPermissionImpl_baseAdminPermission")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_ADMIN_PERMISSION")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-@AdminPresentationClass(friendlyName = "AdminPermissionImpl_baseAdminPermission")
 public class AdminPermissionImpl implements AdminPermission {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(AdminPermissionImpl.class);
-    private static final long serialVersionUID = 1L;
+  private static final Log  LOG              = LogFactory.getLog(AdminPermissionImpl.class);
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "AdminPermissionId")
-    @GenericGenerator(
-        name="AdminPermissionId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="AdminPermissionImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionImpl")
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminPermissionImpl_Description",
+    order        = 2,
+    group        = "AdminPermissionImpl_Permission",
+    prominent    = true
+  )
+  @Column(
+    name     = "DESCRIPTION",
+    nullable = false
+  )
+  protected String description;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminPermissionImpl_Admin_Permission_ID",
+    group        = "AdminPermissionImpl_Primary_Key",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "ADMIN_PERMISSION_ID")
+  @GeneratedValue(generator = "AdminPermissionId")
+  @GenericGenerator(
+    name       = "AdminPermissionId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "AdminPermissionImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionImpl"
+      )
+    }
+  )
+  @Id protected Long id;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "AdminPermissionImpl_Name",
+    order        = 1,
+    group        = "AdminPermissionImpl_Permission",
+    prominent    = true
+  )
+  @Column(
+    name     = "NAME",
+    nullable = false
+  )
+  @Index(
+    name        = "ADMINPERM_NAME_INDEX",
+    columnNames = { "NAME" }
+  )
+  protected String name;
+
+  /** DOCUMENT ME! */
+  @BatchSize(size = 50)
+  @Cache(
+    usage  = CacheConcurrencyStrategy.READ_WRITE,
+    region = "blStandardElements"
+  )
+  @JoinTable(
+    name               = "BLC_ADMIN_ROLE_PERMISSION_XREF",
+    joinColumns        =
+      @JoinColumn(
+        name           = "ADMIN_PERMISSION_ID",
+        referencedColumnName = "ADMIN_PERMISSION_ID"
+      ),
+    inverseJoinColumns =
+      @JoinColumn(
+        name                 = "ADMIN_ROLE_ID",
+        referencedColumnName = "ADMIN_ROLE_ID"
+      )
+  )
+  @ManyToMany(
+    fetch        = FetchType.LAZY,
+    targetEntity = AdminRoleImpl.class
+  )
+  protected Set<AdminRole> allRoles = new HashSet<AdminRole>();
+
+  /** DOCUMENT ME! */
+  @BatchSize(size = 50)
+  @Cache(
+    usage  = CacheConcurrencyStrategy.READ_WRITE,
+    region = "blStandardElements"
+  )
+  @JoinTable(
+    name               = "BLC_ADMIN_USER_PERMISSION_XREF",
+    joinColumns        =
+      @JoinColumn(
+        name           = "ADMIN_PERMISSION_ID",
+        referencedColumnName = "ADMIN_PERMISSION_ID"
+      ),
+    inverseJoinColumns =
+      @JoinColumn(
+        name                 = "ADMIN_USER_ID",
+        referencedColumnName = "ADMIN_USER_ID"
+      )
+  )
+  @ManyToMany(
+    fetch        = FetchType.LAZY,
+    targetEntity = AdminUserImpl.class
+  )
+  protected Set<AdminUser> allUsers = new HashSet<AdminUser>();
+
+  /** DOCUMENT ME! */
+  @BatchSize(size = 50)
+  @Cache(
+    usage  = CacheConcurrencyStrategy.READ_WRITE,
+    region = "blStandardElements"
+  )
+  @Cascade(value = { org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+  @OneToMany(
+    mappedBy     = "adminPermission",
+    targetEntity = AdminPermissionQualifiedEntityImpl.class,
+    cascade      = { CascadeType.ALL }
+  )
+  protected List<AdminPermissionQualifiedEntity> qualifiedEntities = new ArrayList<AdminPermissionQualifiedEntity>();
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName         = "AdminPermissionImpl_Permission_Type",
+    order                = 3,
+    group                = "AdminPermissionImpl_Permission",
+    fieldType            = SupportedFieldType.BROADLEAF_ENUMERATION,
+    broadleafEnumeration = "org.broadleafcommerce.openadmin.server.security.service.type.PermissionType",
+    prominent            = true
+  )
+  @Column(
+    name     = "PERMISSION_TYPE",
+    nullable = false
+  )
+  @Index(
+    name        = "ADMINPERM_TYPE_INDEX",
+    columnNames = { "PERMISSION_TYPE" }
+  )
+  protected String type;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   adminPermission  DOCUMENT ME!
+   *
+   * @throws  CloneNotSupportedException  DOCUMENT ME!
+   * @throws  SecurityException           DOCUMENT ME!
+   * @throws  NoSuchMethodException       DOCUMENT ME!
+   */
+  public void checkCloneable(AdminPermission adminPermission) throws CloneNotSupportedException, SecurityException,
+    NoSuchMethodException {
+    Method cloneMethod = adminPermission.getClass().getMethod("clone", new Class[] {});
+
+    if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce")
+          && !adminPermission.getClass().getName().startsWith("org.broadleafcommerce")) {
+      // subclass is not implementing the clone method
+      throw new CloneNotSupportedException("Custom extensions and implementations should implement clone.");
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#clone()
+   */
+  @Override public AdminPermission clone() {
+    AdminPermission clone;
+
+    try {
+      clone = (AdminPermission) Class.forName(this.getClass().getName()).newInstance();
+
+      try {
+        checkCloneable(clone);
+      } catch (CloneNotSupportedException e) {
+        LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: "
+          + clone.getClass().getName(), e);
+      }
+
+      clone.setId(id);
+      clone.setName(name);
+      clone.setType(getType());
+      clone.setDescription(description);
+
+      // don't clone the allUsers collection, as it would cause a recursion
+      // don't clone the allRoles collection, as it would cause a recursion
+
+      if (qualifiedEntities != null) {
+        for (AdminPermissionQualifiedEntity qualifiedEntity : qualifiedEntities) {
+          AdminPermissionQualifiedEntity qualifiedEntityClone = qualifiedEntity.clone();
+          qualifiedEntityClone.setAdminPermission(clone);
+          clone.getQualifiedEntities().add(qualifiedEntityClone);
         }
-    )
-    @Column(name = "ADMIN_PERMISSION_ID")
-    @AdminPresentation(friendlyName = "AdminPermissionImpl_Admin_Permission_ID", group = "AdminPermissionImpl_Primary_Key", visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Long id;
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    } // end try-catch
 
-    @Column(name = "NAME", nullable=false)
-    @Index(name="ADMINPERM_NAME_INDEX", columnNames={"NAME"})
-    @AdminPresentation(friendlyName = "AdminPermissionImpl_Name", order=1, group = "AdminPermissionImpl_Permission", prominent=true)
-    protected String name;
+    return clone;
+  } // end method clone
 
-    @Column(name = "PERMISSION_TYPE", nullable=false)
-    @Index(name="ADMINPERM_TYPE_INDEX", columnNames={"PERMISSION_TYPE"})
-    @AdminPresentation(friendlyName = "AdminPermissionImpl_Permission_Type", order = 3, group = "AdminPermissionImpl_Permission", fieldType = SupportedFieldType.BROADLEAF_ENUMERATION, broadleafEnumeration = "org.broadleafcommerce.openadmin.server.security.service.type.PermissionType", prominent = true)
-    protected String type;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Column(name = "DESCRIPTION", nullable=false)
-    @AdminPresentation(friendlyName = "AdminPermissionImpl_Description", order=2, group = "AdminPermissionImpl_Permission", prominent=true)
-    protected String description;
-    
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = AdminRoleImpl.class)
-    @JoinTable(name = "BLC_ADMIN_ROLE_PERMISSION_XREF", joinColumns = @JoinColumn(name = "ADMIN_PERMISSION_ID", referencedColumnName = "ADMIN_PERMISSION_ID"), inverseJoinColumns = @JoinColumn(name = "ADMIN_ROLE_ID", referencedColumnName = "ADMIN_ROLE_ID"))
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-    @BatchSize(size = 50)
-    protected Set<AdminRole> allRoles= new HashSet<AdminRole>();
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#getAllRoles()
+   */
+  @Override public Set<AdminRole> getAllRoles() {
+    return allRoles;
+  }
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = AdminUserImpl.class)
-    @JoinTable(name = "BLC_ADMIN_USER_PERMISSION_XREF", joinColumns = @JoinColumn(name = "ADMIN_PERMISSION_ID", referencedColumnName = "ADMIN_PERMISSION_ID"), inverseJoinColumns = @JoinColumn(name = "ADMIN_USER_ID", referencedColumnName = "ADMIN_USER_ID"))
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-    @BatchSize(size = 50)
-    protected Set<AdminUser> allUsers= new HashSet<AdminUser>();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @OneToMany(mappedBy = "adminPermission", targetEntity = AdminPermissionQualifiedEntityImpl.class, cascade = {CascadeType.ALL})
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-    @BatchSize(size = 50)
-    protected List<AdminPermissionQualifiedEntity> qualifiedEntities = new ArrayList<AdminPermissionQualifiedEntity>();
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#getAllUsers()
+   */
+  @Override public Set<AdminUser> getAllUsers() {
+    return allUsers;
+  }
 
-    @Override
-    public Long getId() {
-        return id;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#getDescription()
+   */
+  @Override public String getDescription() {
+    return description;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#getQualifiedEntities()
+   */
+  @Override public List<AdminPermissionQualifiedEntity> getQualifiedEntities() {
+    return qualifiedEntities;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#getType()
+   */
+  @Override public PermissionType getType() {
+    return PermissionType.getInstance(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#setAllRoles(java.util.Set)
+   */
+  @Override public void setAllRoles(Set<AdminRole> allRoles) {
+    this.allRoles = allRoles;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#setAllUsers(java.util.Set)
+   */
+  @Override public void setAllUsers(Set<AdminUser> allUsers) {
+    this.allUsers = allUsers;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#setDescription(java.lang.String)
+   */
+  @Override public void setDescription(String description) {
+    this.description = description;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#setQualifiedEntities(java.util.List)
+   */
+  @Override public void setQualifiedEntities(List<AdminPermissionQualifiedEntity> qualifiedEntities) {
+    this.qualifiedEntities = qualifiedEntities;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminPermission#setType(org.broadleafcommerce.openadmin.server.security.service.type.PermissionType)
+   */
+  @Override public void setType(PermissionType type) {
+    if (type != null) {
+      this.type = type.getType();
     }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public Set<AdminRole> getAllRoles() {
-        return allRoles;
-    }
-
-    @Override
-    public void setAllRoles(Set<AdminRole> allRoles) {
-        this.allRoles = allRoles;
-    }
-
-    @Override
-    public PermissionType getType() {
-        return PermissionType.getInstance(type);
-    }
-
-    @Override
-    public void setType(PermissionType type) {
-        if (type != null) {
-            this.type = type.getType();
-        }
-    }
-
-    @Override
-    public List<AdminPermissionQualifiedEntity> getQualifiedEntities() {
-        return qualifiedEntities;
-    }
-
-    @Override
-    public void setQualifiedEntities(List<AdminPermissionQualifiedEntity> qualifiedEntities) {
-        this.qualifiedEntities = qualifiedEntities;
-    }
-
-    @Override
-    public Set<AdminUser> getAllUsers() {
-        return allUsers;
-    }
-
-    @Override
-    public void setAllUsers(Set<AdminUser> allUsers) {
-        this.allUsers = allUsers;
-    }
-
-    public void checkCloneable(AdminPermission adminPermission) throws CloneNotSupportedException, SecurityException, NoSuchMethodException {
-        Method cloneMethod = adminPermission.getClass().getMethod("clone", new Class[]{});
-        if (cloneMethod.getDeclaringClass().getName().startsWith("org.broadleafcommerce") && !adminPermission.getClass().getName().startsWith("org.broadleafcommerce")) {
-            //subclass is not implementing the clone method
-            throw new CloneNotSupportedException("Custom extensions and implementations should implement clone.");
-        }
-    }
-
-    @Override
-    public AdminPermission clone() {
-        AdminPermission clone;
-        try {
-            clone = (AdminPermission) Class.forName(this.getClass().getName()).newInstance();
-            try {
-                checkCloneable(clone);
-            } catch (CloneNotSupportedException e) {
-                LOG.warn("Clone implementation missing in inheritance hierarchy outside of Broadleaf: " + clone.getClass().getName(), e);
-            }
-            clone.setId(id);
-            clone.setName(name);
-            clone.setType(getType());
-            clone.setDescription(description);
-
-            //don't clone the allUsers collection, as it would cause a recursion
-            //don't clone the allRoles collection, as it would cause a recursion
-
-            if (qualifiedEntities != null) {
-                for (AdminPermissionQualifiedEntity qualifiedEntity : qualifiedEntities) {
-                    AdminPermissionQualifiedEntity qualifiedEntityClone = qualifiedEntity.clone();
-                    qualifiedEntityClone.setAdminPermission(clone);
-                    clone.getQualifiedEntities().add(qualifiedEntityClone);
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return clone;
-    }
-}
+  }
+} // end class AdminPermissionImpl

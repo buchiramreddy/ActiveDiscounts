@@ -18,14 +18,57 @@ package org.broadleafcommerce.core.rating.dao;
 
 import org.broadleafcommerce.core.rating.domain.ReviewDetail;
 import org.broadleafcommerce.core.rating.domain.ReviewFeedback;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ReviewDetailDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   reviewId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewDetail readReviewDetailById(Long reviewId);
 
-    ReviewDetail readReviewDetailById(Long reviewId);
-    ReviewDetail saveReviewDetail(ReviewDetail reviewDetail);
-    ReviewDetail create();
-    ReviewFeedback createFeedback();
-    ReviewDetail readReviewByCustomerAndItem(Customer customer, String itemId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   reviewDetail  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewDetail saveReviewDetail(ReviewDetail reviewDetail);
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewDetail create();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewFeedback createFeedback();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   * @param   itemId    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewDetail readReviewByCustomerAndItem(Customer customer, String itemId);
+
+} // end interface ReviewDetailDao

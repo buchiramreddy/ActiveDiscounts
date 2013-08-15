@@ -18,50 +18,117 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import java.io.Serializable;
 
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class FieldDTO implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected String label;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String name;
+  /** DOCUMENT ME! */
+  protected String label;
 
-    protected String operators;
+  /** DOCUMENT ME! */
+  protected String name;
 
-    protected String options;
+  /** DOCUMENT ME! */
+  protected String operators;
 
-    public String getLabel() {
-        return label;
-    }
+  /** DOCUMENT ME! */
+  protected String options;
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getName() {
-        return name;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getLabel() {
+    return label;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getOperators() {
-        return operators;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
 
-    public void setOperators(String operators) {
-        this.operators = operators;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getOptions() {
-        return options;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOperators() {
+    return operators;
+  }
 
-    public void setOptions(String options) {
-        this.options = options;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOptions() {
+    return options;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  label  DOCUMENT ME!
+   */
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  operators  DOCUMENT ME!
+   */
+  public void setOperators(String operators) {
+    this.operators = operators;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  options  DOCUMENT ME!
+   */
+  public void setOptions(String options) {
+    this.options = options;
+  }
+} // end class FieldDTO

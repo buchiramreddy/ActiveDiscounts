@@ -16,62 +16,96 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.io.Serializable;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
-@Embeddable
-public class CategoryProductXrefPK implements Serializable {
+@Embeddable public class CategoryProductXrefPK implements Serializable {
+  /** The Constant serialVersionUID. */
+  private static final long serialVersionUID = 1L;
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "CATEGORY_ID")
+  @ManyToOne(
+    targetEntity = CategoryImpl.class,
+    optional     = false
+  )
+  protected Category category = new CategoryImpl();
 
-    @ManyToOne(targetEntity = CategoryImpl.class, optional=false)
-    @JoinColumn(name = "CATEGORY_ID")
-    protected Category category = new CategoryImpl();
+  /** The product. */
+  @JoinColumn(name = "PRODUCT_ID")
+  @ManyToOne(
+    targetEntity = ProductImpl.class,
+    optional     = false
+  )
+  protected Product product = new ProductImpl();
 
-    /** The product. */
-    @ManyToOne(targetEntity = ProductImpl.class, optional=false)
-    @JoinColumn(name = "PRODUCT_ID")
-    protected Product product = new ProductImpl();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Category getCategory() {
+    return category;
+  }
 
-    public Category getCategory() {
-        return category;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Product getProduct() {
+    return product;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  product  DOCUMENT ME!
+   */
+  public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    return category.hashCode() + product.hashCode();
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (obj instanceof CategoryProductXrefPK) {
+      CategoryProductXrefPK that = (CategoryProductXrefPK) obj;
+
+      return new EqualsBuilder().append(category.getId(), that.category.getId()).append(product.getId(),
+          that.product.getId()).build();
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+    return false;
+  }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    @Override
-    public int hashCode() {
-        return category.hashCode() + product.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof CategoryProductXrefPK) {
-            CategoryProductXrefPK that = (CategoryProductXrefPK) obj;
-            return new EqualsBuilder()
-                .append(category.getId(), that.category.getId())
-                .append(product.getId(), that.product.getId())
-                .build();
-        }
-        return false;
-    }
-    
-}
+} // end class CategoryProductXrefPK

@@ -16,41 +16,43 @@
 
 package org.broadleafcommerce.core.search.redirect.service;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.search.redirect.dao.SearchRedirectDao;
 import org.broadleafcommerce.core.search.redirect.domain.SearchRedirect;
+
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 
 /**
  * Created by ppatel.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Service("blSearchRedirectService")
 public class SearchRedirectServiceImpl implements SearchRedirectService {
+  /** DOCUMENT ME! */
+  @Resource(name = "blSearchRedirectDao")
+  protected SearchRedirectDao SearchRedirectDao;
 
-  
-    @Resource(name = "blSearchRedirectDao")
-    protected SearchRedirectDao SearchRedirectDao;
 
+  /**
+   * Checks the passed in URL to determine if there is a matching SearchRedirect. Returns null if no handler was found.
+   *
+   * @param   uri  DOCUMENT ME!
+   *
+   * @return  checks the passed in URL to determine if there is a matching SearchRedirect.
+   */
+  @Override public SearchRedirect findSearchRedirectBySearchTerm(String uri) {
+    SearchRedirect SearchRedirect = SearchRedirectDao.findSearchRedirectBySearchTerm(uri);
 
-    /**
-     * Checks the passed in URL to determine if there is a matching
-     * SearchRedirect. Returns null if no handler was found.
-     * 
-     * @param uri
-     * @return
-     */
-    @Override
-    public SearchRedirect findSearchRedirectBySearchTerm(String uri) {
-
-        SearchRedirect SearchRedirect = SearchRedirectDao
-                .findSearchRedirectBySearchTerm(uri);
-        if (SearchRedirect != null) {
-            return SearchRedirect;
-        } else {
-            return null;
-        }
-
+    if (SearchRedirect != null) {
+      return SearchRedirect;
+    } else {
+      return null;
     }
 
-}
+  }
+
+} // end class SearchRedirectServiceImpl

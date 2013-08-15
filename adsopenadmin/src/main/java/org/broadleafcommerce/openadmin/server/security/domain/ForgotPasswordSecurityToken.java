@@ -17,70 +17,104 @@
 package org.broadleafcommerce.openadmin.server.security.domain;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
+
 /**
- * 
- * @author bpolster
+ * DOCUMENT ME!
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface ForgotPasswordSecurityToken extends Serializable {
-    
-    /**
-     * Returns the security token.
-     * @return
-     */
-    public String getToken();
-    
-    /**
-     * Sets the security token.
-     * @return
-     */
-    public void setToken(String token);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Date the token was created
-     * @return
-     */
-    public Date getCreateDate();
+  /**
+   * Return the userId that this token was created for.
+   *
+   * @return  return the userId that this token was created for.
+   */
+  Long getAdminUserId();
 
-    /**
-     * Set the generation date for the token.
-     * @return
-     */
-    public void setCreateDate(Date date);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Date the token was used to reset the password.
-     * @return
-     */
-    public Date getTokenUsedDate();
+  /**
+   * Date the token was created.
+   *
+   * @return  date the token was created.
+   */
+  Date getCreateDate();
 
-    /**
-     * Set the date the token was used to reset the password.
-     * @return
-     */
-    public void setTokenUsedDate(Date date);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Return the userId that this token was created for.
-     * 
-     * @return
-     */
-    public Long getAdminUserId();
+  /**
+   * Returns the security token.
+   *
+   * @return  the security token.
+   */
+  String getToken();
 
-    /**
-     * Store the userId that this token is associated with.
-     */
-    public void setAdminUserId(Long adminUserId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns true if the token has already been used.
-     */
-    public boolean isTokenUsedFlag();
+  /**
+   * Date the token was used to reset the password.
+   *
+   * @return  date the token was used to reset the password.
+   */
+  Date getTokenUsedDate();
 
-    /**
-     * Sets the token used flag. 
-     */
-    public void setTokenUsedFlag(boolean tokenUsed);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns true if the token has already been used.
+   *
+   * @return  true if the token has already been used.
+   */
+  boolean isTokenUsedFlag();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Store the userId that this token is associated with.
+   *
+   * @param  adminUserId  DOCUMENT ME!
+   */
+  void setAdminUserId(Long adminUserId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Set the generation date for the token.
+   *
+   * @param  date  DOCUMENT ME!
+   */
+  void setCreateDate(Date date);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the security token.
+   *
+   * @param  token  DOCUMENT ME!
+   */
+  void setToken(String token);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Set the date the token was used to reset the password.
+   *
+   * @param  date  DOCUMENT ME!
+   */
+  void setTokenUsedDate(Date date);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the token used flag.
+   *
+   * @param  tokenUsed  DOCUMENT ME!
+   */
+  void setTokenUsedFlag(boolean tokenUsed);
+} // end interface ForgotPasswordSecurityToken

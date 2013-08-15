@@ -17,28 +17,30 @@
 package org.broadleafcommerce.core.pricing.service.fulfillment;
 
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 
+
 /**
- * This can be used by various third-party fulfillment pricing services in order to
- * resolve a location that items will be shipped from in order to properly calculate the
- * cost of fulfilling that particular fulfillment group.
- * 
- * <p>Note: the bean name in XML should be blFulfillmentLocationResolver
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.SimpleFulfillmentLocationResolver}
+ * This can be used by various third-party fulfillment pricing services in order to resolve a location that items will
+ * be shipped from in order to properly calculate the cost of fulfilling that particular fulfillment group.
+ *
+ * <p>Note: the bean name in XML should be blFulfillmentLocationResolver</p>
+ *
+ * @author   Phillip Verheyden
+ * @see      {@link org.broadleafcommerce.core.pricing.service.fulfillment.SimpleFulfillmentLocationResolver}
+ * @version  $Revision$, $Date$
  */
 public interface FulfillmentLocationResolver {
-
-    /**
-     * This method should give an {@link org.broadleafcommerce.profile.core.domain.Address} that a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} will
-     * be fulfilled from. Implementations could store this information in the database or integrate
-     * with an existing warehouse solution.
-     * 
-     * @param group
-     * @return the {@link org.broadleafcommerce.profile.core.domain.Address} that <b>group</b> should be fulfilled from
-     */
-    public Address resolveLocationForFulfillmentGroup(FulfillmentGroup group);
+  /**
+   * This method should give an {@link org.broadleafcommerce.profile.core.domain.Address} that a particular
+   * {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup} will be fulfilled from. Implementations could
+   * store this information in the database or integrate with an existing warehouse solution.
+   *
+   * @param   group  DOCUMENT ME!
+   *
+   * @return  the {@link org.broadleafcommerce.profile.core.domain.Address} that <b>group</b> should be fulfilled from
+   */
+  Address resolveLocationForFulfillmentGroup(FulfillmentGroup group);
 
 }

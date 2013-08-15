@@ -17,10 +17,21 @@
 package org.broadleafcommerce.openadmin.server.service.handler;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface CustomPersistenceHandlerFilter {
-    
-    public boolean shouldUseHandler(String handlerClassName);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   handlerClassName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean shouldUseHandler(String handlerClassName);
 
 }

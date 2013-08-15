@@ -16,46 +16,61 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.SkuAttribute;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.catalog.domain.SkuAttribute;
+
+
 /**
- * This is a JAXB wrapper for SkuAttribute
- * <p/>
- * User: Kelly Tisdell
- * Date: 4/10/12
+ * This is a JAXB wrapper for SkuAttribute.
+ *
+ * <p>User: Kelly Tisdell Date: 4/10/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "skuAttribute")
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class SkuAttributeWrapper extends BaseWrapper implements APIWrapper<SkuAttribute>{
+@XmlRootElement(name = "skuAttribute")
+public class SkuAttributeWrapper extends BaseWrapper implements APIWrapper<SkuAttribute> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected String attributeName;
 
-    @XmlElement
-    protected Long skuId;
+  /** DOCUMENT ME! */
+  @XmlElement protected String attributeValue;
 
-    @XmlElement
-    protected String attributeName;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected String attributeValue;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long skuId;
 
-    @Override
-    public void wrapDetails(SkuAttribute model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.skuId = model.getSku().getId();
-        this.attributeName = model.getName();
-        this.attributeValue = model.getValue();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void wrapSummary(SkuAttribute model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.SkuAttribute,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(SkuAttribute model, HttpServletRequest request) {
+    this.id             = model.getId();
+    this.skuId          = model.getSku().getId();
+    this.attributeName  = model.getName();
+    this.attributeValue = model.getValue();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.SkuAttribute,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(SkuAttribute model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class SkuAttributeWrapper

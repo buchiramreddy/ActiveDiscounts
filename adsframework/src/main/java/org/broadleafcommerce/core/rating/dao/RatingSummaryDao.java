@@ -16,20 +16,74 @@
 
 package org.broadleafcommerce.core.rating.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.rating.domain.RatingDetail;
 import org.broadleafcommerce.core.rating.domain.RatingSummary;
 import org.broadleafcommerce.core.rating.domain.ReviewDetail;
 import org.broadleafcommerce.core.rating.service.type.RatingType;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface RatingSummaryDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemId  DOCUMENT ME!
+   * @param   type    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RatingSummary readRatingSummary(String itemId, RatingType type);
 
-    RatingSummary readRatingSummary(String itemId, RatingType type);
-    List<RatingSummary> readRatingSummaries(List<String> itemIds, RatingType type);
-    RatingSummary saveRatingSummary(RatingSummary summary);
-    void deleteRatingSummary(RatingSummary summary);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   itemIds  DOCUMENT ME!
+   * @param   type     DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<RatingSummary> readRatingSummaries(List<String> itemIds, RatingType type);
 
-    RatingDetail readRating(Long customerId, Long ratingSummaryId);
-    ReviewDetail readReview(Long customerId, Long ratingSummaryId);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   summary  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RatingSummary saveRatingSummary(RatingSummary summary);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  summary  DOCUMENT ME!
+   */
+  void deleteRatingSummary(RatingSummary summary);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId       DOCUMENT ME!
+   * @param   ratingSummaryId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RatingDetail readRating(Long customerId, Long ratingSummaryId);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId       DOCUMENT ME!
+   * @param   ratingSummaryId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewDetail readReview(Long customerId, Long ratingSummaryId);
+} // end interface RatingSummaryDao

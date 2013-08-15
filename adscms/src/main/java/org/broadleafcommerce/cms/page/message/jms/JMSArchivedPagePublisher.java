@@ -16,56 +16,92 @@
 
 package org.broadleafcommerce.cms.page.message.jms;
 
-import org.broadleafcommerce.cms.page.domain.Page;
-import org.broadleafcommerce.cms.page.message.ArchivedPagePublisher;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import org.broadleafcommerce.cms.page.domain.Page;
+import org.broadleafcommerce.cms.page.message.ArchivedPagePublisher;
+
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
+
+
 /**
- * JMS implementation of ArchivedPagePublisher.
- * Intended usage is to notify other VMs that a pageDTO needs to be
- * evicted from cache.   This occurs when the page is marked as
- * archived - typically because a replacemet page has been
- * promoted to production.
+ * JMS implementation of ArchivedPagePublisher. Intended usage is to notify other VMs that a pageDTO needs to be evicted
+ * from cache. This occurs when the page is marked as archived - typically because a replacemet page has been promoted
+ * to production.
  *
- * Utilizes Spring JMS template pattern where template and destination
- * are configured via Spring.
+ * <p>Utilizes Spring JMS template pattern where template and destination are configured via Spring.</p>
  *
- * Created by bpolster.
+ * <p>Created by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class JMSArchivedPagePublisher implements ArchivedPagePublisher {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private JmsTemplate archivePageTemplate;
+  private Destination archivePageDestination;
 
-    private Destination archivePageDestination;
+  private JmsTemplate archivePageTemplate;
 
-    @Override
-    public void processPageArchive(final Page page, final String basePageKey) {
-        archivePageTemplate.send(archivePageDestination, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                return session.createTextMessage(basePageKey);
-            }
-        });
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public JmsTemplate getArchivePageTemplate() {
-        return archivePageTemplate;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Destination getArchivePageDestination() {
+    return archivePageDestination;
+  }
 
-    public void setArchivePageTemplate(JmsTemplate archivePageTemplate) {
-        this.archivePageTemplate = archivePageTemplate;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Destination getArchivePageDestination() {
-        return archivePageDestination;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public JmsTemplate getArchivePageTemplate() {
+    return archivePageTemplate;
+  }
 
-    public void setArchivePageDestination(Destination archivePageDestination) {
-        this.archivePageDestination = archivePageDestination;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.message.ArchivedPagePublisher#processPageArchive(org.broadleafcommerce.cms.page.domain.Page,
+   *       java.lang.String)
+   */
+  @Override public void processPageArchive(final Page page, final String basePageKey) {
+    archivePageTemplate.send(archivePageDestination, new MessageCreator() {
+        @Override public Message createMessage(Session session) throws JMSException {
+          return session.createTextMessage(basePageKey);
+        }
+      });
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archivePageDestination  DOCUMENT ME!
+   */
+  public void setArchivePageDestination(Destination archivePageDestination) {
+    this.archivePageDestination = archivePageDestination;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archivePageTemplate  DOCUMENT ME!
+   */
+  public void setArchivePageTemplate(JmsTemplate archivePageTemplate) {
+    this.archivePageTemplate = archivePageTemplate;
+  }
+} // end class JMSArchivedPagePublisher

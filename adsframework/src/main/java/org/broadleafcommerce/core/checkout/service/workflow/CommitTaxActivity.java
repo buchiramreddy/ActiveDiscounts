@@ -16,36 +16,44 @@
 
 package org.broadleafcommerce.core.checkout.service.workflow;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.TaxService;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
 /**
- * This is an optional activity to allow a committal of taxes to a tax sub system. Many tax 
- * providers store tax details for reference, debugging, reporting, and reconciliation.
- * 
- * @author Kelly Tisdell
+ * This is an optional activity to allow a committal of taxes to a tax sub system. Many tax providers store tax details
+ * for reference, debugging, reporting, and reconciliation.
  *
+ * @author   Kelly Tisdell
+ * @version  $Revision$, $Date$
  */
 public class CommitTaxActivity extends BaseActivity<CheckoutContext> {
-    
-    @Resource(name = "blTaxService")
-    protected TaxService taxService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blTaxService")
+  protected TaxService taxService;
 
-    public CommitTaxActivity() {
-        super();
-        //We can automatically register a rollback handler because the state will be in the process context.
-        super.setAutomaticallyRegisterRollbackHandler(true);
-    }
+  /**
+   * Creates a new CommitTaxActivity object.
+   */
+  public CommitTaxActivity() {
+    super();
 
-    @Override
-    public CheckoutContext execute(CheckoutContext context) throws Exception {
-        Order order = context.getSeedData().getOrder();
-        order = taxService.commitTaxForOrder(order);
-        context.getSeedData().setOrder(order);
-        return context;
-    }
+    // We can automatically register a rollback handler because the state will be in the process context.
+    super.setAutomaticallyRegisterRollbackHandler(true);
+  }
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.checkout.service.workflow.CheckoutContext)
+   */
+  @Override public CheckoutContext execute(CheckoutContext context) throws Exception {
+    Order order = context.getSeedData().getOrder();
+    order = taxService.commitTaxForOrder(order);
+    context.getSeedData().setOrder(order);
+
+    return context;
+  }
+
+} // end class CommitTaxActivity

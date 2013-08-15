@@ -18,40 +18,92 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import java.io.Serializable;
 
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class OperatorDTO implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected String label;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String name;
+  /** DOCUMENT ME! */
+  protected String fieldType;
 
-    protected String fieldType;
+  /** DOCUMENT ME! */
+  protected String label;
 
-    public String getLabel() {
-        return label;
-    }
+  /** DOCUMENT ME! */
+  protected String name;
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getName() {
-        return name;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFieldType() {
+    return fieldType;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFieldType() {
-        return fieldType;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getLabel() {
+    return label;
+  }
 
-    public void setFieldType(String fieldType) {
-        this.fieldType = fieldType;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldType  DOCUMENT ME!
+   */
+  public void setFieldType(String fieldType) {
+    this.fieldType = fieldType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  label  DOCUMENT ME!
+   */
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+} // end class OperatorDTO

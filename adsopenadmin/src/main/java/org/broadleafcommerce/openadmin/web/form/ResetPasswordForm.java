@@ -18,55 +18,134 @@ package org.broadleafcommerce.openadmin.web.form;
 
 import java.io.Serializable;
 
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class ResetPasswordForm implements Serializable {
-    private static final long serialVersionUID = 1L;
-    
-    private String username;
-    private String token;
-    private String oldPassword;
-    private String password;
-    private String confirmPassword;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public String getUsername() {
-        return username;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getToken() {
-        return token;
-    }
+  private String confirmPassword;
+  private String oldPassword;
+  private String password;
+  private String token;
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  private String username;
 
-    public String getPassword() {
-        return password;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getConfirmPassword() {
+    return confirmPassword;
+  }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOldPassword() {
+    return oldPassword;
+  }
 
-    public String getOldPassword() {
-        return oldPassword;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getToken() {
+    return token;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  confirmPassword  DOCUMENT ME!
+   */
+  public void setConfirmPassword(String confirmPassword) {
+    this.confirmPassword = confirmPassword;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  oldPassword  DOCUMENT ME!
+   */
+  public void setOldPassword(String oldPassword) {
+    this.oldPassword = oldPassword;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  password  DOCUMENT ME!
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  token  DOCUMENT ME!
+   */
+  public void setToken(String token) {
+    this.token = token;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  username  DOCUMENT ME!
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
+} // end class ResetPasswordForm

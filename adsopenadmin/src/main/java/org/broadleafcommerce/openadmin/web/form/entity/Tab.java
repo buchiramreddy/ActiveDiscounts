@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2008-2013 the original author or authors.
  *
@@ -17,107 +16,202 @@
 
 package org.broadleafcommerce.openadmin.web.form.entity;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
+import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class Tab {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String title;
-    protected Integer order;
+  /** DOCUMENT ME! */
+  protected Integer order;
 
-    Set<FieldGroup> fieldGroups = new TreeSet<FieldGroup>(new Comparator<FieldGroup>() {
-        @Override
-        public int compare(FieldGroup o1, FieldGroup o2) {
-            return new CompareToBuilder()
-                    .append(o1.getOrder(), o2.getOrder())
-                    .append(o1.getTitle(), o2.getTitle())
-                    .toComparison();
+  /** DOCUMENT ME! */
+  protected String title;
+
+  /** DOCUMENT ME! */
+  Set<FieldGroup> fieldGroups = new TreeSet<FieldGroup>(new Comparator<FieldGroup>() {
+        @Override public int compare(FieldGroup o1, FieldGroup o2) {
+          return new CompareToBuilder().append(o1.getOrder(), o2.getOrder()).append(o1.getTitle(), o2.getTitle())
+            .toComparison();
         }
-    });
+      });
 
-    Set<ListGrid> listGrids = new TreeSet<ListGrid>(new Comparator<ListGrid>() {
-        @Override
-        public int compare(ListGrid o1, ListGrid o2) {
-            return new CompareToBuilder()
-                    .append(o1.getOrder(), o2.getOrder())
-                    .append(o1.getSubCollectionFieldName(), o2.getSubCollectionFieldName())
-                    .toComparison();
+  /** DOCUMENT ME! */
+  Set<ListGrid> listGrids = new TreeSet<ListGrid>(new Comparator<ListGrid>() {
+        @Override public int compare(ListGrid o1, ListGrid o2) {
+          return new CompareToBuilder().append(o1.getOrder(), o2.getOrder()).append(o1.getSubCollectionFieldName(),
+              o2.getSubCollectionFieldName()).toComparison();
         }
-    });
-    
-    public Boolean getIsVisible() {
-        if (listGrids.size() > 0) {
-            return true;
-        }
+      });
 
-        for (FieldGroup fg : fieldGroups) {
-            if (fg.getIsVisible()) {
-                return true;
-            }
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        return false;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   groupTitle  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldGroup findGroup(String groupTitle) {
+    for (FieldGroup fg : fieldGroups) {
+      if ((fg.getTitle() != null) && fg.getTitle().equals(groupTitle)) {
+        return fg;
+      }
     }
 
-    public FieldGroup findGroup(String groupTitle) {
-        for (FieldGroup fg : fieldGroups) {
-            if (fg.getTitle() != null && fg.getTitle().equals(groupTitle)) {
-                return fg;
-            }
-        }
-        return null;
-    }
-    
-    public List<Field> getFields() {
-        List<Field> fields = new ArrayList<Field>();
-        for (FieldGroup fg : getFieldGroups()) {
-            fields.addAll(fg.getFields());
-        }
-        return fields;
-    }
-    
-    public void removeListGrid(ListGrid listGrid) {
-        listGrids.remove(listGrid);
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Set<FieldGroup> getFieldGroups() {
+    return fieldGroups;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Field> getFields() {
+    List<Field> fields = new ArrayList<Field>();
+
+    for (FieldGroup fg : getFieldGroups()) {
+      fields.addAll(fg.getFields());
     }
 
-    public String getTitle() {
-        return title;
+    return fields;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getIsVisible() {
+    if (listGrids.size() > 0) {
+      return true;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    for (FieldGroup fg : fieldGroups) {
+      if (fg.getIsVisible()) {
+        return true;
+      }
     }
 
-    public Integer getOrder() {
-        return order;
-    }
+    return false;
+  }
 
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Set<FieldGroup> getFieldGroups() {
-        return fieldGroups;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Set<ListGrid> getListGrids() {
+    return listGrids;
+  }
 
-    public void setFieldGroups(Set<FieldGroup> fieldGroups) {
-        this.fieldGroups = fieldGroups;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Set<ListGrid> getListGrids() {
-        return listGrids;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getOrder() {
+    return order;
+  }
 
-    public void setListGrids(Set<ListGrid> listGrids) {
-        this.listGrids = listGrids;
-    }
-    
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
 
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getTitle() {
+    return title;
+  }
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  listGrid  DOCUMENT ME!
+   */
+  public void removeListGrid(ListGrid listGrid) {
+    listGrids.remove(listGrid);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldGroups  DOCUMENT ME!
+   */
+  public void setFieldGroups(Set<FieldGroup> fieldGroups) {
+    this.fieldGroups = fieldGroups;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  listGrids  DOCUMENT ME!
+   */
+  public void setListGrids(Set<ListGrid> listGrids) {
+    this.listGrids = listGrids;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  title  DOCUMENT ME!
+   */
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+} // end class Tab

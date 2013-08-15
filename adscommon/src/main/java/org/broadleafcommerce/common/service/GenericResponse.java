@@ -19,25 +19,50 @@ package org.broadleafcommerce.common.service;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class GenericResponse {
-    
-    private List<String> errorCodes = new ArrayList<String>();
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns true if
-     * @return
-     */
-    public boolean getHasErrors() {
-        return errorCodes.size() > 0;
-    }
+  private List<String> errorCodes = new ArrayList<String>();
 
-    public List<String> getErrorCodesList() {
-        return errorCodes;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void addErrorCode(String errorCode) {
-        if (errorCode != null) {
-            errorCodes.add(errorCode);
-        }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  errorCode  DOCUMENT ME!
+   */
+  public void addErrorCode(String errorCode) {
+    if (errorCode != null) {
+      errorCodes.add(errorCode);
     }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getErrorCodesList() {
+    return errorCodes;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns true if.
+   *
+   * @return  true if.
+   */
+  public boolean getHasErrors() {
+    return errorCodes.size() > 0;
+  }
+} // end class GenericResponse

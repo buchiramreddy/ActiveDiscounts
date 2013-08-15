@@ -16,76 +16,102 @@
 
 package org.broadleafcommerce.core.catalog.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.core.catalog.domain.Sku;
-import org.broadleafcommerce.core.catalog.domain.SkuFee;
-import org.broadleafcommerce.core.catalog.domain.SkuImpl;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.core.catalog.domain.Sku;
+import org.broadleafcommerce.core.catalog.domain.SkuFee;
+import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
  * {@inheritDoc}
  *
- * @author Jeff Fischer
+ * @author  Jeff Fischer
  */
 @Repository("blSkuDao")
 public class SkuDaoImpl implements SkuDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName="blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#save(org.broadleafcommerce.core.catalog.domain.Sku)
+   */
+  @Override public Sku save(Sku sku) {
+    return em.merge(sku);
+  }
 
-    @Override
-    public Sku save(Sku sku) {
-        return em.merge(sku);
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#saveSkuFee(org.broadleafcommerce.core.catalog.domain.SkuFee)
+   */
+  @Override public SkuFee saveSkuFee(SkuFee fee) {
+    return em.merge(fee);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#readSkuById(java.lang.Long)
+   */
+  @Override public Sku readSkuById(Long skuId) {
+    return (Sku) em.find(SkuImpl.class, skuId);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#readFirstSku()
+   */
+  @Override public Sku readFirstSku() {
+    TypedQuery<Sku> query = em.createNamedQuery("BC_READ_FIRST_SKU", Sku.class);
+
+    return query.getSingleResult();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#readAllSkus()
+   */
+  @Override public List<Sku> readAllSkus() {
+    TypedQuery<Sku> query = em.createNamedQuery("BC_READ_ALL_SKUS", Sku.class);
+
+    return query.getResultList();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#readSkusById(java.util.List)
+   */
+  @Override public List<Sku> readSkusById(List<Long> ids) {
+    TypedQuery<Sku> query = em.createNamedQuery("BC_READ_SKUS_BY_ID", Sku.class);
+    query.setParameter("skuIds", ids);
+
+    return query.getResultList();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#delete(org.broadleafcommerce.core.catalog.domain.Sku)
+   */
+  @Override public void delete(Sku sku) {
+    if (!em.contains(sku)) {
+      sku = readSkuById(sku.getId());
     }
-    
-    @Override
-    public SkuFee saveSkuFee(SkuFee fee) {
-        return em.merge(fee);
-    }
 
-    @Override
-    public Sku readSkuById(Long skuId) {
-        return (Sku) em.find(SkuImpl.class, skuId);
-    }
+    em.remove(sku);
+  }
 
-    @Override
-    public Sku readFirstSku() {
-        TypedQuery<Sku> query = em.createNamedQuery("BC_READ_FIRST_SKU", Sku.class);
-        return query.getSingleResult();
-    }
-
-    @Override
-    public List<Sku> readAllSkus() {
-        TypedQuery<Sku> query = em.createNamedQuery("BC_READ_ALL_SKUS", Sku.class);
-        return query.getResultList();
-    }
-
-    @Override
-    public List<Sku> readSkusById(List<Long> ids) {
-        TypedQuery<Sku> query = em.createNamedQuery("BC_READ_SKUS_BY_ID", Sku.class);
-        query.setParameter("skuIds", ids);
-        return query.getResultList();
-    }
-
-    @Override
-    public void delete(Sku sku){
-        if (!em.contains(sku)) {
-            sku = readSkuById(sku.getId());
-        }
-        em.remove(sku);     
-    }
-
-    @Override
-    public Sku create() {
-        return (Sku) entityConfiguration.createEntityInstance(Sku.class.getName());
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.catalog.dao.SkuDao#create()
+   */
+  @Override public Sku create() {
+    return (Sku) entityConfiguration.createEntityInstance(Sku.class.getName());
+  }
+} // end class SkuDaoImpl

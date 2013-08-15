@@ -16,12 +16,6 @@
 
 package org.broadleafcommerce.cms.field.domain;
 
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,224 +25,379 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
+
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blCMSElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_FLD_DEF")
-@Cache(usage= CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blCMSElements")
 public class FieldDefinitionImpl implements FieldDefinition {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "FieldDefinitionId")
-    @GenericGenerator(
-        name="FieldDefinitionId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FieldDefinitionImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.field.domain.FieldDefinitionImpl")
-        }
-    )
-    @Column(name = "FLD_DEF_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column (name = "NAME")
-    protected String name;
+  /** DOCUMENT ME! */
+  @Column(name = "COLUMN_WIDTH")
+  protected String columnWidth;
 
-    @Column (name = "FRIENDLY_NAME")
-    protected String friendlyName;
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "FLD_ENUM_ID")
+  @ManyToOne(targetEntity = FieldEnumerationImpl.class)
+  protected FieldEnumeration fieldEnumeration;
 
-    @Column (name = "FLD_TYPE")
-    protected String fieldType;
+  /** DOCUMENT ME! */
+  @Column(name = "FLD_TYPE")
+  protected String fieldType;
 
-    @Column (name = "SECURITY_LEVEL")
-    protected String securityLevel;
+  /** DOCUMENT ME! */
+  @Column(name = "FRIENDLY_NAME")
+  protected String friendlyName;
 
-    @Column (name = "HIDDEN_FLAG")
-    protected Boolean hiddenFlag = false;
-
-    @Column (name = "VLDTN_REGEX")
-    protected String validationRegEx;
-
-    @Column (name = "VLDTN_ERROR_MSSG_KEY")
-    protected String validationErrorMesageKey;
-
-    @Column (name = "MAX_LENGTH")
-    protected Integer maxLength;
-
-    @Column (name = "COLUMN_WIDTH")
-    protected String columnWidth;
-
-    @Column (name = "TEXT_AREA_FLAG")
-    protected Boolean textAreaFlag = false;
-
-    @ManyToOne (targetEntity = FieldEnumerationImpl.class)
-    @JoinColumn(name = "FLD_ENUM_ID")
-    protected FieldEnumeration fieldEnumeration;
-
-    @Column (name = "ALLOW_MULTIPLES")
-    protected Boolean allowMultiples = false;
-
-    @ManyToOne(targetEntity = FieldGroupImpl.class)
-    @JoinColumn(name = "FLD_GROUP_ID")
-    protected FieldGroup fieldGroup;
-
-    @Column(name="FLD_ORDER")
-    protected int fieldOrder;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "FLD_DEF_ID")
+  @GeneratedValue(generator = "FieldDefinitionId")
+  @GenericGenerator(
+    name       = "FieldDefinitionId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "FieldDefinitionImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.field.domain.FieldDefinitionImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "NAME")
+  protected String name;
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "ALLOW_MULTIPLES")
+  protected Boolean allowMultiples = false;
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "FLD_GROUP_ID")
+  @ManyToOne(targetEntity = FieldGroupImpl.class)
+  protected FieldGroup fieldGroup;
 
-    @Override
-    public SupportedFieldType getFieldType() {
-        return fieldType!=null?SupportedFieldType.valueOf(fieldType):null;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "FLD_ORDER")
+  protected int fieldOrder;
 
-    @Override
-    public void setFieldType(SupportedFieldType fieldType) {
-        this.fieldType = fieldType!=null?fieldType.toString():null;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "HIDDEN_FLAG")
+  protected Boolean hiddenFlag = false;
 
-    @Override
-    public String getSecurityLevel() {
-        return securityLevel;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "MAX_LENGTH")
+  protected Integer maxLength;
 
-    @Override
-    public void setSecurityLevel(String securityLevel) {
-        this.securityLevel = securityLevel;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "SECURITY_LEVEL")
+  protected String securityLevel;
 
-    @Override
-    public Boolean getHiddenFlag() {
-        return hiddenFlag;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "TEXT_AREA_FLAG")
+  protected Boolean textAreaFlag = false;
 
-    @Override
-    public void setHiddenFlag(Boolean hiddenFlag) {
-        this.hiddenFlag = hiddenFlag;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "VLDTN_ERROR_MSSG_KEY")
+  protected String validationErrorMesageKey;
 
-    @Override
-    public String getValidationRegEx() {
-        return validationRegEx;
-    }
+  /** DOCUMENT ME! */
+  @Column(name = "VLDTN_REGEX")
+  protected String validationRegEx;
 
-    @Override
-    public void setValidationRegEx(String validationRegEx) {
-        this.validationRegEx = validationRegEx;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Integer getMaxLength() {
-        return maxLength;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getAllowMultiples()
+   */
+  @Override public Boolean getAllowMultiples() {
+    return allowMultiples;
+  }
 
-    @Override
-    public void setMaxLength(Integer maxLength) {
-        this.maxLength = maxLength;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getColumnWidth() {
-        return columnWidth;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getColumnWidth()
+   */
+  @Override public String getColumnWidth() {
+    return columnWidth;
+  }
 
-    @Override
-    public void setColumnWidth(String columnWidth) {
-        this.columnWidth = columnWidth;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Boolean getTextAreaFlag() {
-        return textAreaFlag;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getFieldEnumeration()
+   */
+  @Override public FieldEnumeration getFieldEnumeration() {
+    return fieldEnumeration;
+  }
 
-    @Override
-    public void setTextAreaFlag(Boolean textAreaFlag) {
-        this.textAreaFlag = textAreaFlag;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Boolean getAllowMultiples() {
-        return allowMultiples;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getFieldGroup()
+   */
+  @Override public FieldGroup getFieldGroup() {
+    return fieldGroup;
+  }
 
-    @Override
-    public void setAllowMultiples(Boolean allowMultiples) {
-        this.allowMultiples = allowMultiples;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getFriendlyName() {
-        return friendlyName;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getFieldOrder()
+   */
+  @Override public int getFieldOrder() {
+    return fieldOrder;
+  }
 
-    @Override
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getValidationErrorMesageKey() {
-        return validationErrorMesageKey;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getFieldType()
+   */
+  @Override public SupportedFieldType getFieldType() {
+    return (fieldType != null) ? SupportedFieldType.valueOf(fieldType) : null;
+  }
 
-    @Override
-    public void setValidationErrorMesageKey(String validationErrorMesageKey) {
-        this.validationErrorMesageKey = validationErrorMesageKey;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public FieldGroup getFieldGroup() {
-        return fieldGroup;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getFriendlyName()
+   */
+  @Override public String getFriendlyName() {
+    return friendlyName;
+  }
 
-    @Override
-    public void setFieldGroup(FieldGroup fieldGroup) {
-        this.fieldGroup = fieldGroup;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int getFieldOrder() {
-        return fieldOrder;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getHiddenFlag()
+   */
+  @Override public Boolean getHiddenFlag() {
+    return hiddenFlag;
+  }
 
-    @Override
-    public void setFieldOrder(int fieldOrder) {
-        this.fieldOrder = fieldOrder;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public FieldEnumeration getFieldEnumeration() {
-        return fieldEnumeration;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setFieldEnumeration(FieldEnumeration fieldEnumeration) {
-        this.fieldEnumeration = fieldEnumeration;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
 
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getMaxLength()
+   */
+  @Override public Integer getMaxLength() {
+    return maxLength;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getSecurityLevel()
+   */
+  @Override public String getSecurityLevel() {
+    return securityLevel;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getTextAreaFlag()
+   */
+  @Override public Boolean getTextAreaFlag() {
+    return textAreaFlag;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getValidationErrorMesageKey()
+   */
+  @Override public String getValidationErrorMesageKey() {
+    return validationErrorMesageKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#getValidationRegEx()
+   */
+  @Override public String getValidationRegEx() {
+    return validationRegEx;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setAllowMultiples(java.lang.Boolean)
+   */
+  @Override public void setAllowMultiples(Boolean allowMultiples) {
+    this.allowMultiples = allowMultiples;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setColumnWidth(java.lang.String)
+   */
+  @Override public void setColumnWidth(String columnWidth) {
+    this.columnWidth = columnWidth;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setFieldEnumeration(org.broadleafcommerce.cms.field.domain.FieldEnumeration)
+   */
+  @Override public void setFieldEnumeration(FieldEnumeration fieldEnumeration) {
+    this.fieldEnumeration = fieldEnumeration;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setFieldGroup(org.broadleafcommerce.cms.field.domain.FieldGroup)
+   */
+  @Override public void setFieldGroup(FieldGroup fieldGroup) {
+    this.fieldGroup = fieldGroup;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setFieldOrder(int)
+   */
+  @Override public void setFieldOrder(int fieldOrder) {
+    this.fieldOrder = fieldOrder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setFieldType(org.broadleafcommerce.common.presentation.client.SupportedFieldType)
+   */
+  @Override public void setFieldType(SupportedFieldType fieldType) {
+    this.fieldType = (fieldType != null) ? fieldType.toString() : null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setFriendlyName(java.lang.String)
+   */
+  @Override public void setFriendlyName(String friendlyName) {
+    this.friendlyName = friendlyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setHiddenFlag(java.lang.Boolean)
+   */
+  @Override public void setHiddenFlag(Boolean hiddenFlag) {
+    this.hiddenFlag = hiddenFlag;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setMaxLength(java.lang.Integer)
+   */
+  @Override public void setMaxLength(Integer maxLength) {
+    this.maxLength = maxLength;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setSecurityLevel(java.lang.String)
+   */
+  @Override public void setSecurityLevel(String securityLevel) {
+    this.securityLevel = securityLevel;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setTextAreaFlag(java.lang.Boolean)
+   */
+  @Override public void setTextAreaFlag(Boolean textAreaFlag) {
+    this.textAreaFlag = textAreaFlag;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setValidationErrorMesageKey(java.lang.String)
+   */
+  @Override public void setValidationErrorMesageKey(String validationErrorMesageKey) {
+    this.validationErrorMesageKey = validationErrorMesageKey;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.field.domain.FieldDefinition#setValidationRegEx(java.lang.String)
+   */
+  @Override public void setValidationRegEx(String validationRegEx) {
+    this.validationRegEx = validationRegEx;
+  }
+} // end class FieldDefinitionImpl

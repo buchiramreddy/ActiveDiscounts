@@ -16,21 +16,34 @@
 
 package org.broadleafcommerce.profile.core.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.common.config.domain.ModuleConfiguration;
 import org.broadleafcommerce.common.config.service.ModuleProvider;
+
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.service.exception.AddressVerificationException;
 
-import java.util.List;
 
 /**
  * Allows for pluggable address validators.
- * 
- * @author Kelly Tisdell
  *
+ * @author   Kelly Tisdell
+ * @version  $Revision$, $Date$
  */
 public interface AddressVerificationProvider extends ModuleProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<Address> validateAddress(Address address, ModuleConfiguration config) throws AddressVerificationException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   address  DOCUMENT ME!
+   * @param   config   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  AddressVerificationException  DOCUMENT ME!
+   */
+  List<Address> validateAddress(Address address, ModuleConfiguration config) throws AddressVerificationException;
 
 }

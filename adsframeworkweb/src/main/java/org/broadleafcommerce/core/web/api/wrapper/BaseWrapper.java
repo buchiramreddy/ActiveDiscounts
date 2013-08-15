@@ -16,22 +16,32 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.springframework.beans.BeansException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Base class for APIWrapper implementations to inject the EntityConfiguration reference.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public abstract class BaseWrapper implements ApplicationContextAware {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlTransient
-    protected ApplicationContext context;
+  /** DOCUMENT ME! */
+  @XmlTransient protected ApplicationContext context;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+   */
+  @Override public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    context = applicationContext;
+  }
 }

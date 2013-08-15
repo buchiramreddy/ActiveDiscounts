@@ -16,31 +16,56 @@
 
 package org.broadleafcommerce.common.email.service.jms;
 
-import org.broadleafcommerce.common.email.service.message.EmailServiceProducer;
-import org.springframework.jms.core.JmsTemplate;
-
 import javax.jms.Destination;
 
+import org.broadleafcommerce.common.email.service.message.EmailServiceProducer;
+
+import org.springframework.jms.core.JmsTemplate;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface JMSEmailServiceProducer extends EmailServiceProducer {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailServiceTemplate
-     */
-    public JmsTemplate getEmailServiceTemplate();
+  /**
+   * The emailServiceDestination.
+   *
+   * @return  the emailServiceDestination
+   */
+  Destination getEmailServiceDestination();
 
-    /**
-     * @param emailServiceTemplate the emailServiceTemplate to set
-     */
-    public void setEmailServiceTemplate(JmsTemplate emailServiceTemplate);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return the emailServiceDestination
-     */
-    public Destination getEmailServiceDestination();
+  /**
+   * The emailServiceTemplate.
+   *
+   * @return  the emailServiceTemplate
+   */
+  JmsTemplate getEmailServiceTemplate();
 
-    /**
-     * @param emailServiceDestination the emailServiceDestination to set
-     */
-    public void setEmailServiceDestination(Destination emailServiceDestination);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailServiceDestination  the emailServiceDestination to set
+   */
+  void setEmailServiceDestination(Destination emailServiceDestination);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  emailServiceTemplate  the emailServiceTemplate to set
+   */
+  void setEmailServiceTemplate(JmsTemplate emailServiceTemplate);
+
+} // end interface JMSEmailServiceProducer

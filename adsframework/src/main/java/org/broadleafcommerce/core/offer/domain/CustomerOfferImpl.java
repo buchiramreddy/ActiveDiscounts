@@ -16,12 +16,6 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,100 +26,183 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CUSTOMER_OFFER_XREF")
-@Inheritance(strategy=InheritanceType.JOINED)
 public class CustomerOfferImpl implements CustomerOffer {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator= "CustomerOfferId")
-    @GenericGenerator(
-        name="CustomerOfferId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CustomerOfferImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.offer.domain.CustomerOfferImpl")
-        }
-    )
-    @Column(name = "CUSTOMER_OFFER_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @ManyToOne(targetEntity = CustomerImpl.class, optional=false)
-    @JoinColumn(name = "CUSTOMER_ID")
-    @Index(name="CUSTOFFER_CUSTOMER_INDEX", columnNames={"CUSTOMER_ID"})
-    protected Customer customer;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CUSTOFFER_CUSTOMER_INDEX",
+    columnNames = { "CUSTOMER_ID" }
+  )
+  @JoinColumn(name = "CUSTOMER_ID")
+  @ManyToOne(
+    targetEntity = CustomerImpl.class,
+    optional     = false
+  )
+  protected Customer customer;
 
-    @ManyToOne(targetEntity = OfferImpl.class, optional=false)
-    @JoinColumn(name = "OFFER_ID")
-    @Index(name="CUSTOFFER_OFFER_INDEX", columnNames={"OFFER_ID"})
-    protected Offer offer;
+  /** DOCUMENT ME! */
+  @Column(name = "CUSTOMER_OFFER_ID")
+  @GeneratedValue(generator = "CustomerOfferId")
+  @GenericGenerator(
+    name       = "CustomerOfferId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CustomerOfferImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.offer.domain.CustomerOfferImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CUSTOFFER_OFFER_INDEX",
+    columnNames = { "OFFER_ID" }
+  )
+  @JoinColumn(name = "OFFER_ID")
+  @ManyToOne(
+    targetEntity = OfferImpl.class,
+    optional     = false
+  )
+  protected Offer offer;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public Offer getOffer() {
-        return offer;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setOffer(Offer offer) {
-        this.offer = offer;
+    CustomerOfferImpl other = (CustomerOfferImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public Customer getCustomer() {
-        return customer;
+    if (customer == null) {
+      if (other.customer != null) {
+        return false;
+      }
+    } else if (!customer.equals(other.customer)) {
+      return false;
     }
 
-    @Override
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    if (offer == null) {
+      if (other.offer != null) {
+        return false;
+      }
+    } else if (!offer.equals(other.offer)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((customer == null) ? 0 : customer.hashCode());
-        result = prime * result + ((offer == null) ? 0 : offer.hashCode());
-        return result;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CustomerOfferImpl other = (CustomerOfferImpl) obj;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CustomerOffer#getCustomer()
+   */
+  @Override public Customer getCustomer() {
+    return customer;
+  }
 
-        if (customer == null) {
-            if (other.customer != null)
-                return false;
-        } else if (!customer.equals(other.customer))
-            return false;
-        if (offer == null) {
-            if (other.offer != null)
-                return false;
-        } else if (!offer.equals(other.offer))
-            return false;
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CustomerOffer#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CustomerOffer#getOffer()
+   */
+  @Override public Offer getOffer() {
+    return offer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((customer == null) ? 0 : customer.hashCode());
+    result = (prime * result) + ((offer == null) ? 0 : offer.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CustomerOffer#setCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CustomerOffer#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.domain.CustomerOffer#setOffer(org.broadleafcommerce.core.offer.domain.Offer)
+   */
+  @Override public void setOffer(Offer offer) {
+    this.offer = offer;
+  }
+
+} // end class CustomerOfferImpl

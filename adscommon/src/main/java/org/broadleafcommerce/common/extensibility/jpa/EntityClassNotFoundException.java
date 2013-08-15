@@ -17,28 +17,51 @@
 package org.broadleafcommerce.common.extensibility.jpa;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class EntityClassNotFoundException extends RuntimeException {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public EntityClassNotFoundException() {
-        super();
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public EntityClassNotFoundException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
-    }
+  /**
+   * Creates a new EntityClassNotFoundException object.
+   */
+  public EntityClassNotFoundException() {
+    super();
+  }
 
-    public EntityClassNotFoundException(String arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new EntityClassNotFoundException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public EntityClassNotFoundException(String arg0) {
+    super(arg0);
+  }
 
-    public EntityClassNotFoundException(Throwable arg0) {
-        super(arg0);
-    }
+  /**
+   * Creates a new EntityClassNotFoundException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   */
+  public EntityClassNotFoundException(Throwable arg0) {
+    super(arg0);
+  }
 
-}
+  /**
+   * Creates a new EntityClassNotFoundException object.
+   *
+   * @param  arg0  DOCUMENT ME!
+   * @param  arg1  DOCUMENT ME!
+   */
+  public EntityClassNotFoundException(String arg0, Throwable arg1) {
+    super(arg0, arg1);
+  }
+
+} // end class EntityClassNotFoundException

@@ -16,38 +16,56 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * This is a JAXB wrapper around HibuProduct.
-
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "BroadleafEnumerationTypeWrapper")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "BroadleafEnumerationTypeWrapper")
 public class BroadleafEnumerationTypeWrapper extends BaseWrapper implements APIWrapper<BroadleafEnumerationType> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
 
-    @XmlElement
-    protected String friendlyName;
+  /** DOCUMENT ME! */
+  @XmlElement protected String friendlyName;
 
-    @XmlElement
-    protected String type;
+  /** DOCUMENT ME! */
+  @XmlElement protected String type;
 
-    @Override
-    public void wrapDetails(BroadleafEnumerationType model, HttpServletRequest request) {
-        if (model == null) return;
-        this.friendlyName = model.getFriendlyType();
-        this.type = model.getType();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.common.BroadleafEnumerationType,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(BroadleafEnumerationType model, HttpServletRequest request) {
+    if (model == null) {
+      return;
     }
 
-    @Override
-    public void wrapSummary(BroadleafEnumerationType model, HttpServletRequest request) {
-        wrapDetails(model, request);
-    }
-}
+    this.friendlyName = model.getFriendlyType();
+    this.type         = model.getType();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.common.BroadleafEnumerationType,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(BroadleafEnumerationType model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class BroadleafEnumerationTypeWrapper

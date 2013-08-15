@@ -16,26 +16,48 @@
 
 package org.broadleafcommerce.common.web;
 
-import org.broadleafcommerce.common.exception.SiteNotFoundException;
-import org.broadleafcommerce.common.site.domain.Site;
-import org.springframework.web.context.request.WebRequest;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.broadleafcommerce.common.exception.SiteNotFoundException;
+import org.broadleafcommerce.common.site.domain.Site;
+
+import org.springframework.web.context.request.WebRequest;
+
+
 /**
- * Responsible for returning the site used by Broadleaf Commerce for the current request.
- * For a single site installation, this will typically return null.
+ * Responsible for returning the site used by Broadleaf Commerce for the current request. For a single site
+ * installation, this will typically return null.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
-public interface BroadleafSiteResolver  {
+public interface BroadleafSiteResolver {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * 
-     * @deprecated Use {@link #resolveSite(org.springframework.web.context.request.WebRequest)} instead
-     */
-    @Deprecated
-    public Site resolveSite(HttpServletRequest request) throws SiteNotFoundException;
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       request  DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @throws      SiteNotFoundException  DOCUMENT ME!
+   *
+   * @deprecated  Use {@link #resolveSite(org.springframework.web.context.request.WebRequest)} instead
+   */
+  @Deprecated Site resolveSite(HttpServletRequest request) throws SiteNotFoundException;
 
-    public Site resolveSite(WebRequest request) throws SiteNotFoundException;
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  SiteNotFoundException  DOCUMENT ME!
+   */
+  Site resolveSite(WebRequest request) throws SiteNotFoundException;
+} // end interface BroadleafSiteResolver

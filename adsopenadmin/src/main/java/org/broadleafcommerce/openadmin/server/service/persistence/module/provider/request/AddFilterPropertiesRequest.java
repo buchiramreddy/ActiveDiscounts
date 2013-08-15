@@ -18,21 +18,38 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.provid
 
 import org.broadleafcommerce.openadmin.dto.Entity;
 
+
 /**
  * Contains the {@link org.broadleafcommerce.openadmin.dto.Entity} instance and unfiltered property list.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class AddFilterPropertiesRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final Entity entity;
+  private final Entity entity;
 
-    public AddFilterPropertiesRequest(Entity entity) {
-        this.entity = entity;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public Entity getEntity() {
-        return entity;
-    }
+  /**
+   * Creates a new AddFilterPropertiesRequest object.
+   *
+   * @param  entity  DOCUMENT ME!
+   */
+  public AddFilterPropertiesRequest(Entity entity) {
+    this.entity = entity;
+  }
 
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Entity getEntity() {
+    return entity;
+  }
+
+} // end class AddFilterPropertiesRequest

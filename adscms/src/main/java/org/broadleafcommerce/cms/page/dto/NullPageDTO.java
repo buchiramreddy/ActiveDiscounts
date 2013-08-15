@@ -18,11 +18,11 @@ package org.broadleafcommerce.cms.page.dto;
 
 
 /**
- * A NullPageDTO is an object that is used by the PageService caching to indicate a "cache-miss". 
+ * A NullPageDTO is an object that is used by the PageService caching to indicate a "cache-miss".
  *
- * Created by bpolster.
+ * <p>Created by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-public class NullPageDTO extends PageDTO {
-    
-}
-
+public class NullPageDTO extends PageDTO { }

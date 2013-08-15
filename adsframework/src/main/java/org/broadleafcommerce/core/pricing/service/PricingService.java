@@ -19,8 +19,23 @@ package org.broadleafcommerce.core.pricing.service;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
 
-public interface PricingService {
 
-    public Order executePricing(Order order) throws PricingException;
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface PricingService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  PricingException  DOCUMENT ME!
+   */
+  Order executePricing(Order order) throws PricingException;
 
 }

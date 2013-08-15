@@ -18,49 +18,68 @@ package org.broadleafcommerce.core.web.catalog.taglib;
 
 import javax.servlet.jsp.JspException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class GetProductsByCategoryIdTagTest extends BaseTagLibTest {
-    
-    private GetProductsByCategoryIdTag getProductsByCategoryIdTag;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void test_GetProductsByCategoryIdTag() throws JspException {
-        //TODO Fix this test - there are expectation failures
-        /*getProductsByCategoryIdTag.setJspContext(pageContext);
-        getProductsByCategoryIdTag.setCatalogService(catalogService);
+  private GetProductsByCategoryIdTag getProductsByCategoryIdTag;
 
-        List<Product> productList = new ArrayList<Product>();
-        Product p1 = EasyMock.createStrictMock(Product.class);
-        Product p2 = EasyMock.createStrictMock(Product.class);
-        productList.add(p1);
-        productList.add(p2);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        pageContext.setAttribute("productListVar", productList);
+  /**
+   * @see  org.broadleafcommerce.core.web.catalog.taglib.BaseTagLibTest#setup()
+   */
+  @Override public void setup() {
+    getProductsByCategoryIdTag = new GetProductsByCategoryIdTag();
+  }
 
-        Category c = EasyMock.createStrictMock(Category.class);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        getProductsByCategoryIdTag.setCategoryId(0L);
-        getProductsByCategoryIdTag.setVar("productListVar");
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  JspException  DOCUMENT ME!
+   */
+  public void test_GetProductsByCategoryIdTag() throws JspException {
+    // TODO Fix this test - there are expectation failures
+    /*getProductsByCategoryIdTag.setJspContext(pageContext);
+    getProductsByCategoryIdTag.setCatalogService(catalogService);
 
-        EasyMock.expect(pageContext.getAttribute("productListVar")).andReturn(productList);
+    List<Product> productList = new ArrayList<Product>();
+    Product p1 = EasyMock.createStrictMock(Product.class);
+    Product p2 = EasyMock.createStrictMock(Product.class);
+    productList.add(p1);
+    productList.add(p2);
 
-        EasyMock.expect(catalogService.findCategoryById(0L)).andReturn(c);
-        EasyMock.expect(catalogService.findActiveProductsByCategory(c, new Date())).andReturn(productList);
+    pageContext.setAttribute("productListVar", productList);
 
-        EasyMock.replay(p1, p2, c);
+    Category c = EasyMock.createStrictMock(Category.class);
 
-        super.replayAdditionalMockObjects();
+    getProductsByCategoryIdTag.setCategoryId(0L);
+    getProductsByCategoryIdTag.setVar("productListVar");
 
-        getProductsByCategoryIdTag.doTag();
+    EasyMock.expect(pageContext.getAttribute("productListVar")).andReturn(productList);
 
-        List<Product> list = (List<Product>) pageContext.getAttribute("productListVar");
+    EasyMock.expect(catalogService.findCategoryById(0L)).andReturn(c);
+    EasyMock.expect(catalogService.findActiveProductsByCategory(c, new Date())).andReturn(productList);
 
-        assert(list.get(0).equals(p1));
-        assert(list.get(1).equals(p2));
+    EasyMock.replay(p1, p2, c);
 
-        super.verifyBaseMockObjects();*/
-    }
+    super.replayAdditionalMockObjects();
 
-    @Override
-    public void setup() {
-        getProductsByCategoryIdTag = new GetProductsByCategoryIdTag();
-    }
-}
+    getProductsByCategoryIdTag.doTag();
+
+    List<Product> list = (List<Product>) pageContext.getAttribute("productListVar");
+
+    assert(list.get(0).equals(p1));
+    assert(list.get(1).equals(p2));
+
+    super.verifyBaseMockObjects();*/
+  } // end method test_GetProductsByCategoryIdTag
+} // end class GetProductsByCategoryIdTagTest

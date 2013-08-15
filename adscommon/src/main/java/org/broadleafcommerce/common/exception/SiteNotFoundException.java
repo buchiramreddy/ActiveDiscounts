@@ -17,23 +17,46 @@
 package org.broadleafcommerce.common.exception;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class SiteNotFoundException extends RuntimeException {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public SiteNotFoundException() {
-        //do nothing
-    }
+  /**
+   * Creates a new SiteNotFoundException object.
+   */
+  public SiteNotFoundException() {
+    // do nothing
+  }
 
-    public SiteNotFoundException(Throwable cause) {
-        super(cause);
-    }
+  /**
+   * Creates a new SiteNotFoundException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public SiteNotFoundException(Throwable cause) {
+    super(cause);
+  }
 
-    public SiteNotFoundException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new SiteNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public SiteNotFoundException(String message) {
+    super(message);
+  }
 
-    public SiteNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
+  /**
+   * Creates a new SiteNotFoundException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public SiteNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
+} // end class SiteNotFoundException

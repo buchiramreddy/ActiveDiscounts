@@ -16,43 +16,91 @@
 
 package org.broadleafcommerce.openadmin.web.rulebuilder.grouping;
 
-import org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator;
+
+
 /**
- * @author jfischer
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   jfischer
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class Group {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private List<String> phrases = new ArrayList<String>();
-    private List<Group> subGroups = new ArrayList<Group>();
-    private BLCOperator operatorType;
-    private Boolean isTopGroup = false;
+  private Boolean     isTopGroup   = false;
+  private BLCOperator operatorType;
 
-    public List<String> getPhrases() {
-        return phrases;
-    }
+  private List<String> phrases   = new ArrayList<String>();
+  private List<Group>  subGroups = new ArrayList<Group>();
 
-    public BLCOperator getOperatorType() {
-        return operatorType;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setOperatorType(BLCOperator operatorType) {
-        this.operatorType = operatorType;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Boolean getIsTopGroup() {
+    return isTopGroup;
+  }
 
-    public List<Group> getSubGroups() {
-        return subGroups;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getIsTopGroup() {
-        return isTopGroup;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BLCOperator getOperatorType() {
+    return operatorType;
+  }
 
-    public void setIsTopGroup(Boolean isTopGroup) {
-        this.isTopGroup = isTopGroup;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getPhrases() {
+    return phrases;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Group> getSubGroups() {
+    return subGroups;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isTopGroup  DOCUMENT ME!
+   */
+  public void setIsTopGroup(Boolean isTopGroup) {
+    this.isTopGroup = isTopGroup;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  operatorType  DOCUMENT ME!
+   */
+  public void setOperatorType(BLCOperator operatorType) {
+    this.operatorType = operatorType;
+  }
+} // end class Group

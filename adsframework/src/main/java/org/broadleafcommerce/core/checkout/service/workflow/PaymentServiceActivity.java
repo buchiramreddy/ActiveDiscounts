@@ -16,9 +16,15 @@
 
 package org.broadleafcommerce.core.checkout.service.workflow;
 
+import java.util.Map.Entry;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
 import org.broadleafcommerce.core.payment.service.CompositePaymentService;
@@ -26,60 +32,80 @@ import org.broadleafcommerce.core.payment.service.exception.InsufficientFundsExc
 import org.broadleafcommerce.core.payment.service.workflow.CompositePaymentResponse;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 import org.broadleafcommerce.core.workflow.ProcessContext;
+
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.Resource;
-import java.util.Map.Entry;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentServiceActivity extends BaseActivity<CheckoutContext> {
-    
-    private static final Log LOG = LogFactory.getLog(PaymentServiceActivity.class);
+  private static final Log LOG = LogFactory.getLog(PaymentServiceActivity.class);
 
-    @Resource(name="blCompositePaymentService")
-    private CompositePaymentService compositePaymentService;
-    
-    @Value("${stop.checkout.on.single.payment.failure}")
-    protected Boolean stopCheckoutOnSinglePaymentFailure;
+  @Resource(name = "blCompositePaymentService")
+  private CompositePaymentService compositePaymentService;
 
-    @Override
-    public CheckoutContext execute(CheckoutContext context) throws Exception {
-        CheckoutSeed seed = context.getSeedData();
-        CompositePaymentResponse response = compositePaymentService.executePayment(seed.getOrder(), seed.getInfos(), seed.getPaymentResponse());
-        
-        for (Entry<PaymentInfo, PaymentResponseItem> entry : response.getPaymentResponse().getResponseItems().entrySet()) {
-            checkTransactionStatus(context, entry.getValue());
-            if (context.isStopped()) {
-                String log = "Stopping checkout workflow due to payment response code: ";
-                log += entry.getValue().getProcessorResponseCode();
-                log += " and text: ";
-                log += entry.getValue().getProcessorResponseText();
-                log += " for payment type: " + entry.getKey().getType().getType();
-                LOG.debug(log);
-                break;
-            }
+  /** DOCUMENT ME! */
+  @Value("${stop.checkout.on.single.payment.failure}")
+  protected Boolean stopCheckoutOnSinglePaymentFailure;
+
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.checkout.service.workflow.CheckoutContext)
+   */
+  @Override public CheckoutContext execute(CheckoutContext context) throws Exception {
+    CheckoutSeed             seed     = context.getSeedData();
+    CompositePaymentResponse response = compositePaymentService.executePayment(seed.getOrder(), seed.getInfos(),
+        seed.getPaymentResponse());
+
+    for (Entry<PaymentInfo, PaymentResponseItem> entry : response.getPaymentResponse().getResponseItems().entrySet()) {
+      checkTransactionStatus(context, entry.getValue());
+
+      if (context.isStopped()) {
+        String log = "Stopping checkout workflow due to payment response code: ";
+        log += entry.getValue().getProcessorResponseCode();
+        log += " and text: ";
+        log += entry.getValue().getProcessorResponseText();
+        log += " for payment type: " + entry.getKey().getType().getType();
+
+        if (LOG.isDebugEnabled()) {
+          LOG.debug(log);
         }
 
-        // Validate that the total amount collected is not less than the order total
-        Money paidAmount = new Money(0);
-        for (Entry<PaymentInfo, PaymentResponseItem> entry : response.getPaymentResponse().getResponseItems().entrySet()) {
-            if (entry.getValue().getTransactionSuccess()) {
-                paidAmount = paidAmount.add(entry.getValue().getTransactionAmount());
-            }
-        }
-
-        if (paidAmount.lessThan(seed.getOrder().getRemainingTotal())) {
-            throw new InsufficientFundsException(String.format("Order remaining total was [%s] but paid amount was [%s]",
-                    seed.getOrder().getTotal(), paidAmount));
-        }
-
-        return context;
-    }
-    
-    protected void checkTransactionStatus(ProcessContext context, PaymentResponseItem paymentResponseItem) {
-        if ((stopCheckoutOnSinglePaymentFailure != null && stopCheckoutOnSinglePaymentFailure) &&
-                paymentResponseItem.getTransactionSuccess() != null && !paymentResponseItem.getTransactionSuccess()) {
-            context.stopProcess();
-        }
+        break;
+      }
     }
 
-}
+    // Validate that the total amount collected is not less than the order total
+    Money paidAmount = new Money(0);
+
+    for (Entry<PaymentInfo, PaymentResponseItem> entry : response.getPaymentResponse().getResponseItems().entrySet()) {
+      if (entry.getValue().getTransactionSuccess()) {
+        paidAmount = paidAmount.add(entry.getValue().getTransactionAmount());
+      }
+    }
+
+    if (paidAmount.lessThan(seed.getOrder().getRemainingTotal())) {
+      throw new InsufficientFundsException(String.format("Order remaining total was [%s] but paid amount was [%s]",
+          seed.getOrder().getTotal(), paidAmount));
+    }
+
+    return context;
+  } // end method execute
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  context              DOCUMENT ME!
+   * @param  paymentResponseItem  DOCUMENT ME!
+   */
+  protected void checkTransactionStatus(ProcessContext context, PaymentResponseItem paymentResponseItem) {
+    if (((stopCheckoutOnSinglePaymentFailure != null) && stopCheckoutOnSinglePaymentFailure)
+          && (paymentResponseItem.getTransactionSuccess() != null) && !paymentResponseItem.getTransactionSuccess()) {
+      context.stopProcess();
+    }
+  }
+
+} // end class PaymentServiceActivity

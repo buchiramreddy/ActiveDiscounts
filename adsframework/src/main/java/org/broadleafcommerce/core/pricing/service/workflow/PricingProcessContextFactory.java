@@ -21,14 +21,22 @@ import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.ProcessContextFactory;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PricingProcessContextFactory implements ProcessContextFactory<Order> {
+  /**
+   * @see  org.broadleafcommerce.core.workflow.ProcessContextFactory#createContext(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public ProcessContext createContext(Order seedData) throws WorkflowException {
+    PricingContext context = new PricingContext();
+    context.setSeedData(seedData);
 
-    @Override
-    public ProcessContext createContext(Order seedData) throws WorkflowException {
-        PricingContext context = new PricingContext();
-        context.setSeedData(seedData);
-
-        return context;
-    }
+    return context;
+  }
 
 }

@@ -16,20 +16,68 @@
 
 package org.broadleafcommerce.core.offer.dao;
 
-import org.broadleafcommerce.core.offer.domain.CustomerOffer;
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.offer.domain.CustomerOffer;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerOfferDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public CustomerOffer readCustomerOfferById(Long customerOfferId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerOffer create();
 
-    public List<CustomerOffer> readCustomerOffersByCustomer(Customer customer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerOffer save(CustomerOffer customerOffer);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerOffer  DOCUMENT ME!
+   */
+  void delete(CustomerOffer customerOffer);
 
-    public void delete(CustomerOffer customerOffer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerOffer create();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerOfferId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerOffer readCustomerOfferById(Long customerOfferId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerOffer> readCustomerOffersByCustomer(Customer customer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerOffer  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerOffer save(CustomerOffer customerOffer);
+} // end interface CustomerOfferDao

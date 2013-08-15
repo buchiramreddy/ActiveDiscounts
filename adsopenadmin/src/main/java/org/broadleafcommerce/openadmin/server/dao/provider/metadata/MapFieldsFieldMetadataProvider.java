@@ -16,14 +16,20 @@
 
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
+import java.lang.reflect.ParameterizedType;
+
+import java.util.Map;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.presentation.AdminPresentationMapField;
 import org.broadleafcommerce.common.presentation.AdminPresentationMapFields;
 import org.broadleafcommerce.common.presentation.client.CustomFieldSearchableTypes;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.override.FieldMetadataOverride;
@@ -34,136 +40,222 @@ import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.Over
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
 import org.broadleafcommerce.openadmin.server.service.type.FieldProviderResponse;
+
 import org.hibernate.internal.TypeLocatorImpl;
+
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeResolver;
+
 import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.Map;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blMapFieldsFieldMetadataProvider")
 @Scope("prototype")
 public class MapFieldsFieldMetadataProvider extends DefaultFieldMetadataProvider {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(MapFieldsFieldMetadataProvider.class);
+  private static final Log LOG = LogFactory.getLog(MapFieldsFieldMetadataProvider.class);
 
-    protected boolean canHandleFieldForConfiguredMetadata(AddMetadataRequest addMetadataRequest, Map<String, FieldMetadata> metadata) {
-        AdminPresentationMapFields annot = addMetadataRequest.getRequestedField().getAnnotation(AdminPresentationMapFields.class);
-        return annot != null;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.DefaultFieldMetadataProvider#addMetadata(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse addMetadata(AddMetadataRequest addMetadataRequest,
+    Map<String, FieldMetadata> metadata) {
+    if (!canHandleFieldForConfiguredMetadata(addMetadataRequest, metadata)) {
+      return FieldProviderResponse.NOT_HANDLED;
     }
 
-    protected boolean canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
-        AdminPresentationMapFields annot = addMetadataFromFieldTypeRequest.getRequestedField().getAnnotation(AdminPresentationMapFields.class);
-        return annot != null;
-    }
+    AdminPresentationMapFields annot = addMetadataRequest.getRequestedField().getAnnotation(
+        AdminPresentationMapFields.class);
 
-    @Override
-    public FieldProviderResponse addMetadata(AddMetadataRequest addMetadataRequest, Map<String, FieldMetadata> metadata) {
-        if (!canHandleFieldForConfiguredMetadata(addMetadataRequest, metadata)) {
-            return FieldProviderResponse.NOT_HANDLED;
+    for (AdminPresentationMapField mapField : annot.mapDisplayFields()) {
+      if (mapField.fieldPresentation().fieldType() == SupportedFieldType.UNKNOWN) {
+        throw new IllegalArgumentException(
+          "fieldType property on AdminPresentation must be set for AdminPresentationMapField");
+      }
+
+      FieldMetadataOverride override = constructBasicMetadataOverride(mapField.fieldPresentation(), null, null);
+      override.setFriendlyName(mapField.fieldPresentation().friendlyName());
+
+      FieldInfo myInfo = new FieldInfo();
+      myInfo.setName(addMetadataRequest.getRequestedField().getName() + FieldManager.MAPFIELDSEPARATOR
+        + mapField.fieldName());
+      buildBasicMetadata(addMetadataRequest.getParentClass(), addMetadataRequest.getTargetClass(), metadata, myInfo,
+        override, addMetadataRequest.getDynamicEntityDao());
+      setClassOwnership(addMetadataRequest.getParentClass(), addMetadataRequest.getTargetClass(), metadata, myInfo);
+
+      BasicFieldMetadata basicFieldMetadata = (BasicFieldMetadata) metadata.get(myInfo.getName());
+
+      if (!mapField.targetClass().equals(Void.class)) {
+        if (mapField.targetClass().isInterface()) {
+          throw new IllegalArgumentException("targetClass on @AdminPresentationMapField must be a concrete class");
         }
-        AdminPresentationMapFields annot = addMetadataRequest.getRequestedField().getAnnotation(AdminPresentationMapFields.class);
-        for (AdminPresentationMapField mapField : annot.mapDisplayFields()) {
-            if (mapField.fieldPresentation().fieldType() == SupportedFieldType.UNKNOWN) {
-                throw new IllegalArgumentException("fieldType property on AdminPresentation must be set for AdminPresentationMapField");
-            }
-            FieldMetadataOverride override = constructBasicMetadataOverride(mapField.fieldPresentation(), null, null);
-            override.setFriendlyName(mapField.fieldPresentation().friendlyName());
-            FieldInfo myInfo = new FieldInfo();
-            myInfo.setName(addMetadataRequest.getRequestedField().getName() + FieldManager.MAPFIELDSEPARATOR + mapField.fieldName());
-            buildBasicMetadata(addMetadataRequest.getParentClass(), addMetadataRequest.getTargetClass(), metadata, myInfo, override, addMetadataRequest.getDynamicEntityDao());
-            setClassOwnership(addMetadataRequest.getParentClass(), addMetadataRequest.getTargetClass(), metadata, myInfo);
-            BasicFieldMetadata basicFieldMetadata = (BasicFieldMetadata) metadata.get(myInfo.getName());
-            if (!mapField.targetClass().equals(Void.class)) {
-                if (mapField.targetClass().isInterface()) {
-                    throw new IllegalArgumentException("targetClass on @AdminPresentationMapField must be a concrete class");
-                }
-                basicFieldMetadata.setMapFieldValueClass(mapField.targetClass().getName());
-            }
-            if (mapField.searchable() != CustomFieldSearchableTypes.NOT_SPECIFIED) {
-                basicFieldMetadata.setSearchable(mapField.searchable() == CustomFieldSearchableTypes.YES);
-            }
-            if (!StringUtils.isEmpty(mapField.manyToField())) {
-                basicFieldMetadata.setManyToField(mapField.manyToField());
-            }
+
+        basicFieldMetadata.setMapFieldValueClass(mapField.targetClass().getName());
+      }
+
+      if (mapField.searchable() != CustomFieldSearchableTypes.NOT_SPECIFIED) {
+        basicFieldMetadata.setSearchable(mapField.searchable() == CustomFieldSearchableTypes.YES);
+      }
+
+      if (!StringUtils.isEmpty(mapField.manyToField())) {
+        basicFieldMetadata.setManyToField(mapField.manyToField());
+      }
+    } // end for
+
+    return FieldProviderResponse.HANDLED;
+  } // end method addMetadata
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.DefaultFieldMetadataProvider#addMetadataFromFieldType(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse addMetadataFromFieldType(
+    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
+    if (!canHandleFieldForTypeMetadata(addMetadataFromFieldTypeRequest, metadata)) {
+      return FieldProviderResponse.NOT_HANDLED;
+    }
+
+    // look for any map field metadata that was previously added for the requested field
+    for (Map.Entry<String, FieldMetadata> entry
+      : addMetadataFromFieldTypeRequest.getPresentationAttributes().entrySet()) {
+      if (entry.getKey().startsWith(
+              addMetadataFromFieldTypeRequest.getRequestedPropertyName() + FieldManager.MAPFIELDSEPARATOR)) {
+        TypeLocatorImpl typeLocator = new TypeLocatorImpl(new TypeResolver());
+
+        Type myType = null;
+
+        // first, check if an explicit type was declared
+        String valueClass = ((BasicFieldMetadata) entry.getValue()).getMapFieldValueClass();
+
+        if (valueClass != null) {
+          myType = typeLocator.entity(valueClass);
         }
-        return FieldProviderResponse.HANDLED;
-    }
 
-    @Override
-    public FieldProviderResponse addMetadataFromFieldType(AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest, Map<String, FieldMetadata> metadata) {
-        if (!canHandleFieldForTypeMetadata(addMetadataFromFieldTypeRequest, metadata)) {
-            return FieldProviderResponse.NOT_HANDLED;
+        if (myType == null) {
+          SupportedFieldType fieldType     = ((BasicFieldMetadata) entry.getValue()).getExplicitFieldType();
+          Class<?>           basicJavaType = getBasicJavaType(fieldType);
+
+          if (basicJavaType != null) {
+            myType = typeLocator.basic(basicJavaType);
+          }
         }
-        //look for any map field metadata that was previously added for the requested field
-        for (Map.Entry<String, FieldMetadata> entry : addMetadataFromFieldTypeRequest.getPresentationAttributes().entrySet()) {
-            if (entry.getKey().startsWith(addMetadataFromFieldTypeRequest.getRequestedPropertyName() + FieldManager.MAPFIELDSEPARATOR)) {
-                TypeLocatorImpl typeLocator = new TypeLocatorImpl(new TypeResolver());
 
-                Type myType = null;
-                //first, check if an explicit type was declared
-                String valueClass = ((BasicFieldMetadata) entry.getValue()).getMapFieldValueClass();
-                if (valueClass != null) {
-                    myType = typeLocator.entity(valueClass);
-                }
-                if (myType == null) {
-                    SupportedFieldType fieldType = ((BasicFieldMetadata) entry.getValue()).getExplicitFieldType();
-                    Class<?> basicJavaType = getBasicJavaType(fieldType);
-                    if (basicJavaType != null) {
-                        myType = typeLocator.basic(basicJavaType);
-                    }
-                }
-                if (myType == null) {
-                    java.lang.reflect.Type genericType = addMetadataFromFieldTypeRequest.getRequestedField().getGenericType();
-                    if (genericType instanceof ParameterizedType) {
-                        ParameterizedType pType = (ParameterizedType) genericType;
-                        Class<?> clazz = (Class<?>) pType.getActualTypeArguments()[1];
-                        Class<?>[] entities = addMetadataFromFieldTypeRequest.getDynamicEntityDao().getAllPolymorphicEntitiesFromCeiling(clazz);
-                        if (!ArrayUtils.isEmpty(entities)) {
-                            myType = typeLocator.entity(entities[entities.length-1]);
-                        }
-                    }
-                }
-                if (myType == null) {
-                       throw new IllegalArgumentException("Unable to establish the type for the property (" + entry
-                               .getKey() + ")");
-                }
-                //add property for this map field as if it was a normal field
-                super.addMetadataFromFieldType(new AddMetadataFromFieldTypeRequest(addMetadataFromFieldTypeRequest.getRequestedField(),
-                        addMetadataFromFieldTypeRequest.getTargetClass(),
-                        addMetadataFromFieldTypeRequest.getForeignField(), addMetadataFromFieldTypeRequest.getAdditionalForeignFields(),
-                        addMetadataFromFieldTypeRequest.getMergedPropertyType(), addMetadataFromFieldTypeRequest.getComponentProperties(),
-                        addMetadataFromFieldTypeRequest.getIdProperty(),
-                        addMetadataFromFieldTypeRequest.getPrefix(),
-                        entry.getKey(), myType, addMetadataFromFieldTypeRequest.isPropertyForeignKey(),
-                        addMetadataFromFieldTypeRequest.getAdditionalForeignKeyIndexPosition(),
-                        addMetadataFromFieldTypeRequest.getPresentationAttributes(), entry.getValue(),
-                        ((BasicFieldMetadata) entry.getValue()).getExplicitFieldType(),
-                        myType.getReturnedClass(), addMetadataFromFieldTypeRequest.getDynamicEntityDao()), metadata);
+        if (myType == null) {
+          java.lang.reflect.Type genericType = addMetadataFromFieldTypeRequest.getRequestedField().getGenericType();
+
+          if (genericType instanceof ParameterizedType) {
+            ParameterizedType pType    = (ParameterizedType) genericType;
+            Class<?>          clazz    = (Class<?>) pType.getActualTypeArguments()[1];
+            Class<?>[]        entities = addMetadataFromFieldTypeRequest.getDynamicEntityDao()
+              .getAllPolymorphicEntitiesFromCeiling(clazz);
+
+            if (!ArrayUtils.isEmpty(entities)) {
+              myType = typeLocator.entity(entities[entities.length - 1]);
             }
+          }
         }
-        return FieldProviderResponse.HANDLED;
-    }
 
-    @Override
-    public FieldProviderResponse overrideViaAnnotation(OverrideViaAnnotationRequest overrideViaAnnotationRequest, Map<String, FieldMetadata> metadata) {
-        //TODO support annotation override
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+        if (myType == null) {
+          throw new IllegalArgumentException("Unable to establish the type for the property (" + entry.getKey() + ")");
+        }
 
-    @Override
-    public FieldProviderResponse overrideViaXml(OverrideViaXmlRequest overrideViaXmlRequest, Map<String, FieldMetadata> metadata) {
-        //TODO support xml override
-        return FieldProviderResponse.NOT_HANDLED;
-    }
+        // add property for this map field as if it was a normal field
+        super.addMetadataFromFieldType(new AddMetadataFromFieldTypeRequest(
+            addMetadataFromFieldTypeRequest.getRequestedField(),
+            addMetadataFromFieldTypeRequest.getTargetClass(),
+            addMetadataFromFieldTypeRequest.getForeignField(),
+            addMetadataFromFieldTypeRequest.getAdditionalForeignFields(),
+            addMetadataFromFieldTypeRequest.getMergedPropertyType(),
+            addMetadataFromFieldTypeRequest.getComponentProperties(),
+            addMetadataFromFieldTypeRequest.getIdProperty(),
+            addMetadataFromFieldTypeRequest.getPrefix(),
+            entry.getKey(), myType, addMetadataFromFieldTypeRequest.isPropertyForeignKey(),
+            addMetadataFromFieldTypeRequest.getAdditionalForeignKeyIndexPosition(),
+            addMetadataFromFieldTypeRequest.getPresentationAttributes(), entry.getValue(),
+            ((BasicFieldMetadata) entry.getValue()).getExplicitFieldType(),
+            myType.getReturnedClass(), addMetadataFromFieldTypeRequest.getDynamicEntityDao()), metadata);
+      } // end if
+    } // end for
 
-    @Override
-    public int getOrder() {
-        return FieldMetadataProvider.MAP_FIELD;
-    }
-}
+    return FieldProviderResponse.HANDLED;
+  } // end method addMetadataFromFieldType
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider#getOrder()
+   */
+  @Override public int getOrder() {
+    return FieldMetadataProvider.MAP_FIELD;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider#overrideViaAnnotation(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse overrideViaAnnotation(
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest, Map<String, FieldMetadata> metadata) {
+    // TODO support annotation override
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider#overrideViaXml(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest,
+   *       java.util.Map)
+   */
+  @Override public FieldProviderResponse overrideViaXml(OverrideViaXmlRequest overrideViaXmlRequest,
+    Map<String, FieldMetadata> metadata) {
+    // TODO support xml override
+    return FieldProviderResponse.NOT_HANDLED;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider#canHandleFieldForConfiguredMetadata(org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataRequest,
+   *       java.util.Map)
+   */
+  @Override protected boolean canHandleFieldForConfiguredMetadata(AddMetadataRequest addMetadataRequest,
+    Map<String, FieldMetadata> metadata) {
+    AdminPresentationMapFields annot = addMetadataRequest.getRequestedField().getAnnotation(
+        AdminPresentationMapFields.class);
+
+    return annot != null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   addMetadataFromFieldTypeRequest  DOCUMENT ME!
+   * @param   metadata                         DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected boolean canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest,
+    Map<String, FieldMetadata> metadata) {
+    AdminPresentationMapFields annot = addMetadataFromFieldTypeRequest.getRequestedField().getAnnotation(
+        AdminPresentationMapFields.class);
+
+    return annot != null;
+  }
+} // end class MapFieldsFieldMetadataProvider

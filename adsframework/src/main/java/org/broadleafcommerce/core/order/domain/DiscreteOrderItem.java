@@ -16,99 +16,162 @@
 
 package org.broadleafcommerce.core.order.domain;
 
+import java.util.List;
+import java.util.Map;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuBundleItem;
 
-import java.util.List;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface DiscreteOrderItem extends OrderItem, SkuAccessor, Cloneable {
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.SkuAccessor#getSku()
+   */
+  @Override Sku getSku();
 
-    Sku getSku();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sku  DOCUMENT ME!
+   */
+  void setSku(Sku sku);
 
-    void setSku(Sku sku);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Product getProduct();
 
-    Product getProduct();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  product  DOCUMENT ME!
+   */
+  void setProduct(Product product);
 
-    void setProduct(Product product);
+  /**
+   * If this item is part of a bundle, this method will return the containing bundle item.
+   *
+   * @return  if this item is part of a bundle, this method will return the containing bundle item.
+   */
+  BundleOrderItem getBundleOrderItem();
 
-    /**
-     * If this item is part of a bundle, this method will return the containing bundle item.
-     * @return
-     */
-    BundleOrderItem getBundleOrderItem();
+  /**
+   * Sets the parent bundle item.
+   *
+   * <p>Setting to null removes this item from the bundle.</p>
+   *
+   * @param  bundleOrderItem  DOCUMENT ME!
+   */
+  void setBundleOrderItem(BundleOrderItem bundleOrderItem);
 
-    /**
-     * Sets the parent bundle item.
-     *
-     * Setting to null removes this item from the bundle.
-     *
-     * @param bundleOrderItem
-     */
-    void setBundleOrderItem(BundleOrderItem bundleOrderItem);
+  /**
+   * If this item is part of a bundle that was created via a ProductBundle, then this method returns a reference to the
+   * corresponding SkuBundleItem.
+   *
+   * <p>For manually created</p>
+   *
+   * <p>For all others, this method returns null.</p>
+   *
+   * @return  if this item is part of a bundle that was created via a ProductBundle, then this method returns a
+   *          reference to the corresponding SkuBundleItem.
+   */
+  SkuBundleItem getSkuBundleItem();
 
-    /**
-     * If this item is part of a bundle that was created via a ProductBundle, then this
-     * method returns a reference to the corresponding SkuBundleItem.
-     *
-     * For manually created
-     *
-     * For all others, this method returns null.
-     *
-     * @return
-     */
-    SkuBundleItem getSkuBundleItem();
+  /**
+   * Sets the associated skuBundleItem.
+   *
+   * @param  skuBundleItem  DOCUMENT ME!
+   */
+  void setSkuBundleItem(SkuBundleItem skuBundleItem);
 
-    /**
-     * Sets the associated skuBundleItem.
-     *
-     * @param skuBundleItem
-     */
-    void setSkuBundleItem(SkuBundleItem skuBundleItem);
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderItem#getTaxablePrice()
+   */
+  @Override Money getTaxablePrice();
 
-    Money getTaxablePrice();
+  /**
+   * Arbitrary attributes associated with the order item.
+   *
+   * @deprecated  use getOrderItemAttributes instead
+   *
+   * @return      the attributes
+   */
+  Map<String, String> getAdditionalAttributes();
 
-    /**
-     * Arbitrary attributes associated with the order item
-     *
-     * @deprecated use getOrderItemAttributes instead
-     * @return the attributes
-     */
-    public Map<String, String> getAdditionalAttributes();
+  /**
+   * Arbitrary attributes associated with the order item.
+   *
+   * @deprecated  use setOrderItemAttributes instead
+   *
+   * @param       additionalAttributes  the map of attributes
+   */
+  void setAdditionalAttributes(Map<String, String> additionalAttributes);
 
-    /**
-     * Arbitrary attributes associated with the order item
-     *
-     * @deprecated use setOrderItemAttributes instead
-     * @param additionalAttributes the map of attributes
-     */
-    public void setAdditionalAttributes(Map<String, String> additionalAttributes);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getBaseRetailPrice();
 
-    public Money getBaseRetailPrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  baseRetailPrice  DOCUMENT ME!
+   */
+  void setBaseRetailPrice(Money baseRetailPrice);
 
-    public void setBaseRetailPrice(Money baseRetailPrice);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getBaseSalePrice();
 
-    public Money getBaseSalePrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  baseSalePrice  DOCUMENT ME!
+   */
+  void setBaseSalePrice(Money baseSalePrice);
 
-    public void setBaseSalePrice(Money baseSalePrice);
-    
-    public List<DiscreteOrderItemFeePrice> getDiscreteOrderItemFeePrices();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<DiscreteOrderItemFeePrice> getDiscreteOrderItemFeePrices();
 
-    public void setDiscreteOrderItemFeePrices(List<DiscreteOrderItemFeePrice> orderItemFeePrices);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItemFeePrices  DOCUMENT ME!
+   */
+  void setDiscreteOrderItemFeePrices(List<DiscreteOrderItemFeePrice> orderItemFeePrices);
 
-    /**
-     * For items that are part of a bundle, this method will return the parent bundle item.  Otherwise,
-     * returns null.
-     * 
-     * @return
-     */
-    public BundleOrderItem findParentItem();
+  /**
+   * For items that are part of a bundle, this method will return the parent bundle item. Otherwise, returns null.
+   *
+   * @return  for items that are part of a bundle, this method will return the parent bundle item.
+   */
+  BundleOrderItem findParentItem();
 
-    /**
-     * Returns a boolean indicating whether this sku is active.  This is used to determine whether a user
-     * the sku can add the sku to their cart.
-     */
-    public boolean isSkuActive();
-}
+  /**
+   * Returns a boolean indicating whether this sku is active. This is used to determine whether a user the sku can add
+   * the sku to their cart.
+   *
+   * @return  a boolean indicating whether this sku is active.
+   */
+  @Override boolean isSkuActive();
+} // end interface DiscreteOrderItem

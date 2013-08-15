@@ -16,71 +16,138 @@
 
 package org.broadleafcommerce.openadmin.dto;
 
+import java.io.Serializable;
+
+import java.util.Map;
+
 import org.broadleafcommerce.common.util.BLCMapUtils;
 import org.broadleafcommerce.common.util.TypedClosure;
 
-import java.io.Serializable;
-import java.util.Map;
-
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class ClassMetadata implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
-    
-    private String ceilingType;
-    private ClassTree polymorphicEntities;
-    private Property[] properties;
-    private String currencyCode = "USD";
-    
-    private Map<String, Property> pMap = null;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public Map<String, Property> getPMap() {
-        if (pMap == null) {
-            pMap = BLCMapUtils.keyedMap(properties, new TypedClosure<String, Property>() {
+  private static final long serialVersionUID = 1L;
 
-                @Override
-                public String getKey(Property value) {
-                    return value.getName();
-                }
-            });
-        }
-        return pMap;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String ceilingType;
+  private String currencyCode = "USD";
+
+  private Map<String, Property> pMap                = null;
+  private ClassTree             polymorphicEntities;
+  private Property[]            properties;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCeilingType() {
+    return ceilingType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCurrencyCode() {
+    return currencyCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, Property> getPMap() {
+    if (pMap == null) {
+      pMap = BLCMapUtils.keyedMap(properties, new TypedClosure<String, Property>() {
+            @Override public String getKey(Property value) {
+              return value.getName();
+            }
+          });
     }
 
-    public String getCeilingType() {
-        return ceilingType;
-    }
-    
-    public void setCeilingType(String type) {
-        this.ceilingType = type;
-    }
+    return pMap;
+  }
 
-    public ClassTree getPolymorphicEntities() {
-        return polymorphicEntities;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPolymorphicEntities(ClassTree polymorphicEntities) {
-        this.polymorphicEntities = polymorphicEntities;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ClassTree getPolymorphicEntities() {
+    return polymorphicEntities;
+  }
 
-    public Property[] getProperties() {
-        return properties;
-    }
-    
-    public void setProperties(Property[] property) {
-        this.properties = property;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getCurrencyCode() {
-        return currencyCode;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Property[] getProperties() {
+    return properties;
+  }
 
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  public void setCeilingType(String type) {
+    this.ceilingType = type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currencyCode  DOCUMENT ME!
+   */
+  public void setCurrencyCode(String currencyCode) {
+    this.currencyCode = currencyCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  polymorphicEntities  DOCUMENT ME!
+   */
+  public void setPolymorphicEntities(ClassTree polymorphicEntities) {
+    this.polymorphicEntities = polymorphicEntities;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  property  DOCUMENT ME!
+   */
+  public void setProperties(Property[] property) {
+    this.properties = property;
+  }
+} // end class ClassMetadata

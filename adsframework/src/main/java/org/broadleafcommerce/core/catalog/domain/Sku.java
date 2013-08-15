@@ -16,485 +16,559 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.broadleafcommerce.common.media.domain.Media;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext;
-import org.broadleafcommerce.core.inventory.service.type.InventoryType;
-import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.order.service.type.FulfillmentType;
-
 import java.io.Serializable;
+
 import java.math.BigDecimal;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.media.domain.Media;
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.inventory.service.type.InventoryType;
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+import org.broadleafcommerce.core.order.service.type.FulfillmentType;
+
+
 /**
- * Implementations of this interface are used to hold data about a SKU.  A SKU is
- * a specific item that can be sold including any specific attributes of the item such as
- * color or size.
+ * Implementations of this interface are used to hold data about a SKU. A SKU is a specific item that can be sold
+ * including any specific attributes of the item such as color or size.<br>
  * <br>
- * <br>
- * You should implement this class if you want to make significant changes to how the
- * class is persisted.  If you just want to add additional fields then you should extend {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}.
+ * You should implement this class if you want to make significant changes to how the class is persisted. If you just
+ * want to add additional fields then you should extend {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}.
  *
- * @see {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}, {@link org.broadleafcommerce.common.money.Money}
- * @author btaylor
- *
+ * @see      {@link org.broadleafcommerce.core.catalog.domain.SkuImpl}, {@link org.broadleafcommerce.common.money.Money}
+ * @author   btaylor
+ * @version  $Revision$, $Date$
  */
 public interface Sku extends Serializable {
+  /**
+   * Returns the id of this sku.
+   *
+   * @return  the id of this sku.
+   */
+  Long getId();
 
-    /**
-     * Returns the id of this sku
-     */
-    public Long getId();
+  /**
+   * Sets the id of this sku.
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    /**
-     * Sets the id of this sku
-     */
-    public void setId(Long id);
+  /**
+   * This is the sum total of the priceAdjustments from the associated ProductOptionValues.
+   *
+   * @return  <b>null</b> if there are no ProductOptionValues associated with this Sku or all of their priceAdjustments
+   *          are null. Otherwise this will be the sum total of those price adjustments
+   *
+   * @see     {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}
+   */
+  Money getProductOptionValueAdjustments();
 
-    /**
-     * This is the sum total of the priceAdjustments from the associated ProductOptionValues
-     * 
-     * @return <b>null</b> if there are no ProductOptionValues associated with this Sku or
-     * all of their priceAdjustments are null. Otherwise this will be the sum total of those price
-     * adjustments
-     * 
-     * @see {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}
-     */
-    public Money getProductOptionValueAdjustments();
-    
-    /**
-     * Returns the Sale Price of the Sku.  The Sale Price is the standard price the vendor sells
-     * this item for.  If {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext} is set, this uses the DynamicSkuPricingService
-     * to calculate what this should actually be rather than use the property itself
-     * 
-     * @see org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext, DynamicSkuPricingService
-     */
-    public Money getSalePrice();
+  /**
+   * Returns the Sale Price of the Sku. The Sale Price is the standard price the vendor sells this item for. If
+   * {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext} is set, this uses the
+   * DynamicSkuPricingService to calculate what this should actually be rather than use the property itself
+   *
+   * @return  the Sale Price of the Sku.
+   *
+   * @see     org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext, DynamicSkuPricingService
+   */
+  Money getSalePrice();
 
-    /**
-     * Sets the the Sale Price of the Sku.  The Sale Price is the standard price the vendor sells
-     * this item for. This price will automatically be overridden if your system is utilizing
-     * the DynamicSkuPricingService.
-     */
-    public void setSalePrice(Money salePrice);
+  /**
+   * Sets the the Sale Price of the Sku. The Sale Price is the standard price the vendor sells this item for. This price
+   * will automatically be overridden if your system is utilizing the DynamicSkuPricingService.
+   *
+   * @param  salePrice  DOCUMENT ME!
+   */
+  void setSalePrice(Money salePrice);
 
-    /**
-     * Returns the Retail Price of the Sku.  The Retail Price is the MSRP of the sku. If {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext}
-     * is set, this uses the DynamicSkuPricingService to calculate what this should actually be rather than use the property
-     * itself
-     * 
-     * @see org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext, DynamicSkuPricingService
-     */
-    public Money getRetailPrice();
+  /**
+   * Returns the Retail Price of the Sku. The Retail Price is the MSRP of the sku. If
+   * {@link org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext} is set, this uses the
+   * DynamicSkuPricingService to calculate what this should actually be rather than use the property itself
+   *
+   * @return  the Retail Price of the Sku.
+   *
+   * @see     org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext, DynamicSkuPricingService
+   */
+  Money getRetailPrice();
 
-    /**
-     * Sets the retail price for the Sku. This price will automatically be overridden if your system is utilizing
-     * the DynamicSkuPricingService.
-     * 
-     * @param retail price for the Sku
-     */
-    public void setRetailPrice(Money retailPrice);
+  /**
+   * Sets the retail price for the Sku. This price will automatically be overridden if your system is utilizing the
+   * DynamicSkuPricingService.
+   *
+   * @param  retailPrice  price for the Sku
+   */
+  void setRetailPrice(Money retailPrice);
 
-    /**
-     * Returns the List Price of the Sku.  The List Price is the MSRP of the sku.
-     * @deprecated
-     */
-    @Deprecated
-    public Money getListPrice();
+  /**
+   * Returns the List Price of the Sku. The List Price is the MSRP of the sku.
+   *
+   * @return      the List Price of the Sku.
+   *
+   * @deprecated  DOCUMENT ME!
+   */
+  @Deprecated Money getListPrice();
 
-    /**
-     * Sets the the List Price of the Sku.  The List Price is the MSRP of the sku.
-     * @deprecated
-     */
-    @Deprecated
-    public void setListPrice(Money listPrice);
+  /**
+   * Sets the the List Price of the Sku. The List Price is the MSRP of the sku.
+   *
+   * @param       listPrice  DOCUMENT ME!
+   *
+   * @deprecated  DOCUMENT ME!
+   */
+  @Deprecated void setListPrice(Money listPrice);
 
-    /**
-     * Returns the name of the Sku.  The name is a label used to show when displaying the sku.
-     */
-    public String getName();
+  /**
+   * Returns the name of the Sku. The name is a label used to show when displaying the sku.
+   *
+   * @return  the name of the Sku.
+   */
+  String getName();
 
-    /**
-     * Sets the the name of the Sku.  The name is a label used to show when displaying the sku.
-     */
-    public void setName(String name);
+  /**
+   * Sets the the name of the Sku. The name is a label used to show when displaying the sku.
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
 
-    /**
-     * Returns the brief description of the Sku.
-     */
-    public String getDescription();
+  /**
+   * Returns the brief description of the Sku.
+   *
+   * @return  the brief description of the Sku.
+   */
+  String getDescription();
 
-    /**
-     * Sets the brief description of the Sku.
-     */
-    public void setDescription(String description);
+  /**
+   * Sets the brief description of the Sku.
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  void setDescription(String description);
 
-    /**
-     * Returns the long description of the sku.
-     */
-    public String getLongDescription();
+  /**
+   * Returns the long description of the sku.
+   *
+   * @return  the long description of the sku.
+   */
+  String getLongDescription();
 
-    /**
-     * Sets the long description of the sku.
-     */
-    public void setLongDescription(String longDescription);
+  /**
+   * Sets the long description of the sku.
+   *
+   * @param  longDescription  DOCUMENT ME!
+   */
+  void setLongDescription(String longDescription);
 
-    /**
-     * Returns whether the Sku qualifies for taxes or not.  This field is used by the pricing engine
-     * to calculate taxes.
-     */
-    public Boolean isTaxable();
+  /**
+   * Returns whether the Sku qualifies for taxes or not. This field is used by the pricing engine to calculate taxes.
+   *
+   * @return  whether the Sku qualifies for taxes or not.
+   */
+  Boolean isTaxable();
 
-    /**
-     * Convenience that passes through to isTaxable
-     */
-    public Boolean getTaxable();
+  /**
+   * Convenience that passes through to isTaxable.
+   *
+   * @return  convenience that passes through to isTaxable.
+   */
+  Boolean getTaxable();
 
-    /**
-     * Sets the whether the Sku qualifies for taxes or not.  This field is used by the pricing engine
-     * to calculate taxes.
-     */
-    public void setTaxable(Boolean taxable);
+  /**
+   * Sets the whether the Sku qualifies for taxes or not. This field is used by the pricing engine to calculate taxes.
+   *
+   * @param  taxable  DOCUMENT ME!
+   */
+  void setTaxable(Boolean taxable);
 
-    /**
-     * Returns whether the Sku qualifies for discounts or not.  This field is used by the pricing engine
-     * to apply offers.
-     */
-    public Boolean isDiscountable();
+  /**
+   * Returns whether the Sku qualifies for discounts or not. This field is used by the pricing engine to apply offers.
+   *
+   * @return  whether the Sku qualifies for discounts or not.
+   */
+  Boolean isDiscountable();
 
-    /**
-     * Sets the whether the Sku qualifies for discounts or not.  This field is used by the pricing engine
-     * to apply offers.
-     */
-    public void setDiscountable(Boolean discountable);
+  /**
+   * Sets the whether the Sku qualifies for discounts or not. This field is used by the pricing engine to apply offers.
+   *
+   * @param  discountable  DOCUMENT ME!
+   */
+  void setDiscountable(Boolean discountable);
 
-    /**
-     * Returns whether the Sku is available.
-     */
-    public Boolean isAvailable();
+  /**
+   * Returns whether the Sku is available.
+   *
+   * @return  whether the Sku is available.
+   */
+  Boolean isAvailable();
 
-    /**
-     * Convenience that passes through to isAvailable
-     */
-    public Boolean getAvailable();
-    
-    /**
-     * Sets the whether the Sku is available.
-     */
-    public void setAvailable(Boolean available);
+  /**
+   * Convenience that passes through to isAvailable.
+   *
+   * @return  convenience that passes through to isAvailable.
+   */
+  Boolean getAvailable();
 
-    /**
-     * Returns the first date that the Sku should be available for sale.  This field is used to determine
-     * whether a user can add the sku to their cart.
-     */
-    public Date getActiveStartDate();
+  /**
+   * Sets the whether the Sku is available.
+   *
+   * @param  available  DOCUMENT ME!
+   */
+  void setAvailable(Boolean available);
 
-    /**
-     * Sets the the first date that the Sku should be available for sale.  This field is used to determine
-     * whether a user can add the sku to their cart.
-     */
-    public void setActiveStartDate(Date activeStartDate);
+  /**
+   * Returns the first date that the Sku should be available for sale. This field is used to determine whether a user
+   * can add the sku to their cart.
+   *
+   * @return  the first date that the Sku should be available for sale.
+   */
+  Date getActiveStartDate();
 
-    /**
-     * Returns the the last date that the Sku should be available for sale.  This field is used to determine
-     * whether a user can add the sku to their cart.
-     */
-    public Date getActiveEndDate();
+  /**
+   * Sets the the first date that the Sku should be available for sale. This field is used to determine whether a user
+   * can add the sku to their cart.
+   *
+   * @param  activeStartDate  DOCUMENT ME!
+   */
+  void setActiveStartDate(Date activeStartDate);
 
-    /**
-     * Sets the the last date that the Sku should be available for sale.  This field is used to determine
-     * whether a user can add the sku to their cart.
-     */
-    public void setActiveEndDate(Date activeEndDate);
+  /**
+   * Returns the the last date that the Sku should be available for sale. This field is used to determine whether a user
+   * can add the sku to their cart.
+   *
+   * @return  the the last date that the Sku should be available for sale.
+   */
+  Date getActiveEndDate();
 
-    /**
-     * Get the dimensions for this Sku
-     * 
-     * @return this Sku's embedded Weight
-     */
-    public Dimension getDimension();
+  /**
+   * Sets the the last date that the Sku should be available for sale. This field is used to determine whether a user
+   * can add the sku to their cart.
+   *
+   * @param  activeEndDate  DOCUMENT ME!
+   */
+  void setActiveEndDate(Date activeEndDate);
 
-    /**
-     * Sets the embedded Dimension for this Sku
-     * 
-     * @param dimension
-     */
-    public void setDimension(Dimension dimension);
+  /**
+   * Get the dimensions for this Sku.
+   *
+   * @return  this Sku's embedded Weight
+   */
+  Dimension getDimension();
 
-    /**
-     * Gets the embedded Weight for this Sku
-     * 
-     * @return this Sku's embedded Weight
-     */
-    public Weight getWeight();
+  /**
+   * Sets the embedded Dimension for this Sku.
+   *
+   * @param  dimension  DOCUMENT ME!
+   */
+  void setDimension(Dimension dimension);
 
-    /**
-     * Sets the embedded Weight for this Sku
-     * 
-     * @param weight
-     */
-    public void setWeight(Weight weight);
-    
-    /**
-     * Returns a boolean indicating whether this sku is active.  This is used to determine whether a user
-     * the sku can add the sku to their cart.
-     */
-    public boolean isActive();
+  /**
+   * Gets the embedded Weight for this Sku.
+   *
+   * @return  this Sku's embedded Weight
+   */
+  Weight getWeight();
 
-    /**
-     * Returns a map of key/value pairs where the key is a string for the name of a media object and the value
-     * is a media object.
-     */
-    public Map<String, Media> getSkuMedia();
+  /**
+   * Sets the embedded Weight for this Sku.
+   *
+   * @param  weight  DOCUMENT ME!
+   */
+  void setWeight(Weight weight);
 
-    /**
-     * Sets a map of key/value pairs where the key is a string for the name of a media object and the value
-     * is an object of type Media.
-     */
-    public void setSkuMedia(Map<String, Media> skuMedia);
+  /**
+   * Returns a boolean indicating whether this sku is active. This is used to determine whether a user the sku can add
+   * the sku to their cart.
+   *
+   * @return  a boolean indicating whether this sku is active.
+   */
+  boolean isActive();
 
-    /**
-     * Returns whether or not this Sku, the given Product and the given Category are all active
-     * 
-     * @param product - Product that should be active
-     * @param category - Category that should be active
-     * @return <b>true</b> if this Sku, <code>product</code> and <code>category</code> are all active
-     * <b>false</b> otherwise
-     */
-    public boolean isActive(Product product, Category category);
+  /**
+   * Returns a map of key/value pairs where the key is a string for the name of a media object and the value is a media
+   * object.
+   *
+   * @return  a map of key/value pairs where the key is a string for the name of a media object and the value is a media
+   *          object.
+   */
+  Map<String, Media> getSkuMedia();
 
-    /**
-     * Denormalized set of key-value pairs to attach to a Sku. If you are looking for setting up
-     * a {@link org.broadleafcommerce.core.catalog.domain.ProductOption} scenario (like colors, sizes, etc) see {@link getProductOptionValues()}
-     * and {@link setProductOptionValues()}
-     *
-     * @return the attributes for this Sku
-     */
-    public Map<String, SkuAttribute> getSkuAttributes();
+  /**
+   * Sets a map of key/value pairs where the key is a string for the name of a media object and the value is an object
+   * of type Media.
+   *
+   * @param  skuMedia  DOCUMENT ME!
+   */
+  void setSkuMedia(Map<String, Media> skuMedia);
 
-    /**
-     * Sets the denormalized set of key-value pairs on a Sku
-     *
-     * @param skuAttributes
-     */
-    public void setSkuAttributes(Map<String, SkuAttribute> skuAttributes);
+  /**
+   * Returns whether or not this Sku, the given Product and the given Category are all active.
+   *
+   * @param   product   - Product that should be active
+   * @param   category  - Category that should be active
+   *
+   * @return  <b>true</b> if this Sku, <code>product</code> and <code>category</code> are all active <b>false</b>
+   *          otherwise
+   */
+  boolean isActive(Product product, Category category);
 
-    /**
-     * Gets the ProductOptionValues used to map to this Sku. For instance, this Sku could hold specific
-     * inventory, price and image information for a "Blue" "Extra-Large" shirt
-     * 
-     * @return the ProductOptionValues for this Sku
-     * @see {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}, {@link org.broadleafcommerce.core.catalog.domain.ProductOption}
-     */
-    public List<ProductOptionValue> getProductOptionValues();
+  /**
+   * Denormalized set of key-value pairs to attach to a Sku. If you are looking for setting up a
+   * {@link org.broadleafcommerce.core.catalog.domain.ProductOption} scenario (like colors, sizes, etc) see
+   * {@link getProductOptionValues()} and {@link setProductOptionValues()}
+   *
+   * @return  the attributes for this Sku
+   */
+  Map<String, SkuAttribute> getSkuAttributes();
 
-    /**
-     * Sets the ProductOptionValues that should be mapped to this Sku
-     * 
-     * @param productOptionValues
-     * @see {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue}, {@link org.broadleafcommerce.core.catalog.domain.ProductOption}
-     */
-    public void setProductOptionValues(List<ProductOptionValue> productOptionValues);
+  /**
+   * Sets the denormalized set of key-value pairs on a Sku.
+   *
+   * @param  skuAttributes  DOCUMENT ME!
+   */
+  void setSkuAttributes(Map<String, SkuAttribute> skuAttributes);
 
-    /**
-     * This will be a value if and only if this Sku is the defaultSku of a Product (and thus has a @OneToOne relationship with a Product).
-     * The mapping for this is actually done at the Product level with a foreign key to Sku; this exists for convenience to get the reverse relationship
-     * 
-     * @return The associated Product if this Sku is a defaultSku, <b>null</b> otherwise
-     * @see #getProduct()
-     */
-    public Product getDefaultProduct();
+  /**
+   * Gets the ProductOptionValues used to map to this Sku. For instance, this Sku could hold specific inventory, price
+   * and image information for a "Blue" "Extra-Large" shirt
+   *
+   * @return  the ProductOptionValues for this Sku
+   *
+   * @see     {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue},
+   *          {@link org.broadleafcommerce.core.catalog.domain.ProductOption}
+   */
+  List<ProductOptionValue> getProductOptionValues();
 
-    /**
-     * The relationship for a Product's default Sku (and thus a Sku's default Product) is actually maintained
-     * on the Product entity as a foreign key to Sku.  Because of this, there are probably very few circumstances
-     * that you would actually want to change this from the Sku perspective instead of the Product perspective.
-     * <br />
-     * <br />
-     * If you are looking for a way to simply associate a Sku to a Product, the correct way would be to call
-     * {@link #setProduct(org.broadleafcommerce.core.catalog.domain.Product)} or {@link org.broadleafcommerce.core.catalog.domain.Product#setSkus(java.util.List< org.broadleafcommerce.core.catalog.domain.Sku>)} which would then cause this Sku to show up in the list of Skus for
-     * the given Product
-     * 
-     * @param product
-     */
-    public void setDefaultProduct(Product product);
+  /**
+   * Sets the ProductOptionValues that should be mapped to this Sku.
+   *
+   * @param  productOptionValues  DOCUMENT ME!
+   *
+   * @see    {@link org.broadleafcommerce.core.catalog.domain.ProductOptionValue},
+   *         {@link org.broadleafcommerce.core.catalog.domain.ProductOption}
+   */
+  void setProductOptionValues(List<ProductOptionValue> productOptionValues);
 
-    /**
-     * This will return the correct Product association that is being used on the Sku. If this Sku is a default Sku
-     * for a Product (as in, {@link #getDefaultProduct()} != null) than this will return {@link #getDefaultProduct()}. If this is not
-     * a default Sku for a Product, this will return the @ManyToOne Product relationship created by adding this Sku to a Product's
-     * list of Skus, or using {@link setProduct( org.broadleafcommerce.core.catalog.domain.Product)}.
-     * <br />
-     * <br />
-     * In some implementations, it might make sense to have both the @OneToOne association set ({@link org.broadleafcommerce.core.catalog.domain.Product#setDefaultSku(org.broadleafcommerce.core.catalog.domain.Sku)})
-     * as well as the @ManyToOne association set ({@link #setProduct(org.broadleafcommerce.core.catalog.domain.Product)}). In this case, This method would only return
-     * the result of {@link #getDefaultProduct()}.  However, the @OneToOne and @ManyToOne association should never actually
-     * refer to different Products, and would represent an error state. If you require this, consider subclassing and using
-     * your own @ManyToMany relationship between Product and Sku. If you are trying to model bundles, consider using a {@link org.broadleafcommerce.core.catalog.domain.ProductBundle}
-     * and subsequent {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}s.
-     * 
-     * @return {@link #getDefaultProduct()} if {@link #getDefaultProduct()} is non-null, the @ManyToOne Product association otherwise. If no
-     * relationship is set, returns null
-     */
-    public Product getProduct();
+  /**
+   * This will be a value if and only if this Sku is the defaultSku of a Product (and thus has a @OneToOne relationship
+   * with a Product). The mapping for this is actually done at the Product level with a foreign key to Sku; this exists
+   * for convenience to get the reverse relationship
+   *
+   * @return  The associated Product if this Sku is a defaultSku, <b>null</b> otherwise
+   *
+   * @see     #getProduct()
+   */
+  Product getDefaultProduct();
 
-    /**
-     * Associates a Sku to a given Product. This will then show up in the list returned by {@link org.broadleafcommerce.core.catalog.domain.Product#getSkus()}
-     * 
-     * @param product - Product to associate this Sku to
-     * @see org.broadleafcommerce.core.catalog.domain.Product#getSkus()
-     */
-    public void setProduct(Product product);
+  /**
+   * The relationship for a Product's default Sku (and thus a Sku's default Product) is actually maintained on the
+   * Product entity as a foreign key to Sku. Because of this, there are probably very few circumstances that you would
+   * actually want to change this from the Sku perspective instead of the Product perspective.<br />
+   * <br />
+   * If you are looking for a way to simply associate a Sku to a Product, the correct way would be to call
+   * {@link #setProduct(org.broadleafcommerce.core.catalog.domain.Product)} or
+   * {@link org.broadleafcommerce.core.catalog.domain.Product#setSkus(java.util.List< org.broadleafcommerce.core.catalog.domain.Sku>)}
+   * which would then cause this Sku to show up in the list of Skus for the given Product
+   *
+   * @param  product  DOCUMENT ME!
+   */
+  void setDefaultProduct(Product product);
 
-    /**
-     * A product is on sale provided the sale price is not null, non-zero, and less than the retail price
-     * 
-     * @return whether or not the product is on sale
-     */
-    public boolean isOnSale();
+  /**
+   * This will return the correct Product association that is being used on the Sku. If this Sku is a default Sku for a
+   * Product (as in, {@link #getDefaultProduct()} != null) than this will return {@link #getDefaultProduct()}. If this
+   * is not a default Sku for a Product, this will return the @ManyToOne Product relationship created by adding this Sku
+   * to a Product's list of Skus, or using {@link setProduct( org.broadleafcommerce.core.catalog.domain.Product)}.<br />
+   * <br />
+   * In some implementations, it might make sense to have both the @OneToOne association set
+   * (
+   * {@link org.broadleafcommerce.core.catalog.domain.Product#setDefaultSku(org.broadleafcommerce.core.catalog.domain.Sku)})
+   * as well as the @ManyToOne association set ({@link #setProduct(org.broadleafcommerce.core.catalog.domain.Product)}).
+   * In this case, This method would only return the result of {@link #getDefaultProduct()}. However, the @OneToOne and
+   * &#064;ManyToOne association should never actually refer to different Products, and would represent an error state.
+   * If you require this, consider subclassing and using your own @ManyToMany relationship between Product and Sku. If
+   * you are trying to model bundles, consider using a {@link org.broadleafcommerce.core.catalog.domain.ProductBundle}
+   * and subsequent {@link org.broadleafcommerce.core.catalog.domain.SkuBundleItem}s.
+   *
+   * @return  {@link #getDefaultProduct()} if {@link #getDefaultProduct()} is non-null, the @ManyToOne Product
+   *          association otherwise. If no relationship is set, returns null
+   */
+  Product getProduct();
 
-    /**
-     * Whether this Sku can be sorted by a machine
-     * 
-     * @return <b>true</b> if this Sku can be sorted by a machine
-     * @deprecated use {@link #getIsMachineSortable()} instead since that is the correct bean notation
-     */
-    public Boolean isMachineSortable();
+  /**
+   * Associates a Sku to a given Product. This will then show up in the list returned by
+   * {@link org.broadleafcommerce.core.catalog.domain.Product#getSkus()}
+   *
+   * @param  product  - Product to associate this Sku to
+   *
+   * @see    org.broadleafcommerce.core.catalog.domain.Product#getSkus()
+   */
+  void setProduct(Product product);
 
-    /**
-     * Whether this Sku can be sorted by a machine
-     * 
-     */
-    public Boolean getIsMachineSortable();
+  /**
+   * A product is on sale provided the sale price is not null, non-zero, and less than the retail price.
+   *
+   * @return  whether or not the product is on sale
+   */
+  boolean isOnSale();
 
-    /**
-     * Sets whether or not this Sku can be sorted by a machine
-     * 
-     * @param isMachineSortable
-     * @deprecated use {@link #setIsMachineSortable(Boolean)} instead since that is the correct bean notation
-     */
-    public void setMachineSortable(Boolean isMachineSortable);
-    
-    /**
-     * Sets whether or not this Sku can be sorted by a machine
-     * @param isMachineSortable
-     */
-    public void setIsMachineSortable(Boolean isMachineSortable);
+  /**
+   * Whether this Sku can be sorted by a machine.
+   *
+   * @return      <b>true</b> if this Sku can be sorted by a machine
+   *
+   * @deprecated  use {@link #getIsMachineSortable()} instead since that is the correct bean notation
+   */
+  Boolean isMachineSortable();
 
-    /**
-     * Gets all the extra fees for this particular Sku. If the fee type is FULFILLMENT, these are stored
-     * on {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#getFulfillmentGroupFees()} for an Order
-     * 
-     * @return the {@link org.broadleafcommerce.core.catalog.domain.SkuFee}s for this Sku
-     */
-    public List<SkuFee> getFees();
+  /**
+   * Whether this Sku can be sorted by a machine.
+   *
+   * @return  whether this Sku can be sorted by a machine.
+   */
+  Boolean getIsMachineSortable();
 
-    /**
-     * Sets the extra fees for this particular Sku
-     * 
-     * @param fees
-     */
-    public void setFees(List<SkuFee> fees);
+  /**
+   * Sets whether or not this Sku can be sorted by a machine.
+   *
+   * @param       isMachineSortable  DOCUMENT ME!
+   *
+   * @deprecated  use {@link #setIsMachineSortable(Boolean)} instead since that is the correct bean notation
+   */
+  void setMachineSortable(Boolean isMachineSortable);
 
-    /**
-     * Gets the flat rate for fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku} for a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending
-     * on the result of {@link org.broadleafcommerce.core.order.domain.FulfillmentOption#getUseFlatRates()}, this flat rate will be used in calculating
-     * the cost of fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku}.
-     * 
-     * @return the flat rates for this {@link org.broadleafcommerce.core.catalog.domain.Sku}
-     */
-    public Map<FulfillmentOption, BigDecimal> getFulfillmentFlatRates();
+  /**
+   * Sets whether or not this Sku can be sorted by a machine.
+   *
+   * @param  isMachineSortable  DOCUMENT ME!
+   */
+  void setIsMachineSortable(Boolean isMachineSortable);
 
-    /**
-     * Sets the flat rates for fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku} for a particular {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending
-     * on the result of {@link org.broadleafcommerce.core.order.domain.FulfillmentOption#getUseFlatRates()}, this flat rate will be used in calculating
-     * the cost of fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku}.
-     * 
-     * @param fulfillmentFlatRates
-     */
-    public void setFulfillmentFlatRates(Map<FulfillmentOption, BigDecimal> fulfillmentFlatRates);
+  /**
+   * Gets all the extra fees for this particular Sku. If the fee type is FULFILLMENT, these are stored on
+   * {@link org.broadleafcommerce.core.order.domain.FulfillmentGroup#getFulfillmentGroupFees()} for an Order
+   *
+   * @return  the {@link org.broadleafcommerce.core.catalog.domain.SkuFee}s for this Sku
+   */
+  List<SkuFee> getFees();
 
-    /**
-     * Gets the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}s that this {@link org.broadleafcommerce.core.catalog.domain.Sku} should be excluded from. For instance,
-     * some {@link org.broadleafcommerce.core.catalog.domain.Sku}s might not be available to be fulfilled next-day
-     * 
-     * @return
-     */
-    public List<FulfillmentOption> getExcludedFulfillmentOptions();
+  /**
+   * Sets the extra fees for this particular Sku.
+   *
+   * @param  fees  DOCUMENT ME!
+   */
+  void setFees(List<SkuFee> fees);
 
-    /**
-     * Sets the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}s that this Sku should be excluded from being apart of
-     * 
-     * @param excludedFulfillmentOptions
-     */
-    public void setExcludedFulfillmentOptions(List<FulfillmentOption> excludedFulfillmentOptions);
+  /**
+   * Gets the flat rate for fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku} for a particular
+   * {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending on the result of
+   * {@link org.broadleafcommerce.core.order.domain.FulfillmentOption#getUseFlatRates()}, this flat rate will be used in
+   * calculating the cost of fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku}.
+   *
+   * @return  the flat rates for this {@link org.broadleafcommerce.core.catalog.domain.Sku}
+   */
+  Map<FulfillmentOption, BigDecimal> getFulfillmentFlatRates();
 
-    /**
-     * Returns the type of inventory for this sku
-     * @return the {@link org.broadleafcommerce.core.inventory.service.type.InventoryType} for this sku
-     */
-    public InventoryType getInventoryType();
+  /**
+   * Sets the flat rates for fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku} for a particular
+   * {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}. Depending on the result of
+   * {@link org.broadleafcommerce.core.order.domain.FulfillmentOption#getUseFlatRates()}, this flat rate will be used in
+   * calculating the cost of fulfilling this {@link org.broadleafcommerce.core.catalog.domain.Sku}.
+   *
+   * @param  fulfillmentFlatRates  DOCUMENT ME!
+   */
+  void setFulfillmentFlatRates(Map<FulfillmentOption, BigDecimal> fulfillmentFlatRates);
 
-    /**
-     * Sets the type of inventory for this sku
-     * @param inventoryType the {@link org.broadleafcommerce.core.inventory.service.type.InventoryType} for this sku
-     */
-    public void setInventoryType(InventoryType inventoryType);
-    
-    /**
-     * Returns the fulfillment type for this sku. May be null.
-     * @return
-     */
-    public FulfillmentType getFulfillmentType();
-    
-    /**
-     * Sets the fulfillment type for this sku. May return null.
-     * @param fulfillmentType
-     */
-    public void setFulfillmentType(FulfillmentType fulfillmentType);
+  /**
+   * Gets the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}s that this
+   * {@link org.broadleafcommerce.core.catalog.domain.Sku} should be excluded from. For instance, some
+   * {@link org.broadleafcommerce.core.catalog.domain.Sku}s might not be available to be fulfilled next-day
+   *
+   * @return  gets the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}s that this
+   *          {@link org.broadleafcommerce.core.catalog.domain.Sku} should be excluded from.
+   */
+  List<FulfillmentOption> getExcludedFulfillmentOptions();
 
-    /**
-     * Clears any currently stored dynamic pricing
-     */
-    public void clearDynamicPrices();
+  /**
+   * Sets the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}s that this Sku should be excluded from
+   * being apart of.
+   *
+   * @param  excludedFulfillmentOptions  DOCUMENT ME!
+   */
+  void setExcludedFulfillmentOptions(List<FulfillmentOption> excludedFulfillmentOptions);
 
-    /**
-     * Sets the currency for this Sku
-     * 
-     * Note: Currency is ignored when using dynamic pricing
-     * 
-     * @param currency
-     */
-    public void setCurrency(BroadleafCurrency currency);
+  /**
+   * Returns the type of inventory for this sku.
+   *
+   * @return  the {@link org.broadleafcommerce.core.inventory.service.type.InventoryType} for this sku
+   */
+  InventoryType getInventoryType();
 
-    /**
-     * Returns the currency for this sku if there is one set. If there is not, it will return the currency for the
-     * default sku if this is not the default sku. Note that it is possible for this method to return null.
-     * 
-     * <b>Note: When using dynamic pricing, this method is unreliable and should not be called outside of the 
-     * Broadleaf admin</b>
-     * 
-     * @return the currency for this sku
-     */
-    public BroadleafCurrency getCurrency();
+  /**
+   * Sets the type of inventory for this sku.
+   *
+   * @param  inventoryType  the {@link org.broadleafcommerce.core.inventory.service.type.InventoryType} for this sku
+   */
+  void setInventoryType(InventoryType inventoryType);
 
-    /**
-     * Returns the Tax Code for this particular Entity.
-     * 
-     *  If the current Tax Code on the Sku is null, the Product tax code will be returned.
-     * @return taxCode
-     */
-    public String getTaxCode();
+  /**
+   * Returns the fulfillment type for this sku. May be null.
+   *
+   * @return  the fulfillment type for this sku.
+   */
+  FulfillmentType getFulfillmentType();
 
-    /**
-     * Sets the tax code for this SKU
-     * 
-     * @param taxCode
-     */
-    public void setTaxCode(String taxCode);
+  /**
+   * Sets the fulfillment type for this sku. May return null.
+   *
+   * @param  fulfillmentType  DOCUMENT ME!
+   */
+  void setFulfillmentType(FulfillmentType fulfillmentType);
 
-}
+  /**
+   * Clears any currently stored dynamic pricing.
+   */
+  void clearDynamicPrices();
+
+  /**
+   * Sets the currency for this Sku.
+   *
+   * <p>Note: Currency is ignored when using dynamic pricing</p>
+   *
+   * @param  currency  DOCUMENT ME!
+   */
+  void setCurrency(BroadleafCurrency currency);
+
+  /**
+   * Returns the currency for this sku if there is one set. If there is not, it will return the currency for the default
+   * sku if this is not the default sku. Note that it is possible for this method to return null. <b>Note: When using
+   * dynamic pricing, this method is unreliable and should not be called outside of the Broadleaf admin</b>
+   *
+   * @return  the currency for this sku
+   */
+  BroadleafCurrency getCurrency();
+
+  /**
+   * Returns the Tax Code for this particular Entity.
+   *
+   * <p>If the current Tax Code on the Sku is null, the Product tax code will be returned.</p>
+   *
+   * @return  taxCode
+   */
+  String getTaxCode();
+
+  /**
+   * Sets the tax code for this SKU.
+   *
+   * @param  taxCode  DOCUMENT ME!
+   */
+  void setTaxCode(String taxCode);
+
+} // end interface Sku

@@ -16,15 +16,12 @@
 
 package org.broadleafcommerce.common.extensibility.context.merge;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.extensibility.context.ResourceInputStream;
-import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+
+import java.util.Arrays;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,87 +34,133 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.extensibility.context.ResourceInputStream;
+import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException;
+
+import org.springframework.context.ApplicationContext;
+
+import org.springframework.core.io.Resource;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 
 /**
- * This class serves to parse any passed in source application context files and
- * look for the Spring "import" element. If found, the resource of the import element
- * is retrieved and set as another source element after the current one. Also, once the
- * resource is retrieved and included, the import element is deleted from the source
- * document.
+ * This class serves to parse any passed in source application context files and look for the Spring "import" element.
+ * If found, the resource of the import element is retrieved and set as another source element after the current one.
+ * Also, once the resource is retrieved and included, the import element is deleted from the source document.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class ImportProcessor {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(ImportProcessor.class);
-    private static final String IMPORT_PATH = "/beans/import";
+  private static final Log    LOG         = LogFactory.getLog(ImportProcessor.class);
+  private static final String IMPORT_PATH = "/beans/import";
 
-    protected ApplicationContext applicationContext;
-    protected DocumentBuilder builder;
-    protected XPath xPath;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public ImportProcessor(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            builder = dbf.newDocumentBuilder();
-            XPathFactory factory=XPathFactory.newInstance();
-            xPath=factory.newXPath();
-        } catch (ParserConfigurationException e) {
-            LOG.error("Unable to create document builder", e);
-            throw new RuntimeException(e);
-        }
+  /** DOCUMENT ME! */
+  protected ApplicationContext applicationContext;
+
+  /** DOCUMENT ME! */
+  protected DocumentBuilder    builder;
+
+  /** DOCUMENT ME! */
+  protected XPath              xPath;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new ImportProcessor object.
+   *
+   * @param   applicationContext  DOCUMENT ME!
+   *
+   * @throws  RuntimeException  DOCUMENT ME!
+   */
+  public ImportProcessor(ApplicationContext applicationContext) {
+    this.applicationContext = applicationContext;
+
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+    try {
+      builder = dbf.newDocumentBuilder();
+
+      XPathFactory factory = XPathFactory.newInstance();
+      xPath = factory.newXPath();
+    } catch (ParserConfigurationException e) {
+      LOG.error("Unable to create document builder", e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sources  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  MergeException  DOCUMENT ME!
+   */
+  public ResourceInputStream[] extract(ResourceInputStream[] sources) throws MergeException {
+    if (sources == null) {
+      return null;
     }
 
-    public ResourceInputStream[] extract(ResourceInputStream[] sources) throws MergeException {
-        if (sources == null) {
-            return null;
+    try {
+      DynamicResourceIterator resourceList = new DynamicResourceIterator();
+      resourceList.addAll(Arrays.asList(sources));
+
+      while (resourceList.hasNext()) {
+        ResourceInputStream myStream = resourceList.nextResource();
+        Document            doc      = builder.parse(myStream);
+        NodeList            nodeList = (NodeList) xPath.evaluate(IMPORT_PATH, doc, XPathConstants.NODESET);
+        int                 length   = nodeList.getLength();
+
+        for (int j = 0; j < length; j++) {
+          Element             element  = (Element) nodeList.item(j);
+          Resource            resource = applicationContext.getResource(element.getAttribute("resource"));
+          ResourceInputStream ris      = new ResourceInputStream(resource.getInputStream(),
+              resource.getURL().toString());
+          resourceList.addEmbeddedResource(ris);
+          element.getParentNode().removeChild(element);
         }
-        try {
-            DynamicResourceIterator resourceList = new DynamicResourceIterator();
-            resourceList.addAll(Arrays.asList(sources));
-            while(resourceList.hasNext()) {
-                ResourceInputStream myStream = resourceList.nextResource();
-                Document doc = builder.parse(myStream);
-                NodeList nodeList = (NodeList) xPath.evaluate(IMPORT_PATH, doc, XPathConstants.NODESET);
-                int length = nodeList.getLength();
-                for (int j=0;j<length;j++) {
-                    Element element = (Element) nodeList.item(j);
-                    Resource resource = applicationContext.getResource(element.getAttribute("resource"));
-                    ResourceInputStream ris = new ResourceInputStream(resource.getInputStream(), resource.getURL().toString());
-                    resourceList.addEmbeddedResource(ris);
-                    element.getParentNode().removeChild(element);
-                }
-                if (length > 0) {
-                    TransformerFactory tFactory = TransformerFactory.newInstance();
-                    Transformer xmlTransformer = tFactory.newTransformer();
-                    xmlTransformer.setOutputProperty(OutputKeys.VERSION, "1.0");
-                    xmlTransformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-                    xmlTransformer.setOutputProperty(OutputKeys.METHOD, "xml");
-                    xmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-                    DOMSource source = new DOMSource(doc);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(baos));
-                    StreamResult result = new StreamResult(writer);
-                    xmlTransformer.transform(source, result);
+        if (length > 0) {
+          TransformerFactory tFactory       = TransformerFactory.newInstance();
+          Transformer        xmlTransformer = tFactory.newTransformer();
+          xmlTransformer.setOutputProperty(OutputKeys.VERSION, "1.0");
+          xmlTransformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+          xmlTransformer.setOutputProperty(OutputKeys.METHOD, "xml");
+          xmlTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-                    byte[] itemArray = baos.toByteArray();
+          DOMSource             source = new DOMSource(doc);
+          ByteArrayOutputStream baos   = new ByteArrayOutputStream();
+          BufferedWriter        writer = new BufferedWriter(new OutputStreamWriter(baos));
+          StreamResult          result = new StreamResult(writer);
+          xmlTransformer.transform(source, result);
 
-                    resourceList.set(resourceList.getPosition() - 1, new ResourceInputStream(new ByteArrayInputStream(itemArray), null, myStream.getNames()));
-                } else {
-                    myStream.reset();
-                }
-            }
+          byte[] itemArray = baos.toByteArray();
 
-            return resourceList.toArray(new ResourceInputStream[resourceList.size()]);
-        } catch (Exception e) {
-            throw new MergeException(e);
+          resourceList.set(resourceList.getPosition() - 1,
+            new ResourceInputStream(new ByteArrayInputStream(itemArray), null, myStream.getNames()));
+        } else {
+          myStream.reset();
         }
-    }
-}
+      } // end while
+
+      return resourceList.toArray(new ResourceInputStream[resourceList.size()]);
+    } catch (Exception e) {
+      throw new MergeException(e);
+    } // end try-catch
+  } // end method extract
+} // end class ImportProcessor

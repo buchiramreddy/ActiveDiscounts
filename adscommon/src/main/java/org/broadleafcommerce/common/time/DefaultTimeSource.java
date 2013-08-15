@@ -16,9 +16,19 @@
 
 package org.broadleafcommerce.common.time;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class DefaultTimeSource implements TimeSource {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public long timeInMillis() {
-        return System.currentTimeMillis();
-    }
+  /**
+   * @see  org.broadleafcommerce.common.time.TimeSource#timeInMillis()
+   */
+  @Override public long timeInMillis() {
+    return System.currentTimeMillis();
+  }
 }

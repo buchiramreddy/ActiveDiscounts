@@ -18,28 +18,51 @@ package org.broadleafcommerce.common.exception;
 
 /**
  * Exception thrown when a {@link EntityService service} method fails.
- * 
- * @author jfischer
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class ServiceException extends Exception {
-    
-    private static final long serialVersionUID = -7084792578727995587L;
-    
-    // for serialization purposes
-    protected ServiceException() {
-        super();
-    }
-    
-    public ServiceException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    
-    public ServiceException(String message) {
-        super(message);
-    }
-    
-    public ServiceException(Throwable cause) {
-        super(cause);
-    }
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-}
+  private static final long serialVersionUID = -7084792578727995587L;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new ServiceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public ServiceException(String message) {
+    super(message);
+  }
+
+  /**
+   * Creates a new ServiceException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public ServiceException(Throwable cause) {
+    super(cause);
+  }
+
+  /**
+   * Creates a new ServiceException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public ServiceException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  // for serialization purposes
+  /**
+   * Creates a new ServiceException object.
+   */
+  protected ServiceException() {
+    super();
+  }
+
+} // end class ServiceException

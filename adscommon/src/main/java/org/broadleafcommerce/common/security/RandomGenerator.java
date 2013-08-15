@@ -1,8 +1,8 @@
 /**
  * The OWASP CSRFGuard Project, BSD License
- * Eric Sheridan (eric@infraredsecurity.com), Copyright (c) 2011 
+ * Eric Sheridan (eric@infraredsecurity.com), Copyright (c) 2011
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -31,42 +31,112 @@ package org.broadleafcommerce.common.security;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public final class RandomGenerator {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private final static char[] CHARSET = new char[] { 'A', 'B', 'C', 'D', 'E',
-            'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4',
-            '5', '6', '7', '8', '9' };
+  private static final char[] CHARSET = new char[] {
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9'
+  };
 
-    private RandomGenerator() {
-        /**
-         * Intentionally blank to force static usage
-         */
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  private RandomGenerator() {
+    /**
+     * Intentionally blank to force static usage
+     */
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   prng  DOCUMENT ME!
+   * @param   len   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  NoSuchAlgorithmException  DOCUMENT ME!
+   */
+  public static String generateRandomId(String prng, int len) throws NoSuchAlgorithmException {
+    return generateRandomId(SecureRandom.getInstance(prng), len);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   sr   DOCUMENT ME!
+   * @param   len  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String generateRandomId(SecureRandom sr, int len) {
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = 1; i < (len + 1); i++) {
+      int  index = sr.nextInt(CHARSET.length);
+      char c     = CHARSET[index];
+      sb.append(c);
+
+      if (((i % 4) == 0) && (i != 0) && (i < len)) {
+        sb.append('-');
+      }
     }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException();
-    }
+    return sb.toString();
+  }
 
-    public static String generateRandomId(String prng, int len) throws NoSuchAlgorithmException {
-        return generateRandomId(SecureRandom.getInstance(prng), len);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public static String generateRandomId(SecureRandom sr, int len) {
-        StringBuilder sb = new StringBuilder();
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override public Object clone() throws CloneNotSupportedException {
+    throw new CloneNotSupportedException();
+  }
 
-        for (int i = 1; i < len + 1; i++) {
-            int index = sr.nextInt(CHARSET.length);
-            char c = CHARSET[index];
-            sb.append(c);
-
-            if ((i % 4) == 0 && i != 0 && i < len) {
-                sb.append('-');
-            }
-        }
-
-        return sb.toString();
-    }
-
-}
+} // end class RandomGenerator

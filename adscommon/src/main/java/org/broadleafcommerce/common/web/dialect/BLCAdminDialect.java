@@ -16,33 +16,61 @@
 
 package org.broadleafcommerce.common.web.dialect;
 
-import org.thymeleaf.dialect.AbstractDialect;
-import org.thymeleaf.processor.IProcessor;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import org.thymeleaf.dialect.AbstractDialect;
+
+import org.thymeleaf.processor.IProcessor;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class BLCAdminDialect extends AbstractDialect {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Set<IProcessor> processors = new HashSet<IProcessor>();
+  private Set<IProcessor> processors = new HashSet<IProcessor>();
 
-    @Override
-    public String getPrefix() {
-        return "blc_admin";
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean isLenient() {
-        return true;
-    }
+  /**
+   * @see  org.thymeleaf.dialect.IDialect#getPrefix()
+   */
+  @Override public String getPrefix() {
+    return "blc_admin";
+  }
 
-    @Override
-    public Set<IProcessor> getProcessors() {
-        return processors;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setProcessors(Set<IProcessor> processors) {
-        this.processors = processors;
-    }
+  /**
+   * @see  org.thymeleaf.dialect.AbstractDialect#getProcessors()
+   */
+  @Override public Set<IProcessor> getProcessors() {
+    return processors;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.dialect.IDialect#isLenient()
+   */
+  @Override public boolean isLenient() {
+    return true;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  processors  DOCUMENT ME!
+   */
+  public void setProcessors(Set<IProcessor> processors) {
+    this.processors = processors;
+  }
+
+} // end class BLCAdminDialect

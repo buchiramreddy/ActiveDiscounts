@@ -16,39 +16,55 @@
 
 package org.broadleafcommerce.core.order.service;
 
+import java.util.regex.Pattern;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.core.catalog.domain.ProductOption;
 import org.broadleafcommerce.core.catalog.service.type.ProductOptionValidationType;
 import org.broadleafcommerce.core.order.service.exception.ProductOptionValidationException;
+
 import org.springframework.stereotype.Service;
 
-import java.util.regex.Pattern;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blProductOptionValidationService")
-public class ProductOptionValidationServiceImpl implements ProductOptionValidationService  {
+public class ProductOptionValidationServiceImpl implements ProductOptionValidationService {
+  private static final Log LOG = LogFactory.getLog(ProductOptionValidationServiceImpl.class);
 
-    private static final Log LOG = LogFactory.getLog(ProductOptionValidationServiceImpl.class);
 
-
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.order.service.ProductOptionValidationService#validate(org.broadleafcommerce.core.catalog.domain.ProductOption, java.lang.String)
-     */
-    @Override
-    public Boolean validate(ProductOption productOption, String value) {
-        if (productOption.getProductOptionValidationType() == ProductOptionValidationType.REGEX) {
-            if (!validateRegex(productOption.getValidationString(), value))
-            {
-                LOG.error(productOption.getErrorMessage() + ". Value [" + value + "] does not match regex string [" + productOption.getValidationString() + "]");
-                throw new ProductOptionValidationException(productOption.getErrorMessage(), productOption.getErrorCode());
-            }
-        }
-        return true;
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.order.service.ProductOptionValidationService#validate(org.broadleafcommerce.core.catalog.domain.ProductOption, java.lang.String)
+   */
+  @Override public Boolean validate(ProductOption productOption, String value) {
+    if (productOption.getProductOptionValidationType() == ProductOptionValidationType.REGEX) {
+      if (!validateRegex(productOption.getValidationString(), value)) {
+        LOG.error(productOption.getErrorMessage() + ". Value [" + value + "] does not match regex string ["
+          + productOption.getValidationString() + "]");
+        throw new ProductOptionValidationException(productOption.getErrorMessage(), productOption.getErrorCode());
+      }
     }
-    
-    protected Boolean validateRegex(String regex, String value) {
-        return Pattern.matches(regex, value);
-    }
-    
 
-}
+    return true;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   regex  DOCUMENT ME!
+   * @param   value  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Boolean validateRegex(String regex, String value) {
+    return Pattern.matches(regex, value);
+  }
+
+
+} // end class ProductOptionValidationServiceImpl

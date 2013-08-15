@@ -17,81 +17,187 @@
 package org.broadleafcommerce.openadmin.security;
 
 import org.broadleafcommerce.common.web.SandBoxContext;
+
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.service.SandBoxMode;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class AdminSandBoxContext extends SandBoxContext {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected AdminUser adminUser;
-    protected SandBoxMode sandBoxMode;
-    protected String sandBoxName;
-    protected boolean resetData = false;
-    protected boolean isReplay = false;
-    protected boolean rebuildSandBox = false;
+  /** DOCUMENT ME! */
+  protected AdminUser   adminUser;
 
-    public AdminUser getAdminUser() {
-        return adminUser;
-    }
+  /** DOCUMENT ME! */
+  protected boolean     isReplay       = false;
 
-    public void setAdminUser(AdminUser adminUser) {
-        this.adminUser = adminUser;
-    }
+  /** DOCUMENT ME! */
+  protected boolean     rebuildSandBox = false;
 
-    public SandBoxMode getSandBoxMode() {
-        return sandBoxMode;
-    }
+  /** DOCUMENT ME! */
+  protected boolean     resetData   = false;
 
-    public void setSandBoxMode(SandBoxMode sandBoxMode) {
-        this.sandBoxMode = sandBoxMode;
-    }
+  /** DOCUMENT ME! */
+  protected SandBoxMode sandBoxMode;
 
-    public String getSandBoxName() {
-        return sandBoxName;
-    }
+  /** DOCUMENT ME! */
+  protected String      sandBoxName;
 
-    public void setSandBoxName(String sandBoxName) {
-        this.sandBoxName = sandBoxName;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean isReplay() {
-        return isReplay;
-    }
-
-    public void setReplay(boolean replay) {
-        isReplay = replay;
-    }
-
-    public boolean isRebuildSandBox() {
-        return rebuildSandBox;
-    }
-
-    public void setRebuildSandBox(boolean rebuildSandBox) {
-        this.rebuildSandBox = rebuildSandBox;
-    }
-
-    public boolean isResetData() {
-        return resetData;
-    }
-
-    public void setResetData(boolean resetData) {
-        this.resetData = resetData;
-    }
-
-    public SandBoxContext clone() {
-        AdminSandBoxContext myContext = new AdminSandBoxContext();
-        myContext.setResetData(isResetData());
-        myContext.setAdminUser(getAdminUser());
-        myContext.setSandBoxId(getSandBoxId());
-        myContext.setPreviewMode(getPreviewMode());
-        myContext.setSandBoxMode(getSandBoxMode());
-        myContext.setSandBoxName(getSandBoxName());
-        myContext.setReplay(isReplay());
-        myContext.setRebuildSandBox(isRebuildSandBox());
+  /**
+   * @see  org.broadleafcommerce.common.web.SandBoxContext#clone()
+   */
+  @Override public SandBoxContext clone() {
+    AdminSandBoxContext myContext = new AdminSandBoxContext();
+    myContext.setResetData(isResetData());
+    myContext.setAdminUser(getAdminUser());
+    myContext.setSandBoxId(getSandBoxId());
+    myContext.setPreviewMode(getPreviewMode());
+    myContext.setSandBoxMode(getSandBoxMode());
+    myContext.setSandBoxName(getSandBoxName());
+    myContext.setReplay(isReplay());
+    myContext.setRebuildSandBox(isRebuildSandBox());
 
 
-        return myContext;
-    }
-}
+    return myContext;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public AdminUser getAdminUser() {
+    return adminUser;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public SandBoxMode getSandBoxMode() {
+    return sandBoxMode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getSandBoxName() {
+    return sandBoxName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isRebuildSandBox() {
+    return rebuildSandBox;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isReplay() {
+    return isReplay;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isResetData() {
+    return resetData;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  adminUser  DOCUMENT ME!
+   */
+  public void setAdminUser(AdminUser adminUser) {
+    this.adminUser = adminUser;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  rebuildSandBox  DOCUMENT ME!
+   */
+  public void setRebuildSandBox(boolean rebuildSandBox) {
+    this.rebuildSandBox = rebuildSandBox;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  replay  DOCUMENT ME!
+   */
+  public void setReplay(boolean replay) {
+    isReplay = replay;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  resetData  DOCUMENT ME!
+   */
+  public void setResetData(boolean resetData) {
+    this.resetData = resetData;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxMode  DOCUMENT ME!
+   */
+  public void setSandBoxMode(SandBoxMode sandBoxMode) {
+    this.sandBoxMode = sandBoxMode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxName  DOCUMENT ME!
+   */
+  public void setSandBoxName(String sandBoxName) {
+    this.sandBoxName = sandBoxName;
+  }
+} // end class AdminSandBoxContext

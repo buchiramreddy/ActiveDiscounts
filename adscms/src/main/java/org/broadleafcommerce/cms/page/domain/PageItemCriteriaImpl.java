@@ -16,13 +16,6 @@
 
 package org.broadleafcommerce.cms.page.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,131 +28,233 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+
 /**
- * 
- * @author bpolster
+ * DOCUMENT ME!
  *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
-@Entity
-@Table(name = "BLC_PAGE_ITEM_CRITERIA")
-@Inheritance(strategy=InheritanceType.JOINED)
 @AdminPresentationClass(friendlyName = "PageItemCriteriaImpl_basePageItemCriteria")
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "BLC_PAGE_ITEM_CRITERIA")
 public class PageItemCriteriaImpl implements PageItemCriteria {
-    
-    public static final long serialVersionUID = 1L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Id
-    @GeneratedValue(generator= "PageItemCriteriaId")
-    @GenericGenerator(
-        name="PageItemCriteriaId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="PageItemCriteriaImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.page.domain.PageItemCriteriaImpl")
-        }
-    )
-    @Column(name = "PAGE_ITEM_CRITERIA_ID")
-    @AdminPresentation(friendlyName = "PageItemCriteriaImpl_Item_Criteria_Id", group = "PageItemCriteriaImpl_Description", visibility =VisibilityEnum.HIDDEN_ALL)
-    protected Long id;
-    
-    @Column(name = "QUANTITY", nullable=false)
-    @AdminPresentation(friendlyName = "PageItemCriteriaImpl_Quantity", group = "PageItemCriteriaImpl_Description", visibility =VisibilityEnum.HIDDEN_ALL)
-    protected Integer quantity;
-    
-    @Lob
-    @Type(type = "org.hibernate.type.StringClobType")
-    @Column(name = "ORDER_ITEM_MATCH_RULE", length = Integer.MAX_VALUE - 1)
-    @AdminPresentation(friendlyName = "PageItemCriteriaImpl_Order_Item_Match_Rule", group = "PageItemCriteriaImpl_Description", visibility = VisibilityEnum.HIDDEN_ALL)
-    protected String orderItemMatchRule;
-    
-    @ManyToOne(targetEntity = PageImpl.class)
-    @JoinTable(name = "BLC_QUAL_CRIT_PAGE_XREF", joinColumns = @JoinColumn(name = "PAGE_ITEM_CRITERIA_ID"), inverseJoinColumns = @JoinColumn(name = "PAGE_ID"))
-    protected Page page;
-    
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageItemCriteriaImpl_Item_Criteria_Id",
+    group        = "PageItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "PAGE_ITEM_CRITERIA_ID")
+  @GeneratedValue(generator = "PageItemCriteriaId")
+  @GenericGenerator(
+    name       = "PageItemCriteriaId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "PageItemCriteriaImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.page.domain.PageItemCriteriaImpl"
+      )
+    }
+  )
+  @Id protected Long id;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageItemCriteriaImpl_Order_Item_Match_Rule",
+    group        = "PageItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(
+    name   = "ORDER_ITEM_MATCH_RULE",
+    length = Integer.MAX_VALUE - 1
+  )
+  @Lob
+  @Type(type = "org.hibernate.type.StringClobType")
+  protected String      orderItemMatchRule;
+
+  /** DOCUMENT ME! */
+  @JoinTable(
+    name               = "BLC_QUAL_CRIT_PAGE_XREF",
+    joinColumns        = @JoinColumn(name = "PAGE_ITEM_CRITERIA_ID"),
+    inverseJoinColumns = @JoinColumn(name = "PAGE_ID")
+  )
+  @ManyToOne(targetEntity = PageImpl.class)
+  protected Page page;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageItemCriteriaImpl_Quantity",
+    group        = "PageItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(
+    name     = "QUANTITY",
+    nullable = false
+  )
+  protected Integer quantity;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.PageItemCriteria#cloneEntity()
+   */
+  @Override public PageItemCriteria cloneEntity() {
+    PageItemCriteriaImpl newField = new PageItemCriteriaImpl();
+    newField.quantity           = quantity;
+    newField.orderItemMatchRule = orderItemMatchRule;
+
+    return newField;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public Integer getQuantity() {
-        return quantity;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setQuantity(Integer receiveQuantity) {
-        this.quantity = receiveQuantity;
+    PageItemCriteriaImpl other = (PageItemCriteriaImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public String getMatchRule() {
-        return orderItemMatchRule;
+    if (orderItemMatchRule == null) {
+      if (other.orderItemMatchRule != null) {
+        return false;
+      }
+    } else if (!orderItemMatchRule.equals(other.orderItemMatchRule)) {
+      return false;
     }
 
-    @Override
-    public void setMatchRule(String matchRule) {
-        this.orderItemMatchRule = matchRule;
+    if (quantity == null) {
+      if (other.quantity != null) {
+        return false;
+      }
+    } else if (!quantity.equals(other.quantity)) {
+      return false;
     }
 
-    @Override
-    public Page getPage() {
-        return page;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public void setPage(Page page) {
-        this.page = page;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((orderItemMatchRule == null) ? 0 : orderItemMatchRule.hashCode());
-        result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        PageItemCriteriaImpl other = (PageItemCriteriaImpl) obj;
-        
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
-        
-        if (orderItemMatchRule == null) {
-            if (other.orderItemMatchRule != null)
-                return false;
-        } else if (!orderItemMatchRule.equals(other.orderItemMatchRule))
-            return false;
-        if (quantity == null) {
-            if (other.quantity != null)
-                return false;
-        } else if (!quantity.equals(other.quantity))
-            return false;
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public PageItemCriteria cloneEntity() {
-        PageItemCriteriaImpl newField = new PageItemCriteriaImpl();
-        newField.quantity = quantity;
-        newField.orderItemMatchRule = orderItemMatchRule;
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#getMatchRule()
+   */
+  @Override public String getMatchRule() {
+    return orderItemMatchRule;
+  }
 
-        return newField;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.PageItemCriteria#getPage()
+   */
+  @Override public Page getPage() {
+    return page;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#getQuantity()
+   */
+  @Override public Integer getQuantity() {
+    return quantity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((id == null) ? 0 : id.hashCode());
+    result = (prime * result) + ((orderItemMatchRule == null) ? 0 : orderItemMatchRule.hashCode());
+    result = (prime * result) + ((quantity == null) ? 0 : quantity.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#setMatchRule(java.lang.String)
+   */
+  @Override public void setMatchRule(String matchRule) {
+    this.orderItemMatchRule = matchRule;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.PageItemCriteria#setPage(org.broadleafcommerce.cms.page.domain.Page)
+   */
+  @Override public void setPage(Page page) {
+    this.page = page;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#setQuantity(java.lang.Integer)
+   */
+  @Override public void setQuantity(Integer receiveQuantity) {
+    this.quantity = receiveQuantity;
+  }
+
+} // end class PageItemCriteriaImpl

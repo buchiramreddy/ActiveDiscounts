@@ -16,29 +16,6 @@
 
 package org.broadleafcommerce.cms.page.domain;
 
-import org.broadleafcommerce.common.admin.domain.AdminMainEntity;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.AdminPresentationMapField;
-import org.broadleafcommerce.common.presentation.AdminPresentationMapFields;
-import org.broadleafcommerce.common.presentation.AdminPresentationToOneLookup;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.broadleafcommerce.common.presentation.RequiredOverride;
-import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationOverride;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationOverrides;
-import org.broadleafcommerce.common.sandbox.domain.SandBox;
-import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
-import org.broadleafcommerce.openadmin.audit.AdminAuditable;
-import org.broadleafcommerce.openadmin.audit.AdminAuditableListener;
-import org.broadleafcommerce.openadmin.server.service.type.RuleIdentifier;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -62,424 +39,800 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.admin.domain.AdminMainEntity;
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.AdminPresentationMapField;
+import org.broadleafcommerce.common.presentation.AdminPresentationMapFields;
+import org.broadleafcommerce.common.presentation.AdminPresentationToOneLookup;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+import org.broadleafcommerce.common.presentation.RequiredOverride;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationOverride;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationOverrides;
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
+
+import org.broadleafcommerce.openadmin.audit.AdminAuditable;
+import org.broadleafcommerce.openadmin.audit.AdminAuditableListener;
+import org.broadleafcommerce.openadmin.server.service.type.RuleIdentifier;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(
+  populateToOneFields = PopulateToOneFieldsEnum.TRUE,
+  friendlyName        = "PageImpl_basePage"
+)
+@AdminPresentationOverrides(
+  {
+    @AdminPresentationOverride(
+      name = "auditable.createdBy.id",
+      value =
+        @AdminPresentation(
+          readOnly   = true,
+          visibility = VisibilityEnum.HIDDEN_ALL
+        )
+    ),
+    @AdminPresentationOverride(
+      name = "auditable.updatedBy.id",
+      value =
+        @AdminPresentation(
+          readOnly   = true,
+          visibility = VisibilityEnum.HIDDEN_ALL
+        )
+    ),
+    @AdminPresentationOverride(
+      name = "auditable.createdBy.name",
+      value =
+        @AdminPresentation(
+          readOnly   = true,
+          visibility = VisibilityEnum.HIDDEN_ALL
+        )
+    ),
+    @AdminPresentationOverride(
+      name = "auditable.updatedBy.name",
+      value =
+        @AdminPresentation(
+          readOnly   = true,
+          visibility = VisibilityEnum.HIDDEN_ALL
+        )
+    ),
+    @AdminPresentationOverride(
+      name = "auditable.dateCreated",
+      value =
+        @AdminPresentation(
+          readOnly   = true,
+          visibility = VisibilityEnum.HIDDEN_ALL
+        )
+    ),
+    @AdminPresentationOverride(
+      name = "auditable.dateUpdated",
+      value =
+        @AdminPresentation(
+          readOnly   = true,
+          visibility = VisibilityEnum.HIDDEN_ALL
+        )
+    ),
+    @AdminPresentationOverride(
+      name = "pageTemplate.templateDescription",
+      value = @AdminPresentation(excluded = true)
+    ),
+    @AdminPresentationOverride(
+      name = "pageTemplate.templateName",
+      value = @AdminPresentation(excluded = true)
+    ),
+    @AdminPresentationOverride(
+      name = "pageTemplate.locale",
+      value = @AdminPresentation(excluded = true)
+    )
+  }
+)
 @Entity
+@EntityListeners(value = { AdminAuditableListener.class })
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_PAGE")
-@EntityListeners(value = { AdminAuditableListener.class })
-@AdminPresentationOverrides(
-    {
-        @AdminPresentationOverride(name="auditable.createdBy.id", value=@AdminPresentation(readOnly = true, visibility = VisibilityEnum.HIDDEN_ALL)),
-        @AdminPresentationOverride(name="auditable.updatedBy.id", value=@AdminPresentation(readOnly = true, visibility = VisibilityEnum.HIDDEN_ALL)),
-        @AdminPresentationOverride(name="auditable.createdBy.name", value=@AdminPresentation(readOnly = true, visibility = VisibilityEnum.HIDDEN_ALL)),
-        @AdminPresentationOverride(name="auditable.updatedBy.name", value=@AdminPresentation(readOnly = true, visibility = VisibilityEnum.HIDDEN_ALL)),
-        @AdminPresentationOverride(name="auditable.dateCreated", value=@AdminPresentation(readOnly = true, visibility = VisibilityEnum.HIDDEN_ALL)),
-        @AdminPresentationOverride(name="auditable.dateUpdated", value=@AdminPresentation(readOnly = true, visibility = VisibilityEnum.HIDDEN_ALL)),
-        @AdminPresentationOverride(name="pageTemplate.templateDescription", value=@AdminPresentation(excluded = true)),
-        @AdminPresentationOverride(name="pageTemplate.templateName", value=@AdminPresentation(excluded = true)),
-        @AdminPresentationOverride(name="pageTemplate.locale", value=@AdminPresentation(excluded = true))
-    }
-)
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE, friendlyName = "PageImpl_basePage")
 public class PageImpl implements Page, AdminMainEntity {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
-    
-    private static final Integer ZERO = new Integer(0);
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "PageId")
-    @GenericGenerator(
-            name="PageId",
-            strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-            parameters = {
-                @Parameter(name="segment_value", value="PageImpl"),
-                @Parameter(name="entity_name", value="org.broadleafcommerce.cms.page.domain.PageImpl")
-            }
-        )
-    @Column(name = "PAGE_ID")
-    protected Long id;
-    
-    @ManyToOne(targetEntity = PageTemplateImpl.class)
-    @JoinColumn(name = "PAGE_TMPLT_ID")
-    @AdminPresentation(friendlyName = "PageImpl_Page_Template", order = 2,
-        group = Presentation.Group.Name.Basic, groupOrder = Presentation.Group.Order.Basic,
-        requiredOverride = RequiredOverride.REQUIRED)
-    @AdminPresentationToOneLookup(lookupDisplayProperty = "templateName")
-    protected PageTemplate pageTemplate;
+  private static final Integer ZERO = new Integer(0);
 
-    @Column (name = "DESCRIPTION")
-    @AdminPresentation(friendlyName = "PageImpl_Description", order = 3, 
-        group = Presentation.Group.Name.Basic, groupOrder = Presentation.Group.Order.Basic,
-        prominent = true, gridOrder = 1)
-    protected String description;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column (name = "FULL_URL")
-    @Index(name="PAGE_FULL_URL_INDEX", columnNames={"FULL_URL"})
-    @AdminPresentation(friendlyName = "PageImpl_Full_Url", order = 1, 
-        group = Presentation.Group.Name.Basic, groupOrder = Presentation.Group.Order.Basic,
-        prominent = true, gridOrder = 2)
-    protected String fullUrl;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Archived",
+    order        = 5,
+    group        = Presentation.Group.Name.Basic,
+    groupOrder   = Presentation.Group.Order.Basic,
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "ARCHIVED_FLAG")
+  @Index(
+    name        = "PAGE_ARCHVD_FLG_INDX",
+    columnNames = { "ARCHIVED_FLAG" }
+  )
+  protected Boolean archivedFlag = false;
 
-    @ManyToMany(targetEntity = PageFieldImpl.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "BLC_PAGE_FLD_MAP", 
-        joinColumns = @JoinColumn(name = "PAGE_ID", referencedColumnName = "PAGE_ID"), 
-        inverseJoinColumns = @JoinColumn(name = "PAGE_FLD_ID", referencedColumnName = "PAGE_FLD_ID"))
-    @MapKeyColumn(name = "MAP_KEY")
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
-    @BatchSize(size = 20)
-    protected Map<String,PageField> pageFields = new HashMap<String,PageField>();
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @Embedded protected AdminAuditable auditable = new AdminAuditable();
 
-    @ManyToOne (targetEntity = SandBoxImpl.class)
-    @JoinColumn(name="SANDBOX_ID")
-    @AdminPresentation(excluded = true)
-    protected SandBox sandbox;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Deleted",
+    order        = 2,
+    group        = Presentation.Group.Name.Basic,
+    groupOrder   = Presentation.Group.Order.Basic,
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "DELETED_FLAG")
+  @Index(
+    name        = "PAGE_DLTD_FLG_INDX",
+    columnNames = { "DELETED_FLAG" }
+  )
+  protected Boolean deletedFlag = false;
 
-    @ManyToOne(targetEntity = SandBoxImpl.class)
-    @JoinColumn(name = "ORIG_SANDBOX_ID")
-    @AdminPresentation(excluded = true)
-    protected SandBox originalSandBox;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Description",
+    order        = 3,
+    group        = Presentation.Group.Name.Basic,
+    groupOrder   = Presentation.Group.Order.Basic,
+    prominent    = true,
+    gridOrder    = 1
+  )
+  @Column(name = "DESCRIPTION")
+  protected String description;
 
-    @Column (name = "DELETED_FLAG")
-    @Index(name="PAGE_DLTD_FLG_INDX", columnNames={"DELETED_FLAG"})
-    @AdminPresentation(friendlyName = "PageImpl_Deleted", order = 2, 
-        group = Presentation.Group.Name.Basic, groupOrder = Presentation.Group.Order.Basic,
-        visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Boolean deletedFlag = false;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Full_Url",
+    order        = 1,
+    group        = Presentation.Group.Name.Basic,
+    groupOrder   = Presentation.Group.Order.Basic,
+    prominent    = true,
+    gridOrder    = 2
+  )
+  @Column(name = "FULL_URL")
+  @Index(
+    name        = "PAGE_FULL_URL_INDEX",
+    columnNames = { "FULL_URL" }
+  )
+  protected String fullUrl;
 
-    @Column (name = "ARCHIVED_FLAG")
-    @AdminPresentation(friendlyName = "PageImpl_Archived", order = 5, 
-        group = Presentation.Group.Name.Basic, groupOrder = Presentation.Group.Order.Basic,
-        visibility = VisibilityEnum.HIDDEN_ALL)
-    @Index(name="PAGE_ARCHVD_FLG_INDX", columnNames={"ARCHIVED_FLAG"})
-    protected Boolean archivedFlag = false;
+  /** DOCUMENT ME! */
+  @Column(name = "PAGE_ID")
+  @GeneratedValue(generator = "PageId")
+  @GenericGenerator(
+    name       = "PageId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "PageImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.page.domain.PageImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Column (name = "LOCKED_FLAG")
-    @AdminPresentation(friendlyName = "PageImpl_Is_Locked", 
-        group = Presentation.Group.Name.Page, groupOrder = Presentation.Group.Order.Page,
-        visibility = VisibilityEnum.HIDDEN_ALL)
-    @Index(name="PAGE_LCKD_FLG_INDX", columnNames={"LOCKED_FLAG"})
-    protected Boolean lockedFlag = false;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Is_Locked",
+    group        = Presentation.Group.Name.Page,
+    groupOrder   = Presentation.Group.Order.Page,
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "LOCKED_FLAG")
+  @Index(
+    name        = "PAGE_LCKD_FLG_INDX",
+    columnNames = { "LOCKED_FLAG" }
+  )
+  protected Boolean lockedFlag = false;
 
-    @Column (name = "ORIG_PAGE_ID")
-    @AdminPresentation(friendlyName = "PageImpl_Original_Page_ID", order = 6, 
-        group = Presentation.Group.Name.Page, groupOrder = Presentation.Group.Order.Page,
-        visibility = VisibilityEnum.HIDDEN_ALL)
-    @Index(name="ORIG_PAGE_ID_INDX", columnNames={"ORIG_PAGE_ID"})
-    protected Long originalPageId;      
-    
-    @Column(name = "PRIORITY")
-    @AdminPresentation(friendlyName = "PageImpl_Priority", order = 3, 
-        group = Presentation.Group.Name.Basic, groupOrder = Presentation.Group.Order.Basic)
-    protected Integer priority;
-    
-    @Column(name = "OFFLINE_FLAG")
-    @AdminPresentation(friendlyName = "PageImpl_Offline", order = 4, 
-        group = Presentation.Group.Name.Basic, groupOrder = Presentation.Group.Order.Basic)
-    protected Boolean offlineFlag = false;     
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Offline",
+    order        = 4,
+    group        = Presentation.Group.Name.Basic,
+    groupOrder   = Presentation.Group.Order.Basic
+  )
+  @Column(name = "OFFLINE_FLAG")
+  protected Boolean offlineFlag = false;
 
-    @ManyToMany(targetEntity = PageRuleImpl.class, cascade = {CascadeType.ALL})
-    @JoinTable(name = "BLC_PAGE_RULE_MAP", 
-        inverseJoinColumns = @JoinColumn(name = "PAGE_RULE_ID", referencedColumnName = "PAGE_RULE_ID"))
-    @Cascade(value = { org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
-    @MapKeyColumn(name = "MAP_KEY", nullable = false)
-    @AdminPresentationMapFields(
-        mapDisplayFields = {
-            @AdminPresentationMapField(
-                fieldName = RuleIdentifier.CUSTOMER_FIELD_KEY,
-                fieldPresentation = @AdminPresentation(fieldType = SupportedFieldType.RULE_SIMPLE, order = 1,
-                    tab = Presentation.Tab.Name.Rules, tabOrder = Presentation.Tab.Order.Rules,
-                    group = Presentation.Group.Name.Rules, groupOrder = Presentation.Group.Order.Rules,
-                    ruleIdentifier = RuleIdentifier.CUSTOMER, friendlyName = "Generic_Customer_Rule")
-            ),
-            @AdminPresentationMapField(
-                fieldName = RuleIdentifier.TIME_FIELD_KEY,
-                fieldPresentation = @AdminPresentation(fieldType = SupportedFieldType.RULE_SIMPLE, order = 2,
-                    tab = Presentation.Tab.Name.Rules, tabOrder = Presentation.Tab.Order.Rules,
-                    group = Presentation.Group.Name.Rules, groupOrder = Presentation.Group.Order.Rules,
-                    ruleIdentifier = RuleIdentifier.TIME, friendlyName = "Generic_Time_Rule")
-            ),
-            @AdminPresentationMapField(
-                fieldName = RuleIdentifier.REQUEST_FIELD_KEY,
-                fieldPresentation = @AdminPresentation(fieldType = SupportedFieldType.RULE_SIMPLE, order = 3,
-                    tab = Presentation.Tab.Name.Rules, tabOrder = Presentation.Tab.Order.Rules,
-                    group = Presentation.Group.Name.Rules, groupOrder = Presentation.Group.Order.Rules,
-                    ruleIdentifier = RuleIdentifier.REQUEST, friendlyName = "Generic_Request_Rule")
-            ),
-            @AdminPresentationMapField(
-                fieldName = RuleIdentifier.PRODUCT_FIELD_KEY,
-                fieldPresentation = @AdminPresentation(fieldType = SupportedFieldType.RULE_SIMPLE, order = 4,
-                    tab = Presentation.Tab.Name.Rules, tabOrder = Presentation.Tab.Order.Rules,
-                    group = Presentation.Group.Name.Rules, groupOrder = Presentation.Group.Order.Rules,
-                    ruleIdentifier = RuleIdentifier.PRODUCT, friendlyName = "Generic_Product_Rule")
-            )
-        }
-    )
-    Map<String, PageRule> pageMatchRules = new HashMap<String, PageRule>();
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Original_Page_ID",
+    order        = 6,
+    group        = Presentation.Group.Name.Page,
+    groupOrder   = Presentation.Group.Order.Page,
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "ORIG_PAGE_ID")
+  @Index(
+    name        = "ORIG_PAGE_ID_INDX",
+    columnNames = { "ORIG_PAGE_ID" }
+  )
+  protected Long originalPageId;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = PageItemCriteriaImpl.class, cascade={CascadeType.ALL})
-    @JoinTable(name = "BLC_QUAL_CRIT_PAGE_XREF", 
-        joinColumns = @JoinColumn(name = "PAGE_ID"), 
-        inverseJoinColumns = @JoinColumn(name = "PAGE_ITEM_CRITERIA_ID"))
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
-    @AdminPresentation(friendlyName = "Generic_Item_Rule", order = 5,
-        tab = Presentation.Tab.Name.Rules, tabOrder = Presentation.Tab.Order.Rules,
-        group = Presentation.Group.Name.Rules, groupOrder = Presentation.Group.Order.Rules,
-        fieldType = SupportedFieldType.RULE_WITH_QUANTITY, 
-        ruleIdentifier = RuleIdentifier.ORDERITEM)
-    protected Set<PageItemCriteria> qualifyingItemCriteria = new HashSet<PageItemCriteria>();
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @JoinColumn(name = "ORIG_SANDBOX_ID")
+  @ManyToOne(targetEntity = SandBoxImpl.class)
+  protected SandBox originalSandBox;
 
-    @Embedded
-    @AdminPresentation(excluded = true)
-    protected AdminAuditable auditable = new AdminAuditable();
+  /** DOCUMENT ME! */
+  @BatchSize(size = 20)
+  @Cascade(value = { org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+  @JoinTable(
+    name               = "BLC_PAGE_FLD_MAP",
+    joinColumns        =
+      @JoinColumn(
+        name           = "PAGE_ID",
+        referencedColumnName = "PAGE_ID"
+      ),
+    inverseJoinColumns =
+      @JoinColumn(
+        name                 = "PAGE_FLD_ID",
+        referencedColumnName = "PAGE_FLD_ID"
+      )
+  )
+  @ManyToMany(
+    targetEntity = PageFieldImpl.class,
+    cascade      = CascadeType.ALL
+  )
+  @MapKeyColumn(name = "MAP_KEY")
+  protected Map<String, PageField> pageFields = new HashMap<String, PageField>();
 
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName     = "PageImpl_Page_Template",
+    order            = 2,
+    group            = Presentation.Group.Name.Basic,
+    groupOrder       = Presentation.Group.Order.Basic,
+    requiredOverride = RequiredOverride.REQUIRED
+  )
+  @AdminPresentationToOneLookup(lookupDisplayProperty = "templateName")
+  @JoinColumn(name = "PAGE_TMPLT_ID")
+  @ManyToOne(targetEntity = PageTemplateImpl.class)
+  protected PageTemplate pageTemplate;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "PageImpl_Priority",
+    order        = 3,
+    group        = Presentation.Group.Name.Basic,
+    groupOrder   = Presentation.Group.Order.Basic
+  )
+  @Column(name = "PRIORITY")
+  protected Integer priority;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName   = "Generic_Item_Rule",
+    order          = 5,
+    tab            = Presentation.Tab.Name.Rules,
+    tabOrder       = Presentation.Tab.Order.Rules,
+    group          = Presentation.Group.Name.Rules,
+    groupOrder     = Presentation.Group.Order.Rules,
+    fieldType      = SupportedFieldType.RULE_WITH_QUANTITY,
+    ruleIdentifier = RuleIdentifier.ORDERITEM
+  )
+  @Cascade(value = { org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+  @JoinTable(
+    name               = "BLC_QUAL_CRIT_PAGE_XREF",
+    joinColumns        = @JoinColumn(name = "PAGE_ID"),
+    inverseJoinColumns = @JoinColumn(name = "PAGE_ITEM_CRITERIA_ID")
+  )
+  @OneToMany(
+    fetch        = FetchType.LAZY,
+    targetEntity = PageItemCriteriaImpl.class,
+    cascade      = { CascadeType.ALL }
+  )
+  protected Set<PageItemCriteria> qualifyingItemCriteria = new HashSet<PageItemCriteria>();
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @JoinColumn(name = "SANDBOX_ID")
+  @ManyToOne(targetEntity = SandBoxImpl.class)
+  protected SandBox sandbox;
+
+  /** DOCUMENT ME! */
+  @AdminPresentationMapFields(
+    mapDisplayFields = {
+      @AdminPresentationMapField(
+        fieldName = RuleIdentifier.CUSTOMER_FIELD_KEY,
+        fieldPresentation =
+          @AdminPresentation(
+            fieldType      = SupportedFieldType.RULE_SIMPLE,
+            order          = 1,
+            tab            = Presentation.Tab.Name.Rules,
+            tabOrder       = Presentation.Tab.Order.Rules,
+            group          = Presentation.Group.Name.Rules,
+            groupOrder     = Presentation.Group.Order.Rules,
+            ruleIdentifier = RuleIdentifier.CUSTOMER,
+            friendlyName   = "Generic_Customer_Rule"
+          )
+      ),
+      @AdminPresentationMapField(
+        fieldName = RuleIdentifier.TIME_FIELD_KEY,
+        fieldPresentation =
+          @AdminPresentation(
+            fieldType      = SupportedFieldType.RULE_SIMPLE,
+            order          = 2,
+            tab            = Presentation.Tab.Name.Rules,
+            tabOrder       = Presentation.Tab.Order.Rules,
+            group          = Presentation.Group.Name.Rules,
+            groupOrder     = Presentation.Group.Order.Rules,
+            ruleIdentifier = RuleIdentifier.TIME,
+            friendlyName   = "Generic_Time_Rule"
+          )
+      ),
+      @AdminPresentationMapField(
+        fieldName = RuleIdentifier.REQUEST_FIELD_KEY,
+        fieldPresentation =
+          @AdminPresentation(
+            fieldType      = SupportedFieldType.RULE_SIMPLE,
+            order          = 3,
+            tab            = Presentation.Tab.Name.Rules,
+            tabOrder       = Presentation.Tab.Order.Rules,
+            group          = Presentation.Group.Name.Rules,
+            groupOrder     = Presentation.Group.Order.Rules,
+            ruleIdentifier = RuleIdentifier.REQUEST,
+            friendlyName   = "Generic_Request_Rule"
+          )
+      ),
+      @AdminPresentationMapField(
+        fieldName = RuleIdentifier.PRODUCT_FIELD_KEY,
+        fieldPresentation =
+          @AdminPresentation(
+            fieldType      = SupportedFieldType.RULE_SIMPLE,
+            order          = 4,
+            tab            = Presentation.Tab.Name.Rules,
+            tabOrder       = Presentation.Tab.Order.Rules,
+            group          = Presentation.Group.Name.Rules,
+            groupOrder     = Presentation.Group.Order.Rules,
+            ruleIdentifier = RuleIdentifier.PRODUCT,
+            friendlyName   = "Generic_Product_Rule"
+          )
+      )
+    }
+  )
+  @Cascade(value = { org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+  @JoinTable(
+    name               = "BLC_PAGE_RULE_MAP",
+    inverseJoinColumns =
+      @JoinColumn(
+        name           = "PAGE_RULE_ID",
+        referencedColumnName = "PAGE_RULE_ID"
+      )
+  )
+  @ManyToMany(
+    targetEntity = PageRuleImpl.class,
+    cascade      = { CascadeType.ALL }
+  )
+  @MapKeyColumn(
+    name     = "MAP_KEY",
+    nullable = false
+  )
+  Map<String, PageRule> pageMatchRules = new HashMap<String, PageRule>();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#cloneEntity()
+   */
+  @Override public Page cloneEntity() {
+    PageImpl newPage = new PageImpl();
+
+    newPage.archivedFlag    = archivedFlag;
+    newPage.deletedFlag     = deletedFlag;
+    newPage.pageTemplate    = pageTemplate;
+    newPage.description     = description;
+    newPage.sandbox         = sandbox;
+    newPage.originalPageId  = originalPageId;
+    newPage.offlineFlag     = offlineFlag;
+    newPage.priority        = priority;
+    newPage.originalSandBox = originalSandBox;
+    newPage.fullUrl         = fullUrl;
+
+    Map<String, PageRule> ruleMap = newPage.getPageMatchRules();
+
+    for (String key : pageMatchRules.keySet()) {
+      PageRule newField = pageMatchRules.get(key).cloneEntity();
+      ruleMap.put(key, newField);
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    Set<PageItemCriteria> criteriaList = newPage.getQualifyingItemCriteria();
+
+    for (PageItemCriteria pageItemCriteria : qualifyingItemCriteria) {
+      PageItemCriteria newField = pageItemCriteria.cloneEntity();
+      criteriaList.add(newField);
     }
 
-    @Override
-    public PageTemplate getPageTemplate() {
-        return pageTemplate;
+    for (PageField oldPageField : pageFields.values()) {
+      PageField newPageField = oldPageField.cloneEntity();
+      newPageField.setPage(newPage);
+      newPage.getPageFields().put(newPageField.getFieldKey(), newPageField);
     }
 
-    @Override
-    public void setPageTemplate(PageTemplate pageTemplate) {
-        this.pageTemplate = pageTemplate;
+    return newPage;
+  } // end method cloneEntity
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getArchivedFlag()
+   */
+  @Override public Boolean getArchivedFlag() {
+    if (archivedFlag == null) {
+      return Boolean.FALSE;
+    } else {
+      return archivedFlag;
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getAuditable()
+   */
+  @Override public AdminAuditable getAuditable() {
+    return auditable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getDeletedFlag()
+   */
+  @Override public Boolean getDeletedFlag() {
+    if (deletedFlag == null) {
+      return Boolean.FALSE;
+    } else {
+      return deletedFlag;
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getDescription()
+   */
+  @Override public String getDescription() {
+    return description;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getFullUrl()
+   */
+  @Override public String getFullUrl() {
+    return fullUrl;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getLockedFlag()
+   */
+  @Override public Boolean getLockedFlag() {
+    if (lockedFlag == null) {
+      return Boolean.FALSE;
+    } else {
+      return lockedFlag;
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.admin.domain.AdminMainEntity#getMainEntityName()
+   */
+  @Override public String getMainEntityName() {
+    return getFullUrl();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getOfflineFlag()
+   */
+  @Override public Boolean getOfflineFlag() {
+    if (offlineFlag == null) {
+      return Boolean.FALSE;
+    } else {
+      return offlineFlag;
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getOriginalPageId()
+   */
+  @Override public Long getOriginalPageId() {
+    return originalPageId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getOriginalSandBox()
+   */
+  @Override public SandBox getOriginalSandBox() {
+    return originalSandBox;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getPageFields()
+   */
+  @Override public Map<String, PageField> getPageFields() {
+    return pageFields;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getPageMatchRules()
+   */
+  @Override public Map<String, PageRule> getPageMatchRules() {
+    return pageMatchRules;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getPageTemplate()
+   */
+  @Override public PageTemplate getPageTemplate() {
+    return pageTemplate;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getPriority()
+   */
+  @Override public Integer getPriority() {
+    if (priority == null) {
+      return ZERO;
     }
 
-    @Override
-    public Map<String, PageField> getPageFields() {
-        return pageFields;
+    return priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getQualifyingItemCriteria()
+   */
+  @Override public Set<PageItemCriteria> getQualifyingItemCriteria() {
+    return qualifyingItemCriteria;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#getSandbox()
+   */
+  @Override public SandBox getSandbox() {
+    return sandbox;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setArchivedFlag(java.lang.Boolean)
+   */
+  @Override public void setArchivedFlag(Boolean archivedFlag) {
+    this.archivedFlag = archivedFlag;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setAuditable(org.broadleafcommerce.openadmin.audit.AdminAuditable)
+   */
+  @Override public void setAuditable(AdminAuditable auditable) {
+    this.auditable = auditable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setDeletedFlag(java.lang.Boolean)
+   */
+  @Override public void setDeletedFlag(Boolean deletedFlag) {
+    this.deletedFlag = deletedFlag;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setDescription(java.lang.String)
+   */
+  @Override public void setDescription(String description) {
+    this.description = description;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setFullUrl(java.lang.String)
+   */
+  @Override public void setFullUrl(String fullUrl) {
+    this.fullUrl = fullUrl;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setLockedFlag(java.lang.Boolean)
+   */
+  @Override public void setLockedFlag(Boolean lockedFlag) {
+    this.lockedFlag = lockedFlag;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setOfflineFlag(java.lang.Boolean)
+   */
+  @Override public void setOfflineFlag(Boolean offlineFlag) {
+    this.offlineFlag = offlineFlag;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setOriginalPageId(java.lang.Long)
+   */
+  @Override public void setOriginalPageId(Long originalPageId) {
+    this.originalPageId = originalPageId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setOriginalSandBox(org.broadleafcommerce.common.sandbox.domain.SandBox)
+   */
+  @Override public void setOriginalSandBox(SandBox originalSandBox) {
+    this.originalSandBox = originalSandBox;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setPageFields(java.util.Map)
+   */
+  @Override public void setPageFields(Map<String, PageField> pageFields) {
+    this.pageFields = pageFields;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setPageMatchRules(java.util.Map)
+   */
+  @Override public void setPageMatchRules(Map<String, PageRule> pageMatchRules) {
+    this.pageMatchRules = pageMatchRules;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setPageTemplate(org.broadleafcommerce.cms.page.domain.PageTemplate)
+   */
+  @Override public void setPageTemplate(PageTemplate pageTemplate) {
+    this.pageTemplate = pageTemplate;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setPriority(java.lang.Integer)
+   */
+  @Override public void setPriority(Integer priority) {
+    this.priority = priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setQualifyingItemCriteria(java.util.Set)
+   */
+  @Override public void setQualifyingItemCriteria(Set<PageItemCriteria> qualifyingItemCriteria) {
+    this.qualifyingItemCriteria = qualifyingItemCriteria;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.page.domain.Page#setSandbox(org.broadleafcommerce.common.sandbox.domain.SandBox)
+   */
+  @Override public void setSandbox(SandBox sandbox) {
+    this.sandbox = sandbox;
+  }
+
+  //~ Inner Classes ----------------------------------------------------------------------------------------------------
+
+  public static class Presentation {
+    //~ Inner Classes --------------------------------------------------------------------------------------------------
+
+    public static class Tab {
+      //~ Inner Classes ------------------------------------------------------------------------------------------------
+
+      public static class Name {
+        //~ Static fields/initializers ---------------------------------------------------------------------------------
+
+        public static final String Rules = "PageImpl_Rules_Tab";
+      }
+
+      public static class Order {
+        //~ Static fields/initializers ---------------------------------------------------------------------------------
+
+        public static final int Rules = 1000;
+      }
     }
 
-    @Override
-    public void setPageFields(Map<String, PageField> pageFields) {
-        this.pageFields = pageFields;
+    public static class Group {
+      //~ Inner Classes ------------------------------------------------------------------------------------------------
+
+      public static class Name {
+        //~ Static fields/initializers ---------------------------------------------------------------------------------
+
+        public static final String Basic = "PageImpl_Basic";
+        public static final String Page  = "PageImpl_Page";
+        public static final String Rules = "PageImpl_Rules";
+      }
+
+      public static class Order {
+        //~ Static fields/initializers ---------------------------------------------------------------------------------
+
+        public static final int Basic = 1000;
+        public static final int Page  = 2000;
+        public static final int Rules = 1000;
+      }
     }
-
-    @Override
-    public Boolean getDeletedFlag() {
-        if (deletedFlag == null) {
-            return Boolean.FALSE;
-        } else {
-            return deletedFlag;
-        }
-    }
-
-    @Override
-    public void setDeletedFlag(Boolean deletedFlag) {
-        this.deletedFlag = deletedFlag;
-    }
-
-    @Override
-    public Boolean getArchivedFlag() {
-        if (archivedFlag == null) {
-            return Boolean.FALSE;
-        } else {
-            return archivedFlag;
-        }
-    }
-
-    @Override
-    public void setArchivedFlag(Boolean archivedFlag) {
-        this.archivedFlag = archivedFlag;
-    }
-
-    @Override
-    public SandBox getSandbox() {
-        return sandbox;
-    }
-
-    @Override
-    public void setSandbox(SandBox sandbox) {
-        this.sandbox = sandbox;
-    }
-
-
-    @Override
-    public Long getOriginalPageId() {
-        return originalPageId;
-    }
-
-    @Override
-    public void setOriginalPageId(Long originalPageId) {
-        this.originalPageId = originalPageId;
-    }
-
-    @Override
-    public String getFullUrl() {
-        return fullUrl;
-    }
-
-    @Override
-    public void setFullUrl(String fullUrl) {
-        this.fullUrl = fullUrl;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public SandBox getOriginalSandBox() {
-        return originalSandBox;
-    }
-
-    @Override
-    public void setOriginalSandBox(SandBox originalSandBox) {
-        this.originalSandBox = originalSandBox;
-    }
-
-    @Override
-    public AdminAuditable getAuditable() {
-        return auditable;
-    }
-
-    @Override
-    public void setAuditable(AdminAuditable auditable) {
-        this.auditable = auditable;
-    }
-
-    @Override
-    public Boolean getLockedFlag() {
-        if (lockedFlag == null) {
-            return Boolean.FALSE;
-        } else {
-            return lockedFlag;
-        }
-    }
-
-    @Override
-    public void setLockedFlag(Boolean lockedFlag) {
-        this.lockedFlag = lockedFlag;
-    }
-    
-    @Override
-    public Boolean getOfflineFlag() {
-        if (offlineFlag == null) {
-            return Boolean.FALSE;
-        } else {
-            return offlineFlag;
-        }
-    }
-
-    @Override
-    public void setOfflineFlag(Boolean offlineFlag) {
-        this.offlineFlag = offlineFlag;
-    }
-
-    @Override
-    public Integer getPriority() {
-        if (priority == null) {
-            return ZERO;
-        }
-        return priority;
-    }
-
-    @Override
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-    
-    @Override
-    public Map<String, PageRule> getPageMatchRules() {
-        return pageMatchRules;
-    }
-
-    @Override
-    public void setPageMatchRules(Map<String, PageRule> pageMatchRules) {
-        this.pageMatchRules = pageMatchRules;
-    }
-
-    @Override
-    public Set<PageItemCriteria> getQualifyingItemCriteria() {
-        return qualifyingItemCriteria;
-    }
-
-    @Override
-    public void setQualifyingItemCriteria(Set<PageItemCriteria> qualifyingItemCriteria) {
-        this.qualifyingItemCriteria = qualifyingItemCriteria;
-    }
-
-    @Override
-    public Page cloneEntity() {
-        PageImpl newPage = new PageImpl();
-
-        newPage.archivedFlag = archivedFlag;
-        newPage.deletedFlag = deletedFlag;
-        newPage.pageTemplate = pageTemplate;
-        newPage.description = description;
-        newPage.sandbox = sandbox;
-        newPage.originalPageId = originalPageId;
-        newPage.offlineFlag = offlineFlag;        
-        newPage.priority = priority;
-        newPage.originalSandBox = originalSandBox;
-        newPage.fullUrl = fullUrl;
-        
-        Map<String, PageRule> ruleMap = newPage.getPageMatchRules();
-        for (String key : pageMatchRules.keySet()) {
-            PageRule newField = pageMatchRules.get(key).cloneEntity();
-            ruleMap.put(key, newField);
-        }
-
-        Set<PageItemCriteria> criteriaList = newPage.getQualifyingItemCriteria();
-        for (PageItemCriteria pageItemCriteria : qualifyingItemCriteria) {
-            PageItemCriteria newField = pageItemCriteria.cloneEntity();
-            criteriaList.add(newField);
-        }
-
-        for (PageField oldPageField: pageFields.values()) {
-            PageField newPageField = oldPageField.cloneEntity();
-            newPageField.setPage(newPage);
-            newPage.getPageFields().put(newPageField.getFieldKey(), newPageField);
-        }
-
-        return newPage;
-    }
-    
-    public static class Presentation {
-        public static class Tab {
-            public static class Name {
-                public static final String Rules = "PageImpl_Rules_Tab";
-            }
-            
-            public static class Order {
-                public static final int Rules = 1000;
-            }
-        }
-            
-        public static class Group {
-            public static class Name {
-                public static final String Basic = "PageImpl_Basic";
-                public static final String Page = "PageImpl_Page";
-                public static final String Rules = "PageImpl_Rules";
-            }
-            
-            public static class Order {
-                public static final int Basic = 1000;
-                public static final int Page = 2000;
-                public static final int Rules = 1000;
-            }
-        }
-    }
-
-    @Override
-    public String getMainEntityName() {
-        return getFullUrl();
-    }
-}
-
+  } // end class Presentation
+} // end class PageImpl

@@ -19,51 +19,133 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class FieldPath {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected List<String> associationPath = new ArrayList<String>();
-    protected List<String> targetPropertyPieces = new ArrayList<String>();
-    protected String targetProperty;
+  /** DOCUMENT ME! */
+  protected List<String> associationPath      = new ArrayList<String>();
 
-    public FieldPath withAssociationPath(List<String> associationPath) {
-        setAssociationPath(associationPath);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  protected String       targetProperty;
 
-    public FieldPath withTargetPropertyPieces(List<String> targetPropertyPieces) {
-        setTargetPropertyPieces(targetPropertyPieces);
-        return this;
-    }
+  /** DOCUMENT ME! */
+  protected List<String> targetPropertyPieces = new ArrayList<String>();
 
-    public FieldPath withTargetProperty(String targetProperty) {
-        setTargetProperty(targetProperty);
-        return this;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public List<String> getAssociationPath() {
-        return associationPath;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getAssociationPath() {
+    return associationPath;
+  }
 
-    public void setAssociationPath(List<String> associationPath) {
-        this.associationPath = associationPath;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<String> getTargetPropertyPieces() {
-        return targetPropertyPieces;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getTargetProperty() {
+    return targetProperty;
+  }
 
-    public void setTargetPropertyPieces(List<String> targetPropertyPieces) {
-        this.targetPropertyPieces = targetPropertyPieces;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getTargetProperty() {
-        return targetProperty;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getTargetPropertyPieces() {
+    return targetPropertyPieces;
+  }
 
-    public void setTargetProperty(String targetProperty) {
-        this.targetProperty = targetProperty;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  associationPath  DOCUMENT ME!
+   */
+  public void setAssociationPath(List<String> associationPath) {
+    this.associationPath = associationPath;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  targetProperty  DOCUMENT ME!
+   */
+  public void setTargetProperty(String targetProperty) {
+    this.targetProperty = targetProperty;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  targetPropertyPieces  DOCUMENT ME!
+   */
+  public void setTargetPropertyPieces(List<String> targetPropertyPieces) {
+    this.targetPropertyPieces = targetPropertyPieces;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   associationPath  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldPath withAssociationPath(List<String> associationPath) {
+    setAssociationPath(associationPath);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   targetProperty  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldPath withTargetProperty(String targetProperty) {
+    setTargetProperty(targetProperty);
+
+    return this;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   targetPropertyPieces  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldPath withTargetPropertyPieces(List<String> targetPropertyPieces) {
+    setTargetPropertyPieces(targetPropertyPieces);
+
+    return this;
+  }
+} // end class FieldPath

@@ -16,42 +16,154 @@
 
 package org.broadleafcommerce.common.config.domain;
 
+import java.io.Serializable;
+
+import java.util.Date;
+
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.config.service.type.ModuleConfigurationType;
 
-import java.io.Serializable;
-import java.util.Date;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ModuleConfiguration extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getActiveEndDate();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getModuleName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getActiveStartDate();
 
-    public void setModuleName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setActiveStartDate(Date startDate);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Auditable getAuditable();
 
-    public Date getActiveStartDate();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setActiveEndDate(Date startDate);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Date getActiveEndDate();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setIsDefault(Boolean isDefault);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getIsDefault();
 
-    public Boolean getIsDefault();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPriority(Integer priority);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ModuleConfigurationType getModuleConfigurationType();
 
-    public Integer getPriority();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public ModuleConfigurationType getModuleConfigurationType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getModuleName();
 
-    public void setAuditable(Auditable auditable);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Auditable getAuditable();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getPriority();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  startDate  DOCUMENT ME!
+   */
+  void setActiveEndDate(Date startDate);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  startDate  DOCUMENT ME!
+   */
+  void setActiveStartDate(Date startDate);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  auditable  DOCUMENT ME!
+   */
+  void setAuditable(Auditable auditable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isDefault  DOCUMENT ME!
+   */
+  void setIsDefault(Boolean isDefault);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setModuleName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priority  DOCUMENT ME!
+   */
+  void setPriority(Integer priority);
+
+} // end interface ModuleConfiguration

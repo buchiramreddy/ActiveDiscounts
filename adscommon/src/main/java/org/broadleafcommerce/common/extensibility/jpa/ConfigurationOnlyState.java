@@ -17,27 +17,63 @@
 package org.broadleafcommerce.common.extensibility.jpa;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class ConfigurationOnlyState {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final ThreadLocal<ConfigurationOnlyState> CONFIGURATIONONLYSTATE = new ThreadLocal<ConfigurationOnlyState>();
+  private static final ThreadLocal<ConfigurationOnlyState> CONFIGURATIONONLYSTATE =
+    new ThreadLocal<ConfigurationOnlyState>();
 
-    public static ConfigurationOnlyState getState() {
-        return CONFIGURATIONONLYSTATE.get();
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public static void setState(ConfigurationOnlyState state) {
-        CONFIGURATIONONLYSTATE.set(state);
-    }
+  /** DOCUMENT ME! */
+  protected boolean isConfigurationOnly;
 
-    protected boolean isConfigurationOnly;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean isConfigurationOnly() {
-        return isConfigurationOnly;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static ConfigurationOnlyState getState() {
+    return CONFIGURATIONONLYSTATE.get();
+  }
 
-    public void setConfigurationOnly(boolean configurationOnly) {
-        isConfigurationOnly = configurationOnly;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  state  DOCUMENT ME!
+   */
+  public static void setState(ConfigurationOnlyState state) {
+    CONFIGURATIONONLYSTATE.set(state);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isConfigurationOnly() {
+    return isConfigurationOnly;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  configurationOnly  DOCUMENT ME!
+   */
+  public void setConfigurationOnly(boolean configurationOnly) {
+    isConfigurationOnly = configurationOnly;
+  }
+} // end class ConfigurationOnlyState

@@ -16,85 +16,103 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.util.xml.ISO8601DateAdapter;
-import org.broadleafcommerce.core.catalog.domain.Sku;
-
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.util.xml.ISO8601DateAdapter;
+
+import org.broadleafcommerce.core.catalog.domain.Sku;
+
+
 /**
  * This is a JAXB wrapper to wrap Sku.
- * <p/>
- * User: Kelly Tisdell
- * Date: 4/10/12
+ *
+ * <p>User: Kelly Tisdell Date: 4/10/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "sku")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "sku")
 public class SkuWrapper extends BaseWrapper implements APIWrapper<Sku> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected Boolean active;
 
-    @XmlElement
-    @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
-    protected Date activeStartDate;
+  /** DOCUMENT ME! */
+  @XmlElement
+  @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
+  protected Date             activeEndDate;
 
-    @XmlElement
-    @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
-    protected Date activeEndDate;
+  /** DOCUMENT ME! */
+  @XmlElement
+  @XmlJavaTypeAdapter(ISO8601DateAdapter.class)
+  protected Date             activeStartDate;
 
-    @XmlElement
-    protected String name;
+  /** DOCUMENT ME! */
+  @XmlElement protected String description;
 
-    @XmlElement
-    protected Boolean active;
+  /** DOCUMENT ME! */
+  @XmlElement protected DimensionWrapper dimension;
 
-    @XmlElement
-    protected String description;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected Money retailPrice;
-    
-    @XmlElement
-    protected Money salePrice;
-    
-    @XmlElement
-    protected WeightWrapper weight;
+  /** DOCUMENT ME! */
+  @XmlElement protected String name;
 
-    @XmlElement
-    protected DimensionWrapper dimension;
-    
-    @Override
-    public void wrapDetails(Sku model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.activeStartDate = model.getActiveStartDate();
-        this.activeEndDate = model.getActiveEndDate();
-        this.name = model.getName();
-        this.description = model.getDescription();
-        this.retailPrice = model.getRetailPrice();
-        this.salePrice = model.getSalePrice();
-        this.active = model.isActive();
+  /** DOCUMENT ME! */
+  @XmlElement protected Money retailPrice;
 
-        if (model.getWeight() != null){
-            weight = (WeightWrapper)context.getBean(WeightWrapper.class.getName());
-            weight.wrapDetails(model.getWeight(), request);
-        }
+  /** DOCUMENT ME! */
+  @XmlElement protected Money salePrice;
 
-        if (model.getDimension() != null){
-            dimension = (DimensionWrapper)context.getBean(DimensionWrapper.class.getName());
-            dimension.wrapDetails(model.getDimension(), request);
-        }
+  /** DOCUMENT ME! */
+  @XmlElement protected WeightWrapper weight;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.Sku,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(Sku model, HttpServletRequest request) {
+    this.id              = model.getId();
+    this.activeStartDate = model.getActiveStartDate();
+    this.activeEndDate   = model.getActiveEndDate();
+    this.name            = model.getName();
+    this.description     = model.getDescription();
+    this.retailPrice     = model.getRetailPrice();
+    this.salePrice       = model.getSalePrice();
+    this.active          = model.isActive();
+
+    if (model.getWeight() != null) {
+      weight = (WeightWrapper) context.getBean(WeightWrapper.class.getName());
+      weight.wrapDetails(model.getWeight(), request);
     }
 
-    @Override
-    public void wrapSummary(Sku model, HttpServletRequest request) {
-        wrapDetails(model, request);
+    if (model.getDimension() != null) {
+      dimension = (DimensionWrapper) context.getBean(DimensionWrapper.class.getName());
+      dimension.wrapDetails(model.getDimension(), request);
     }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.Sku,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(Sku model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class SkuWrapper

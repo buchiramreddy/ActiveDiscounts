@@ -16,24 +16,48 @@
 
 package org.broadleafcommerce.core.payment.service.exception;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class InsufficientFundsException extends PaymentException {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * Creates a new InsufficientFundsException object.
+   */
+  public InsufficientFundsException() {
+    super();
+  }
 
-    public InsufficientFundsException() {
-        super();
-    }
+  /**
+   * Creates a new InsufficientFundsException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   */
+  public InsufficientFundsException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public InsufficientFundsException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Creates a new InsufficientFundsException object.
+   *
+   * @param  message  DOCUMENT ME!
+   */
+  public InsufficientFundsException(String message) {
+    super(message);
+  }
 
-    public InsufficientFundsException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new InsufficientFundsException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   */
+  public InsufficientFundsException(Throwable cause) {
+    super(cause);
+  }
 
-    public InsufficientFundsException(Throwable cause) {
-        super(cause);
-    }
-
-}
+} // end class InsufficientFundsException

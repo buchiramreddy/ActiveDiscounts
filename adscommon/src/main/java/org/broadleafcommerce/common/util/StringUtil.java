@@ -19,60 +19,118 @@ package org.broadleafcommerce.common.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
 import java.net.URLDecoder;
+
 import java.util.zip.Adler32;
 import java.util.zip.CheckedInputStream;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class StringUtil {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public static long getChecksum(String test) {
-        try {
-            byte buffer[] = test.getBytes();
-            ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
-            CheckedInputStream cis = new CheckedInputStream(bais, new Adler32());
-            byte readBuffer[] = new byte[buffer.length];
-            cis.read(readBuffer);
-            return cis.getChecksum().getValue();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+  /**
+   * Protect against HTTP Response Splitting.
+   *
+   * @param   input  DOCUMENT ME!
+   *
+   * @return  protect against HTTP Response Splitting.
+   */
+  public static String cleanseUrlString(String input) {
+    return removeSpecialCharacters(decodeUrl(input));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   encodedUrl  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String decodeUrl(String encodedUrl) {
+    try {
+      return (encodedUrl == null) ? null : URLDecoder.decode(encodedUrl, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      // this should not happen
+      e.printStackTrace();
+
+      return encodedUrl;
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   test1  DOCUMENT ME!
+   * @param   test2  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static double determineSimilarity(String test1, String test2) {
+    String first = new String(test1);
+    first = first.replaceAll("[ \\t\\n\\r\\f\\v\\/'-]", "");
+
+    Long   originalChecksum = StringUtil.getChecksum(first);
+    String second           = new String(test2);
+    second = second.replaceAll("[ \\t\\n\\r\\f\\v\\/'-]", "");
+
+    Long     myChecksum = StringUtil.getChecksum(second);
+    StatCalc calc       = new StatCalc();
+    calc.enter(originalChecksum);
+    calc.enter(myChecksum);
+
+    return calc.getStandardDeviation();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   test  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  RuntimeException  DOCUMENT ME!
+   */
+  public static long getChecksum(String test) {
+    try {
+      byte[]                 buffer       = test.getBytes();
+      ByteArrayInputStream   bais         = new ByteArrayInputStream(buffer);
+      CheckedInputStream     cis          = new CheckedInputStream(bais, new Adler32());
+      byte[]                 readBuffer   = new byte[buffer.length];
+      cis.read(readBuffer);
+
+      return cis.getChecksum().getValue();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   input  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String removeSpecialCharacters(String input) {
+    if (input != null) {
+      input = input.replaceAll("[ \\r\\n]", "");
     }
 
-    public static double determineSimilarity(String test1, String test2) {
-        String first = new String(test1);
-        first = first.replaceAll("[ \\t\\n\\r\\f\\v\\/'-]", "");
-        Long originalChecksum = StringUtil.getChecksum(first);
-        String second = new String(test2);
-        second = second.replaceAll("[ \\t\\n\\r\\f\\v\\/'-]", "");
-        Long myChecksum = StringUtil.getChecksum(second);
-        StatCalc calc = new StatCalc();
-        calc.enter(originalChecksum);
-        calc.enter(myChecksum);
-        return calc.getStandardDeviation();
-    }
-    
-    /**
-     * Protect against HTTP Response Splitting
-     * @return
-     */
-    public static String cleanseUrlString(String input){
-        return removeSpecialCharacters(decodeUrl(input));
-    }
-
-    public static String decodeUrl(String encodedUrl) {
-        try {
-            return encodedUrl == null ? null : URLDecoder.decode(encodedUrl, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // this should not happen
-            e.printStackTrace();
-            return encodedUrl;
-        }
-    }
-
-    public static String removeSpecialCharacters(String input) {
-        if (input != null) {
-            input = input.replaceAll("[ \\r\\n]", "");
-        }
-        return input;
-    }
-}
+    return input;
+  }
+} // end class StringUtil

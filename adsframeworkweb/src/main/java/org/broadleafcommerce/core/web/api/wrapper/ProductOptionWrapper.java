@@ -16,68 +16,89 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.core.catalog.domain.ProductOption;
-import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.core.catalog.domain.ProductOption;
+import org.broadleafcommerce.core.catalog.domain.ProductOptionValue;
+
+
 /**
  * This is a JAXB wrapper around Product.
  *
- * User: Kelly Tisdell
- * Date: 4/10/12
+ * <p>User: Kelly Tisdell Date: 4/10/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "productOption")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "productOption")
 public class ProductOptionWrapper extends BaseWrapper implements APIWrapper<ProductOption> {
-    
-    @XmlElement
-    protected String attributeName;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected String label;
+  /** DOCUMENT ME! */
+  @XmlElement(name = "allowedValue")
+  @XmlElementWrapper(name = "allowedValues")
+  protected List<ProductOptionValueWrapper> allowedValues;
 
-    @XmlElement
-    protected Boolean required;
-    
-    @XmlElement
-    protected String productOptionType;
-    
-    @XmlElement(name = "allowedValue")
-    @XmlElementWrapper(name = "allowedValues")
-    protected List<ProductOptionValueWrapper> allowedValues;
-    
-    @Override
-    public void wrapDetails(ProductOption model, HttpServletRequest request) {
-        this.attributeName = "productOption." + model.getAttributeName();
-        this.label = model.getLabel();
-        this.required = model.getRequired();
-        if (model.getType() != null) {
-            this.productOptionType = model.getType().getType();
-        }
-        
-        List<ProductOptionValue> optionValues = model.getAllowedValues();
-        if (optionValues != null) {
-            ArrayList<ProductOptionValueWrapper> allowedValueWrappers = new ArrayList<ProductOptionValueWrapper>();
-            for (ProductOptionValue value : optionValues) {
-                ProductOptionValueWrapper optionValueWrapper = (ProductOptionValueWrapper)context.getBean(ProductOptionValueWrapper.class.getName());
-                optionValueWrapper.wrapSummary(value, request);
-                allowedValueWrappers.add(optionValueWrapper);
-            }
-            this.allowedValues = allowedValueWrappers;
-        }
+  /** DOCUMENT ME! */
+  @XmlElement protected String attributeName;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected String label;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected String productOptionType;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected Boolean required;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.core.catalog.domain.ProductOption,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(ProductOption model, HttpServletRequest request) {
+    this.attributeName = "productOption." + model.getAttributeName();
+    this.label         = model.getLabel();
+    this.required      = model.getRequired();
+
+    if (model.getType() != null) {
+      this.productOptionType = model.getType().getType();
     }
 
-    @Override
-    public void wrapSummary(ProductOption model, HttpServletRequest request) {
-        wrapDetails(model, request);
+    List<ProductOptionValue> optionValues = model.getAllowedValues();
+
+    if (optionValues != null) {
+      ArrayList<ProductOptionValueWrapper> allowedValueWrappers = new ArrayList<ProductOptionValueWrapper>();
+
+      for (ProductOptionValue value : optionValues) {
+        ProductOptionValueWrapper optionValueWrapper = (ProductOptionValueWrapper) context.getBean(
+            ProductOptionValueWrapper.class.getName());
+        optionValueWrapper.wrapSummary(value, request);
+        allowedValueWrappers.add(optionValueWrapper);
+      }
+
+      this.allowedValues = allowedValueWrappers;
     }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.core.catalog.domain.ProductOption,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(ProductOption model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class ProductOptionWrapper

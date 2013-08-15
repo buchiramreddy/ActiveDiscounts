@@ -17,41 +17,88 @@
 package org.broadleafcommerce.common.cache.engine;
 
 import java.lang.reflect.Method;
+
 import java.util.Map;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class HydrationDescriptor {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Map<String, HydrationItemDescriptor> hydratedMutators;
-    private Method[] idMutators;
-    private String cacheRegion;
-    
-    public Map<String, HydrationItemDescriptor> getHydratedMutators() {
-        return hydratedMutators;
-    }
-    
-    public Method[] getIdMutators() {
-        return idMutators;
-    }
-    
-    public String getCacheRegion() {
-        return cacheRegion;
-    }
+  private String cacheRegion;
 
-    public void setHydratedMutators(Map<String, HydrationItemDescriptor> hydratedMutators) {
-        this.hydratedMutators = hydratedMutators;
-    }
+  private Map<String, HydrationItemDescriptor> hydratedMutators;
+  private Method[]                             idMutators;
 
-    public void setIdMutators(Method[] idMutators) {
-        this.idMutators = idMutators;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setCacheRegion(String cacheRegion) {
-        this.cacheRegion = cacheRegion;
-    }
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCacheRegion() {
+    return cacheRegion;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, HydrationItemDescriptor> getHydratedMutators() {
+    return hydratedMutators;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Method[] getIdMutators() {
+    return idMutators;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cacheRegion  DOCUMENT ME!
+   */
+  public void setCacheRegion(String cacheRegion) {
+    this.cacheRegion = cacheRegion;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  hydratedMutators  DOCUMENT ME!
+   */
+  public void setHydratedMutators(Map<String, HydrationItemDescriptor> hydratedMutators) {
+    this.hydratedMutators = hydratedMutators;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  idMutators  DOCUMENT ME!
+   */
+  public void setIdMutators(Method[] idMutators) {
+    this.idMutators = idMutators;
+  }
+
+} // end class HydrationDescriptor

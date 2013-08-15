@@ -18,29 +18,32 @@ package org.broadleafcommerce.core.payment.service;
 
 import org.broadleafcommerce.core.payment.service.workflow.PaymentSeed;
 
+
 /**
  * Service implemented by Broadleaf Payment modules used to provide general functionality.
  *
- * @author Jerry Ocanas (jocanas)
+ * @author   Jerry Ocanas (jocanas)
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafPaymentModuleService {
+  /**
+   * Validates the response received from the payment module.
+   *
+   * <p>When implemented it should throw an error with the message received from the payment module. This message will
+   * be bubbled up and displayed in the admin to the user.</p>
+   *
+   * @param   paymentSeed  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  void validateResponse(PaymentSeed paymentSeed) throws Exception;
 
-    /**
-     * Validates the response received from the payment module.
-     *
-     * When implemented it should throw an error with the message received from the payment module. This message
-     * will be bubbled up and displayed in the admin to the user.
-     *
-     * @param paymentSeed
-     * @return boolean
-     */
-    public void validateResponse(PaymentSeed paymentSeed) throws Exception;
-
-    /**
-     * Used by the payment module to implement setting the transaction id into the database where approriate
-     * the payment module.
-     *
-     * @param transactionID
-     */
-    public void manualPayment(PaymentSeed paymentSeed, String transactionID);
+  /**
+   * Used by the payment module to implement setting the transaction id into the database where approriate the payment
+   * module.
+   *
+   * @param  paymentSeed    DOCUMENT ME!
+   * @param  transactionID  DOCUMENT ME!
+   */
+  void manualPayment(PaymentSeed paymentSeed, String transactionID);
 }

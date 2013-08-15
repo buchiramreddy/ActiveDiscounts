@@ -16,56 +16,95 @@
 
 package org.broadleafcommerce.core.order.service.call;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.broadleafcommerce.core.order.domain.BundleOrderItem;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItemFeePrice;
 
-import java.util.ArrayList;
-import java.util.List;
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class DiscreteOrderItemRequest extends AbstractOrderItemRequest {
+  /** DOCUMENT ME! */
+  protected BundleOrderItem bundleOrderItem;
 
-    protected BundleOrderItem bundleOrderItem;
-    
-    protected List<DiscreteOrderItemFeePrice> discreteOrderItemFeePrices = new ArrayList<DiscreteOrderItemFeePrice>();
+  /** DOCUMENT ME! */
+  protected List<DiscreteOrderItemFeePrice> discreteOrderItemFeePrices = new ArrayList<DiscreteOrderItemFeePrice>();
 
-    public DiscreteOrderItemRequest() {
-        super();
-    }
+  /**
+   * Creates a new DiscreteOrderItemRequest object.
+   */
+  public DiscreteOrderItemRequest() {
+    super();
+  }
 
-    public DiscreteOrderItemRequest(AbstractOrderItemRequest request) {
-        setCategory(request.getCategory());
-        setItemAttributes(request.getItemAttributes());
-        setPersonalMessage(request.getPersonalMessage());
-        setProduct(request.getProduct());
-        setQuantity(request.getQuantity());
-        setSku(request.getSku());
-        setOrder(request.getOrder());
-        setSalePriceOverride(request.getSalePriceOverride());
-        setRetailPriceOverride(request.getRetailPriceOverride());
-    }
+  /**
+   * Creates a new DiscreteOrderItemRequest object.
+   *
+   * @param  request  DOCUMENT ME!
+   */
+  public DiscreteOrderItemRequest(AbstractOrderItemRequest request) {
+    setCategory(request.getCategory());
+    setItemAttributes(request.getItemAttributes());
+    setPersonalMessage(request.getPersonalMessage());
+    setProduct(request.getProduct());
+    setQuantity(request.getQuantity());
+    setSku(request.getSku());
+    setOrder(request.getOrder());
+    setSalePriceOverride(request.getSalePriceOverride());
+    setRetailPriceOverride(request.getRetailPriceOverride());
+  }
 
 
-    @Override
-    public DiscreteOrderItemRequest clone() {
-        DiscreteOrderItemRequest returnRequest = new DiscreteOrderItemRequest();
-        copyProperties(returnRequest);
-        returnRequest.setDiscreteOrderItemFeePrices(discreteOrderItemFeePrices);
-        return returnRequest;
-    }
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override public DiscreteOrderItemRequest clone() {
+    DiscreteOrderItemRequest returnRequest = new DiscreteOrderItemRequest();
+    copyProperties(returnRequest);
+    returnRequest.setDiscreteOrderItemFeePrices(discreteOrderItemFeePrices);
 
-    public BundleOrderItem getBundleOrderItem() {
-        return bundleOrderItem;
-    }
-    
-    public void setBundleOrderItem(BundleOrderItem bundleOrderItem) {
-        this.bundleOrderItem = bundleOrderItem;
-    }
+    return returnRequest;
+  }
 
-    public List<DiscreteOrderItemFeePrice> getDiscreteOrderItemFeePrices() {
-        return discreteOrderItemFeePrices;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public BundleOrderItem getBundleOrderItem() {
+    return bundleOrderItem;
+  }
 
-    public void setDiscreteOrderItemFeePrices(
-            List<DiscreteOrderItemFeePrice> discreteOrderItemFeePrices) {
-        this.discreteOrderItemFeePrices = discreteOrderItemFeePrices;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bundleOrderItem  DOCUMENT ME!
+   */
+  public void setBundleOrderItem(BundleOrderItem bundleOrderItem) {
+    this.bundleOrderItem = bundleOrderItem;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<DiscreteOrderItemFeePrice> getDiscreteOrderItemFeePrices() {
+    return discreteOrderItemFeePrices;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discreteOrderItemFeePrices  DOCUMENT ME!
+   */
+  public void setDiscreteOrderItemFeePrices(List<DiscreteOrderItemFeePrice> discreteOrderItemFeePrices) {
+    this.discreteOrderItemFeePrices = discreteOrderItemFeePrices;
+  }
+} // end class DiscreteOrderItemRequest

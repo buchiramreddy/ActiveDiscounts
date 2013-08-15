@@ -17,88 +17,221 @@
 package org.broadleafcommerce.openadmin.server.security.remote;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class AdminUser implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected String userName;
-    protected List<String> roles = new ArrayList<String>();
-    protected List<String> permissions = new ArrayList<String>();
-    protected String currentSandBoxId;
-    protected Long id;
-    protected String email;
-    protected String phoneNumber;
-    protected String name;
-    
-    public List<String> getRoles() {
-        return roles;
-    }
-    
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-    
-    public List<String> getPermissions() {
-        return permissions;
-    }
-    
-    public void setPermissions(List<String> permissions) {
-        this.permissions = permissions;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public String getUserName() {
-        return userName;
-    }
+  /** DOCUMENT ME! */
+  protected String       currentSandBoxId;
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+  /** DOCUMENT ME! */
+  protected String       email;
 
-    public String getCurrentSandBoxId() {
-        return currentSandBoxId;
-    }
+  /** DOCUMENT ME! */
+  protected Long         id;
 
-    public void setCurrentSandBoxId(String currentSandBoxId) {
-        this.currentSandBoxId = currentSandBoxId;
-    }
+  /** DOCUMENT ME! */
+  protected String       name;
 
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  protected List<String> permissions = new ArrayList<String>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  protected String       phoneNumber;
 
-    public String getEmail() {
-        return email;
-    }
+  /** DOCUMENT ME! */
+  protected List<String> roles = new ArrayList<String>();
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  /** DOCUMENT ME! */
+  protected String userName;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCurrentSandBoxId() {
+    return currentSandBoxId;
+  }
 
-    public String getName() {
-        return name;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setName(String name) {
-        this.name = name;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEmail() {
+    return email;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getPermissions() {
+    return permissions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getRoles() {
+    return roles;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUserName() {
+    return userName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currentSandBoxId  DOCUMENT ME!
+   */
+  public void setCurrentSandBoxId(String currentSandBoxId) {
+    this.currentSandBoxId = currentSandBoxId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  email  DOCUMENT ME!
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  permissions  DOCUMENT ME!
+   */
+  public void setPermissions(List<String> permissions) {
+    this.permissions = permissions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  phoneNumber  DOCUMENT ME!
+   */
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  roles  DOCUMENT ME!
+   */
+  public void setRoles(List<String> roles) {
+    this.roles = roles;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  userName  DOCUMENT ME!
+   */
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+} // end class AdminUser

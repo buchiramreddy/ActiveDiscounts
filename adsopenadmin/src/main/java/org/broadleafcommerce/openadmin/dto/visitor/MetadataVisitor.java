@@ -21,16 +21,47 @@ import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.MapMetadata;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface MetadataVisitor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void visit(BasicFieldMetadata metadata);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  metadata  DOCUMENT ME!
+   */
+  void visit(BasicFieldMetadata metadata);
 
-    public void visit(BasicCollectionMetadata metadata);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void visit(AdornedTargetCollectionMetadata metadata);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  metadata  DOCUMENT ME!
+   */
+  void visit(BasicCollectionMetadata metadata);
 
-    public void visit(MapMetadata metadata);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  metadata  DOCUMENT ME!
+   */
+  void visit(AdornedTargetCollectionMetadata metadata);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  metadata  DOCUMENT ME!
+   */
+  void visit(MapMetadata metadata);
+} // end interface MetadataVisitor

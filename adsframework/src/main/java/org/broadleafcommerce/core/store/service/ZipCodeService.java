@@ -18,8 +18,21 @@ package org.broadleafcommerce.core.store.service;
 
 import org.broadleafcommerce.core.store.domain.ZipCode;
 
-public interface ZipCodeService {
 
-    public ZipCode findZipCodeByZipCode(Integer zipCode);
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public interface ZipCodeService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   zipCode  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ZipCode findZipCodeByZipCode(Integer zipCode);
 
 }

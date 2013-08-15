@@ -17,43 +17,97 @@
 package org.broadleafcommerce.openadmin.dto;
 
 import java.io.Serializable;
+
 import java.util.List;
 
+
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public class AdminExporterDTO implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected String name;
-    protected String friendlyName;
-    protected List<Property> additionalCriteriaProperties;
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getFriendlyName() {
-        return friendlyName;
-    }
-    
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-    }
-    
-    public List<Property> getAdditionalCriteriaProperties() {
-        return additionalCriteriaProperties;
-    }
-    
-    public void setAdditionalCriteriaProperties(List<Property> additionalCriteriaProperties) {
-        this.additionalCriteriaProperties = additionalCriteriaProperties;
-    }
-    
-    
-}
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected List<Property> additionalCriteriaProperties;
+
+  /** DOCUMENT ME! */
+  protected String         friendlyName;
+
+  /** DOCUMENT ME! */
+  protected String name;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Property> getAdditionalCriteriaProperties() {
+    return additionalCriteriaProperties;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFriendlyName() {
+    return friendlyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  additionalCriteriaProperties  DOCUMENT ME!
+   */
+  public void setAdditionalCriteriaProperties(List<Property> additionalCriteriaProperties) {
+    this.additionalCriteriaProperties = additionalCriteriaProperties;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  friendlyName  DOCUMENT ME!
+   */
+  public void setFriendlyName(String friendlyName) {
+    this.friendlyName = friendlyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
+} // end class AdminExporterDTO

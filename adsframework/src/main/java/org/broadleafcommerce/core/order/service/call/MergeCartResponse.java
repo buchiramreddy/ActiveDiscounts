@@ -16,54 +16,104 @@
 
 package org.broadleafcommerce.core.order.service.call;
 
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderItem;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class MergeCartResponse implements Serializable {
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private Order order;
+  private Order order;
 
-    private List<OrderItem> addedItems = new ArrayList<OrderItem>();;
+  private List<OrderItem> addedItems = new ArrayList<OrderItem>();
+  ;
 
-    private List<OrderItem> removedItems = new ArrayList<OrderItem>();;
+  private List<OrderItem> removedItems = new ArrayList<OrderItem>();
+  ;
 
-    private boolean merged;
+  private boolean merged;
 
-    public Order getOrder() {
-        return order;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Order getOrder() {
+    return order;
+  }
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    public List<OrderItem> getAddedItems() {
-        return addedItems;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<OrderItem> getAddedItems() {
+    return addedItems;
+  }
 
-    public void setAddedItems(List<OrderItem> addedItems) {
-        this.addedItems = addedItems;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addedItems  DOCUMENT ME!
+   */
+  public void setAddedItems(List<OrderItem> addedItems) {
+    this.addedItems = addedItems;
+  }
 
-    public List<OrderItem> getRemovedItems() {
-        return removedItems;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<OrderItem> getRemovedItems() {
+    return removedItems;
+  }
 
-    public void setRemovedItems(List<OrderItem> removedItems) {
-        this.removedItems = removedItems;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  removedItems  DOCUMENT ME!
+   */
+  public void setRemovedItems(List<OrderItem> removedItems) {
+    this.removedItems = removedItems;
+  }
 
-    public boolean isMerged() {
-        return merged;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isMerged() {
+    return merged;
+  }
 
-    public void setMerged(boolean merged) {
-        this.merged = merged;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  merged  DOCUMENT ME!
+   */
+  public void setMerged(boolean merged) {
+    this.merged = merged;
+  }
 
-}
+} // end class MergeCartResponse

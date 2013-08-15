@@ -17,72 +17,102 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.common.media.domain.Media;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.broadleafcommerce.common.media.domain.Media;
+
+
 /**
- *  JAXB wrapper class for Media.
+ * JAXB wrapper class for Media.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "media")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "media")
 public class MediaWrapper extends BaseWrapper implements APIWrapper<Media> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /**
-     * This allows us to control whether the URL should / can be overwritten, for example by the static asset service.
-     */
-    @XmlTransient
-    protected boolean allowOverrideUrl = true;
+  /** This allows us to control whether the URL should / can be overwritten, for example by the static asset service. */
+  @XmlTransient protected boolean allowOverrideUrl = true;
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected String altText;
 
-    @XmlElement
-    protected String title;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected String url;
+  /** DOCUMENT ME! */
+  @XmlElement protected String tags;
 
-    @XmlElement
-    protected String altText;
-    
-    @XmlElement
-    protected String tags;
-    
-    @Override
-    public void wrapDetails(Media media, HttpServletRequest request) {
-        this.id = media.getId();
-        this.title = media.getTitle();
-        this.altText = media.getAltText();
-        this.tags = media.getTags();
-        this.url = media.getUrl();
+  /** DOCUMENT ME! */
+  @XmlElement protected String title;
+
+  /** DOCUMENT ME! */
+  @XmlElement protected String url;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isAllowOverrideUrl() {
+    return allowOverrideUrl;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  allow  DOCUMENT ME!
+   */
+  public void setAllowOverrideUrl(boolean allow) {
+    this.allowOverrideUrl = allow;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Call this only if allowOverrideUrl is true, and only AFTER you call wrap.
+   *
+   * @param  url  DOCUMENT ME!
+   */
+  public void setUrl(String url) {
+    if (allowOverrideUrl) {
+      this.url = url;
     }
+  }
 
-    @Override
-    public void wrapSummary(Media media, HttpServletRequest request) {
-        wrapDetails(media, request);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isAllowOverrideUrl() {
-        return allowOverrideUrl;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.common.media.domain.Media,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(Media media, HttpServletRequest request) {
+    this.id      = media.getId();
+    this.title   = media.getTitle();
+    this.altText = media.getAltText();
+    this.tags    = media.getTags();
+    this.url     = media.getUrl();
+  }
 
-    public void setAllowOverrideUrl(boolean allow) {
-        this.allowOverrideUrl = allow;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Call this only if allowOverrideUrl is true, and only AFTER you call wrap.
-     * @param url
-     */
-    public void setUrl(String url) {
-        if (allowOverrideUrl) {
-            this.url = url;
-        }
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.common.media.domain.Media,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(Media media, HttpServletRequest request) {
+    wrapDetails(media, request);
+  }
+} // end class MediaWrapper

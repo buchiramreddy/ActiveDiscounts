@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.core.order.service.workflow.remove;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.order.domain.BundleOrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.OrderItemService;
@@ -24,31 +26,40 @@ import org.broadleafcommerce.core.order.service.workflow.CartOperationContext;
 import org.broadleafcommerce.core.order.service.workflow.CartOperationRequest;
 import org.broadleafcommerce.core.workflow.BaseActivity;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class RemoveOrderMultishipOptionActivity extends BaseActivity<CartOperationContext> {
-    
-    @Resource(name = "blOrderMultishipOptionService")
-    protected OrderMultishipOptionService orderMultishipOptionService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderMultishipOptionService")
+  protected OrderMultishipOptionService orderMultishipOptionService;
 
-    @Resource(name = "blOrderItemService")
-    protected OrderItemService orderItemService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderItemService")
+  protected OrderItemService orderItemService;
 
-    @Override
-    public CartOperationContext execute(CartOperationContext context) throws Exception {
-        CartOperationRequest request = context.getSeedData();
-        Long orderItemId = request.getItemRequest().getOrderItemId();
+  /**
+   * @see  org.broadleafcommerce.core.workflow.Activity#execute(org.broadleafcommerce.core.order.service.workflow.CartOperationContext)
+   */
+  @Override public CartOperationContext execute(CartOperationContext context) throws Exception {
+    CartOperationRequest request     = context.getSeedData();
+    Long                 orderItemId = request.getItemRequest().getOrderItemId();
 
-        OrderItem orderItem = orderItemService.readOrderItemById(orderItemId);
-        if (orderItem instanceof BundleOrderItem) {
-            for (OrderItem discrete : ((BundleOrderItem) orderItem).getDiscreteOrderItems()) {
-                orderMultishipOptionService.deleteOrderItemOrderMultishipOptions(discrete.getId());
-            }
-        } else {
-            orderMultishipOptionService.deleteOrderItemOrderMultishipOptions(orderItemId);
-        }
-        
-        return context;
+    OrderItem orderItem = orderItemService.readOrderItemById(orderItemId);
+
+    if (orderItem instanceof BundleOrderItem) {
+      for (OrderItem discrete : ((BundleOrderItem) orderItem).getDiscreteOrderItems()) {
+        orderMultishipOptionService.deleteOrderItemOrderMultishipOptions(discrete.getId());
+      }
+    } else {
+      orderMultishipOptionService.deleteOrderItemOrderMultishipOptions(orderItemId);
     }
 
-}
+    return context;
+  }
+
+} // end class RemoveOrderMultishipOptionActivity

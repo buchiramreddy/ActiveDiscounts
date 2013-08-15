@@ -16,57 +16,77 @@
 
 package org.broadleafcommerce.core.web.processor;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.web.dialect.AbstractModelVariableModifierProcessor;
+
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.service.OrderService;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.web.core.CustomerState;
+
 import org.springframework.stereotype.Component;
+
 import org.thymeleaf.Arguments;
+
 import org.thymeleaf.dom.Element;
 
-import javax.annotation.Resource;
 
 /**
- * A Thymeleaf processor that will add the desired named order to the model
+ * A Thymeleaf processor that will add the desired named order to the model.
  *
- * @author elbertbautista
+ * @author   elbertbautista
+ * @version  $Revision$, $Date$
  */
 @Component("blNamedOrderProcessor")
 public class NamedOrderProcessor extends AbstractModelVariableModifierProcessor {
-    
-    @Resource(name = "blOrderService")
-    protected OrderService orderService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /**
-     * Sets the name of this processor to be used in Thymeleaf template
-     *
-     * NOTE: thymeleaf normalizes the attribute names by converting all to lower-case
-     * we will use the underscore instead of camel case to avoid confusion
-     *
-     */
-    public NamedOrderProcessor() {
-        super("named_order");
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderService")
+  protected OrderService orderService;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the name of this processor to be used in Thymeleaf template.
+   *
+   * <p>NOTE: thymeleaf normalizes the attribute names by converting all to lower-case we will use the underscore
+   * instead of camel case to avoid confusion</p>
+   */
+  public NamedOrderProcessor() {
+    super("named_order");
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.thymeleaf.processor.AbstractProcessor#getPrecedence()
+   */
+  @Override public int getPrecedence() {
+    return 10000;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.dialect.AbstractModelVariableModifierProcessor#modifyModelAttributes(org.thymeleaf.Arguments,
+   *       org.thymeleaf.dom.Element)
+   */
+  @Override protected void modifyModelAttributes(Arguments arguments, Element element) {
+    Customer customer = CustomerState.getCustomer();
+
+    String orderVar  = element.getAttributeValue("orderVar");
+    String orderName = element.getAttributeValue("orderName");
+
+    Order order = orderService.findNamedOrderForCustomer(orderName, customer);
+
+    if (order != null) {
+      addToModel(arguments, orderVar, order);
+    } else {
+      addToModel(arguments, orderVar, new NullOrderImpl());
     }
-
-    @Override
-    public int getPrecedence() {
-        return 10000;
-    }
-
-    @Override
-    protected void modifyModelAttributes(Arguments arguments, Element element) {
-        Customer customer = CustomerState.getCustomer();
-
-        String orderVar = element.getAttributeValue("orderVar");
-        String orderName = element.getAttributeValue("orderName");
-
-        Order order = orderService.findNamedOrderForCustomer(orderName, customer);
-        if (order != null) {
-            addToModel(arguments, orderVar, order);
-        } else {
-            addToModel(arguments, orderVar, new NullOrderImpl());
-        }
-    }
-}
+  }
+} // end class NamedOrderProcessor

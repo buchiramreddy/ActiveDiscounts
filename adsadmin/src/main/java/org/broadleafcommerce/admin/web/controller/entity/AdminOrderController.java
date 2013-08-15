@@ -16,60 +16,83 @@
 
 package org.broadleafcommerce.admin.web.controller.entity;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.openadmin.web.controller.entity.AdminBasicEntityController;
-import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
-import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
+
+import org.broadleafcommerce.common.exception.ServiceException;
+
+import org.broadleafcommerce.openadmin.web.controller.entity.AdminBasicEntityController;
+import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
+import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
+
+import org.springframework.stereotype.Controller;
+
+import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
 /**
- * Handles admin operations for the {@link Order} entity. 
- * 
- * @author Andre Azzolini (apazzolini)
+ * Handles admin operations for the {@link Order} entity.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 @Controller("blAdminOrderController")
 @RequestMapping("/" + AdminOrderController.SECTION_KEY)
 public class AdminOrderController extends AdminBasicEntityController {
-    
-    protected static final String SECTION_KEY = "order";
-    
-    @Override
-    protected String getSectionKey(Map<String, String> pathVars) {
-        //allow external links to work for ToOne items
-        if (super.getSectionKey(pathVars) != null) {
-            return super.getSectionKey(pathVars);
-        }
-        return SECTION_KEY;
-    }
-    
-    @Override
-    protected String showViewUpdateCollection(HttpServletRequest request, Model model, Map<String, String> pathVars,
-            String id, String collectionField, String collectionItemId, String modalHeaderType) throws ServiceException {
-        String returnPath = super.showViewUpdateCollection(request, model, pathVars, id, collectionField, collectionItemId,
-                modalHeaderType);
-        
-        if ("orderItems".equals(collectionField)) {
-            EntityForm ef = (EntityForm) model.asMap().get("entityForm");
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-            ListGrid adjustmentsGrid = ef.findListGrid("orderItemAdjustments");
-            if (adjustmentsGrid != null && CollectionUtils.isEmpty(adjustmentsGrid.getRecords())) {
-                ef.removeListGrid("orderItemAdjustments");
-            }
+  /** DOCUMENT ME! */
+  protected static final String SECTION_KEY = "order";
 
-            ListGrid priceDetailsGrid = ef.findListGrid("orderItemPriceDetails");
-            if (priceDetailsGrid != null && CollectionUtils.isEmpty(priceDetailsGrid.getRecords())) {
-                ef.removeListGrid("orderItemPriceDetails");
-            }
-        }
-        
-        return returnPath;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.controller.AdminAbstractController#getSectionKey(java.util.Map)
+   */
+  @Override protected String getSectionKey(Map<String, String> pathVars) {
+    // allow external links to work for ToOne items
+    if (super.getSectionKey(pathVars) != null) {
+      return super.getSectionKey(pathVars);
     }
 
-}
+    return SECTION_KEY;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.controller.entity.AdminBasicEntityController#showViewUpdateCollection(javax.servlet.http.HttpServletRequest,
+   *       org.springframework.ui.Model, java.util.Map, java.lang.String, java.lang.String, java.lang.String,
+   *       java.lang.String)
+   */
+  @Override protected String showViewUpdateCollection(HttpServletRequest request, Model model,
+    Map<String, String> pathVars,
+    String id, String collectionField, String collectionItemId, String modalHeaderType) throws ServiceException {
+    String returnPath = super.showViewUpdateCollection(request, model, pathVars, id, collectionField, collectionItemId,
+        modalHeaderType);
+
+    if ("orderItems".equals(collectionField)) {
+      EntityForm ef = (EntityForm) model.asMap().get("entityForm");
+
+      ListGrid adjustmentsGrid = ef.findListGrid("orderItemAdjustments");
+
+      if ((adjustmentsGrid != null) && CollectionUtils.isEmpty(adjustmentsGrid.getRecords())) {
+        ef.removeListGrid("orderItemAdjustments");
+      }
+
+      ListGrid priceDetailsGrid = ef.findListGrid("orderItemPriceDetails");
+
+      if ((priceDetailsGrid != null) && CollectionUtils.isEmpty(priceDetailsGrid.getRecords())) {
+        ef.removeListGrid("orderItemPriceDetails");
+      }
+    }
+
+    return returnPath;
+  }
+
+} // end class AdminOrderController

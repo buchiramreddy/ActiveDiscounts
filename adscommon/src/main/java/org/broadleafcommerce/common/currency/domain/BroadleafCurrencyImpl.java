@@ -17,11 +17,6 @@
 package org.broadleafcommerce.common.currency.domain;
 
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,86 +24,153 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
 /**
  * Author: jerryocanas Date: 9/6/12
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 
+@AdminPresentationClass(friendlyName = "BroadleafCurrencyImpl_baseCurrency")
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blCMSElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CURRENCY")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "blCMSElements")
-@AdminPresentationClass(friendlyName = "BroadleafCurrencyImpl_baseCurrency")
 public class BroadleafCurrencyImpl implements BroadleafCurrency {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "CURRENCY_CODE")
-    @AdminPresentation(friendlyName = "BroadleafCurrencyImpl_Currency_Code", order = 1, group = "BroadleafCurrencyImpl_Details", prominent = true)
-    protected String currencyCode;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "FRIENDLY_NAME")
-    @AdminPresentation(friendlyName = "BroadleafCurrencyImpl_Name", order = 2, group = "BroadleafCurrencyImpl_Details", prominent = true)
-    protected String friendlyName;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "BroadleafCurrencyImpl_Currency_Code",
+    order        = 1,
+    group        = "BroadleafCurrencyImpl_Details",
+    prominent    = true
+  )
+  @Column(name = "CURRENCY_CODE")
+  @Id protected String currencyCode;
 
-    @Column(name = "DEFAULT_FLAG")
-    @AdminPresentation(friendlyName = "BroadleafCurrencyImpl_Is_Default", group = "BroadleafCurrencyImpl_Details", excluded = true)
-    protected Boolean defaultFlag = false;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "BroadleafCurrencyImpl_Name",
+    order        = 2,
+    group        = "BroadleafCurrencyImpl_Details",
+    prominent    = true
+  )
+  @Column(name = "FRIENDLY_NAME")
+  protected String friendlyName;
 
-    @Override
-    public String getCurrencyCode() {
-        return currencyCode;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "BroadleafCurrencyImpl_Is_Default",
+    group        = "BroadleafCurrencyImpl_Details",
+    excluded     = true
+  )
+  @Column(name = "DEFAULT_FLAG")
+  protected Boolean defaultFlag = false;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
 
-    @Override
-    public void setCurrencyCode(String code) {
-        this.currencyCode = code;
+    if (!(o instanceof BroadleafCurrency)) {
+      return false;
     }
 
-    @Override
-    public String getFriendlyName() {
-        return friendlyName;
+    BroadleafCurrencyImpl currency = (BroadleafCurrencyImpl) o;
+
+    if ((currencyCode != null) ? (!currencyCode.equals(currency.currencyCode)) : (currency.currencyCode != null)) {
+      return false;
     }
 
-    @Override
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+    return true;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#getCurrencyCode()
+   */
+  @Override public String getCurrencyCode() {
+    return currencyCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#getDefaultFlag()
+   */
+  @Override public boolean getDefaultFlag() {
+    if (defaultFlag == null) {
+      return false;
     }
 
-    @Override
-    public boolean getDefaultFlag() {
-        if (defaultFlag == null) {
-            return false;
-        }
-        return defaultFlag.booleanValue();
-    }
+    return defaultFlag.booleanValue();
+  }
 
-    @Override
-    public void setDefaultFlag(boolean defaultFlag) {
-        this.defaultFlag = new Boolean(defaultFlag);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof BroadleafCurrency)) {
-            return false;
-        }
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#getFriendlyName()
+   */
+  @Override public String getFriendlyName() {
+    return friendlyName;
+  }
 
-        BroadleafCurrencyImpl currency = (BroadleafCurrencyImpl) o;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        if (currencyCode != null ? !currencyCode.equals(currency.currencyCode) : currency.currencyCode != null) {
-            return false;
-        }
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    int result = (currencyCode != null) ? currencyCode.hashCode() : 0;
 
-        return true;
-    }
+    return result;
+  }
 
-    @Override
-    public int hashCode() {
-        int result = currencyCode != null ? currencyCode.hashCode() : 0;
-        return result;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#setCurrencyCode(java.lang.String)
+   */
+  @Override public void setCurrencyCode(String code) {
+    this.currencyCode = code;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#setDefaultFlag(boolean)
+   */
+  @Override public void setDefaultFlag(boolean defaultFlag) {
+    this.defaultFlag = new Boolean(defaultFlag);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.currency.domain.BroadleafCurrency#setFriendlyName(java.lang.String)
+   */
+  @Override public void setFriendlyName(String friendlyName) {
+    this.friendlyName = friendlyName;
+  }
+} // end class BroadleafCurrencyImpl

@@ -16,26 +16,45 @@
 
 package org.broadleafcommerce.common.web;
 
-import org.broadleafcommerce.common.site.domain.Site;
-import org.broadleafcommerce.common.site.domain.Theme;
-import org.springframework.web.context.request.WebRequest;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.broadleafcommerce.common.site.domain.Site;
+import org.broadleafcommerce.common.site.domain.Theme;
+
+import org.springframework.web.context.request.WebRequest;
+
+
 /**
- * Responsible for returning the theme used by Broadleaf Commerce for the current request.
- * For a single site installation, this should return a theme whose path and name are empty string.
+ * Responsible for returning the theme used by Broadleaf Commerce for the current request. For a single site
+ * installation, this should return a theme whose path and name are empty string.
  *
- * @author bpolster
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface BroadleafThemeResolver {
-    
-    /**
-     * 
-     * @deprecated Use {@link #resolveTheme(org.springframework.web.context.request.WebRequest)} instead
-     */
-    @Deprecated
-    public Theme resolveTheme(HttpServletRequest request, Site site);
-    
-    public Theme resolveTheme(WebRequest request);
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Theme resolveTheme(WebRequest request);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param       request  DOCUMENT ME!
+   * @param       site     DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  Use {@link #resolveTheme(org.springframework.web.context.request.WebRequest)} instead
+   */
+  @Deprecated Theme resolveTheme(HttpServletRequest request, Site site);
+} // end interface BroadleafThemeResolver

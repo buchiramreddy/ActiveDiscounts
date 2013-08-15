@@ -16,16 +16,6 @@
 
 package org.broadleafcommerce.core.search.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -38,82 +28,126 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+
+import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE)
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CAT_SEARCH_FACET_XREF")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "blStandardElements")
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE)
-public class CategorySearchFacetImpl implements CategorySearchFacet,Serializable {
-    
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+public class CategorySearchFacetImpl implements CategorySearchFacet, Serializable {
+  /** DOCUMENT ME! */
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "CategorySearchFacetId")
-    @GenericGenerator(
-        name="CategorySearchFacetId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="CategorySearchFacetImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.search.domain.CategorySearchFacetImpl")
-        }
-    )
-    @Column(name = "CATEGORY_SEARCH_FACET_ID")
-    protected Long id;
-    
-    @ManyToOne(targetEntity = CategoryImpl.class)
-    @JoinColumn(name = "CATEGORY_ID")
-    @AdminPresentation(excluded = true)
-    protected Category category;
-    
-    @ManyToOne(targetEntity = SearchFacetImpl.class)
-    @JoinColumn(name = "SEARCH_FACET_ID")
-    protected SearchFacet searchFacet;
-    
-    @Column(name = "SEQUENCE")
-    @AdminPresentation(friendlyName = "CategorySearchFacetImpl_sequence")
-    protected Long sequence;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "CATEGORY_SEARCH_FACET_ID")
+  @GeneratedValue(generator = "CategorySearchFacetId")
+  @GenericGenerator(
+    name       = "CategorySearchFacetId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "CategorySearchFacetImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.search.domain.CategorySearchFacetImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @JoinColumn(name = "CATEGORY_ID")
+  @ManyToOne(targetEntity = CategoryImpl.class)
+  protected Category category;
 
-    @Override
-    public Category getCategory() {
-        return category;
-    }
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "SEARCH_FACET_ID")
+  @ManyToOne(targetEntity = SearchFacetImpl.class)
+  protected SearchFacet searchFacet;
 
-    @Override
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(friendlyName = "CategorySearchFacetImpl_sequence")
+  @Column(name = "SEQUENCE")
+  protected Long sequence;
 
-    @Override
-    public SearchFacet getSearchFacet() {
-        return searchFacet;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setSearchFacet(SearchFacet searchFacet) {
-        this.searchFacet = searchFacet;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public Long getSequence() {
-        return sequence;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#getCategory()
+   */
+  @Override public Category getCategory() {
+    return category;
+  }
 
-    @Override
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
-    
-}
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#setCategory(org.broadleafcommerce.core.catalog.domain.Category)
+   */
+  @Override public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#getSearchFacet()
+   */
+  @Override public SearchFacet getSearchFacet() {
+    return searchFacet;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#setSearchFacet(org.broadleafcommerce.core.search.domain.SearchFacet)
+   */
+  @Override public void setSearchFacet(SearchFacet searchFacet) {
+    this.searchFacet = searchFacet;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#getSequence()
+   */
+  @Override public Long getSequence() {
+    return sequence;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.search.domain.CategorySearchFacet#setSequence(java.lang.Long)
+   */
+  @Override public void setSequence(Long sequence) {
+    this.sequence = sequence;
+  }
+
+} // end class CategorySearchFacetImpl

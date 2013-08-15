@@ -17,24 +17,52 @@
 package org.broadleafcommerce.common.security.service;
 
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.owasp.validator.html.CleanResults;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class CleanStringException extends ServiceException {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public CleanStringException(CleanResults cleanResults) {
-        this.cleanResults = cleanResults;
-    }
+  /** DOCUMENT ME! */
+  protected CleanResults cleanResults;
 
-    protected CleanResults cleanResults;
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public CleanResults getCleanResults() {
-        return cleanResults;
-    }
+  /**
+   * Creates a new CleanStringException object.
+   *
+   * @param  cleanResults  DOCUMENT ME!
+   */
+  public CleanStringException(CleanResults cleanResults) {
+    this.cleanResults = cleanResults;
+  }
 
-    public void setCleanResults(CleanResults cleanResults) {
-        this.cleanResults = cleanResults;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public CleanResults getCleanResults() {
+    return cleanResults;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  cleanResults  DOCUMENT ME!
+   */
+  public void setCleanResults(CleanResults cleanResults) {
+    this.cleanResults = cleanResults;
+  }
+} // end class CleanStringException

@@ -16,30 +16,35 @@
 
 package org.broadleafcommerce.common.util;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Transformer;
-
 import java.util.Collection;
+
+import org.apache.commons.collections.CollectionUtils;
 
 
 /**
  * Convenience methods for interacting with collections.
- * 
- * @author Andre Azzolini (apazzolini)
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class BLCCollectionUtils {
-    
-    /**
-     * Delegates to {@link org.apache.commons.collections.CollectionUtils#collect(java.util.Collection, org.apache.commons.collections.Transformer)}, but performs the necessary type coercion 
-     * to allow the returned collection to be correctly casted based on the TypedTransformer.
-     * 
-     * @param inputCollection
-     * @param transformer
-     * @return the typed, collected Collection
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static <T> Collection<T> collect(Collection inputCollection, TypedTransformer<T> transformer) {
-        return CollectionUtils.collect(inputCollection, transformer);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Delegates to
+   * {@link org.apache.commons.collections.CollectionUtils#collect(java.util.Collection, org.apache.commons.collections.Transformer)}
+   * , but performs the necessary type coercion to allow the returned collection to be correctly casted based on the
+   * TypedTransformer.
+   *
+   * @param   <T>              DOCUMENT ME!
+   * @param   inputCollection  DOCUMENT ME!
+   * @param   transformer      DOCUMENT ME!
+   *
+   * @return  the typed, collected Collection
+   */
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  public static <T> Collection<T> collect(Collection inputCollection, TypedTransformer<T> transformer) {
+    return CollectionUtils.collect(inputCollection, transformer);
+  }
 
 }

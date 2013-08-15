@@ -16,27 +16,53 @@
 
 package org.broadleafcommerce.security.service;
 
-import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
-import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
-import org.broadleafcommerce.security.service.dataprovider.AdminPermissionDataProvider;
-import org.broadleafcommerce.test.BaseTest;
-import org.springframework.test.annotation.Rollback;
-import org.testng.annotations.Test;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
+
+import org.broadleafcommerce.security.service.dataprovider.AdminPermissionDataProvider;
+
+import org.broadleafcommerce.test.BaseTest;
+
+import org.springframework.test.annotation.Rollback;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AdminPermissionTest extends BaseTest {
-    @Resource
-    AdminSecurityService adminSecurityService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Test(groups =  {"testAdminPermissionSave"}, dataProvider = "setupAdminPermission", dataProviderClass = AdminPermissionDataProvider.class)
-    @Rollback(true)
-    public void testAdminPermissionSave(AdminPermission permission) throws Exception {
-        AdminPermission newPermission = adminSecurityService.saveAdminPermission(permission);
+  /** DOCUMENT ME! */
+  @Resource AdminSecurityService adminSecurityService;
 
-        AdminPermission permissionFromDB = adminSecurityService.readAdminPermissionById(newPermission.getId());
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        assert(permissionFromDB != null);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   permission  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Rollback(true)
+  @Test(
+    groups            = { "testAdminPermissionSave" },
+    dataProvider      = "setupAdminPermission",
+    dataProviderClass = AdminPermissionDataProvider.class
+  )
+  public void testAdminPermissionSave(AdminPermission permission) throws Exception {
+    AdminPermission newPermission = adminSecurityService.saveAdminPermission(permission);
 
-}
+    AdminPermission permissionFromDB = adminSecurityService.readAdminPermissionById(newPermission.getId());
+
+    assert (permissionFromDB != null);
+  }
+
+} // end class AdminPermissionTest

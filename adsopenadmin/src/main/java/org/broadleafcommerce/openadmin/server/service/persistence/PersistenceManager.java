@@ -16,7 +16,13 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence;
 
+import java.lang.reflect.InvocationTargetException;
+
+import java.util.List;
+import java.util.Map;
+
 import org.broadleafcommerce.common.exception.ServiceException;
+
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
@@ -28,50 +34,238 @@ import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.service.handler.CustomPersistenceHandler;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PersistenceManager {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public abstract Class<?>[] getAllPolymorphicEntitiesFromCeiling(Class<?> ceilingClass);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  Entity add(PersistencePackage persistencePackage) throws ServiceException;
 
-    public abstract Class<?>[] getPolymorphicEntities(String ceilingEntityFullyQualifiedClassname) throws ClassNotFoundException;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract Map<String, FieldMetadata> getSimpleMergedProperties(String entityName, PersistencePerspective persistencePerspective) throws ClassNotFoundException, SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   * @param   cto                 DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto) throws ServiceException;
 
-    public abstract ClassMetadata getMergedClassMetadata(Class<?>[] entities, Map<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties) throws ClassNotFoundException, IllegalArgumentException;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract DynamicResultSet inspect(PersistencePackage persistencePackage) throws ServiceException, ClassNotFoundException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   ceilingClass  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Class<?>[] getAllPolymorphicEntitiesFromCeiling(Class<?> ceilingClass);
 
-    public abstract DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto) throws ServiceException;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract Entity add(PersistencePackage persistencePackage) throws ServiceException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomPersistenceHandler> getCustomPersistenceHandlers();
 
-    public abstract Entity update(PersistencePackage persistencePackage) throws ServiceException;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract void remove(PersistencePackage persistencePackage) throws ServiceException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  DynamicEntityDao getDynamicEntityDao();
 
-    public abstract DynamicEntityDao getDynamicEntityDao();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract void setDynamicEntityDao(DynamicEntityDao dynamicEntityDao);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entities          DOCUMENT ME!
+   * @param   mergedProperties  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ClassNotFoundException    DOCUMENT ME!
+   * @throws  IllegalArgumentException  DOCUMENT ME!
+   */
+  ClassMetadata getMergedClassMetadata(Class<?>[] entities,
+    Map<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties) throws ClassNotFoundException,
+    IllegalArgumentException;
 
-    public abstract Map<String, String> getTargetEntityManagers();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract void setTargetEntityManagers(Map<String, String> targetEntityManagers);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   ceilingEntityFullyQualifiedClassname  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ClassNotFoundException  DOCUMENT ME!
+   */
+  Class<?>[] getPolymorphicEntities(String ceilingEntityFullyQualifiedClassname) throws ClassNotFoundException;
 
-    public abstract TargetModeType getTargetMode();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract void setTargetMode(TargetModeType targetMode);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entityName              DOCUMENT ME!
+   * @param   persistencePerspective  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ClassNotFoundException     DOCUMENT ME!
+   * @throws  SecurityException          DOCUMENT ME!
+   * @throws  IllegalArgumentException   DOCUMENT ME!
+   * @throws  NoSuchMethodException      DOCUMENT ME!
+   * @throws  IllegalAccessException     DOCUMENT ME!
+   * @throws  InvocationTargetException  DOCUMENT ME!
+   * @throws  NoSuchFieldException       DOCUMENT ME!
+   */
+  Map<String, FieldMetadata> getSimpleMergedProperties(String entityName, PersistencePerspective persistencePerspective)
+    throws ClassNotFoundException, SecurityException, IllegalArgumentException, NoSuchMethodException,
+      IllegalAccessException, InvocationTargetException, NoSuchFieldException;
 
-    public abstract List<CustomPersistenceHandler> getCustomPersistenceHandlers();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract void setCustomPersistenceHandlers(List<CustomPersistenceHandler> customPersistenceHandlers);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, String> getTargetEntityManagers();
 
-    public abstract Class<?>[] getUpDownInheritance(Class<?> testClass);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public abstract Class<?>[] getUpDownInheritance(String testClassname) throws ClassNotFoundException;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  TargetModeType getTargetMode();
 
-    //public abstract void close() throws Exception;
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   testClass  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Class<?>[] getUpDownInheritance(Class<?> testClass);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   testClassname  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ClassNotFoundException  DOCUMENT ME!
+   */
+  Class<?>[] getUpDownInheritance(String testClassname) throws ClassNotFoundException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException        DOCUMENT ME!
+   * @throws  ClassNotFoundException  DOCUMENT ME!
+   */
+  DynamicResultSet inspect(PersistencePackage persistencePackage) throws ServiceException, ClassNotFoundException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  void remove(PersistencePackage persistencePackage) throws ServiceException;
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customPersistenceHandlers  DOCUMENT ME!
+   */
+  void setCustomPersistenceHandlers(List<CustomPersistenceHandler> customPersistenceHandlers);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  dynamicEntityDao  DOCUMENT ME!
+   */
+  void setDynamicEntityDao(DynamicEntityDao dynamicEntityDao);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  targetEntityManagers  DOCUMENT ME!
+   */
+  void setTargetEntityManagers(Map<String, String> targetEntityManagers);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  targetMode  DOCUMENT ME!
+   */
+  void setTargetMode(TargetModeType targetMode);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   persistencePackage  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  Entity update(PersistencePackage persistencePackage) throws ServiceException;
+
+  // public abstract void close() throws Exception;
+
+} // end interface PersistenceManager

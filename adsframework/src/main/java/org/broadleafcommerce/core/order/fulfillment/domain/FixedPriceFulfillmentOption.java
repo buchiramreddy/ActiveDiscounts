@@ -16,27 +16,52 @@
 
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
-import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+
+
 /**
- * Used in conjunction with the {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider} to allow for a single price
- * for fulfilling an order (e.g. $5 shipping)
- * 
- * @author Phillip Verheyden
- * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider}
+ * Used in conjunction with the
+ * {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider} to allow
+ * for a single price for fulfilling an order (e.g. $5 shipping)
+ *
+ * @author   Phillip Verheyden
+ * @see
+ *           
+ *           {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider}
+ * @version  $Revision$, $Date$
  */
 public interface FixedPriceFulfillmentOption extends FulfillmentOption, Serializable {
-    
-    public Money getPrice();
-    
-    public void setPrice(Money price);
-    public BroadleafCurrency getCurrency();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getPrice();
 
-    public void setCurrency(BroadleafCurrency currency);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  price  DOCUMENT ME!
+   */
+  void setPrice(Money price);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BroadleafCurrency getCurrency();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  currency  DOCUMENT ME!
+   */
+  void setCurrency(BroadleafCurrency currency);
+
+} // end interface FixedPriceFulfillmentOption

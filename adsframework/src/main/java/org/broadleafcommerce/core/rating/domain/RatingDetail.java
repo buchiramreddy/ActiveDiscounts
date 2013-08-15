@@ -16,17 +16,58 @@
 
 package org.broadleafcommerce.core.rating.domain;
 
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.util.Date;
 
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface RatingDetail {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    Long getId();
-    Double getRating();
-    void setRating(Double newRating);
-    Customer getCustomer();
-    Date getRatingSubmittedDate();
-    RatingSummary getRatingSummary();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Double getRating();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  newRating  DOCUMENT ME!
+   */
+  void setRating(Double newRating);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer getCustomer();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getRatingSubmittedDate();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RatingSummary getRatingSummary();
+
+} // end interface RatingDetail

@@ -16,48 +16,85 @@
 
 package org.broadleafcommerce.core.payment.service.workflow;
 
+import java.util.Map;
+
 import org.broadleafcommerce.common.money.Money;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.Referenced;
 import org.broadleafcommerce.core.payment.service.module.PaymentResponse;
 
-import java.util.Map;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PaymentSeed implements CompositePaymentResponse {
+  private Order                        order;
+  private Map<PaymentInfo, Referenced> infos;
+  private PaymentResponse              paymentResponse;
+  private Money                        transactionAmount;
 
-    private Order order;
-    private Map<PaymentInfo, Referenced> infos;
-    private PaymentResponse paymentResponse;
-    private Money transactionAmount;
+  /**
+   * Creates a new PaymentSeed object.
+   *
+   * @param  order            DOCUMENT ME!
+   * @param  infos            DOCUMENT ME!
+   * @param  paymentResponse  DOCUMENT ME!
+   */
+  public PaymentSeed(Order order, Map<PaymentInfo, Referenced> infos, PaymentResponse paymentResponse) {
+    this.order           = order;
+    this.infos           = infos;
+    this.paymentResponse = paymentResponse;
+  }
 
-    public PaymentSeed(Order order, Map<PaymentInfo, Referenced> infos, PaymentResponse paymentResponse) {
-        this.order = order;
-        this.infos = infos;
-        this.paymentResponse = paymentResponse;
-    }
+  /**
+   * Creates a new PaymentSeed object.
+   *
+   * @param  order              DOCUMENT ME!
+   * @param  infos              DOCUMENT ME!
+   * @param  paymentResponse    DOCUMENT ME!
+   * @param  transactionAmount  DOCUMENT ME!
+   */
+  public PaymentSeed(Order order, Map<PaymentInfo, Referenced> infos, PaymentResponse paymentResponse,
+    Money transactionAmount) {
+    this.infos             = infos;
+    this.order             = order;
+    this.paymentResponse   = paymentResponse;
+    this.transactionAmount = transactionAmount;
+  }
 
-    public PaymentSeed(Order order, Map<PaymentInfo, Referenced> infos, PaymentResponse paymentResponse, Money transactionAmount) {
-        this.infos = infos;
-        this.order = order;
-        this.paymentResponse = paymentResponse;
-        this.transactionAmount = transactionAmount;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.workflow.CompositePaymentResponse#getOrder()
+   */
+  @Override public Order getOrder() {
+    return order;
+  }
 
-    public Order getOrder() {
-        return order;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.workflow.CompositePaymentResponse#getInfos()
+   */
+  @Override public Map<PaymentInfo, Referenced> getInfos() {
+    return infos;
+  }
 
-    public Map<PaymentInfo, Referenced> getInfos() {
-        return infos;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.payment.service.workflow.CompositePaymentResponse#getPaymentResponse()
+   */
+  @Override public PaymentResponse getPaymentResponse() {
+    return paymentResponse;
+  }
 
-    public PaymentResponse getPaymentResponse() {
-        return paymentResponse;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Money getTransactionAmount() {
+    return transactionAmount;
+  }
 
-    public Money getTransactionAmount() {
-        return transactionAmount;
-    }
-
-}
+} // end class PaymentSeed

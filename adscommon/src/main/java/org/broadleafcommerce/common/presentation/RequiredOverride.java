@@ -17,10 +17,13 @@
 package org.broadleafcommerce.common.presentation;
 
 /**
- * Created by jfischer
+ * Created by jfischer.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public enum RequiredOverride {
-    REQUIRED,
-    NOT_REQUIRED,
-    IGNORED
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  REQUIRED, NOT_REQUIRED, IGNORED
 }

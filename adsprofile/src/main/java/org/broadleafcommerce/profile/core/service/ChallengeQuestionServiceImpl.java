@@ -16,25 +16,46 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.dao.ChallengeQuestionDao;
-import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.profile.core.dao.ChallengeQuestionDao;
+import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
+
+import org.springframework.stereotype.Service;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blChallengeQuestionService")
 public class ChallengeQuestionServiceImpl implements ChallengeQuestionService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blChallengeQuestionDao")
-    protected ChallengeQuestionDao challengeQuestionDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blChallengeQuestionDao")
+  protected ChallengeQuestionDao challengeQuestionDao;
 
-    public List<ChallengeQuestion> readChallengeQuestions() {
-        return challengeQuestionDao.readChallengeQuestions();
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public ChallengeQuestion readChallengeQuestionById(long challengeQuestionId) {
-        return challengeQuestionDao.readChallengeQuestionById(challengeQuestionId);
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.ChallengeQuestionService#readChallengeQuestionById(long)
+   */
+  @Override public ChallengeQuestion readChallengeQuestionById(long challengeQuestionId) {
+    return challengeQuestionDao.readChallengeQuestionById(challengeQuestionId);
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.service.ChallengeQuestionService#readChallengeQuestions()
+   */
+  @Override public List<ChallengeQuestion> readChallengeQuestions() {
+    return challengeQuestionDao.readChallengeQuestions();
+  }
+
+} // end class ChallengeQuestionServiceImpl

@@ -16,23 +16,51 @@
 
 package org.broadleafcommerce.core.order.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 
-import java.util.List;
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 public interface FulfillmentOptionDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentOptionId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentOption readFulfillmentOptionById(final Long fulfillmentOptionId);
 
-    public FulfillmentOption readFulfillmentOptionById(final Long fulfillmentOptionId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   option  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentOption save(FulfillmentOption option);
 
-    public FulfillmentOption save(FulfillmentOption option);
-    
-    public List<FulfillmentOption> readAllFulfillmentOptions();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FulfillmentOption> readAllFulfillmentOptions();
 
-    public List<FulfillmentOption> readAllFulfillmentOptionsByFulfillmentType(FulfillmentType type);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FulfillmentOption> readAllFulfillmentOptionsByFulfillmentType(FulfillmentType type);
 
-}
+} // end interface FulfillmentOptionDao

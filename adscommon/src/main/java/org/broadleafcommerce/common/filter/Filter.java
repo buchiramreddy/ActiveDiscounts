@@ -18,45 +18,113 @@ package org.broadleafcommerce.common.filter;
 
 import java.util.List;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class Filter {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    String name;
-    String condition;
-    String entityImplementationClassName;
-    List<String> indexColumnNames;
+  /** DOCUMENT ME! */
+  String       condition;
 
-    public String getCondition() {
-        return condition;
-    }
+  /** DOCUMENT ME! */
+  String       entityImplementationClassName;
 
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
+  /** DOCUMENT ME! */
+  List<String> indexColumnNames;
 
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getEntityImplementationClassName() {
-        return entityImplementationClassName;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCondition() {
+    return condition;
+  }
 
-    public void setEntityImplementationClassName(String entityImplementationClassName) {
-        this.entityImplementationClassName = entityImplementationClassName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<String> getIndexColumnNames() {
-        return indexColumnNames;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEntityImplementationClassName() {
+    return entityImplementationClassName;
+  }
 
-    public void setIndexColumnNames(List<String> indexColumnNames) {
-        this.indexColumnNames = indexColumnNames;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<String> getIndexColumnNames() {
+    return indexColumnNames;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  condition  DOCUMENT ME!
+   */
+  public void setCondition(String condition) {
+    this.condition = condition;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  entityImplementationClassName  DOCUMENT ME!
+   */
+  public void setEntityImplementationClassName(String entityImplementationClassName) {
+    this.entityImplementationClassName = entityImplementationClassName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  indexColumnNames  DOCUMENT ME!
+   */
+  public void setIndexColumnNames(List<String> indexColumnNames) {
+    this.indexColumnNames = indexColumnNames;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+} // end class Filter

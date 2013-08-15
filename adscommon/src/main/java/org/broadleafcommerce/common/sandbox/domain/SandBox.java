@@ -16,40 +16,113 @@
 
 package org.broadleafcommerce.common.sandbox.domain;
 
-import org.broadleafcommerce.common.site.domain.Site;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.site.domain.Site;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SandBox extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override SandBox clone();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * The name of the sandbox.
-     * Certain sandbox names are reserved in the system.    User created
-     * sandboxes cannot start with "", "approve_", or "deploy_".
-     *
-     * @return String sandbox name
-     */
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getAuthor();
 
-    public void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBoxType getSandBoxType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setSandBoxType(SandBoxType sandBoxType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Site getSite();
+  /**
+   * The name of the sandbox. Certain sandbox names are reserved in the system. User created sandboxes cannot start with
+   * "", "approve_", or "deploy_".
+   *
+   * @return  String sandbox name
+   */
+  String getName();
 
-    public void setSite(Site site);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Long getAuthor();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SandBoxType getSandBoxType();
 
-    public void setAuthor(Long author);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SandBox clone();
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Site getSite();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
 
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  author  DOCUMENT ME!
+   */
+  void setAuthor(Long author);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxType  DOCUMENT ME!
+   */
+  void setSandBoxType(SandBoxType sandBoxType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  site  DOCUMENT ME!
+   */
+  void setSite(Site site);
+} // end interface SandBox

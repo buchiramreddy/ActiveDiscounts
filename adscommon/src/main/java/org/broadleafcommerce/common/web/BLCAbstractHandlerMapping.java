@@ -18,41 +18,53 @@ package org.broadleafcommerce.common.web;
 
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 
+
 /**
- * Adds some convenience methods to the Spring AbstractHandlerMapping for
- * BLC specific HandlerMappings.
- * 
- * Always returns null from defaultHandlerMapping 
- * 
- * @author bpolster
+ * Adds some convenience methods to the Spring AbstractHandlerMapping for BLC specific HandlerMappings.
+ *
+ * <p>Always returns null from defaultHandlerMapping</p>
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public abstract class BLCAbstractHandlerMapping extends AbstractHandlerMapping {
-    protected String controllerName;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    /**
-     * This handler mapping does not provide a default handler.   This method
-     * has been coded to always return null.
-     */
-    public Object getDefaultHandler() {
-        return null;        
-    }
-    
-    /**
-     * Returns the controllerName if set or "blPageController" by default.
-     * @return
-     */
-    public String getControllerName() {
-        return controllerName;
-    }
+  /** DOCUMENT ME! */
+  protected String controllerName;
 
-    /**
-     * Sets the name of the bean to use as the Handler.  Typically the name of
-     * a controller bean.
-     * 
-     * @param controllerName
-     */
-    public void setControllerName(String controllerName) {
-        this.controllerName = controllerName;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns the controllerName if set or "blPageController" by default.
+   *
+   * @return  the controllerName if set or "blPageController" by default.
+   */
+  public String getControllerName() {
+    return controllerName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.handler.AbstractHandlerMapping#getDefaultHandler()
+   */
+  @Override /**
+   * This handler mapping does not provide a default handler.   This method
+   * has been coded to always return null.
+   */
+  public Object getDefaultHandler() {
+    return null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the name of the bean to use as the Handler. Typically the name of a controller bean.
+   *
+   * @param  controllerName  DOCUMENT ME!
+   */
+  public void setControllerName(String controllerName) {
+    this.controllerName = controllerName;
+  }
+} // end class BLCAbstractHandlerMapping

@@ -16,6 +16,11 @@
 
 package org.broadleafcommerce.core.catalog.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.catalog.CategoryDaoDataProvider;
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.FeaturedProduct;
@@ -25,50 +30,67 @@ import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CategoryDaoTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource
-    private CategoryDao categoryDao;
-    @Resource
-    private CatalogService catalogService;
+  @Resource private CatalogService catalogService;
 
-    @Test(groups =  {"testSetFeaturedProducts"}, dataProvider="basicCategory", dataProviderClass=CategoryDaoDataProvider.class)
-    @Transactional
-    public void testSetFeaturedProducts(Category category) {
-        category = catalogService.saveCategory(category);
+  @Resource private CategoryDao categoryDao;
 
-        Sku sku = new SkuImpl();
-        sku.setDescription("This thing will change your life");
-        sku.setName("Test Product");
-        catalogService.saveSku(sku);
-        
-        Product product = new ProductImpl();
-        product.setModel("KGX200");
-        product.setDefaultSku(sku);
-        product = catalogService.saveProduct(product);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        FeaturedProduct featuredProduct = new FeaturedProductImpl();
-        featuredProduct.setCategory(category);
-        featuredProduct.setProduct(product);
-        featuredProduct.setPromotionMessage("BUY ME NOW!!!!");
-        List<FeaturedProduct> featuredProducts = new ArrayList<FeaturedProduct>();
-        featuredProducts.add(featuredProduct);
-        category.setFeaturedProducts(featuredProducts);
-        category = catalogService.saveCategory(category);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  category  DOCUMENT ME!
+   */
+  @Test(
+    groups            = { "testSetFeaturedProducts" },
+    dataProvider      = "basicCategory",
+    dataProviderClass = CategoryDaoDataProvider.class
+  )
+  @Transactional public void testSetFeaturedProducts(Category category) {
+    category = catalogService.saveCategory(category);
 
-        Category categoryTest = categoryDao.readCategoryById(category.getId());
-        FeaturedProduct featuredProductTest = categoryTest.getFeaturedProducts().get(0);
+    Sku sku = new SkuImpl();
+    sku.setDescription("This thing will change your life");
+    sku.setName("Test Product");
+    catalogService.saveSku(sku);
 
-        assert (featuredProductTest.getPromotionMessage() == "BUY ME NOW!!!!");
-        assert (featuredProductTest.getProduct().getModel().equals("KGX200"));
-    }
+    Product product = new ProductImpl();
+    product.setModel("KGX200");
+    product.setDefaultSku(sku);
+    product = catalogService.saveProduct(product);
 
-}
+    FeaturedProduct featuredProduct = new FeaturedProductImpl();
+    featuredProduct.setCategory(category);
+    featuredProduct.setProduct(product);
+    featuredProduct.setPromotionMessage("BUY ME NOW!!!!");
+
+    List<FeaturedProduct> featuredProducts = new ArrayList<FeaturedProduct>();
+    featuredProducts.add(featuredProduct);
+    category.setFeaturedProducts(featuredProducts);
+    category = catalogService.saveCategory(category);
+
+    Category        categoryTest        = categoryDao.readCategoryById(category.getId());
+    FeaturedProduct featuredProductTest = categoryTest.getFeaturedProducts().get(0);
+
+    assert (featuredProductTest.getPromotionMessage() == "BUY ME NOW!!!!");
+    assert (featuredProductTest.getProduct().getModel().equals("KGX200"));
+  } // end method testSetFeaturedProducts
+
+} // end class CategoryDaoTest

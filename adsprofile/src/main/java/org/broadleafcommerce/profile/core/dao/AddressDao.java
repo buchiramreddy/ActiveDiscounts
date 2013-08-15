@@ -18,14 +18,52 @@ package org.broadleafcommerce.profile.core.dao;
 
 import org.broadleafcommerce.profile.core.domain.Address;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface AddressDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Address save(Address address);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address create();
 
-    public Address readAddressById(Long addressId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Address create();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  address  DOCUMENT ME!
+   */
+  void delete(Address address);
 
-    public void delete(Address address);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   addressId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address readAddressById(Long addressId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   address  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address save(Address address);
+
+} // end interface AddressDao

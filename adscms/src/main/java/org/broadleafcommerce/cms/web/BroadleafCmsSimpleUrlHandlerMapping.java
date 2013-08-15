@@ -16,31 +16,42 @@
 
 package org.broadleafcommerce.cms.web;
 
-import org.broadleafcommerce.common.config.RuntimeEnvironmentPropertiesConfigurer;
-import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
-
-import javax.annotation.Resource;
 import java.util.Properties;
 
+import javax.annotation.Resource;
+
+import org.broadleafcommerce.common.config.RuntimeEnvironmentPropertiesConfigurer;
+
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
+
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/26/11
- * Time: 3:06 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/26/11 Time: 3:06 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class BroadleafCmsSimpleUrlHandlerMapping extends SimpleUrlHandlerMapping {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blConfiguration")
-    protected RuntimeEnvironmentPropertiesConfigurer configurer;
+  /** DOCUMENT ME! */
+  @Resource(name = "blConfiguration")
+  protected RuntimeEnvironmentPropertiesConfigurer configurer;
 
-    @Override
-    public void setMappings(Properties mappings) {
-        Properties clone = new Properties();
-        for (Object propertyName: mappings.keySet()) {
-            String newName = configurer.getStringValueResolver().resolveStringValue(propertyName.toString());
-            clone.put(newName, mappings.get(propertyName));
-        }
-        super.setMappings(clone);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping#setMappings(java.util.Properties)
+   */
+  @Override public void setMappings(Properties mappings) {
+    Properties clone = new Properties();
+
+    for (Object propertyName : mappings.keySet()) {
+      String newName = configurer.getStringValueResolver().resolveStringValue(propertyName.toString());
+      clone.put(newName, mappings.get(propertyName));
     }
+
+    super.setMappings(clone);
+  }
 }

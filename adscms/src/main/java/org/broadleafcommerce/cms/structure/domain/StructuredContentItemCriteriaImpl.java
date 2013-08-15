@@ -16,13 +16,6 @@
 
 package org.broadleafcommerce.cms.structure.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,143 +28,233 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-@Entity
-@Table(name = "BLC_SC_ITEM_CRITERIA")
-@Inheritance(strategy=InheritanceType.JOINED)
 @AdminPresentationClass(friendlyName = "StructuredContentItemCriteriaImpl_baseStructuredContentItemCriteria")
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "BLC_SC_ITEM_CRITERIA")
 public class StructuredContentItemCriteriaImpl implements StructuredContentItemCriteria {
-    
-    public static final long serialVersionUID = 1L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Id
-    @GeneratedValue(generator= "SCItemCriteriaId")
-    @GenericGenerator(
-        name="SCItemCriteriaId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="StructuredContentItemCriteriaImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.page.domain.StructuredContentItemCriteriaImpl")
-        }
-    )
-    @Column(name = "SC_ITEM_CRITERIA_ID")
-    @AdminPresentation(friendlyName = "StructuredContentItemCriteriaImpl_Item_Criteria_Id", group = "StructuredContentItemCriteriaImpl_Description", visibility =VisibilityEnum.HIDDEN_ALL)
-    protected Long id;
-    
-    @Column(name = "QUANTITY", nullable=false)
-    @AdminPresentation(friendlyName = "StructuredContentItemCriteriaImpl_Quantity", group = "StructuredContentItemCriteriaImpl_Description", visibility =VisibilityEnum.HIDDEN_ALL)
-    protected Integer quantity;
-    
-    @Lob
-    @Type(type = "org.hibernate.type.StringClobType")
-    @Column(name = "ORDER_ITEM_MATCH_RULE", length = Integer.MAX_VALUE - 1)
-    @AdminPresentation(friendlyName = "StructuredContentItemCriteriaImpl_Order_Item_Match_Rule", group = "StructuredContentItemCriteriaImpl_Description", visibility = VisibilityEnum.HIDDEN_ALL)
-    protected String orderItemMatchRule;
-    
-    @ManyToOne(targetEntity = StructuredContentImpl.class)
-    @JoinTable(name = "BLC_QUAL_CRIT_SC_XREF", joinColumns = @JoinColumn(name = "SC_ITEM_CRITERIA_ID"), inverseJoinColumns = @JoinColumn(name = "SC_ID"))
-    protected StructuredContent structuredContent;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#getId()
-     */
-    @Override
-    public Long getId() {
-        return id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "StructuredContentItemCriteriaImpl_Item_Criteria_Id",
+    group        = "StructuredContentItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "SC_ITEM_CRITERIA_ID")
+  @GeneratedValue(generator = "SCItemCriteriaId")
+  @GenericGenerator(
+    name       = "SCItemCriteriaId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "StructuredContentItemCriteriaImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.page.domain.StructuredContentItemCriteriaImpl"
+      )
+    }
+  )
+  @Id protected Long id;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "StructuredContentItemCriteriaImpl_Order_Item_Match_Rule",
+    group        = "StructuredContentItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(
+    name   = "ORDER_ITEM_MATCH_RULE",
+    length = Integer.MAX_VALUE - 1
+  )
+  @Lob
+  @Type(type = "org.hibernate.type.StringClobType")
+  protected String      orderItemMatchRule;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "StructuredContentItemCriteriaImpl_Quantity",
+    group        = "StructuredContentItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(
+    name     = "QUANTITY",
+    nullable = false
+  )
+  protected Integer quantity;
+
+  /** DOCUMENT ME! */
+  @JoinTable(
+    name               = "BLC_QUAL_CRIT_SC_XREF",
+    joinColumns        = @JoinColumn(name = "SC_ITEM_CRITERIA_ID"),
+    inverseJoinColumns = @JoinColumn(name = "SC_ID")
+  )
+  @ManyToOne(targetEntity = StructuredContentImpl.class)
+  protected StructuredContent structuredContent;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentItemCriteria#cloneEntity()
+   */
+  @Override public StructuredContentItemCriteria cloneEntity() {
+    StructuredContentItemCriteriaImpl newField = new StructuredContentItemCriteriaImpl();
+    newField.quantity           = quantity;
+    newField.orderItemMatchRule = orderItemMatchRule;
+
+    return newField;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#setId(java.lang.Long)
-     */
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#getReceiveQuantity()
-     */
-    @Override
-    public Integer getQuantity() {
-        return quantity;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    /* (non-Javadoc)
-     * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#setReceiveQuantity(java.lang.Integer)
-     */
-    @Override
-    public void setQuantity(Integer receiveQuantity) {
-        this.quantity = receiveQuantity;
+    StructuredContentItemCriteriaImpl other = (StructuredContentItemCriteriaImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public String getMatchRule() {
-        return orderItemMatchRule;
+    if (orderItemMatchRule == null) {
+      if (other.orderItemMatchRule != null) {
+        return false;
+      }
+    } else if (!orderItemMatchRule.equals(other.orderItemMatchRule)) {
+      return false;
     }
 
-    @Override
-    public void setMatchRule(String matchRule) {
-        this.orderItemMatchRule = matchRule;
+    if (quantity == null) {
+      if (other.quantity != null) {
+        return false;
+      }
+    } else if (!quantity.equals(other.quantity)) {
+      return false;
     }
 
-    @Override
-    public StructuredContent getStructuredContent() {
-        return structuredContent;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public void setStructuredContent(StructuredContent structuredContent) {
-        this.structuredContent = structuredContent;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((orderItemMatchRule == null) ? 0 : orderItemMatchRule.hashCode());
-        result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
-        return result;
-    }
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        StructuredContentItemCriteriaImpl other = (StructuredContentItemCriteriaImpl) obj;
-        
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
-        
-        if (orderItemMatchRule == null) {
-            if (other.orderItemMatchRule != null)
-                return false;
-        } else if (!orderItemMatchRule.equals(other.orderItemMatchRule))
-            return false;
-        if (quantity == null) {
-            if (other.quantity != null)
-                return false;
-        } else if (!quantity.equals(other.quantity))
-            return false;
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public StructuredContentItemCriteria cloneEntity() {
-        StructuredContentItemCriteriaImpl newField = new StructuredContentItemCriteriaImpl();
-        newField.quantity = quantity;
-        newField.orderItemMatchRule = orderItemMatchRule;
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#getMatchRule()
+   */
+  @Override public String getMatchRule() {
+    return orderItemMatchRule;
+  }
 
-        return newField;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#getReceiveQuantity()
+   */
+  @Override public Integer getQuantity() {
+    return quantity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentItemCriteria#getStructuredContent()
+   */
+  @Override public StructuredContent getStructuredContent() {
+    return structuredContent;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((id == null) ? 0 : id.hashCode());
+    result = (prime * result) + ((orderItemMatchRule == null) ? 0 : orderItemMatchRule.hashCode());
+    result = (prime * result) + ((quantity == null) ? 0 : quantity.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#setMatchRule(java.lang.String)
+   */
+  @Override public void setMatchRule(String matchRule) {
+    this.orderItemMatchRule = matchRule;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /* (non-Javadoc)
+   * @see org.broadleafcommerce.core.offer.domain.StructuredContentItemCriteria#setReceiveQuantity(java.lang.Integer)
+   */
+  @Override public void setQuantity(Integer receiveQuantity) {
+    this.quantity = receiveQuantity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentItemCriteria#setStructuredContent(org.broadleafcommerce.cms.structure.domain.StructuredContent)
+   */
+  @Override public void setStructuredContent(StructuredContent structuredContent) {
+    this.structuredContent = structuredContent;
+  }
+
+} // end class StructuredContentItemCriteriaImpl

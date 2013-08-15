@@ -16,61 +16,94 @@
 
 package org.broadleafcommerce.profile.web.core.service;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.broadleafcommerce.common.web.BroadleafWebRequestProcessor;
+
 import org.broadleafcommerce.profile.core.domain.Customer;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.context.request.WebRequest;
 
-import javax.annotation.Resource;
 
-
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Service("blLoginService")
 public class LoginServiceImpl implements LoginService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blAuthenticationManager")
-    private AuthenticationManager authenticationManager;
-    
-    @Resource(name="blUserDetailsService")
-    private UserDetailsService userDetailsService;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCartStateRequestProcessor")
+  protected BroadleafWebRequestProcessor cartStateRequestProcessor;
 
-    @Resource(name = "blCartStateRequestProcessor")
-    protected BroadleafWebRequestProcessor cartStateRequestProcessor;
+  @Resource(name = "blAuthenticationManager")
+  private AuthenticationManager authenticationManager;
 
-    @Resource(name = "blCustomerStateRequestProcessor")
-    private BroadleafWebRequestProcessor customerStateRequestProcessor;
+  @Resource(name = "blCustomerStateRequestProcessor")
+  private BroadleafWebRequestProcessor customerStateRequestProcessor;
 
-    @Override
-    public Authentication loginCustomer(Customer customer) {
-        return loginCustomer(customer.getUsername(), customer.getUnencodedPassword());
-    }
-    
-    @Override
-    public Authentication loginCustomer(String username, String clearTextPassword) {
-        UserDetails principal = userDetailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, clearTextPassword, principal.getAuthorities());
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        customerStateRequestProcessor.process(getWebRequest());
-        cartStateRequestProcessor.process(getWebRequest());
-        return authentication;
-    }
+  @Resource(name = "blUserDetailsService")
+  private UserDetailsService userDetailsService;
 
-    @Override
-    public void logoutCustomer() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-        customerStateRequestProcessor.process(getWebRequest());
-        cartStateRequestProcessor.process(getWebRequest());
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    protected WebRequest getWebRequest() {
-        return BroadleafRequestContext.getBroadleafRequestContext().getWebRequest();
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.web.core.service.LoginService#loginCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public Authentication loginCustomer(Customer customer) {
+    return loginCustomer(customer.getUsername(), customer.getUnencodedPassword());
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.web.core.service.LoginService#loginCustomer(java.lang.String, java.lang.String)
+   */
+  @Override public Authentication loginCustomer(String username, String clearTextPassword) {
+    UserDetails                         principal      = userDetailsService.loadUserByUsername(username);
+    UsernamePasswordAuthenticationToken token          = new UsernamePasswordAuthenticationToken(principal,
+        clearTextPassword, principal.getAuthorities());
+    Authentication                      authentication = authenticationManager.authenticate(token);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    customerStateRequestProcessor.process(getWebRequest());
+    cartStateRequestProcessor.process(getWebRequest());
+
+    return authentication;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.web.core.service.LoginService#logoutCustomer()
+   */
+  @Override public void logoutCustomer() {
+    SecurityContextHolder.getContext().setAuthentication(null);
+    customerStateRequestProcessor.process(getWebRequest());
+    cartStateRequestProcessor.process(getWebRequest());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected WebRequest getWebRequest() {
+    return BroadleafRequestContext.getBroadleafRequestContext().getWebRequest();
+  }
+
+} // end class LoginServiceImpl

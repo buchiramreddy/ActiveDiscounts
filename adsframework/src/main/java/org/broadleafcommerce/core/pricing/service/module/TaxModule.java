@@ -19,13 +19,37 @@ package org.broadleafcommerce.core.pricing.service.module;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.pricing.service.exception.TaxException;
 
-@Deprecated
-public interface TaxModule {
-    
-    public String getName();
-    
-    public void setName(String name);
-    
-    public Order calculateTaxForOrder(Order order) throws TaxException;
-    
-}
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Deprecated public interface TaxModule {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  TaxException  DOCUMENT ME!
+   */
+  Order calculateTaxForOrder(Order order) throws TaxException;
+
+} // end interface TaxModule

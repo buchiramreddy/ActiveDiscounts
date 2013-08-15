@@ -16,85 +16,157 @@
 
 package org.broadleafcommerce.common.payment;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * An extendible enumeration of credit card types.
- * 
- * @author jfischer
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class CreditCardType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private static final Map<String, CreditCardType> TYPES = new LinkedHashMap<String, CreditCardType>();
+  private static final Map<String, CreditCardType> TYPES = new LinkedHashMap<String, CreditCardType>();
 
-    public static final CreditCardType MASTERCARD  = new CreditCardType("MASTERCARD", "Master Card");
-    public static final CreditCardType VISA  = new CreditCardType("VISA", "Visa");
-    public static final CreditCardType AMEX  = new CreditCardType("AMEX", "American Express");
-    public static final CreditCardType DINERSCLUB_CARTEBLANCHE  = new CreditCardType("DINERSCLUB_CARTEBLANCHE", "Diner's Club / Carte Blanche");
-    public static final CreditCardType DISCOVER  = new CreditCardType("DISCOVER", "Discover");
-    public static final CreditCardType ENROUTE  = new CreditCardType("ENROUTE", "En Route");
-    public static final CreditCardType JCB  = new CreditCardType("JCB", "JCB");
+  /** DOCUMENT ME! */
+  public static final CreditCardType MASTERCARD              = new CreditCardType("MASTERCARD", "Master Card");
 
-    public static CreditCardType getInstance(final String type) {
-        return TYPES.get(type);
+  /** DOCUMENT ME! */
+  public static final CreditCardType VISA                    = new CreditCardType("VISA", "Visa");
+
+  /** DOCUMENT ME! */
+  public static final CreditCardType AMEX                    = new CreditCardType("AMEX", "American Express");
+
+  /** DOCUMENT ME! */
+  public static final CreditCardType DINERSCLUB_CARTEBLANCHE = new CreditCardType("DINERSCLUB_CARTEBLANCHE",
+      "Diner's Club / Carte Blanche");
+
+  /** DOCUMENT ME! */
+  public static final CreditCardType DISCOVER = new CreditCardType("DISCOVER", "Discover");
+
+  /** DOCUMENT ME! */
+  public static final CreditCardType ENROUTE = new CreditCardType("ENROUTE", "En Route");
+
+  /** DOCUMENT ME! */
+  public static final CreditCardType JCB = new CreditCardType("JCB", "JCB");
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  private String friendlyType;
+
+  private String type;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new CreditCardType object.
+   */
+  public CreditCardType() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new CreditCardType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public CreditCardType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static CreditCardType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public CreditCardType() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public CreditCardType(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    CreditCardType other = (CreditCardType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)){
-            TYPES.put(type, this);
-        }
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CreditCardType other = (CreditCardType) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
     }
-}
+  }
+} // end class CreditCardType

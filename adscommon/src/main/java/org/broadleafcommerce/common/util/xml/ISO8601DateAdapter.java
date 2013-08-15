@@ -17,24 +17,44 @@
 package org.broadleafcommerce.common.util.xml;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ISO8601DateAdapter extends XmlAdapter<String, Date> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+  /** DOCUMENT ME! */
+  protected SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-    @Override
-    public String marshal(Date arg0) throws Exception {
-        SimpleDateFormat fmt = (SimpleDateFormat) isoFormat.clone();
-        return fmt.format(arg0);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Date unmarshal(String arg0) throws Exception {
-        SimpleDateFormat fmt = (SimpleDateFormat) isoFormat.clone();
-        return fmt.parse(arg0);
-    }
+  /**
+   * @see  javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.util.Date)
+   */
+  @Override public String marshal(Date arg0) throws Exception {
+    SimpleDateFormat fmt = (SimpleDateFormat) isoFormat.clone();
 
-}
+    return fmt.format(arg0);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.String)
+   */
+  @Override public Date unmarshal(String arg0) throws Exception {
+    SimpleDateFormat fmt = (SimpleDateFormat) isoFormat.clone();
+
+    return fmt.parse(arg0);
+  }
+
+} // end class ISO8601DateAdapter

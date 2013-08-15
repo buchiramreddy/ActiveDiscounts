@@ -16,52 +16,103 @@
 
 package org.broadleafcommerce.common.config;
 
-import org.broadleafcommerce.test.BaseTest;
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.test.BaseTest;
+
+import org.testng.Assert;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class RuntimeEnvironmentPropertiesManagerTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blConfigurationManager")
-    RuntimeEnvironmentPropertiesManager configurationManager;
+  /** DOCUMENT ME! */
+  @Resource(name = "blConfigurationManager")
+  RuntimeEnvironmentPropertiesManager configurationManager;
 
-    @Test
-    public void testPropertyOnly() throws Exception {
-        String s = configurationManager.getProperty("detect.sequence.generator.inconsistencies");
-        if(s.indexOf("$")>=0) {
-            Assert.fail("RuntimeEnvironmentPropertiesManager bean not defined");
-        }
-        
-    }
-    @Test(dependsOnMethods={"testPropertyOnly"})
-    public void testPrefix() throws Exception {
-        configurationManager.setPrefix("detect");
-        String s = configurationManager.getProperty("sequence.generator.inconsistencies");
-        if(s.indexOf("$")>=0) {
-            Assert.fail("RuntimeEnvironmentPropertiesManager bean not defined");
-        }
-    }
-    @Test(dependsOnMethods={"testPrefix"})
-    public void testSuffix() throws Exception {
-        
-        String s = configurationManager.getProperty("sequence.generator","inconsistencies");
-        if(s.indexOf("$")>=0) {
-            Assert.fail("RuntimeEnvironmentPropertiesManager bean not defined");
-        }
-    }
-    @Test(dependsOnMethods={"testSuffix"})
-    public void testNullSuffix() throws Exception {
-        configurationManager.setPrefix("detect");
-        String s = configurationManager.getProperty("sequence.generator.inconsistencies", "SOMETHING");
-        Assert.assertNotNull(s);
-    }
-    @Test
-    public void testNULL() throws Exception {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        String s = configurationManager.getProperty(null, "SOMETHING");
-  
-        Assert.assertEquals(s, null);
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test public void testNULL() throws Exception {
+    String s = configurationManager.getProperty(null, "SOMETHING");
+
+    Assert.assertEquals(s, null);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test(dependsOnMethods = { "testSuffix" })
+  public void testNullSuffix() throws Exception {
+    configurationManager.setPrefix("detect");
+
+    String s = configurationManager.getProperty("sequence.generator.inconsistencies", "SOMETHING");
+    Assert.assertNotNull(s);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test(dependsOnMethods = { "testPropertyOnly" })
+  public void testPrefix() throws Exception {
+    configurationManager.setPrefix("detect");
+
+    String s = configurationManager.getProperty("sequence.generator.inconsistencies");
+
+    if (s.indexOf("$") >= 0) {
+      Assert.fail("RuntimeEnvironmentPropertiesManager bean not defined");
     }
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test public void testPropertyOnly() throws Exception {
+    String s = configurationManager.getProperty("detect.sequence.generator.inconsistencies");
+
+    if (s.indexOf("$") >= 0) {
+      Assert.fail("RuntimeEnvironmentPropertiesManager bean not defined");
+    }
+
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Test(dependsOnMethods = { "testPrefix" })
+  public void testSuffix() throws Exception {
+    String s = configurationManager.getProperty("sequence.generator", "inconsistencies");
+
+    if (s.indexOf("$") >= 0) {
+      Assert.fail("RuntimeEnvironmentPropertiesManager bean not defined");
+    }
+  }
+} // end class RuntimeEnvironmentPropertiesManagerTest

@@ -17,40 +17,79 @@
 package org.broadleafcommerce.core.checkout.service.exception;
 
 import org.broadleafcommerce.common.exception.BroadleafException;
+
 import org.broadleafcommerce.core.checkout.service.workflow.CheckoutResponse;
 import org.broadleafcommerce.core.checkout.service.workflow.CheckoutSeed;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CheckoutException extends BroadleafException {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    
-    private CheckoutResponse checkoutResponse;
+  private CheckoutResponse checkoutResponse;
 
-    public CheckoutException() {
-        super();
-    }
+  /**
+   * Creates a new CheckoutException object.
+   */
+  public CheckoutException() {
+    super();
+  }
 
-    public CheckoutException(String message, CheckoutSeed seed) {
-        super(message);
-        checkoutResponse = seed;
-    }
+  /**
+   * Creates a new CheckoutException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  seed     DOCUMENT ME!
+   */
+  public CheckoutException(String message, CheckoutSeed seed) {
+    super(message);
+    checkoutResponse = seed;
+  }
 
-    public CheckoutException(Throwable cause, CheckoutSeed seed) {
-        super(cause);
-        checkoutResponse = seed;
-    }
+  /**
+   * Creates a new CheckoutException object.
+   *
+   * @param  cause  DOCUMENT ME!
+   * @param  seed   DOCUMENT ME!
+   */
+  public CheckoutException(Throwable cause, CheckoutSeed seed) {
+    super(cause);
+    checkoutResponse = seed;
+  }
 
-    public CheckoutException(String message, Throwable cause, CheckoutSeed seed) {
-        super(message, cause);
-        checkoutResponse = seed;
-    }
+  /**
+   * Creates a new CheckoutException object.
+   *
+   * @param  message  DOCUMENT ME!
+   * @param  cause    DOCUMENT ME!
+   * @param  seed     DOCUMENT ME!
+   */
+  public CheckoutException(String message, Throwable cause, CheckoutSeed seed) {
+    super(message, cause);
+    checkoutResponse = seed;
+  }
 
-    public CheckoutResponse getCheckoutResponse() {
-        return checkoutResponse;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public CheckoutResponse getCheckoutResponse() {
+    return checkoutResponse;
+  }
 
-    public void setCheckoutResponse(CheckoutResponse checkoutResponse) {
-        this.checkoutResponse = checkoutResponse;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  checkoutResponse  DOCUMENT ME!
+   */
+  public void setCheckoutResponse(CheckoutResponse checkoutResponse) {
+    this.checkoutResponse = checkoutResponse;
+  }
 
-}
+} // end class CheckoutException

@@ -18,14 +18,63 @@ package org.broadleafcommerce.core.offer.dao;
 
 import org.broadleafcommerce.core.offer.domain.OfferAudit;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface OfferAuditDao {
-    public OfferAudit readAuditById(Long offerAuditId);
-    
-    public OfferAudit save(OfferAudit offerAudit);
-    
-    public void delete(OfferAudit offerAudit);
-    
-    public OfferAudit create();
-    
-    public Long countUsesByCustomer(Long customerId, Long offerId);
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   * @param   offerId     DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long countUsesByCustomer(Long customerId, Long offerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferAudit create();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  offerAudit  DOCUMENT ME!
+   */
+  void delete(OfferAudit offerAudit);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   offerAuditId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferAudit readAuditById(Long offerAuditId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   offerAudit  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OfferAudit save(OfferAudit offerAudit);
+} // end interface OfferAuditDao

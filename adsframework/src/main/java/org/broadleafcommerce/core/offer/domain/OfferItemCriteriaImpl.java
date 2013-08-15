@@ -16,15 +16,6 @@
 
 package org.broadleafcommerce.core.offer.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,109 +25,199 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
-@Entity
-@Table(name = "BLC_OFFER_ITEM_CRITERIA")
-@Inheritance(strategy=InheritanceType.JOINED)
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
 @AdminPresentationClass(friendlyName = "OfferItemCriteriaImpl_baseOfferItemCriteria")
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "BLC_OFFER_ITEM_CRITERIA")
 public class OfferItemCriteriaImpl implements OfferItemCriteria {
-    
-    public static final long serialVersionUID = 1L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    @Id
-    @GeneratedValue(generator= "OfferItemCriteriaId")
-    @GenericGenerator(
-        name="OfferItemCriteriaId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="OfferItemCriteriaImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.offer.domain.OfferItemCriteriaImpl")
-        }
-    )
-    @Column(name = "OFFER_ITEM_CRITERIA_ID")
-    @AdminPresentation(friendlyName = "OfferItemCriteriaImpl_Item_Criteria_Id", group = "OfferItemCriteriaImpl_Description", visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Long id;
-    
-    @Column(name = "QUANTITY", nullable=false)
-    @AdminPresentation(friendlyName = "OfferItemCriteriaImpl_Quantity", group = "OfferItemCriteriaImpl_Description", visibility =VisibilityEnum.HIDDEN_ALL)
-    protected Integer quantity;
-    
-    @Lob
-    @Type(type = "org.hibernate.type.StringClobType")
-    @Column(name = "ORDER_ITEM_MATCH_RULE", length = Integer.MAX_VALUE - 1)
-    @AdminPresentation(friendlyName = "OfferItemCriteriaImpl_Order_Item_Match_Rule", group = "OfferItemCriteriaImpl_Description", visibility = VisibilityEnum.HIDDEN_ALL)
-    protected String orderItemMatchRule;
+  /** DOCUMENT ME! */
+  public static final long serialVersionUID = 1L;
 
-    @Override
-    public Long getId() {
-        return id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "OfferItemCriteriaImpl_Item_Criteria_Id",
+    group        = "OfferItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "OFFER_ITEM_CRITERIA_ID")
+  @GeneratedValue(generator = "OfferItemCriteriaId")
+  @GenericGenerator(
+    name       = "OfferItemCriteriaId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "OfferItemCriteriaImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.offer.domain.OfferItemCriteriaImpl"
+      )
+    }
+  )
+  @Id protected Long id;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "OfferItemCriteriaImpl_Order_Item_Match_Rule",
+    group        = "OfferItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(
+    name   = "ORDER_ITEM_MATCH_RULE",
+    length = Integer.MAX_VALUE - 1
+  )
+  @Lob
+  @Type(type = "org.hibernate.type.StringClobType")
+  protected String      orderItemMatchRule;
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "OfferItemCriteriaImpl_Quantity",
+    group        = "OfferItemCriteriaImpl_Description",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(
+    name     = "QUANTITY",
+    nullable = false
+  )
+  protected Integer quantity;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public Integer getQuantity() {
-        return quantity;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setQuantity(Integer receiveQuantity) {
-        this.quantity = receiveQuantity;
+    OfferItemCriteriaImpl other = (OfferItemCriteriaImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public String getMatchRule() {
-        return orderItemMatchRule;
+    if (orderItemMatchRule == null) {
+      if (other.orderItemMatchRule != null) {
+        return false;
+      }
+    } else if (!orderItemMatchRule.equals(other.orderItemMatchRule)) {
+      return false;
     }
 
-    @Override
-    public void setMatchRule(String matchRule) {
-        this.orderItemMatchRule = matchRule;
+    if (quantity == null) {
+      if (other.quantity != null) {
+        return false;
+      }
+    } else if (!quantity.equals(other.quantity)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((orderItemMatchRule == null) ? 0 : orderItemMatchRule.hashCode());
-        result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
-        return result;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        OfferItemCriteriaImpl other = (OfferItemCriteriaImpl) obj;
-        
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
-        
-        if (orderItemMatchRule == null) {
-            if (other.orderItemMatchRule != null)
-                return false;
-        } else if (!orderItemMatchRule.equals(other.orderItemMatchRule))
-            return false;
-        if (quantity == null) {
-            if (other.quantity != null)
-                return false;
-        } else if (!quantity.equals(other.quantity))
-            return false;
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#getMatchRule()
+   */
+  @Override public String getMatchRule() {
+    return orderItemMatchRule;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#getQuantity()
+   */
+  @Override public Integer getQuantity() {
+    return quantity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((id == null) ? 0 : id.hashCode());
+    result = (prime * result) + ((orderItemMatchRule == null) ? 0 : orderItemMatchRule.hashCode());
+    result = (prime * result) + ((quantity == null) ? 0 : quantity.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#setMatchRule(java.lang.String)
+   */
+  @Override public void setMatchRule(String matchRule) {
+    this.orderItemMatchRule = matchRule;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.rule.QuantityBasedRule#setQuantity(java.lang.Integer)
+   */
+  @Override public void setQuantity(Integer receiveQuantity) {
+    this.quantity = receiveQuantity;
+  }
+
+} // end class OfferItemCriteriaImpl

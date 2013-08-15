@@ -16,18 +16,45 @@
 
 package org.broadleafcommerce.core.store.service;
 
-import org.broadleafcommerce.core.store.domain.Store;
-import org.broadleafcommerce.profile.core.domain.Address;
-
 import java.util.List;
 import java.util.Map;
 
+import org.broadleafcommerce.core.store.domain.Store;
+
+import org.broadleafcommerce.profile.core.domain.Address;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface StoreService {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   storeCode  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Store readStoreByStoreCode(String storeCode);
 
-    public Store readStoreByStoreCode(String storeCode);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   searchAddress  DOCUMENT ME!
+   * @param   distance       DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<Store, Double> findStoresByAddress(Address searchAddress, double distance);
 
-    public Map<Store,Double> findStoresByAddress(Address searchAddress, double distance);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<Store> readAllStores();
 
-    public List<Store> readAllStores();
-
-}
+} // end interface StoreService

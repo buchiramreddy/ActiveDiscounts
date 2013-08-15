@@ -16,182 +16,248 @@
 
 package org.broadleafcommerce.core.order.dao;
 
-import org.broadleafcommerce.common.locale.domain.Locale;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderImpl;
-import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.profile.core.dao.CustomerDao;
-import org.broadleafcommerce.profile.core.domain.Customer;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.ListIterator;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.broadleafcommerce.common.locale.domain.Locale;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.service.type.OrderStatus;
+
+import org.broadleafcommerce.profile.core.dao.CustomerDao;
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blOrderDao")
 public class OrderDaoImpl implements OrderDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Resource(name = "blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blCustomerDao")
+  protected CustomerDao customerDao;
 
-    @Resource(name = "blCustomerDao")
-    protected CustomerDao customerDao;
-    
-    @Resource(name = "blOrderDaoExtensionManager")
-    protected OrderDaoExtensionManager extensionManager;
+  /** DOCUMENT ME! */
+  @Resource(name = "blOrderDaoExtensionManager")
+  protected OrderDaoExtensionManager extensionManager;
 
-    @Override
-    public Order readOrderById(final Long orderId) {
-        return em.find(OrderImpl.class, orderId);
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#readOrderById(java.lang.Long)
+   */
+  @Override public Order readOrderById(final Long orderId) {
+    return em.find(OrderImpl.class, orderId);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#save(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order save(final Order order) {
+    Order response = em.merge(order);
+
+    // em.flush();
+    return response;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#delete(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public void delete(Order salesOrder) {
+    if (!em.contains(salesOrder)) {
+      salesOrder = readOrderById(salesOrder.getId());
     }
 
-    @Override
-    public Order save(final Order order) {
-        Order response = em.merge(order);
-        //em.flush();
-        return response;
+    em.remove(salesOrder);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#readOrdersForCustomer(org.broadleafcommerce.profile.core.domain.Customer,
+   *       org.broadleafcommerce.core.order.service.type.OrderStatus)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Order> readOrdersForCustomer(final Customer customer, final OrderStatus orderStatus) {
+    if (orderStatus == null) {
+      return readOrdersForCustomer(customer.getId());
+    } else {
+      final Query query = em.createNamedQuery("BC_READ_ORDERS_BY_CUSTOMER_ID_AND_STATUS");
+      query.setParameter("customerId", customer.getId());
+      query.setParameter("orderStatus", orderStatus.getType());
+
+      return query.getResultList();
+    }
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#readOrdersForCustomer(java.lang.Long)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Order> readOrdersForCustomer(final Long customerId) {
+    final Query query = em.createNamedQuery("BC_READ_ORDERS_BY_CUSTOMER_ID");
+    query.setParameter("customerId", customerId);
+
+    return query.getResultList();
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#readCartForCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public Order readCartForCustomer(final Customer customer) {
+    Order       order = null;
+    final Query query = em.createNamedQuery("BC_READ_ORDERS_BY_CUSTOMER_ID_AND_NAME_NULL");
+    query.setParameter("customerId", customer.getId());
+    query.setParameter("orderStatus", OrderStatus.IN_PROCESS.getType());
+
+    @SuppressWarnings("rawtypes")
+    final List temp = query.getResultList();
+
+    if ((temp != null) && !temp.isEmpty()) {
+      order = (Order) temp.get(0);
     }
 
-    @Override
-    public void delete(Order salesOrder) {
-        if (!em.contains(salesOrder)) {
-            salesOrder = readOrderById(salesOrder.getId());
+    return order;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#createNewCartForCustomer(org.broadleafcommerce.profile.core.domain.Customer)
+   */
+  @Override public Order createNewCartForCustomer(Customer customer) {
+    Order order = create();
+
+    if (customer.getUsername() == null) {
+      customer.setUsername(String.valueOf(customer.getId()));
+
+      if (customerDao.readCustomerById(customer.getId()) != null) {
+        throw new IllegalArgumentException("Attempting to save a customer with an id (" + customer.getId()
+          + ") that already exists in the database. This can occur when legacy customers have been migrated to Broadleaf customers, but the batchStart setting has not been declared for id generation. In such a case, the defaultBatchStart property of IdGenerationDaoImpl (spring id of blIdGenerationDao) should be set to the appropriate start value.");
+      }
+
+      customer = customerDao.save(customer);
+    }
+
+    order.setCustomer(customer);
+    order.setEmailAddress(customer.getEmailAddress());
+    order.setStatus(OrderStatus.IN_PROCESS);
+
+    if (BroadleafRequestContext.getBroadleafRequestContext() != null) {
+      order.setCurrency(BroadleafRequestContext.getBroadleafRequestContext().getBroadleafCurrency());
+      order.setLocale(BroadleafRequestContext.getBroadleafRequestContext().getLocale());
+    }
+
+    if (extensionManager != null) {
+      extensionManager.getProxy().attachAdditionalDataToNewCart(customer, order);
+    }
+
+    order = save(order);
+
+    return order;
+  } // end method createNewCartForCustomer
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#submitOrder(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order submitOrder(final Order cartOrder) {
+    cartOrder.setStatus(OrderStatus.SUBMITTED);
+
+    return save(cartOrder);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#create()
+   */
+  @Override public Order create() {
+    final Order order = ((Order) entityConfiguration.createEntityInstance(
+          "org.broadleafcommerce.core.order.domain.Order"));
+
+    return order;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#readNamedOrderForCustomer(org.broadleafcommerce.profile.core.domain.Customer,
+   *       java.lang.String)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public Order readNamedOrderForCustomer(final Customer customer, final String name) {
+    final Query query = em.createNamedQuery("BC_READ_NAMED_ORDER_FOR_CUSTOMER");
+    query.setParameter("customerId", customer.getId());
+    query.setParameter("orderStatus", OrderStatus.NAMED.getType());
+    query.setParameter("orderName", name);
+
+    List<Order> orders = query.getResultList();
+
+    // Filter out orders that don't match the current locale (if one is set)
+    if (BroadleafRequestContext.getBroadleafRequestContext() != null) {
+      ListIterator<Order> iter = orders.listIterator();
+
+      while (iter.hasNext()) {
+        Locale locale = BroadleafRequestContext.getBroadleafRequestContext().getLocale();
+        Order  order  = iter.next();
+
+        if ((locale != null) && !locale.equals(order.getLocale())) {
+          iter.remove();
         }
-        em.remove(salesOrder);
+      }
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Order> readOrdersForCustomer(final Customer customer, final OrderStatus orderStatus) {
-        if (orderStatus == null) {
-            return readOrdersForCustomer(customer.getId());
-        } else {
-            final Query query = em.createNamedQuery("BC_READ_ORDERS_BY_CUSTOMER_ID_AND_STATUS");
-            query.setParameter("customerId", customer.getId());
-            query.setParameter("orderStatus", orderStatus.getType());
-            return query.getResultList();
-        }
+    // Apply any additional filters that extension modules have registered
+    if ((orders != null) && !orders.isEmpty() && (extensionManager != null)) {
+      extensionManager.getProxy().applyAdditionalOrderLookupFilter(customer, name, orders);
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Order> readOrdersForCustomer(final Long customerId) {
-        final Query query = em.createNamedQuery("BC_READ_ORDERS_BY_CUSTOMER_ID");
-        query.setParameter("customerId", customerId);
-        return query.getResultList();
+    return ((orders == null) || orders.isEmpty()) ? null : orders.get(0);
+  } // end method readNamedOrderForCustomer
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#readOrderByOrderNumber(java.lang.String)
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public Order readOrderByOrderNumber(final String orderNumber) {
+    if ((orderNumber == null) || "".equals(orderNumber)) {
+      return null;
     }
 
-    @Override
-    public Order readCartForCustomer(final Customer customer) {
-        Order order = null;
-        final Query query = em.createNamedQuery("BC_READ_ORDERS_BY_CUSTOMER_ID_AND_NAME_NULL");
-        query.setParameter("customerId", customer.getId());
-        query.setParameter("orderStatus", OrderStatus.IN_PROCESS.getType());
-        @SuppressWarnings("rawtypes")
-        final List temp = query.getResultList();
-        if (temp != null && !temp.isEmpty()) {
-            order = (Order) temp.get(0);
-        }
-        return order;
+    final Query query = em.createNamedQuery("BC_READ_ORDER_BY_ORDER_NUMBER");
+    query.setParameter("orderNumber", orderNumber);
+
+    List<Order> orders = query.getResultList();
+
+    return ((orders == null) || orders.isEmpty()) ? null : orders.get(0);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.OrderDao#updatePrices(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public Order updatePrices(Order order) {
+    order = em.merge(order);
+
+    if (order.updatePrices()) {
+      order = save(order);
     }
 
-    @Override
-    public Order createNewCartForCustomer(Customer customer) {
-        Order order = create();
-        if (customer.getUsername() == null) {
-            customer.setUsername(String.valueOf(customer.getId()));
-            if (customerDao.readCustomerById(customer.getId()) != null) {
-                throw new IllegalArgumentException("Attempting to save a customer with an id (" + customer.getId() + ") that already exists in the database. This can occur when legacy customers have been migrated to Broadleaf customers, but the batchStart setting has not been declared for id generation. In such a case, the defaultBatchStart property of IdGenerationDaoImpl (spring id of blIdGenerationDao) should be set to the appropriate start value.");
-            }
-            customer = customerDao.save(customer);
-        }
-        order.setCustomer(customer);
-        order.setEmailAddress(customer.getEmailAddress());
-        order.setStatus(OrderStatus.IN_PROCESS);
-
-        if (BroadleafRequestContext.getBroadleafRequestContext() != null) {
-            order.setCurrency(BroadleafRequestContext.getBroadleafRequestContext().getBroadleafCurrency());
-            order.setLocale(BroadleafRequestContext.getBroadleafRequestContext().getLocale());
-        }
-
-        if (extensionManager != null) {
-            extensionManager.getProxy().attachAdditionalDataToNewCart(customer, order);
-        }
-        
-        order = save(order);
-        return order;
-    }
-
-    @Override
-    public Order submitOrder(final Order cartOrder) {
-        cartOrder.setStatus(OrderStatus.SUBMITTED);
-        return save(cartOrder);
-    }
-
-    @Override
-    public Order create() {
-        final Order order = ((Order) entityConfiguration.createEntityInstance("org.broadleafcommerce.core.order.domain.Order"));
-
-        return order;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Order readNamedOrderForCustomer(final Customer customer, final String name) {
-        final Query query = em.createNamedQuery("BC_READ_NAMED_ORDER_FOR_CUSTOMER");
-        query.setParameter("customerId", customer.getId());
-        query.setParameter("orderStatus", OrderStatus.NAMED.getType());
-        query.setParameter("orderName", name);
-        List<Order> orders = query.getResultList();
-        
-        // Filter out orders that don't match the current locale (if one is set)
-        if (BroadleafRequestContext.getBroadleafRequestContext() != null) {
-            ListIterator<Order> iter = orders.listIterator();
-            while (iter.hasNext()) {
-                Locale locale = BroadleafRequestContext.getBroadleafRequestContext().getLocale();
-                Order order = iter.next();
-                if (locale != null && !locale.equals(order.getLocale())) {
-                    iter.remove();
-                }
-            }
-        }
-            
-        // Apply any additional filters that extension modules have registered
-        if (orders != null && !orders.isEmpty() && extensionManager != null) {
-            extensionManager.getProxy().applyAdditionalOrderLookupFilter(customer, name, orders);
-        }
-        
-        return orders == null || orders.isEmpty() ? null : orders.get(0);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Order readOrderByOrderNumber(final String orderNumber) {
-        if (orderNumber == null || "".equals(orderNumber)) {
-            return null;
-        }
-
-        final Query query = em.createNamedQuery("BC_READ_ORDER_BY_ORDER_NUMBER");
-        query.setParameter("orderNumber", orderNumber);
-        List<Order> orders = query.getResultList();
-        return orders == null || orders.isEmpty() ? null : orders.get(0);
-    }
-
-    @Override
-    public Order updatePrices(Order order) {
-        order = em.merge(order);
-        if (order.updatePrices()) {
-            order = save(order);
-        }
-        return order;
-    }
-}
+    return order;
+  }
+} // end class OrderDaoImpl

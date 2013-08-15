@@ -20,70 +20,132 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 
+
 /**
- * This class represents the basic context necessary for the execution
- * of a particular order process workflow operation.
- * 
- * @author apazzolini
+ * This class represents the basic context necessary for the execution of a particular order process workflow operation.
+ *
+ * @author   apazzolini
+ * @version  $Revision$, $Date$
  */
 public class CartOperationRequest {
+  /** DOCUMENT ME! */
+  protected OrderItemRequestDTO itemRequest;
 
-    protected OrderItemRequestDTO itemRequest;
-    
-    protected Order order;
-    
-    protected boolean priceOrder;
-    
-    // Set during the course of the workflow for use in subsequent workflow steps
-    protected OrderItem addedOrderItem;
-    
-    // Set during the course of the workflow for use in subsequent workflow steps
-    protected Integer orderItemQuantityDelta;
-    
-    public CartOperationRequest(Order order, OrderItemRequestDTO itemRequest, boolean priceOrder) {
-        setOrder(order);
-        setItemRequest(itemRequest);
-        setPriceOrder(priceOrder);
-    }
-    
-    public OrderItemRequestDTO getItemRequest() {
-        return itemRequest;
-    }
+  /** DOCUMENT ME! */
+  protected Order order;
 
-    public void setItemRequest(OrderItemRequestDTO itemRequest) {
-        this.itemRequest = itemRequest;
-    }
+  /** DOCUMENT ME! */
+  protected boolean priceOrder;
 
-    public Order getOrder() {
-        return order;
-    }
+  // Set during the course of the workflow for use in subsequent workflow steps
+  /** DOCUMENT ME! */
+  protected OrderItem addedOrderItem;
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  // Set during the course of the workflow for use in subsequent workflow steps
+  /** DOCUMENT ME! */
+  protected Integer orderItemQuantityDelta;
 
-    public boolean isPriceOrder() {
-        return priceOrder;
-    }
+  /**
+   * Creates a new CartOperationRequest object.
+   *
+   * @param  order        DOCUMENT ME!
+   * @param  itemRequest  DOCUMENT ME!
+   * @param  priceOrder   DOCUMENT ME!
+   */
+  public CartOperationRequest(Order order, OrderItemRequestDTO itemRequest, boolean priceOrder) {
+    setOrder(order);
+    setItemRequest(itemRequest);
+    setPriceOrder(priceOrder);
+  }
 
-    public void setPriceOrder(boolean priceOrder) {
-        this.priceOrder = priceOrder;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public OrderItemRequestDTO getItemRequest() {
+    return itemRequest;
+  }
 
-    public OrderItem getAddedOrderItem() {
-        return addedOrderItem;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  itemRequest  DOCUMENT ME!
+   */
+  public void setItemRequest(OrderItemRequestDTO itemRequest) {
+    this.itemRequest = itemRequest;
+  }
 
-    public void setAddedOrderItem(OrderItem addedOrderItem) {
-        this.addedOrderItem = addedOrderItem;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Order getOrder() {
+    return order;
+  }
 
-    public Integer getOrderItemQuantityDelta() {
-        return orderItemQuantityDelta;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    public void setOrderItemQuantityDelta(Integer orderItemQuantityDelta) {
-        this.orderItemQuantityDelta = orderItemQuantityDelta;
-    }
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isPriceOrder() {
+    return priceOrder;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priceOrder  DOCUMENT ME!
+   */
+  public void setPriceOrder(boolean priceOrder) {
+    this.priceOrder = priceOrder;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public OrderItem getAddedOrderItem() {
+    return addedOrderItem;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addedOrderItem  DOCUMENT ME!
+   */
+  public void setAddedOrderItem(OrderItem addedOrderItem) {
+    this.addedOrderItem = addedOrderItem;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getOrderItemQuantityDelta() {
+    return orderItemQuantityDelta;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItemQuantityDelta  DOCUMENT ME!
+   */
+  public void setOrderItemQuantityDelta(Integer orderItemQuantityDelta) {
+    this.orderItemQuantityDelta = orderItemQuantityDelta;
+  }
+
+} // end class CartOperationRequest

@@ -16,27 +16,53 @@
 
 package org.broadleafcommerce.security.service;
 
-import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
-import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
-import org.broadleafcommerce.security.service.dataprovider.AdminUserDataProvider;
-import org.broadleafcommerce.test.BaseTest;
-import org.springframework.test.annotation.Rollback;
-import org.testng.annotations.Test;
-
 import javax.annotation.Resource;
 
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+import org.broadleafcommerce.openadmin.server.security.service.AdminSecurityService;
+
+import org.broadleafcommerce.security.service.dataprovider.AdminUserDataProvider;
+
+import org.broadleafcommerce.test.BaseTest;
+
+import org.springframework.test.annotation.Rollback;
+
+import org.testng.annotations.Test;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class AdminUserTest extends BaseTest {
-    @Resource
-    AdminSecurityService adminSecurityService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Test(groups =  {"testAdminUserSave"}, dataProvider = "setupAdminUser", dataProviderClass = AdminUserDataProvider.class)
-    @Rollback(true)
-    public void testAdminUserSave(AdminUser user) throws Exception {
-        AdminUser newUser = adminSecurityService.saveAdminUser(user);
+  /** DOCUMENT ME! */
+  @Resource AdminSecurityService adminSecurityService;
 
-        AdminUser userFromDB = adminSecurityService.readAdminUserById(newUser.getId());
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        assert(userFromDB != null);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   user  DOCUMENT ME!
+   *
+   * @throws  Exception  DOCUMENT ME!
+   */
+  @Rollback(true)
+  @Test(
+    groups            = { "testAdminUserSave" },
+    dataProvider      = "setupAdminUser",
+    dataProviderClass = AdminUserDataProvider.class
+  )
+  public void testAdminUserSave(AdminUser user) throws Exception {
+    AdminUser newUser = adminSecurityService.saveAdminUser(user);
 
-}
+    AdminUser userFromDB = adminSecurityService.readAdminUserById(newUser.getId());
+
+    assert (userFromDB != null);
+  }
+
+} // end class AdminUserTest

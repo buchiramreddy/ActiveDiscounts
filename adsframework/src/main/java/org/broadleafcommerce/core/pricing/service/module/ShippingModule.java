@@ -17,29 +17,75 @@
 package org.broadleafcommerce.core.pricing.service.module;
 
 import org.broadleafcommerce.common.vendor.service.exception.FulfillmentPriceException;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider;
+
 
 /**
- * @deprecated Superceded by functionality given by {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
- * @see {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Superceded by functionality given by {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ *              and {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider}
+ * @see         {@link org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentPricingProvider},
+ *              {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public interface ShippingModule {
+@Deprecated public interface ShippingModule {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
 
-    public void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   fulfillmentGroup  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  FulfillmentPriceException  DOCUMENT ME!
+   */
+  FulfillmentGroup calculateShippingForFulfillmentGroup(FulfillmentGroup fulfillmentGroup)
+    throws FulfillmentPriceException;
 
-    public FulfillmentGroup calculateShippingForFulfillmentGroup(FulfillmentGroup fulfillmentGroup) throws FulfillmentPriceException;
-    
-    public String getServiceName();
-    
-    public Boolean isValidModuleForService(String serviceName);
-    
-    public void setDefaultModule(Boolean isDefaultModule);
-    
-    public Boolean isDefaultModule();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getServiceName();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   serviceName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean isValidModuleForService(String serviceName);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isDefaultModule  DOCUMENT ME!
+   */
+  void setDefaultModule(Boolean isDefaultModule);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean isDefaultModule();
+
+} // end interface ShippingModule

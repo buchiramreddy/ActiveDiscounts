@@ -17,84 +17,132 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.broadleafcommerce.common.BroadleafEnumerationType;
+
+
 /**
  * Extensible enumeration indicating types of product relations such as upsell, crosssell, or featured.
- * 
- * Created by bpolster.
+ *
+ * <p>Created by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class RelatedProductTypeEnum implements Serializable, BroadleafEnumerationType {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  private static final Map<String, RelatedProductTypeEnum> TYPES = new LinkedHashMap<String, RelatedProductTypeEnum>();
 
-    private static final Map<String, RelatedProductTypeEnum> TYPES = new LinkedHashMap<String, RelatedProductTypeEnum>();
+  /** DOCUMENT ME! */
+  public static final RelatedProductTypeEnum FEATURED   = new RelatedProductTypeEnum("FEATURED", "Featured");
 
-    public static final RelatedProductTypeEnum FEATURED = new RelatedProductTypeEnum("FEATURED", "Featured");
-    public static final RelatedProductTypeEnum UP_SALE = new RelatedProductTypeEnum("UP_SALE", "Up sale");
-    public static final RelatedProductTypeEnum CROSS_SALE = new RelatedProductTypeEnum("CROSS_SALE", "Cross sale");
+  /** DOCUMENT ME! */
+  public static final RelatedProductTypeEnum UP_SALE    = new RelatedProductTypeEnum("UP_SALE", "Up sale");
+
+  /** DOCUMENT ME! */
+  public static final RelatedProductTypeEnum CROSS_SALE = new RelatedProductTypeEnum("CROSS_SALE", "Cross sale");
 
 
-    public static RelatedProductTypeEnum getInstance(final String type) {
-        return TYPES.get(type);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static RelatedProductTypeEnum getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  private String type;
+  private String friendlyType;
+
+  /**
+   * Creates a new RelatedProductTypeEnum object.
+   */
+  public RelatedProductTypeEnum() {
+    // do nothing
+  }
+
+  /**
+   * Creates a new RelatedProductTypeEnum object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public RelatedProductTypeEnum(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    } else {
+      throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via "
+        + getInstance(type).getClass().getName());
+    }
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    private String type;
-    private String friendlyType;
-
-    public RelatedProductTypeEnum() {
-        //do nothing
+    if (obj == null) {
+      return false;
     }
 
-    public RelatedProductTypeEnum(final String type, final String friendlyType) {
-        this.friendlyType = friendlyType;
-        setType(type);
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    public String getType() {
-        return type;
+    RelatedProductTypeEnum other = (RelatedProductTypeEnum) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
     }
 
-    public String getFriendlyType() {
-        return friendlyType;
-    }
+    return true;
+  } // end method equals
 
-    private void setType(final String type) {
-        this.type = type;
-        if (!TYPES.containsKey(type)) {
-            TYPES.put(type, this);
-        } else {
-            throw new RuntimeException("Cannot add the type: (" + type + "). It already exists as a type via " + getInstance(type).getClass().getName());
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RelatedProductTypeEnum other = (RelatedProductTypeEnum) obj;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        return true;
-    }
-
-}
+} // end class RelatedProductTypeEnum

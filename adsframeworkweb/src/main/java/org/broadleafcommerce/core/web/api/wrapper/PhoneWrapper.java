@@ -16,67 +16,87 @@
 
 package org.broadleafcommerce.core.web.api.wrapper;
 
-import org.broadleafcommerce.profile.core.domain.Phone;
-import org.broadleafcommerce.profile.core.service.PhoneService;
-import org.springframework.context.ApplicationContext;
-
 import javax.servlet.http.HttpServletRequest;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.broadleafcommerce.profile.core.domain.Phone;
+import org.broadleafcommerce.profile.core.service.PhoneService;
+
+import org.springframework.context.ApplicationContext;
+
+
 /**
  * This is a JAXB wrapper around Phone.
  *
- * User: Elbert Bautista
- * Date: 4/24/12
+ * <p>User: Elbert Bautista Date: 4/24/12</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
-@XmlRootElement(name = "phone")
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@XmlRootElement(name = "phone")
 public class PhoneWrapper extends BaseWrapper implements APIWrapper<Phone>, APIUnwrapper<Phone> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @XmlElement
-    protected Long id;
+  /** DOCUMENT ME! */
+  @XmlElement protected Long id;
 
-    @XmlElement
-    protected String phoneNumber;
+  /** DOCUMENT ME! */
+  @XmlElement protected Boolean isActive;
 
-    @XmlElement
-    protected Boolean isActive;
+  /** DOCUMENT ME! */
+  @XmlElement protected Boolean isDefault;
 
-    @XmlElement
-    protected Boolean isDefault;
+  /** DOCUMENT ME! */
+  @XmlElement protected String phoneNumber;
 
-    @Override
-    public void wrapDetails(Phone model, HttpServletRequest request) {
-        this.id = model.getId();
-        this.phoneNumber = model.getPhoneNumber();
-        this.isActive = model.isActive();
-        this.isDefault = model.isDefault();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIUnwrapper#unwrap(javax.servlet.http.HttpServletRequest, org.springframework.context.ApplicationContext)
+   */
+  @Override public Phone unwrap(HttpServletRequest request, ApplicationContext appContext) {
+    PhoneService phoneService = (PhoneService) appContext.getBean("blPhoneService");
+    Phone        phone        = phoneService.create();
+    phone.setId(this.id);
+
+    if (this.isActive != null) {
+      phone.setActive(this.isActive);
     }
 
-    @Override
-    public void wrapSummary(Phone model, HttpServletRequest request) {
-        wrapDetails(model, request);
+    if (this.isDefault != null) {
+      phone.setDefault(this.isDefault);
     }
 
-    @Override
-    public Phone unwrap(HttpServletRequest request, ApplicationContext appContext) {
-        PhoneService phoneService = (PhoneService) appContext.getBean("blPhoneService");
-        Phone phone = phoneService.create();
-        phone.setId(this.id);
+    phone.setPhoneNumber(this.phoneNumber);
 
-        if (this.isActive != null) {
-            phone.setActive(this.isActive);
-        }
+    return phone;
+  }
 
-        if (this.isDefault != null) {
-            phone.setDefault(this.isDefault);
-        }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        phone.setPhoneNumber(this.phoneNumber);
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapDetails(org.broadleafcommerce.profile.core.domain.Phone,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapDetails(Phone model, HttpServletRequest request) {
+    this.id          = model.getId();
+    this.phoneNumber = model.getPhoneNumber();
+    this.isActive    = model.isActive();
+    this.isDefault   = model.isDefault();
+  }
 
-        return phone;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.web.api.wrapper.APIWrapper#wrapSummary(org.broadleafcommerce.profile.core.domain.Phone,
+   *       javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void wrapSummary(Phone model, HttpServletRequest request) {
+    wrapDetails(model, request);
+  }
+} // end class PhoneWrapper

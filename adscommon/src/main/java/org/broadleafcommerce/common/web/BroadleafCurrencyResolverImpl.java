@@ -16,93 +16,113 @@
 
 package org.broadleafcommerce.common.web;
 
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.service.BroadleafCurrencyService;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.util.BLCRequestUtils;
+
 import org.springframework.stereotype.Component;
+
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
- * Author: jerryocanas
- * Date: 9/6/12
+ * Author: jerryocanas Date: 9/6/12
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 
 /**
  * Responsible for returning the currency to use for the current request.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Component("blCurrencyResolver")
 public class BroadleafCurrencyResolverImpl implements BroadleafCurrencyResolver {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private final Log LOG = LogFactory.getLog(BroadleafCurrencyResolverImpl.class);
+  /** Parameter/Attribute name for the current currency code. */
+  public static String CURRENCY_CODE_PARAM = "blCurrencyCode";
 
-    /**
-     * Parameter/Attribute name for the current currency code
-     */
-    public static String CURRENCY_CODE_PARAM = "blCurrencyCode";
+  /** Parameter/Attribute name for the current currency. */
+  public static String CURRENCY_VAR = "blCurrency";
 
-    /**
-     * Parameter/Attribute name for the current currency
-     */
-    public static String CURRENCY_VAR = "blCurrency";
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name = "blCurrencyService")
-    private BroadleafCurrencyService broadleafCurrencyService;
+  @Resource(name = "blCurrencyService")
+  private BroadleafCurrencyService broadleafCurrencyService;
 
-    /**
-     * Responsible for returning the currency to use for the current request.
-     */
-    @Override
-    public BroadleafCurrency resolveCurrency(HttpServletRequest request) {
-        return resolveCurrency(new ServletWebRequest(request));
+  private final Log LOG = LogFactory.getLog(BroadleafCurrencyResolverImpl.class);
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Responsible for returning the currency to use for the current request.
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  responsible for returning the currency to use for the current request.
+   */
+  @Override public BroadleafCurrency resolveCurrency(HttpServletRequest request) {
+    return resolveCurrency(new ServletWebRequest(request));
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.web.BroadleafCurrencyResolver#resolveCurrency(org.springframework.web.context.request.WebRequest)
+   */
+  @Override public BroadleafCurrency resolveCurrency(WebRequest request) {
+    BroadleafCurrency currency = null;
+
+    // 1) Check request for currency
+    currency = (BroadleafCurrency) request.getAttribute(CURRENCY_VAR, WebRequest.SCOPE_REQUEST);
+
+    // 2) Check for a request parameter
+    if ((currency == null) && (BLCRequestUtils.getURLorHeaderParameter(request, CURRENCY_CODE_PARAM) != null)) {
+      String currencyCode = BLCRequestUtils.getURLorHeaderParameter(request, CURRENCY_CODE_PARAM);
+      currency = broadleafCurrencyService.findCurrencyByCode(currencyCode);
+
+      if (LOG.isTraceEnabled()) {
+        LOG.trace("Attempt to find currency by param " + currencyCode + " resulted in " + currency);
+      }
     }
 
-    @Override
-    public BroadleafCurrency resolveCurrency(WebRequest request) {
-        BroadleafCurrency currency = null;
-
-        // 1) Check request for currency
-        currency = (BroadleafCurrency) request.getAttribute(CURRENCY_VAR, WebRequest.SCOPE_REQUEST);
-
-        // 2) Check for a request parameter
-        if (currency == null && BLCRequestUtils.getURLorHeaderParameter(request, CURRENCY_CODE_PARAM) != null) {
-            String currencyCode = BLCRequestUtils.getURLorHeaderParameter(request, CURRENCY_CODE_PARAM);
-            currency = broadleafCurrencyService.findCurrencyByCode(currencyCode);
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Attempt to find currency by param " + currencyCode + " resulted in " + currency);
-            }
-        }
-
-        // 3) Check session for currency
-        if (currency == null && BLCRequestUtils.isOKtoUseSession(request)) {
-            currency = (BroadleafCurrency) request.getAttribute(CURRENCY_VAR, WebRequest.SCOPE_GLOBAL_SESSION);
-        }
-
-        // 4) Check locale for currency
-        if (currency == null) {
-            Locale locale = (Locale) request.getAttribute(BroadleafLocaleResolverImpl.LOCALE_VAR, WebRequest.SCOPE_REQUEST);
-            if (locale != null) {
-                currency = locale.getDefaultCurrency();
-            }
-        }
-
-        // 5) Check default currency from DB
-        if (currency == null) {
-            currency = broadleafCurrencyService.findDefaultBroadleafCurrency();
-        }
-
-        if (BLCRequestUtils.isOKtoUseSession(request)) {
-            request.setAttribute(CURRENCY_VAR, currency, WebRequest.SCOPE_GLOBAL_SESSION);
-        }
-        return currency;
+    // 3) Check session for currency
+    if ((currency == null) && BLCRequestUtils.isOKtoUseSession(request)) {
+      currency = (BroadleafCurrency) request.getAttribute(CURRENCY_VAR, WebRequest.SCOPE_GLOBAL_SESSION);
     }
 
+    // 4) Check locale for currency
+    if (currency == null) {
+      Locale locale = (Locale) request.getAttribute(BroadleafLocaleResolverImpl.LOCALE_VAR, WebRequest.SCOPE_REQUEST);
+
+      if (locale != null) {
+        currency = locale.getDefaultCurrency();
+      }
+    }
+
+    // 5) Check default currency from DB
+    if (currency == null) {
+      currency = broadleafCurrencyService.findDefaultBroadleafCurrency();
+    }
+
+    if (BLCRequestUtils.isOKtoUseSession(request)) {
+      request.setAttribute(CURRENCY_VAR, currency, WebRequest.SCOPE_GLOBAL_SESSION);
+    }
+
+    return currency;
+  } // end method resolveCurrency
 
 
-}
+} // end class BroadleafCurrencyResolverImpl

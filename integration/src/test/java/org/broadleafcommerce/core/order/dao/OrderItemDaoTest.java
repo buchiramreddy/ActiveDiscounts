@@ -16,94 +16,161 @@
 
 package org.broadleafcommerce.core.order.dao;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.core.catalog.dao.SkuDao;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.order.OrderItemDataProvider;
 import org.broadleafcommerce.core.order.domain.DiscreteOrderItem;
 import org.broadleafcommerce.core.order.domain.GiftWrapOrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItem;
+
 import org.broadleafcommerce.test.BaseTest;
+
 import org.springframework.test.annotation.Rollback;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class OrderItemDaoTest extends BaseTest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private Long orderItemId;
-    private Long giftWrapItemId;
+  private Long giftWrapItemId;
 
-    @Resource
-    private OrderItemDao orderItemDao;
+  @Resource private OrderItemDao orderItemDao;
 
-    @Resource
-    private SkuDao skuDao;
+  private Long orderItemId;
 
-    @Test(groups = { "createDiscreteOrderItem" }, dataProvider = "basicDiscreteOrderItem", dataProviderClass = OrderItemDataProvider.class, dependsOnGroups = { "createOrder", "createSku" })
-    @Rollback(false)
-    @Transactional
-    public void createDiscreteOrderItem(DiscreteOrderItem orderItem) {
-        Sku si = skuDao.readFirstSku();
-        assert si.getId() != null;
-        orderItem.setSku(si);
-        assert orderItem.getId() == null;
-        
-        orderItem = (DiscreteOrderItem) orderItemDao.save(orderItem);
-        assert orderItem.getId() != null;
-        orderItemId = orderItem.getId();
-    }
+  @Resource private SkuDao skuDao;
 
-    @Test(groups = { "createGiftWrapOrderItem" }, dataProvider = "basicGiftWrapOrderItem", dataProviderClass = OrderItemDataProvider.class, dependsOnGroups = { "readOrderItemsById" })
-    @Rollback(false)
-    @Transactional
-    public void createGiftWrapOrderItem(GiftWrapOrderItem orderItem) {
-        Sku si = skuDao.readFirstSku();
-        assert si.getId() != null;
-        orderItem.setSku(si);
-        assert orderItem.getId() == null;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        OrderItem discreteItem = orderItemDao.readOrderItemById(orderItemId);
-        orderItem.getWrappedItems().add(discreteItem);
-        discreteItem.setGiftWrapOrderItem(orderItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = { "createDiscreteOrderItem" },
+    dataProvider      = "basicDiscreteOrderItem",
+    dataProviderClass = OrderItemDataProvider.class,
+    dependsOnGroups   = { "createOrder", "createSku" }
+  )
+  @Transactional public void createDiscreteOrderItem(DiscreteOrderItem orderItem) {
+    Sku si = skuDao.readFirstSku();
+    assert si.getId() != null;
+    orderItem.setSku(si);
+    assert orderItem.getId() == null;
 
-        orderItem = (GiftWrapOrderItem) orderItemDao.save(orderItem);
-        assert orderItem.getId() != null;
-        giftWrapItemId = orderItem.getId();
-    }
+    orderItem = (DiscreteOrderItem) orderItemDao.save(orderItem);
+    assert orderItem.getId() != null;
+    orderItemId = orderItem.getId();
+  }
 
-    @Test(groups = { "readGiftWrapOrderItemsById" }, dependsOnGroups = { "createGiftWrapOrderItem" })
-    @Transactional
-    public void readGiftWrapOrderItemsById() {
-        assert giftWrapItemId != null;
-        OrderItem result = orderItemDao.readOrderItemById(giftWrapItemId);
-        assert result != null;
-        assert result.getId().equals(giftWrapItemId);
-        assert ((GiftWrapOrderItem) result).getWrappedItems().get(0).getId().equals(orderItemId);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Test(groups = { "deleteGiftWrapOrderItemsById" }, dependsOnGroups = { "readGiftWrapOrderItemsById" })
-    @Rollback(false)
-    public void deleteGiftWrapOrderItemsById() {
-        OrderItem result = orderItemDao.readOrderItemById(giftWrapItemId);
-        orderItemDao.delete(result);
-        assert orderItemDao.readOrderItemById(giftWrapItemId) == null;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups            = { "createGiftWrapOrderItem" },
+    dataProvider      = "basicGiftWrapOrderItem",
+    dataProviderClass = OrderItemDataProvider.class,
+    dependsOnGroups   = { "readOrderItemsById" }
+  )
+  @Transactional public void createGiftWrapOrderItem(GiftWrapOrderItem orderItem) {
+    Sku si = skuDao.readFirstSku();
+    assert si.getId() != null;
+    orderItem.setSku(si);
+    assert orderItem.getId() == null;
 
-    @Test(groups = { "readOrderItemsById" }, dependsOnGroups = { "createDiscreteOrderItem" })
-    public void readOrderItemsById() {
-        assert orderItemId != null;
-        OrderItem result = orderItemDao.readOrderItemById(orderItemId);
-        assert result != null;
-        assert result.getId().equals(orderItemId);
-    }
+    OrderItem discreteItem = orderItemDao.readOrderItemById(orderItemId);
+    orderItem.getWrappedItems().add(discreteItem);
+    discreteItem.setGiftWrapOrderItem(orderItem);
 
-    @Test(groups = { "readOrderItemsByIdAfterGiftWrapDeletion" }, dependsOnGroups = { "deleteGiftWrapOrderItemsById" })
-    public void readOrderItemsByIdAfterGiftWrapDeletion() {
-        assert orderItemId != null;
-        OrderItem result = orderItemDao.readOrderItemById(orderItemId);
-        assert result != null;
-        assert result.getId().equals(orderItemId);
-        assert result.getGiftWrapOrderItem() == null;
-    }
-}
+    orderItem = (GiftWrapOrderItem) orderItemDao.save(orderItem);
+    assert orderItem.getId() != null;
+    giftWrapItemId = orderItem.getId();
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Rollback(false)
+  @Test(
+    groups          = { "deleteGiftWrapOrderItemsById" },
+    dependsOnGroups = { "readGiftWrapOrderItemsById" }
+  )
+  public void deleteGiftWrapOrderItemsById() {
+    OrderItem result = orderItemDao.readOrderItemById(giftWrapItemId);
+    orderItemDao.delete(result);
+    assert orderItemDao.readOrderItemById(giftWrapItemId) == null;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readGiftWrapOrderItemsById" },
+    dependsOnGroups = { "createGiftWrapOrderItem" }
+  )
+  @Transactional public void readGiftWrapOrderItemsById() {
+    assert giftWrapItemId != null;
+
+    OrderItem result = orderItemDao.readOrderItemById(giftWrapItemId);
+    assert result != null;
+    assert result.getId().equals(giftWrapItemId);
+    assert ((GiftWrapOrderItem) result).getWrappedItems().get(0).getId().equals(orderItemId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readOrderItemsById" },
+    dependsOnGroups = { "createDiscreteOrderItem" }
+  )
+  public void readOrderItemsById() {
+    assert orderItemId != null;
+
+    OrderItem result = orderItemDao.readOrderItemById(orderItemId);
+    assert result != null;
+    assert result.getId().equals(orderItemId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @Test(
+    groups          = { "readOrderItemsByIdAfterGiftWrapDeletion" },
+    dependsOnGroups = { "deleteGiftWrapOrderItemsById" }
+  )
+  public void readOrderItemsByIdAfterGiftWrapDeletion() {
+    assert orderItemId != null;
+
+    OrderItem result = orderItemDao.readOrderItemById(orderItemId);
+    assert result != null;
+    assert result.getId().equals(orderItemId);
+    assert result.getGiftWrapOrderItem() == null;
+  }
+} // end class OrderItemDaoTest

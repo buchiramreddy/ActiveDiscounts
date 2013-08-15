@@ -16,308 +16,311 @@
 
 package org.broadleafcommerce.admin.web.rulebuilder;
 
-import junit.framework.TestCase;
 import org.broadleafcommerce.admin.web.rulebuilder.service.CustomerFieldServiceImpl;
 import org.broadleafcommerce.admin.web.rulebuilder.service.FulfillmentGroupFieldServiceImpl;
 import org.broadleafcommerce.admin.web.rulebuilder.service.OrderFieldServiceImpl;
 import org.broadleafcommerce.admin.web.rulebuilder.service.OrderItemFieldServiceImpl;
+
 import org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator;
 import org.broadleafcommerce.openadmin.web.rulebuilder.DataDTOToMVELTranslator;
 import org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataDTO;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO;
 
+import junit.framework.TestCase;
+
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class DataDTOToMVELTranslatorTest extends TestCase {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private OrderItemFieldServiceImpl orderItemFieldService;
-    private CustomerFieldServiceImpl customerFieldService;
-    private OrderFieldServiceImpl orderFieldService;
-    private FulfillmentGroupFieldServiceImpl fulfillmentGroupFieldService;
+  private CustomerFieldServiceImpl         customerFieldService;
+  private FulfillmentGroupFieldServiceImpl fulfillmentGroupFieldService;
+  private OrderFieldServiceImpl            orderFieldService;
 
-    @Override
-    protected void setUp() {
-        orderItemFieldService = new OrderItemFieldServiceImpl();
-        orderItemFieldService.init();
-        customerFieldService = new CustomerFieldServiceImpl();
-        customerFieldService.init();
-        orderFieldService = new OrderFieldServiceImpl();
-        orderFieldService.init();
-        fulfillmentGroupFieldService = new FulfillmentGroupFieldServiceImpl();
-        fulfillmentGroupFieldService.init();
-    }
+  private OrderItemFieldServiceImpl orderItemFieldService;
 
-    /**
-     * Tests the creation of an MVEL expression from a DataDTO
-     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
-     *
-     * Here's an example of a DataWrapper with a single DataDTO
-     *
-     * [{"id":"100",
-     *  "quantity":"1",
-     *  "groupOperator":"AND",
-     *  "groups":[
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"category.name",
-     *      "operator":"IEQUALS",
-     *      "value":"merchandise"}]
-     *  }]
-     */
-    public void testCreateMVEL() throws MVELTranslationException {
-        DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-        ExpressionDTO expressionDTO = new ExpressionDTO();
-        expressionDTO.setName("category.name");
-        expressionDTO.setOperator(BLCOperator.IEQUALS.name());
-        expressionDTO.setValue("merchandise");
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        String translated = translator.createMVEL("discreteOrderItem", expressionDTO, orderItemFieldService);
-        String mvel = "MvelHelper.toUpperCase(discreteOrderItem.?category.?name)==MvelHelper.toUpperCase(\"merchandise\")";
-        assert(mvel.equals(translated));
-    }
+  /**
+   * Tests the creation of an MVEL expression from a DataDTO.
+   *
+   * @throws  org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
+   *                                                                                    <p>Here's an example of a
+   *                                                                                    DataWrapper with a single
+   *                                                                                    DataDTO</p>
+   *
+   *                                                                                    <p>[{"id":"100", "quantity":"1",
+   *                                                                                    "groupOperator":"AND",
+   *                                                                                    "groups":[ {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"category.name",
+   *                                                                                    "operator":"IEQUALS",
+   *                                                                                    "value":"merchandise" }] }]</p>
+   */
+  public void testCreateMVEL() throws MVELTranslationException {
+    DataDTOToMVELTranslator translator    = new DataDTOToMVELTranslator();
+    ExpressionDTO           expressionDTO = new ExpressionDTO();
+    expressionDTO.setName("category.name");
+    expressionDTO.setOperator(BLCOperator.IEQUALS.name());
+    expressionDTO.setValue("merchandise");
 
-    /**
-     * Tests the creation of a Customer Qualification MVEL expression from a DataDTO
-     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
-     *
-     * [{"id":null,
-     *  "quantity":null,
-     *  "groupOperator":"AND",
-     *  "groups":[
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"emailAddress",
-     *      "operator":"NOT_EQUAL_FIELD",
-     *      "value":"username"},
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"deactivated",
-     *      "operator":"EQUALS",
-     *      "value":"true"}]
-     *  }]
-     */
-    public void testCustomerQualificationMVEL() throws MVELTranslationException {
-        DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-        DataDTO dataDTO = new DataDTO();
-        dataDTO.setGroupOperator(BLCOperator.AND.name());
+    String translated = translator.createMVEL("discreteOrderItem", expressionDTO, orderItemFieldService);
+    String mvel       =
+      "MvelHelper.toUpperCase(discreteOrderItem.?category.?name)==MvelHelper.toUpperCase(\"merchandise\")";
+    assert (mvel.equals(translated));
+  }
 
-        //not currently supported
-//        ExpressionDTO e1 = new ExpressionDTO();
-//        e1.setName("emailAddress");
-//        e1.setOperator(BLCOperator.NOT_EQUAL_FIELD.name());
-//        e1.setValue("username");
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        ExpressionDTO e2 = new ExpressionDTO();
-        e2.setName("deactivated");
-        e2.setOperator(BLCOperator.EQUALS.name());
-        e2.setValue("true");
+  /**
+   * Tests the creation of a Customer Qualification MVEL expression from a DataDTO.
+   *
+   * @throws  org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
+   *                                                                                    <p>[{"id":null, "quantity":null,
+   *                                                                                    "groupOperator":"AND",
+   *                                                                                    "groups":[ {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"emailAddress",
+   *                                                                                    "operator":"NOT_EQUAL_FIELD",
+   *                                                                                    "value":"username" },
+   *                                                                                    {"id":null, "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"deactivated",
+   *                                                                                    "operator":"EQUALS",
+   *                                                                                    "value":"true" }] }]</p>
+   */
+  public void testCustomerQualificationMVEL() throws MVELTranslationException {
+    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
+    DataDTO                 dataDTO    = new DataDTO();
+    dataDTO.setGroupOperator(BLCOperator.AND.name());
 
-        //dataDTO.getGroups().add(e1);
-        dataDTO.getGroups().add(e2);
+    // not currently supported
+// ExpressionDTO e1 = new ExpressionDTO();
+// e1.setName("emailAddress");
+// e1.setOperator(BLCOperator.NOT_EQUAL_FIELD.name());
+// e1.setValue("username");
 
-        String translated = translator.createMVEL("customer", dataDTO, customerFieldService);
-        String mvel = "customer.?deactivated==true";
-        assert (mvel.equals(translated));
-    }
+    ExpressionDTO e2 = new ExpressionDTO();
+    e2.setName("deactivated");
+    e2.setOperator(BLCOperator.EQUALS.name());
+    e2.setValue("true");
 
-    /**
-     * Tests the creation of an Order Qualification MVEL expression from a DataDTO
-     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
-     *
-     * [{"id":null,
-     *  "quantity":null,
-     *  "groupOperator":"AND",
-     *  "groups":[
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"subTotal",
-     *      "operator":"GREATER_OR_EQUAL",
-     *      "value":"100"},
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":"OR",
-     *      "groups":[
-     *          {"id":null,
-     *          "quantity":null,
-     *          "groupOperator":null,
-     *          "groups":null,
-     *          "name":"currency.defaultFlag",
-     *          "operator":"EQUALS",
-     *          "value":"true"},
-     *          {"id":null,
-     *          "quantity":null,
-     *          "groupOperator":"null",
-     *          "groups":null,
-     *          "name":"locale.localeCode",
-     *          "operator":"EQUALS",
-     *          "value":"my"}]
-     *      }]
-     *  }]
-     */
-    public void testOrderQualificationMVEL() throws MVELTranslationException {
-        DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-        DataDTO dataDTO = new DataDTO();
-        dataDTO.setGroupOperator(BLCOperator.AND.name());
+    // dataDTO.getGroups().add(e1);
+    dataDTO.getGroups().add(e2);
 
-        ExpressionDTO expressionDTO = new ExpressionDTO();
-        expressionDTO.setName("subTotal");
-        expressionDTO.setOperator(BLCOperator.GREATER_OR_EQUAL.name());
-        expressionDTO.setValue("100");
-        dataDTO.getGroups().add(expressionDTO);
+    String translated = translator.createMVEL("customer", dataDTO, customerFieldService);
+    String mvel       = "customer.?deactivated==true";
+    assert (mvel.equals(translated));
+  }
 
-        DataDTO d1 = new DataDTO();
-        d1.setGroupOperator(BLCOperator.OR.name());
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        ExpressionDTO e1 = new ExpressionDTO();
-        e1.setName("currency.defaultFlag");
-        e1.setOperator(BLCOperator.EQUALS.name());
-        e1.setValue("true");
+  /**
+   * Tests the creation of a Fulfillment Group Qualification MVEL expression from a DataDTO.
+   *
+   * @throws  org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
+   *                                                                                    <p>[{"id":null, "quantity":null,
+   *                                                                                    "groupOperator":"AND",
+   *                                                                                    "groups":[ {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"address.state.name",
+   *                                                                                    "operator":"EQUALS",
+   *                                                                                    "value":"Texas" }, {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"retailShippingPrice",
+   *                                                                                    "operator":"BETWEEN_INCLUSIVE",
+   *                                                                                    "start":"99", "end":"199" }] }]
+   *                                                                                    </p>
+   */
+  public void testFulfillmentQualificationMVEL() throws MVELTranslationException {
+    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
+    DataDTO                 dataDTO    = new DataDTO();
+    dataDTO.setGroupOperator(BLCOperator.AND.name());
 
-        ExpressionDTO e2 = new ExpressionDTO();
-        e2.setName("locale.localeCode");
-        e2.setOperator(BLCOperator.EQUALS.name());
-        e2.setValue("my");
+    ExpressionDTO e1 = new ExpressionDTO();
+    e1.setName("address.state.name");
+    e1.setOperator(BLCOperator.EQUALS.name());
+    e1.setValue("Texas");
 
-        d1.getGroups().add(e1);
-        d1.getGroups().add(e2);
+    ExpressionDTO e2 = new ExpressionDTO();
+    e2.setName("retailFulfillmentPrice");
+    e2.setOperator(BLCOperator.BETWEEN_INCLUSIVE.name());
+    e2.setStart("99");
+    e2.setEnd("199");
 
-        dataDTO.getGroups().add(d1);
+    dataDTO.getGroups().add(e1);
+    dataDTO.getGroups().add(e2);
 
-        String translated = translator.createMVEL("order", dataDTO, orderFieldService);
-        String mvel = "order.?subTotal.getAmount()>=100&&(order.?currency.?defaultFlag==true||order.?locale.?localeCode==\"my\")";
-        assert (mvel.equals(translated));
-    }
+    String translated = translator.createMVEL("fulfillmentGroup", dataDTO, fulfillmentGroupFieldService);
+    String mvel       =
+      "fulfillmentGroup.?address.?state.?name==\"Texas\"&&(fulfillmentGroup.?retailFulfillmentPrice.getAmount()>=99&&fulfillmentGroup.?retailFulfillmentPrice.getAmount()<=199)";
+    assert (mvel.equals(translated));
+  }
 
-    /**
-     * Tests the creation of an Item Qualification MVEL expression from a DataDTO
-     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
-     *
-     * [{"id":100,
-     *  "quantity":1,
-     *  "groupOperator":"AND",
-     *  "groups":[
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"category.name",
-     *      "operator":"EQUALS",
-     *      "value":"test category"
-     *      }]
-     *  },
-     *  {"id":"200",
-     *  "quantity":2,
-     *  "groupOperator":"NOT",
-     *  "groups":[
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"product.manufacturer",
-     *      "operator":"EQUALS",
-     *      "value":"test manufacturer"},
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"product.model",
-     *      "operator":"EQUALS",
-     *      "value":"test model"
-     *      }]
-     *  }]
-     */
-    public void testItemQualificationMVEL() throws MVELTranslationException {
-        DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        DataDTO d1 = new DataDTO();
-        d1.setQuantity(1);
-        d1.setGroupOperator(BLCOperator.AND.name());
-        ExpressionDTO d1e1 = new ExpressionDTO();
-        d1e1.setName("category.name");
-        d1e1.setOperator(BLCOperator.EQUALS.name());
-        d1e1.setValue("test category");
-        d1.getGroups().add(d1e1);
+  /**
+   * Tests the creation of an Item Qualification MVEL expression from a DataDTO.
+   *
+   * @throws  org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
+   *                                                                                    <p>[{"id":100, "quantity":1,
+   *                                                                                    "groupOperator":"AND",
+   *                                                                                    "groups":[ {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"category.name",
+   *                                                                                    "operator":"EQUALS",
+   *                                                                                    "value":"test category" }] },
+   *                                                                                    {"id":"200", "quantity":2,
+   *                                                                                    "groupOperator":"NOT",
+   *                                                                                    "groups":[ {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"product.manufacturer",
+   *                                                                                    "operator":"EQUALS",
+   *                                                                                    "value":"test manufacturer" },
+   *                                                                                    {"id":null, "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"product.model",
+   *                                                                                    "operator":"EQUALS",
+   *                                                                                    "value":"test model" }] }]</p>
+   */
+  public void testItemQualificationMVEL() throws MVELTranslationException {
+    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
 
-        String d1Translated = translator.createMVEL("discreteOrderItem", d1, orderItemFieldService);
-        String d1Mvel = "discreteOrderItem.?category.?name==\"test category\"";
-        assert(d1Mvel.equals(d1Translated));
+    DataDTO d1 = new DataDTO();
+    d1.setQuantity(1);
+    d1.setGroupOperator(BLCOperator.AND.name());
 
-        DataDTO d2 = new DataDTO();
-        d2.setQuantity(2);
-        d2.setGroupOperator(BLCOperator.NOT.name());
-        ExpressionDTO d2e1 = new ExpressionDTO();
-        d2e1.setName("product.manufacturer");
-        d2e1.setOperator(BLCOperator.EQUALS.name());
-        d2e1.setValue("test manufacturer");
-        ExpressionDTO d2e2 = new ExpressionDTO();
-        d2e2.setName("product.model");
-        d2e2.setOperator(BLCOperator.EQUALS.name());
-        d2e2.setValue("test model");
-        d2.getGroups().add(d2e1);
-        d2.getGroups().add(d2e2);
+    ExpressionDTO d1e1 = new ExpressionDTO();
+    d1e1.setName("category.name");
+    d1e1.setOperator(BLCOperator.EQUALS.name());
+    d1e1.setValue("test category");
+    d1.getGroups().add(d1e1);
 
-        String d2Translated = translator.createMVEL("discreteOrderItem", d2, orderItemFieldService);
-        String d2Mvel = "!(discreteOrderItem.?product.?manufacturer==\"test manufacturer\"&&discreteOrderItem.?product.?model==\"test model\")";
-        assert (d2Mvel.equals(d2Translated));
+    String d1Translated = translator.createMVEL("discreteOrderItem", d1, orderItemFieldService);
+    String d1Mvel       = "discreteOrderItem.?category.?name==\"test category\"";
+    assert (d1Mvel.equals(d1Translated));
 
-    }
+    DataDTO d2 = new DataDTO();
+    d2.setQuantity(2);
+    d2.setGroupOperator(BLCOperator.NOT.name());
 
-    /**
-     * Tests the creation of a Fulfillment Group Qualification MVEL expression from a DataDTO
-     * @throws org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
-     *
-     * [{"id":null,
-     *  "quantity":null,
-     *  "groupOperator":"AND",
-     *  "groups":[
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"address.state.name",
-     *      "operator":"EQUALS",
-     *      "value":"Texas"},
-     *      {"id":null,
-     *      "quantity":null,
-     *      "groupOperator":null,
-     *      "groups":null,
-     *      "name":"retailShippingPrice",
-     *      "operator":"BETWEEN_INCLUSIVE",
-     *      "start":"99",
-     *      "end":"199"}]
-     *  }]
-     */
-    public void testFulfillmentQualificationMVEL() throws MVELTranslationException {
-        DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
-        DataDTO dataDTO = new DataDTO();
-        dataDTO.setGroupOperator(BLCOperator.AND.name());
+    ExpressionDTO d2e1 = new ExpressionDTO();
+    d2e1.setName("product.manufacturer");
+    d2e1.setOperator(BLCOperator.EQUALS.name());
+    d2e1.setValue("test manufacturer");
 
-        ExpressionDTO e1 = new ExpressionDTO();
-        e1.setName("address.state.name");
-        e1.setOperator(BLCOperator.EQUALS.name());
-        e1.setValue("Texas");
+    ExpressionDTO d2e2 = new ExpressionDTO();
+    d2e2.setName("product.model");
+    d2e2.setOperator(BLCOperator.EQUALS.name());
+    d2e2.setValue("test model");
+    d2.getGroups().add(d2e1);
+    d2.getGroups().add(d2e2);
 
-        ExpressionDTO e2 = new ExpressionDTO();
-        e2.setName("retailFulfillmentPrice");
-        e2.setOperator(BLCOperator.BETWEEN_INCLUSIVE.name());
-        e2.setStart("99");
-        e2.setEnd("199");
+    String d2Translated = translator.createMVEL("discreteOrderItem", d2, orderItemFieldService);
+    String d2Mvel       =
+      "!(discreteOrderItem.?product.?manufacturer==\"test manufacturer\"&&discreteOrderItem.?product.?model==\"test model\")";
+    assert (d2Mvel.equals(d2Translated));
 
-        dataDTO.getGroups().add(e1);
-        dataDTO.getGroups().add(e2);
+  } // end method testItemQualificationMVEL
 
-        String translated = translator.createMVEL("fulfillmentGroup", dataDTO, fulfillmentGroupFieldService);
-        String mvel = "fulfillmentGroup.?address.?state.?name==\"Texas\"&&(fulfillmentGroup.?retailFulfillmentPrice.getAmount()>=99&&fulfillmentGroup.?retailFulfillmentPrice.getAmount()<=199)";
-        assert (mvel.equals(translated));
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Tests the creation of an Order Qualification MVEL expression from a DataDTO.
+   *
+   * @throws  org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException
+   *                                                                                    <p>[{"id":null, "quantity":null,
+   *                                                                                    "groupOperator":"AND",
+   *                                                                                    "groups":[ {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"subTotal",
+   *                                                                                    "operator":"GREATER_OR_EQUAL",
+   *                                                                                    "value":"100" }, {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":"OR", "groups":[
+   *                                                                                    {"id":null, "quantity":null,
+   *                                                                                    "groupOperator":null,
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"currency.defaultFlag",
+   *                                                                                    "operator":"EQUALS",
+   *                                                                                    "value":"true" }, {"id":null,
+   *                                                                                    "quantity":null,
+   *                                                                                    "groupOperator":"null",
+   *                                                                                    "groups":null,
+   *                                                                                    "name":"locale.localeCode",
+   *                                                                                    "operator":"EQUALS",
+   *                                                                                    "value":"my" }] }] }]</p>
+   */
+  public void testOrderQualificationMVEL() throws MVELTranslationException {
+    DataDTOToMVELTranslator translator = new DataDTOToMVELTranslator();
+    DataDTO                 dataDTO    = new DataDTO();
+    dataDTO.setGroupOperator(BLCOperator.AND.name());
+
+    ExpressionDTO expressionDTO = new ExpressionDTO();
+    expressionDTO.setName("subTotal");
+    expressionDTO.setOperator(BLCOperator.GREATER_OR_EQUAL.name());
+    expressionDTO.setValue("100");
+    dataDTO.getGroups().add(expressionDTO);
+
+    DataDTO d1 = new DataDTO();
+    d1.setGroupOperator(BLCOperator.OR.name());
+
+    ExpressionDTO e1 = new ExpressionDTO();
+    e1.setName("currency.defaultFlag");
+    e1.setOperator(BLCOperator.EQUALS.name());
+    e1.setValue("true");
+
+    ExpressionDTO e2 = new ExpressionDTO();
+    e2.setName("locale.localeCode");
+    e2.setOperator(BLCOperator.EQUALS.name());
+    e2.setValue("my");
+
+    d1.getGroups().add(e1);
+    d1.getGroups().add(e2);
+
+    dataDTO.getGroups().add(d1);
+
+    String translated = translator.createMVEL("order", dataDTO, orderFieldService);
+    String mvel       =
+      "order.?subTotal.getAmount()>=100&&(order.?currency.?defaultFlag==true||order.?locale.?localeCode==\"my\")";
+    assert (mvel.equals(translated));
+  } // end method testOrderQualificationMVEL
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  junit.framework.TestCase#setUp()
+   */
+  @Override protected void setUp() {
+    orderItemFieldService = new OrderItemFieldServiceImpl();
+    orderItemFieldService.init();
+    customerFieldService = new CustomerFieldServiceImpl();
+    customerFieldService.init();
+    orderFieldService = new OrderFieldServiceImpl();
+    orderFieldService.init();
+    fulfillmentGroupFieldService = new FulfillmentGroupFieldServiceImpl();
+    fulfillmentGroupFieldService.init();
+  }
+} // end class DataDTOToMVELTranslatorTest

@@ -16,28 +16,41 @@
 
 package org.broadleafcommerce.core.web;
 
+import java.util.Locale;
+
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
-import java.util.Locale;
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class WrappingViewResolver implements ViewResolver {
-    
-    private View view;
-    
-    public WrappingViewResolver(View view) {
-        this.view = view;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    /* (non-Javadoc)
-     * @see org.springframework.web.servlet.ViewResolver#resolveViewName(java.lang.String, java.util.Locale)
-     */
-    public View resolveViewName(String arg0, Locale arg1) throws Exception {
-        return view;
-    }
+  private View view;
 
-}
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new WrappingViewResolver object.
+   *
+   * @param  view  DOCUMENT ME!
+   */
+  public WrappingViewResolver(View view) {
+    this.view = view;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /* (non-Javadoc)
+   * @see org.springframework.web.servlet.ViewResolver#resolveViewName(java.lang.String, java.util.Locale)
+   */
+  @Override public View resolveViewName(String arg0, Locale arg1) throws Exception {
+    return view;
+  }
+
+} // end class WrappingViewResolver

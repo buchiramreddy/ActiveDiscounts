@@ -16,24 +16,96 @@
 
 package org.broadleafcommerce.core.rating.domain;
 
-import org.broadleafcommerce.core.rating.service.type.ReviewStatusType;
-import org.broadleafcommerce.profile.core.domain.Customer;
-
 import java.util.Date;
 import java.util.List;
 
+import org.broadleafcommerce.core.rating.service.type.ReviewStatusType;
+
+import org.broadleafcommerce.profile.core.domain.Customer;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ReviewDetail {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    Long getId();
-    Customer getCustomer();
-    String getReviewText();
-    void setReviewText(String reviewText);
-    Date getReviewSubmittedDate();
-    Integer helpfulCount();
-    Integer notHelpfulCount();
-    ReviewStatusType getStatus();
-    RatingSummary getRatingSummary();
-    RatingDetail getRatingDetail();
-    List<ReviewFeedback> getReviewFeedback();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer getCustomer();
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getReviewText();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  reviewText  DOCUMENT ME!
+   */
+  void setReviewText(String reviewText);
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Date getReviewSubmittedDate();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer helpfulCount();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer notHelpfulCount();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  ReviewStatusType getStatus();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RatingSummary getRatingSummary();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  RatingDetail getRatingDetail();
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<ReviewFeedback> getReviewFeedback();
+
+} // end interface ReviewDetail

@@ -16,45 +16,48 @@
 
 package org.broadleafcommerce.cms.structure.domain;
 
-import org.broadleafcommerce.common.rule.QuantityBasedRule;
-
 import javax.annotation.Nonnull;
 
+import org.broadleafcommerce.common.rule.QuantityBasedRule;
+
+
 /**
- * Implementations of this interface contain item rule data that is used for targeting
- * <code>StructuredContent</code> items.
+ * Implementations of this interface contain item rule data that is used for targeting <code>StructuredContent</code>
+ * items.<br>
  * <br>
- * <br>
- * For example, a <code>StructuredContent</code> item could be setup to only show to user's
- * who have a particular product in their cart.
+ * For example, a <code>StructuredContent</code> item could be setup to only show to user's who have a particular
+ * product in their cart.
  *
- * @see org.broadleafcommerce.core.order.service.StructuredContentCartRuleProcessor
- * @author bpolster
+ * @see      org.broadleafcommerce.core.order.service.StructuredContentCartRuleProcessor
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 public interface StructuredContentItemCriteria extends QuantityBasedRule {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Returns the parent <code>StructuredContent</code> item to which this
-     * field belongs.
-     *
-     * @return
-     */
-    @Nonnull
-    public StructuredContent getStructuredContent();
+  /**
+   * Builds a copy of this item. Used by the content management system when an item is edited.
+   *
+   * @return  a copy of this item
+   */
+  @Nonnull StructuredContentItemCriteria cloneEntity();
 
-    /**
-     * Sets the parent <code>StructuredContent</code> item.
-     * @param structuredContent
-     */
-    public void setStructuredContent(@Nonnull StructuredContent structuredContent);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Builds a copy of this item.   Used by the content management system when an
-     * item is edited.
-     *
-     * @return a copy of this item
-     */
-    @Nonnull
-    public StructuredContentItemCriteria cloneEntity();
-    
-}
+  /**
+   * Returns the parent <code>StructuredContent</code> item to which this field belongs.
+   *
+   * @return  the parent <code>StructuredContent</code> item to which this field belongs.
+   */
+  @Nonnull StructuredContent getStructuredContent();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the parent <code>StructuredContent</code> item.
+   *
+   * @param  structuredContent  DOCUMENT ME!
+   */
+  void setStructuredContent(@Nonnull StructuredContent structuredContent);
+
+} // end interface StructuredContentItemCriteria

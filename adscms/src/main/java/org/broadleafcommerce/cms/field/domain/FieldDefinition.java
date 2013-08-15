@@ -16,73 +16,286 @@
 
 package org.broadleafcommerce.cms.field.domain;
 
+import java.io.Serializable;
+
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 
-import java.io.Serializable;
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface FieldDefinition extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getAllowMultiples();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getColumnWidth();
 
-    public void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public SupportedFieldType getFieldType();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FieldEnumeration getFieldEnumeration();
 
-    public void setFieldType(SupportedFieldType fieldType);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getSecurityLevel();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FieldGroup getFieldGroup();
 
-    public void setSecurityLevel(String securityLevel);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getHiddenFlag();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int getFieldOrder();
 
-    public void setHiddenFlag(Boolean hiddenFlag);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getValidationRegEx();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  SupportedFieldType getFieldType();
 
-    public void setValidationRegEx(String validationRegEx);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Integer getMaxLength();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getFriendlyName();
 
-    public void setMaxLength(Integer maxLength);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getColumnWidth();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getHiddenFlag();
 
-    public void setColumnWidth(String columnWidth);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getTextAreaFlag();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setTextAreaFlag(Boolean textAreaFlag);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public FieldEnumeration getFieldEnumeration();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getMaxLength();
 
-    public void setFieldEnumeration(FieldEnumeration fieldEnumeration);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getAllowMultiples();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public void setAllowMultiples(Boolean allowMultiples);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getFriendlyName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getSecurityLevel();
 
-    public void setFriendlyName(String friendlyName);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getValidationErrorMesageKey();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getTextAreaFlag();
 
-    public void setValidationErrorMesageKey(String validationErrorMesageKey);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public FieldGroup getFieldGroup();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getValidationErrorMesageKey();
 
-    public void setFieldGroup(FieldGroup fieldGroup);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public int getFieldOrder();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getValidationRegEx();
 
-    public void setFieldOrder(int fieldOrder);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  allowMultiples  DOCUMENT ME!
+   */
+  void setAllowMultiples(Boolean allowMultiples);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  columnWidth  DOCUMENT ME!
+   */
+  void setColumnWidth(String columnWidth);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldEnumeration  DOCUMENT ME!
+   */
+  void setFieldEnumeration(FieldEnumeration fieldEnumeration);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldGroup  DOCUMENT ME!
+   */
+  void setFieldGroup(FieldGroup fieldGroup);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldOrder  DOCUMENT ME!
+   */
+  void setFieldOrder(int fieldOrder);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldType  DOCUMENT ME!
+   */
+  void setFieldType(SupportedFieldType fieldType);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  friendlyName  DOCUMENT ME!
+   */
+  void setFriendlyName(String friendlyName);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  hiddenFlag  DOCUMENT ME!
+   */
+  void setHiddenFlag(Boolean hiddenFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  maxLength  DOCUMENT ME!
+   */
+  void setMaxLength(Integer maxLength);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  securityLevel  DOCUMENT ME!
+   */
+  void setSecurityLevel(String securityLevel);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  textAreaFlag  DOCUMENT ME!
+   */
+  void setTextAreaFlag(Boolean textAreaFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  validationErrorMesageKey  DOCUMENT ME!
+   */
+  void setValidationErrorMesageKey(String validationErrorMesageKey);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  validationRegEx  DOCUMENT ME!
+   */
+  void setValidationRegEx(String validationRegEx);
+
+} // end interface FieldDefinition

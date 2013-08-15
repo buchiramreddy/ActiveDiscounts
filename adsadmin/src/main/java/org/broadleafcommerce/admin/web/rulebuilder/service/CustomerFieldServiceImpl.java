@@ -17,89 +17,63 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service;
 
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.server.service.type.RuleIdentifier;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
 import org.broadleafcommerce.openadmin.web.rulebuilder.service.AbstractRuleBuilderFieldService;
+
 import org.springframework.stereotype.Service;
 
+
 /**
- * An implementation of a RuleBuilderFieldService
- * that constructs metadata necessary
- * to build the supported fields for a Customer entity
+ * An implementation of a RuleBuilderFieldService that constructs metadata necessary to build the supported fields for a
+ * Customer entity.
  *
- * @author Elbert Bautista (elbertbautista)
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 @Service("blCustomerFieldService")
 public class CustomerFieldServiceImpl extends AbstractRuleBuilderFieldService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void init() {
-        fields.add(new FieldData.Builder()
-                .label("rule_customerDeactivated")
-                .name("deactivated")
-                .operators("blcOperators_Boolean")
-                .options("[]")
-                .type(SupportedFieldType.BOOLEAN)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_customerId")
-                .name("id")
-                .operators("blcOperators_Numeric")
-                .options("[]")
-                .type(SupportedFieldType.ID)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_customerReceiveEmail")
-                .name("receiveEmail")
-                .operators("blcOperators_Boolean")
-                .options("[]")
-                .type(SupportedFieldType.BOOLEAN)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_customerRegistered")
-                .name("registered")
-                .operators("blcOperators_Boolean")
-                .options("[]")
-                .type(SupportedFieldType.BOOLEAN)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_customerUserName")
-                .name("username")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_customerEmailAddress")
-                .name("emailAddress")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_customerFirstName")
-                .name("firstName")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_customerLastName")
-                .name("lastName")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.AbstractRuleBuilderFieldService#getDtoClassName()
+   */
+  @Override public String getDtoClassName() {
+    return "org.broadleafcommerce.profile.core.domain.CustomerImpl";
+  }
 
-    @Override
-    public String getName() {
-        return RuleIdentifier.CUSTOMER;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getDtoClassName() {
-        return "org.broadleafcommerce.profile.core.domain.CustomerImpl";
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService#getName()
+   */
+  @Override public String getName() {
+    return RuleIdentifier.CUSTOMER;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.AbstractRuleBuilderFieldService#init()
+   */
+  @Override public void init() {
+    fields.add(new FieldData.Builder().label("rule_customerDeactivated").name("deactivated").operators(
+        "blcOperators_Boolean").options("[]").type(SupportedFieldType.BOOLEAN).build());
+    fields.add(new FieldData.Builder().label("rule_customerId").name("id").operators("blcOperators_Numeric").options(
+        "[]").type(SupportedFieldType.ID).build());
+    fields.add(new FieldData.Builder().label("rule_customerReceiveEmail").name("receiveEmail").operators(
+        "blcOperators_Boolean").options("[]").type(SupportedFieldType.BOOLEAN).build());
+    fields.add(new FieldData.Builder().label("rule_customerRegistered").name("registered").operators(
+        "blcOperators_Boolean").options("[]").type(SupportedFieldType.BOOLEAN).build());
+    fields.add(new FieldData.Builder().label("rule_customerUserName").name("username").operators("blcOperators_Text")
+      .options("[]").type(SupportedFieldType.STRING).build());
+    fields.add(new FieldData.Builder().label("rule_customerEmailAddress").name("emailAddress").operators(
+        "blcOperators_Text").options("[]").type(SupportedFieldType.STRING).build());
+    fields.add(new FieldData.Builder().label("rule_customerFirstName").name("firstName").operators(
+        "blcOperators_Text").options("[]").type(SupportedFieldType.STRING).build());
+    fields.add(new FieldData.Builder().label("rule_customerLastName").name("lastName").operators("blcOperators_Text")
+      .options("[]").type(SupportedFieldType.STRING).build());
+  }
+
+} // end class CustomerFieldServiceImpl

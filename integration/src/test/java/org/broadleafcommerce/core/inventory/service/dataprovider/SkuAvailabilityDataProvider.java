@@ -16,54 +16,97 @@
 
 package org.broadleafcommerce.core.inventory.service.dataprovider;
 
+import java.util.Date;
+
 import org.broadleafcommerce.common.time.SystemTime;
+
 import org.broadleafcommerce.core.inventory.domain.SkuAvailability;
 import org.broadleafcommerce.core.inventory.domain.SkuAvailabilityImpl;
 import org.broadleafcommerce.core.inventory.service.type.AvailabilityStatusType;
+
 import org.testng.annotations.DataProvider;
 
-import java.util.Date;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class SkuAvailabilityDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @DataProvider(name = "setupSkuAvailability")
-    public static Object[][] createSkuAvailabilityRecords() {
-        Object[][] paramArray = new Object[10][1];
-        Date AVAILABLE_TODAY = SystemTime.asDate();
-        Date AVAILABLE_NULL = null;
-        Long LOCATION_NULL = null;
-        Long LOCATION_ONE = 1L;
-        Long SKU_ID_1 = 1L;
-        Long SKU_ID_2 = 2L;
-        Long SKU_ID_3 = 3L;
-        Long SKU_ID_4 = 4L;
-        Long SKU_ID_5 = 5L;
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupSkuAvailability")
+  public static Object[][] createSkuAvailabilityRecords() {
+    Object[][] paramArray      = new Object[10][1];
+    Date       AVAILABLE_TODAY = SystemTime.asDate();
+    Date       AVAILABLE_NULL  = null;
+    Long       LOCATION_NULL   = null;
+    Long       LOCATION_ONE    = 1L;
+    Long       SKU_ID_1        = 1L;
+    Long       SKU_ID_2        = 2L;
+    Long       SKU_ID_3        = 3L;
+    Long       SKU_ID_4        = 4L;
+    Long       SKU_ID_5        = 5L;
 
-        long recordCount = 0;
+    long recordCount = 0;
 
-        paramArray[0][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_1, LOCATION_NULL, AVAILABLE_TODAY, "AVAILABLE", null, new Integer(1));
-        paramArray[1][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_1, LOCATION_ONE, AVAILABLE_TODAY, "AVAILABLE", null, new Integer(1));
-        paramArray[2][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_2, LOCATION_NULL, AVAILABLE_TODAY, null, new Integer(5), new Integer(1));
-        paramArray[3][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_2, LOCATION_ONE, AVAILABLE_TODAY, null, new Integer(5), new Integer(1));
-        paramArray[4][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_3, LOCATION_NULL, AVAILABLE_TODAY, null, new Integer(0), new Integer(1));
-        paramArray[5][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_3, LOCATION_ONE, AVAILABLE_TODAY, null, new Integer(0), new Integer(1));
-        paramArray[6][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_4, LOCATION_NULL, AVAILABLE_NULL, "BACKORDERED", new Integer(0), new Integer(1));
-        paramArray[7][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_4, LOCATION_ONE, AVAILABLE_NULL, "BACKORDERED", new Integer(0), new Integer(1));
-        paramArray[8][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_5, LOCATION_NULL, AVAILABLE_NULL, null, new Integer(5), null);
-        paramArray[9][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_5, LOCATION_ONE, AVAILABLE_NULL, null, new Integer(5), null);
+    paramArray[0][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_1, LOCATION_NULL, AVAILABLE_TODAY,
+        "AVAILABLE", null, new Integer(1));
+    paramArray[1][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_1, LOCATION_ONE, AVAILABLE_TODAY, "AVAILABLE",
+        null, new Integer(1));
+    paramArray[2][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_2, LOCATION_NULL, AVAILABLE_TODAY, null,
+        new Integer(5), new Integer(1));
+    paramArray[3][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_2, LOCATION_ONE, AVAILABLE_TODAY, null,
+        new Integer(5), new Integer(1));
+    paramArray[4][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_3, LOCATION_NULL, AVAILABLE_TODAY, null,
+        new Integer(0), new Integer(1));
+    paramArray[5][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_3, LOCATION_ONE, AVAILABLE_TODAY, null,
+        new Integer(0), new Integer(1));
+    paramArray[6][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_4, LOCATION_NULL, AVAILABLE_NULL,
+        "BACKORDERED", new Integer(0), new Integer(1));
+    paramArray[7][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_4, LOCATION_ONE, AVAILABLE_NULL,
+        "BACKORDERED", new Integer(0), new Integer(1));
+    paramArray[8][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_5, LOCATION_NULL, AVAILABLE_NULL, null,
+        new Integer(5), null);
+    paramArray[9][0] = createSkuForSkuIdAndLocation(recordCount++, SKU_ID_5, LOCATION_ONE, AVAILABLE_NULL, null,
+        new Integer(5), null);
 
-        return paramArray;
-    }
+    return paramArray;
+  } // end method createSkuAvailabilityRecords
 
-    public static SkuAvailability createSkuForSkuIdAndLocation(Long id, Long skuId, Long locationId, Date availabilityDate, String availStatus, Integer qoh, Integer reserveQuantity) {
-        SkuAvailability skuAvailability = new SkuAvailabilityImpl();
-        skuAvailability.setId(null);
-        skuAvailability.setSkuId(skuId);
-        skuAvailability.setLocationId(locationId);
-        skuAvailability.setAvailabilityDate(availabilityDate);
-        skuAvailability.setAvailabilityStatus(availStatus==null?null:AvailabilityStatusType.getInstance(availStatus));
-        skuAvailability.setQuantityOnHand(qoh);
-        skuAvailability.setReserveQuantity(reserveQuantity);
-        return skuAvailability;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   id                DOCUMENT ME!
+   * @param   skuId             DOCUMENT ME!
+   * @param   locationId        DOCUMENT ME!
+   * @param   availabilityDate  DOCUMENT ME!
+   * @param   availStatus       DOCUMENT ME!
+   * @param   qoh               DOCUMENT ME!
+   * @param   reserveQuantity   DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static SkuAvailability createSkuForSkuIdAndLocation(Long id, Long skuId, Long locationId,
+    Date availabilityDate, String availStatus, Integer qoh, Integer reserveQuantity) {
+    SkuAvailability skuAvailability = new SkuAvailabilityImpl();
+    skuAvailability.setId(null);
+    skuAvailability.setSkuId(skuId);
+    skuAvailability.setLocationId(locationId);
+    skuAvailability.setAvailabilityDate(availabilityDate);
+    skuAvailability.setAvailabilityStatus((availStatus == null) ? null
+                                                                : AvailabilityStatusType.getInstance(availStatus));
+    skuAvailability.setQuantityOnHand(qoh);
+    skuAvailability.setReserveQuantity(reserveQuantity);
+
+    return skuAvailability;
+  }
+} // end class SkuAvailabilityDataProvider

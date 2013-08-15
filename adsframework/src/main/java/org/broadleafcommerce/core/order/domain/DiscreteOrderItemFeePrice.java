@@ -16,32 +16,91 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.money.Money;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface DiscreteOrderItemFeePrice extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public abstract Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public abstract void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  DiscreteOrderItem getDiscreteOrderItem();
 
-    public DiscreteOrderItem getDiscreteOrderItem();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discreteOrderItem  DOCUMENT ME!
+   */
+  void setDiscreteOrderItem(DiscreteOrderItem discreteOrderItem);
 
-    public void setDiscreteOrderItem(DiscreteOrderItem discreteOrderItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getAmount();
 
-    public abstract Money getAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(Money amount);
 
-    public abstract void setAmount(Money amount);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public abstract String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
 
-    public abstract void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getReportingCode();
 
-    public abstract String getReportingCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  reportingCode  DOCUMENT ME!
+   */
+  void setReportingCode(String reportingCode);
 
-    public abstract void setReportingCode(String reportingCode);
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override DiscreteOrderItemFeePrice clone();
 
-    public DiscreteOrderItemFeePrice clone();
-
-}
+} // end interface DiscreteOrderItemFeePrice

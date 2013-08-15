@@ -16,18 +16,6 @@
 
 package org.broadleafcommerce.cms.structure.domain;
 
-import org.broadleafcommerce.cms.field.domain.FieldGroup;
-import org.broadleafcommerce.cms.field.domain.FieldGroupImpl;
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,71 +31,153 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.cms.field.domain.FieldGroup;
+import org.broadleafcommerce.cms.field.domain.FieldGroupImpl;
+
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.PopulateToOneFieldsEnum;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(
+  populateToOneFields = PopulateToOneFieldsEnum.TRUE,
+  friendlyName        = "StructuredContentFieldTemplateImpl_baseStructuredContentFieldTemplate"
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blCMSElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SC_FLD_TMPLT")
-@Cache(usage= CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blCMSElements")
-@AdminPresentationClass(populateToOneFields = PopulateToOneFieldsEnum.TRUE, friendlyName = "StructuredContentFieldTemplateImpl_baseStructuredContentFieldTemplate")
 public class StructuredContentFieldTemplateImpl implements StructuredContentFieldTemplate {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "StructuredContentFieldTemplateId")
-    @GenericGenerator(
-        name="StructuredContentFieldTemplateId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="StructuredContentFieldTemplateImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplateImpl")
-        }
-    )
-    @Column(name = "SC_FLD_TMPLT_ID")
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column (name = "NAME")
-    @AdminPresentation(friendlyName = "StructuredContentFieldTemplateImpl_Field_Template_Name", order = 1, gridOrder = 2, group = "StructuredContentFieldTemplateImpl_Details", prominent = true)
-    protected String name;
+  /** DOCUMENT ME! */
+  @BatchSize(size = 20)
+  @Cache(
+    usage  = CacheConcurrencyStrategy.READ_WRITE,
+    region = "blCMSElements"
+  )
+  @Cascade(value = { org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN })
+  @JoinTable(
+    name               = "BLC_SC_FLDGRP_XREF",
+    joinColumns        =
+      @JoinColumn(
+        name           = "SC_FLD_TMPLT_ID",
+        referencedColumnName = "SC_FLD_TMPLT_ID"
+      ),
+    inverseJoinColumns =
+      @JoinColumn(
+        name                 = "FLD_GROUP_ID",
+        referencedColumnName = "FLD_GROUP_ID"
+      )
+  )
+  @ManyToMany(
+    targetEntity = FieldGroupImpl.class,
+    cascade      = { CascadeType.ALL }
+  )
+  @OrderColumn(name = "GROUP_ORDER")
+  protected List<FieldGroup> fieldGroups;
 
-    @ManyToMany(targetEntity = FieldGroupImpl.class, cascade = {CascadeType.ALL})
-    @JoinTable(name = "BLC_SC_FLDGRP_XREF", joinColumns = @JoinColumn(name = "SC_FLD_TMPLT_ID", referencedColumnName = "SC_FLD_TMPLT_ID"), inverseJoinColumns = @JoinColumn(name = "FLD_GROUP_ID", referencedColumnName = "FLD_GROUP_ID"))
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL, org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blCMSElements")
-    @OrderColumn(name = "GROUP_ORDER")
-    @BatchSize(size = 20)
-    protected List<FieldGroup> fieldGroups;
-
-    @Override
-    public Long getId() {
-        return id;
+  /** DOCUMENT ME! */
+  @Column(name = "SC_FLD_TMPLT_ID")
+  @GeneratedValue(generator = "StructuredContentFieldTemplateId")
+  @GenericGenerator(
+    name       = "StructuredContentFieldTemplateId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "StructuredContentFieldTemplateImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplateImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "StructuredContentFieldTemplateImpl_Field_Template_Name",
+    order        = 1,
+    gridOrder    = 2,
+    group        = "StructuredContentFieldTemplateImpl_Details",
+    prominent    = true
+  )
+  @Column(name = "NAME")
+  protected String name;
 
-    @Override
-    public String getName() {
-        return name;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplate#getFieldGroups()
+   */
+  @Override public List<FieldGroup> getFieldGroups() {
+    return fieldGroups;
+  }
 
-    @Override
-    public List<FieldGroup> getFieldGroups() {
-        return fieldGroups;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setFieldGroups(List<FieldGroup> fieldGroups) {
-        this.fieldGroups = fieldGroups;
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplate#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplate#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplate#setFieldGroups(java.util.List)
+   */
+  @Override public void setFieldGroups(List<FieldGroup> fieldGroups) {
+    this.fieldGroups = fieldGroups;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplate#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.cms.structure.domain.StructuredContentFieldTemplate#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+} // end class StructuredContentFieldTemplateImpl

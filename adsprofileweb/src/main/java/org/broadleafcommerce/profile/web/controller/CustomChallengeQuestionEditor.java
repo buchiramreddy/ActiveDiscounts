@@ -16,32 +16,56 @@
 
 package org.broadleafcommerce.profile.web.controller;
 
+import java.beans.PropertyEditorSupport;
+
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
 import org.broadleafcommerce.profile.core.service.ChallengeQuestionService;
 
-import java.beans.PropertyEditorSupport;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CustomChallengeQuestionEditor extends PropertyEditorSupport {
-    
-    private ChallengeQuestionService challengeQuestionService;
-    
-    public CustomChallengeQuestionEditor(ChallengeQuestionService challengeQuestionService) {
-        this.challengeQuestionService = challengeQuestionService;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getAsText() {
-        ChallengeQuestion question = (ChallengeQuestion) getValue();
-        if (question == null) {
-            return null;
-        } else {
-            return question.getId().toString();
-        }
-    }
+  private ChallengeQuestionService challengeQuestionService;
 
-    @Override
-    public void setAsText(String text) throws IllegalArgumentException {
-        setValue(challengeQuestionService.readChallengeQuestionById((Long.parseLong(text))));
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * Creates a new CustomChallengeQuestionEditor object.
+   *
+   * @param  challengeQuestionService  DOCUMENT ME!
+   */
+  public CustomChallengeQuestionEditor(ChallengeQuestionService challengeQuestionService) {
+    this.challengeQuestionService = challengeQuestionService;
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.beans.PropertyEditorSupport#getAsText()
+   */
+  @Override public String getAsText() {
+    ChallengeQuestion question = (ChallengeQuestion) getValue();
+
+    if (question == null) {
+      return null;
+    } else {
+      return question.getId().toString();
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.beans.PropertyEditorSupport#setAsText(java.lang.String)
+   */
+  @Override public void setAsText(String text) throws IllegalArgumentException {
+    setValue(challengeQuestionService.readChallengeQuestionById((Long.parseLong(text))));
+  }
+
+} // end class CustomChallengeQuestionEditor

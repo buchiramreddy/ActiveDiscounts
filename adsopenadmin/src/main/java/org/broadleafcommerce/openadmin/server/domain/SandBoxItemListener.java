@@ -18,13 +18,40 @@ package org.broadleafcommerce.openadmin.server.domain;
 
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface SandBoxItemListener {
-    public void itemPromoted(SandBoxItem sandBoxItem, SandBox destinationSandBox);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void itemRejected(SandBoxItem sandBoxItem, SandBox destinationSandBox);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxItem         DOCUMENT ME!
+   * @param  destinationSandBox  DOCUMENT ME!
+   */
+  void itemPromoted(SandBoxItem sandBoxItem, SandBox destinationSandBox);
 
-    public void itemReverted(SandBoxItem sandBoxItem);
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxItem         DOCUMENT ME!
+   * @param  destinationSandBox  DOCUMENT ME!
+   */
+  void itemRejected(SandBoxItem sandBoxItem, SandBox destinationSandBox);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandBoxItem  DOCUMENT ME!
+   */
+  void itemReverted(SandBoxItem sandBoxItem);
+} // end interface SandBoxItemListener

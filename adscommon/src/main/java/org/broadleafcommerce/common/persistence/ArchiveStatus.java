@@ -16,28 +16,51 @@
 
 package org.broadleafcommerce.common.persistence;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
+
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
-@Embeddable
-public class ArchiveStatus implements Serializable {
+@Embeddable public class ArchiveStatus implements Serializable {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Column(name = "ARCHIVED")
-    @AdminPresentation(friendlyName = "archived", visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Character archived = 'N';
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "archived",
+    visibility   = VisibilityEnum.HIDDEN_ALL
+  )
+  @Column(name = "ARCHIVED")
+  protected Character archived = 'N';
 
-    public Character getArchived() {
-        return archived;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setArchived(Character archived) {
-        this.archived = archived;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Character getArchived() {
+    return archived;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  archived  DOCUMENT ME!
+   */
+  public void setArchived(Character archived) {
+    this.archived = archived;
+  }
+} // end class ArchiveStatus

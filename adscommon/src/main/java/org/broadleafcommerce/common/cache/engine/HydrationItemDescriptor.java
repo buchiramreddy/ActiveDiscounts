@@ -18,30 +18,61 @@ package org.broadleafcommerce.common.cache.engine;
 
 import java.lang.reflect.Method;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class HydrationItemDescriptor {
-    
-    private String factoryMethod;
-    private Method[] mutators;
-    
-    public String getFactoryMethod() {
-        return factoryMethod;
-    }
-    
-    public void setFactoryMethod(String factoryMethod) {
-        this.factoryMethod = factoryMethod;
-    }
-    
-    public Method[] getMutators() {
-        return mutators;
-    }
-    
-    public void setMutators(Method[] mutators) {
-        this.mutators = mutators;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-}
+  private String   factoryMethod;
+  private Method[] mutators;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFactoryMethod() {
+    return factoryMethod;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Method[] getMutators() {
+    return mutators;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  factoryMethod  DOCUMENT ME!
+   */
+  public void setFactoryMethod(String factoryMethod) {
+    this.factoryMethod = factoryMethod;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  mutators  DOCUMENT ME!
+   */
+  public void setMutators(Method[] mutators) {
+    this.mutators = mutators;
+  }
+
+} // end class HydrationItemDescriptor

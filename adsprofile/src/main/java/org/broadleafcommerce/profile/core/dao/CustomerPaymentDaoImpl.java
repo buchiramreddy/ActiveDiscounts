@@ -16,68 +16,111 @@
 
 package org.broadleafcommerce.profile.core.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.profile.core.domain.CustomerPayment;
-import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
 
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.profile.core.domain.CustomerPayment;
+import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
+
+import org.springframework.stereotype.Repository;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @Repository("blCustomerPaymentDao")
 public class CustomerPaymentDaoImpl implements CustomerPaymentDao {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @Resource(name = "blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Override
-    public List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId) {
-        Query query = em.createNamedQuery("BC_READ_CUSTOMER_PAYMENTS_BY_CUSTOMER_ID");
-        query.setParameter("customerId", customerId);
-        return query.getResultList();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerPaymentDao#create()
+   */
+  @Override public CustomerPayment create() {
+    return (CustomerPayment) entityConfiguration.createEntityInstance(CustomerPayment.class.getName());
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerPaymentDao#deleteCustomerPaymentById(java.lang.Long)
+   */
+  @Override public void deleteCustomerPaymentById(Long customerPaymentId) {
+    CustomerPayment customerPayment = readCustomerPaymentById(customerPaymentId);
+
+    if (customerPayment != null) {
+      em.remove(customerPayment);
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerPaymentDao#readCustomerPaymentById(java.lang.Long)
+   */
+  @Override public CustomerPayment readCustomerPaymentById(Long customerPaymentId) {
+    return (CustomerPayment) em.find(CustomerPaymentImpl.class, customerPaymentId);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerPaymentDao#readCustomerPaymentByToken(java.lang.String)
+   */
+  @Override public CustomerPayment readCustomerPaymentByToken(String token) {
+    Query query = em.createNamedQuery("BC_READ_CUSTOMER_PAYMENT_BY_TOKEN");
+    query.setParameter("token", token);
+
+    CustomerPayment payment = null;
+
+    try {
+      payment = (CustomerPayment) query.getSingleResult();
+    } catch (NoResultException e) {
+      // do nothing
     }
 
-    @Override
-    public CustomerPayment save(CustomerPayment customerPayment) {
-        return em.merge(customerPayment);
-    }
+    return payment;
+  }
 
-    @Override
-    public CustomerPayment readCustomerPaymentByToken(String token) {
-        Query query = em.createNamedQuery("BC_READ_CUSTOMER_PAYMENT_BY_TOKEN");
-        query.setParameter("token", token);
-        CustomerPayment payment = null;
-        try{
-            payment = (CustomerPayment) query.getSingleResult();
-        } catch (NoResultException e) {
-           //do nothing
-        }
-        return  payment;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public CustomerPayment readCustomerPaymentById(Long customerPaymentId) {
-        return (CustomerPayment) em.find(CustomerPaymentImpl.class, customerPaymentId);
-    }
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerPaymentDao#readCustomerPaymentsByCustomerId(java.lang.Long)
+   */
+  @Override public List<CustomerPayment> readCustomerPaymentsByCustomerId(Long customerId) {
+    Query query = em.createNamedQuery("BC_READ_CUSTOMER_PAYMENTS_BY_CUSTOMER_ID");
+    query.setParameter("customerId", customerId);
 
-    @Override
-    public void deleteCustomerPaymentById(Long customerPaymentId) {
-        CustomerPayment customerPayment = readCustomerPaymentById(customerPaymentId);
-        if (customerPayment != null) {
-            em.remove(customerPayment);
-        }
-    }
+    return query.getResultList();
+  }
 
-    @Override
-    public CustomerPayment create() {
-        return (CustomerPayment) entityConfiguration.createEntityInstance(CustomerPayment.class.getName());
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * @see  org.broadleafcommerce.profile.core.dao.CustomerPaymentDao#save(org.broadleafcommerce.profile.core.domain.CustomerPayment)
+   */
+  @Override public CustomerPayment save(CustomerPayment customerPayment) {
+    return em.merge(customerPayment);
+  }
+
+} // end class CustomerPaymentDaoImpl

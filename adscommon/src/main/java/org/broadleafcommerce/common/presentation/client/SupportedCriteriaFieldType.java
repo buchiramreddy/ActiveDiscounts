@@ -17,9 +17,13 @@
 package org.broadleafcommerce.common.presentation.client;
 
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public enum SupportedCriteriaFieldType {
-    RULE,
-    RULE_MAP
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  RULE, RULE_MAP
 }

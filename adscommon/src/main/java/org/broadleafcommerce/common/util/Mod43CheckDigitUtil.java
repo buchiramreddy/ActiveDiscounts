@@ -16,42 +16,81 @@
 
 package org.broadleafcommerce.common.util;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class Mod43CheckDigitUtil {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private final static String CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
+  private static final String CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
 
-    public static boolean isValidCheckedValue(String value) {
-        boolean valid = false;
-        if (value != null && !"".equals(value)) {
-            String code = value.substring(0, value.length() - 1);
-            char checkDigit = value.substring(value.length() - 1).charAt(0);
-            try {
-                if (generateCheckDigit(code) == checkDigit) {
-                    valid = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return valid;
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   data  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static char generateCheckDigit(String data) {
+    // MOD 43 check digit - take the acsii value of each digit, sum them up, divide by 43. the remainder is the check digit (in ascii)
+    int sum = 0;
+
+    for (int i = 0; i < data.length(); ++i) {
+      sum += CHARSET.indexOf(data.charAt(i));
     }
 
-    public static char generateCheckDigit(String data) {
-        // MOD 43 check digit - take the acsii value of each digit, sum them up, divide by 43. the remainder is the check digit (in ascii)
-        int sum = 0;
-        for (int i = 0; i < data.length(); ++i) {
-            sum += CHARSET.indexOf(data.charAt(i));
+    int remainder = sum % 43;
+
+    return CHARSET.charAt(remainder);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   value  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static boolean isValidCheckedValue(String value) {
+    boolean valid = false;
+
+    if ((value != null) && !"".equals(value)) {
+      String code       = value.substring(0, value.length() - 1);
+      char   checkDigit = value.substring(value.length() - 1).charAt(0);
+
+      try {
+        if (generateCheckDigit(code) == checkDigit) {
+          valid = true;
         }
-        int remainder = sum % 43;
-        return CHARSET.charAt(remainder);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
 
-    public static void main(String[] args) {
-        try {
-            System.out.println(generateCheckDigit("TEACH000012345"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(isValidCheckedValue("TEACH000012345B"));
+    return valid;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  args  DOCUMENT ME!
+   */
+  public static void main(String[] args) {
+    try {
+      System.out.println(generateCheckDigit("TEACH000012345"));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-}
+
+    System.out.println(isValidCheckedValue("TEACH000012345B"));
+  }
+} // end class Mod43CheckDigitUtil

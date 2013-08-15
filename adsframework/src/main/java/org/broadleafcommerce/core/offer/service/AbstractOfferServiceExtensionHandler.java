@@ -16,20 +16,28 @@
 
 package org.broadleafcommerce.core.offer.service;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.extension.AbstractExtensionHandler;
 import org.broadleafcommerce.core.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.offer.domain.Offer;
 
-import java.util.List;
-
 
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
-public class AbstractOfferServiceExtensionHandler extends AbstractExtensionHandler implements OfferServiceExtensionHandler {
-    
-    public ExtensionResultStatusType applyAdditionalFilters(List<Offer> offers) {
-        return ExtensionResultStatusType.NOT_HANDLED;
-    }
+public class AbstractOfferServiceExtensionHandler extends AbstractExtensionHandler
+  implements OfferServiceExtensionHandler {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.offer.service.OfferServiceExtensionHandler#applyAdditionalFilters(java.util.List)
+   */
+  @Override public ExtensionResultStatusType applyAdditionalFilters(List<Offer> offers) {
+    return ExtensionResultStatusType.NOT_HANDLED;
+  }
 
 }

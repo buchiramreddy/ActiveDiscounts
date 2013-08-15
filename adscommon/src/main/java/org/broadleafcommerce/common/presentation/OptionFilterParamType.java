@@ -17,8 +17,13 @@
 package org.broadleafcommerce.common.presentation;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public enum OptionFilterParamType {
-    BOOLEAN,STRING,INTEGER,LONG,DOUBLE,FLOAT,BIGDECIMAL
+  //~ Enum constants ---------------------------------------------------------------------------------------------------
+
+  BOOLEAN, STRING, INTEGER, LONG, DOUBLE, FLOAT, BIGDECIMAL
 }

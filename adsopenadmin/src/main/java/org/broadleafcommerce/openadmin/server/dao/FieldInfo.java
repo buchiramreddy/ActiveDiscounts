@@ -18,63 +18,163 @@ package org.broadleafcommerce.openadmin.server.dao;
 
 import java.lang.reflect.Type;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class FieldInfo {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String name;
-    protected Type genericType;
-    protected String manyToManyMappedBy;
-    protected String manyToManyTargetEntity;
-    protected String oneToManyMappedBy;
-    protected String oneToManyTargetEntity;
+  /** DOCUMENT ME! */
+  protected Type   genericType;
 
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  protected String manyToManyMappedBy;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  /** DOCUMENT ME! */
+  protected String manyToManyTargetEntity;
 
-    public Type getGenericType() {
-        return genericType;
-    }
+  /** DOCUMENT ME! */
+  protected String name;
 
-    public void setGenericType(Type genericType) {
-        this.genericType = genericType;
-    }
+  /** DOCUMENT ME! */
+  protected String oneToManyMappedBy;
 
-    public String getManyToManyMappedBy() {
-        return manyToManyMappedBy;
-    }
+  /** DOCUMENT ME! */
+  protected String oneToManyTargetEntity;
 
-    public void setManyToManyMappedBy(String manyToManyMappedBy) {
-        this.manyToManyMappedBy = manyToManyMappedBy;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getManyToManyTargetEntity() {
-        return manyToManyTargetEntity;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Type getGenericType() {
+    return genericType;
+  }
 
-    public void setManyToManyTargetEntity(String manyToManyTargetEntity) {
-        this.manyToManyTargetEntity = manyToManyTargetEntity;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getOneToManyMappedBy() {
-        return oneToManyMappedBy;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getManyToManyMappedBy() {
+    return manyToManyMappedBy;
+  }
 
-    public void setOneToManyMappedBy(String oneToManyMappedBy) {
-        this.oneToManyMappedBy = oneToManyMappedBy;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getOneToManyTargetEntity() {
-        return oneToManyTargetEntity;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getManyToManyTargetEntity() {
+    return manyToManyTargetEntity;
+  }
 
-    public void setOneToManyTargetEntity(String oneToManyTargetEntity) {
-        this.oneToManyTargetEntity = oneToManyTargetEntity;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOneToManyMappedBy() {
+    return oneToManyMappedBy;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getOneToManyTargetEntity() {
+    return oneToManyTargetEntity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  genericType  DOCUMENT ME!
+   */
+  public void setGenericType(Type genericType) {
+    this.genericType = genericType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  manyToManyMappedBy  DOCUMENT ME!
+   */
+  public void setManyToManyMappedBy(String manyToManyMappedBy) {
+    this.manyToManyMappedBy = manyToManyMappedBy;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  manyToManyTargetEntity  DOCUMENT ME!
+   */
+  public void setManyToManyTargetEntity(String manyToManyTargetEntity) {
+    this.manyToManyTargetEntity = manyToManyTargetEntity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  oneToManyMappedBy  DOCUMENT ME!
+   */
+  public void setOneToManyMappedBy(String oneToManyMappedBy) {
+    this.oneToManyMappedBy = oneToManyMappedBy;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  oneToManyTargetEntity  DOCUMENT ME!
+   */
+  public void setOneToManyTargetEntity(String oneToManyTargetEntity) {
+    this.oneToManyTargetEntity = oneToManyTargetEntity;
+  }
+} // end class FieldInfo

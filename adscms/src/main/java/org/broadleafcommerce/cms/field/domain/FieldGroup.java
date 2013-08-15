@@ -17,27 +17,87 @@
 package org.broadleafcommerce.cms.field.domain;
 
 import java.io.Serializable;
+
 import java.util.List;
+
 
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public interface FieldGroup extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<FieldDefinition> getFieldDefinitions();
 
-    public void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Boolean getInitCollapsedFlag();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getInitCollapsedFlag();
 
-    public void setInitCollapsedFlag(Boolean initCollapsedFlag);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<FieldDefinition> getFieldDefinitions();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public void setFieldDefinitions(List<FieldDefinition> fieldDefinitions);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldDefinitions  DOCUMENT ME!
+   */
+  void setFieldDefinitions(List<FieldDefinition> fieldDefinitions);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  initCollapsedFlag  DOCUMENT ME!
+   */
+  void setInitCollapsedFlag(Boolean initCollapsedFlag);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+} // end interface FieldGroup

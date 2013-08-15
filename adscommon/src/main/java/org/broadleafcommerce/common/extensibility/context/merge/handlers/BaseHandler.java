@@ -17,51 +17,106 @@
 package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
 /**
- * Convenience base class which all handler implementations extend. This class
- * provides the common properties required by all MergeHandler implemenations.
- * @author jfischer
+ * Convenience base class which all handler implementations extend. This class provides the common properties required
+ * by all MergeHandler implemenations.
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public abstract class BaseHandler implements MergeHandler, Comparable<Object> {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected int priority;
-    protected String xpath;
-    protected MergeHandler[] children = {};
-    protected String name;
+  /** DOCUMENT ME! */
+  protected MergeHandler[] children = {};
 
-    public int getPriority() {
-        return priority;
-    }
+  /** DOCUMENT ME! */
+  protected String         name;
 
-    public String getXPath() {
-        return xpath;
-    }
+  /** DOCUMENT ME! */
+  protected int    priority;
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
+  /** DOCUMENT ME! */
+  protected String xpath;
 
-    public void setXPath(String xpath) {
-        this.xpath = xpath;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public int compareTo(Object arg0) {
-        return new Integer(getPriority()).compareTo(new Integer(((MergeHandler) arg0).getPriority()));
-    }
+  /**
+   * @see  java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  @Override public int compareTo(Object arg0) {
+    return new Integer(getPriority()).compareTo(new Integer(((MergeHandler) arg0).getPriority()));
+  }
 
-    public MergeHandler[] getChildren() {
-        return children;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setChildren(MergeHandler[] children) {
-        this.children = children;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#getChildren()
+   */
+  @Override public MergeHandler[] getChildren() {
+    return children;
+  }
 
-    public String getName() {
-        return name;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#getPriority()
+   */
+  @Override public int getPriority() {
+    return priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#getXPath()
+   */
+  @Override public String getXPath() {
+    return xpath;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#setChildren(org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler[])
+   */
+  @Override public void setChildren(MergeHandler[] children) {
+    this.children = children;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#setPriority(int)
+   */
+  @Override public void setPriority(int priority) {
+    this.priority = priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.extensibility.context.merge.handlers.MergeHandler#setXPath(java.lang.String)
+   */
+  @Override public void setXPath(String xpath) {
+    this.xpath = xpath;
+  }
+
+} // end class BaseHandler

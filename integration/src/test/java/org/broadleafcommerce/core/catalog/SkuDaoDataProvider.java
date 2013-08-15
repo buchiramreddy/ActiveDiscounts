@@ -18,13 +18,30 @@ package org.broadleafcommerce.core.catalog;
 
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+
 import org.testng.annotations.DataProvider;
 
-public class SkuDaoDataProvider {
 
-    @DataProvider(name = "basicSku")
-    public static Object[][] provideBasicSku() {
-        Sku si = new SkuImpl();
-        return new Object[][] { { si } };
-    }
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class SkuDaoDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "basicSku")
+  public static Object[][] provideBasicSku() {
+    Sku si = new SkuImpl();
+
+    return new Object[][] {
+        { si }
+      };
+  }
 }

@@ -18,65 +18,150 @@ package org.broadleafcommerce.common.security.util;
 
 import java.io.Serializable;
 
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class PasswordReset implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    private String username;
-    private String email;
-    private boolean passwordChangeRequired = false;
-    private int passwordLength = 22;
-    private boolean sendResetEmailReliableAsync = false;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public PasswordReset() {
-    }
+  private String  email;
+  private boolean passwordChangeRequired      = false;
+  private int     passwordLength              = 22;
+  private boolean sendResetEmailReliableAsync = false;
 
-    public PasswordReset(String username) {
-        this.username = username;
-    }
+  private String username;
 
-    public String getUsername() {
-        return username;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  /**
+   * Creates a new PasswordReset object.
+   */
+  public PasswordReset() { }
 
-    public String getEmail() {
-        return email;
-    }
+  /**
+   * Creates a new PasswordReset object.
+   *
+   * @param  username  DOCUMENT ME!
+   */
+  public PasswordReset(String username) {
+    this.username = username;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public boolean getPasswordChangeRequired() {
-        return passwordChangeRequired;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEmail() {
+    return email;
+  }
 
-    public void setPasswordChangeRequired(boolean passwordChangeRequired) {
-        this.passwordChangeRequired = passwordChangeRequired;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public int getPasswordLength() {
-        return passwordLength;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean getPasswordChangeRequired() {
+    return passwordChangeRequired;
+  }
 
-    public void setPasswordLength(int passwordLength) {
-        this.passwordLength = passwordLength;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isSendResetEmailReliableAsync() {
-        return sendResetEmailReliableAsync;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public int getPasswordLength() {
+    return passwordLength;
+  }
 
-    public void setSendResetEmailReliableAsync(boolean sendResetEmailReliableAsync) {
-        this.sendResetEmailReliableAsync = sendResetEmailReliableAsync;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public boolean isSendResetEmailReliableAsync() {
+    return sendResetEmailReliableAsync;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  email  DOCUMENT ME!
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordChangeRequired  DOCUMENT ME!
+   */
+  public void setPasswordChangeRequired(boolean passwordChangeRequired) {
+    this.passwordChangeRequired = passwordChangeRequired;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  passwordLength  DOCUMENT ME!
+   */
+  public void setPasswordLength(int passwordLength) {
+    this.passwordLength = passwordLength;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sendResetEmailReliableAsync  DOCUMENT ME!
+   */
+  public void setSendResetEmailReliableAsync(boolean sendResetEmailReliableAsync) {
+    this.sendResetEmailReliableAsync = sendResetEmailReliableAsync;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  username  DOCUMENT ME!
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
+} // end class PasswordReset

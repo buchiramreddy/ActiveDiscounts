@@ -16,74 +16,116 @@
 
 package org.broadleafcommerce.profile.web.core.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.web.BroadleafRequestContext;
+
+
 /**
- * Cookie used to protected against session fixation attacks
- * 
- * @see org.broadleafcommerce.profile.web.core.security.SessionFixationProtectionFilter
- * 
- * @author Andre Azzolini (apazzolini)
+ * Cookie used to protected against session fixation attacks.
+ *
+ * @see      org.broadleafcommerce.profile.web.core.security.SessionFixationProtectionFilter
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class SessionFixationProtectionCookie {
-    protected final Log logger = LogFactory.getLog(getClass());
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final String COOKIE_NAME = "ActiveID";
-    
-    public static String readActiveID(HttpServletRequest request) {
-        String cookieData = null;
-        
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(COOKIE_NAME)) {
-                    cookieData = cookie.getValue();
-                    break;
-                }
-            }
+  /** DOCUMENT ME! */
+  public static final String COOKIE_NAME = "ActiveID";
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  protected final Log logger = LogFactory.getLog(getClass());
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  response  DOCUMENT ME!
+   */
+  public static void forceRemove(HttpServletResponse response) {
+    Cookie cookie = new Cookie(COOKIE_NAME, "");
+    cookie.setMaxAge(0);
+    cookie.setPath("/");
+    cookie.setSecure(true);
+    cookie.setValue("-1");
+    response.addCookie(cookie);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   request  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static String readActiveID(HttpServletRequest request) {
+    String cookieData = null;
+
+    Cookie[] cookies = request.getCookies();
+
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals(COOKIE_NAME)) {
+          cookieData = cookie.getValue();
+
+          break;
         }
-
-        return cookieData;
+      }
     }
 
-    public static void writeActiveID(HttpServletResponse response, String data) {
-        if (data != null) {
-            Cookie cookie = new Cookie(COOKIE_NAME, data);
-            cookie.setMaxAge(-1);
-            cookie.setSecure(true);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+    return cookieData;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  response  DOCUMENT ME!
+   */
+  public static void remove(HttpServletResponse response) {
+    HttpServletRequest request = BroadleafRequestContext.getBroadleafRequestContext().getRequest();
+
+    if ((request != null) && (request.getCookies() != null)) {
+      for (Cookie cookie : request.getCookies()) {
+        if (cookie.getName().equals(COOKIE_NAME)) {
+          cookie.setMaxAge(0);
+          cookie.setPath("/");
+          cookie.setSecure(true);
+          cookie.setValue("-1");
+          response.addCookie(cookie);
         }
+      }
     }
+  }
 
-    public static void remove(HttpServletResponse response) {
-        HttpServletRequest request = BroadleafRequestContext.getBroadleafRequestContext().getRequest();
-        if (request != null && request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals(COOKIE_NAME)) {
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    cookie.setSecure(true);
-                    cookie.setValue("-1");
-                    response.addCookie(cookie);
-                }
-            }
-        }
-    }
-    
-    public static void forceRemove(HttpServletResponse response) {
-        Cookie cookie = new Cookie(COOKIE_NAME, "");
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        cookie.setSecure(true);
-        cookie.setValue("-1");
-        response.addCookie(cookie);
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  response  DOCUMENT ME!
+   * @param  data      DOCUMENT ME!
+   */
+  public static void writeActiveID(HttpServletResponse response, String data) {
+    if (data != null) {
+      Cookie cookie = new Cookie(COOKIE_NAME, data);
+      cookie.setMaxAge(-1);
+      cookie.setSecure(true);
+      cookie.setPath("/");
+      response.addCookie(cookie);
+    }
+  }
+
+} // end class SessionFixationProtectionCookie

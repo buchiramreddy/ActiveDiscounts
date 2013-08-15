@@ -16,58 +16,135 @@
 
 package org.broadleafcommerce.core.web.catalog.taglib;
 
-import junit.framework.TestCase;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
-import org.easymock.classextension.EasyMock;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
 
-abstract public class BaseTagLibTest extends TestCase {
-    
-    protected HttpServletRequest request;
-    protected PageContext pageContext;
-    protected CatalogService catalogService;
+import org.broadleafcommerce.core.catalog.service.CatalogService;
 
-    public BaseTagLibTest() {
-        pageContext = EasyMock.createMock(PageContext.class);
-        request = EasyMock.createMock(HttpServletRequest.class);
-        catalogService = EasyMock.createMock(CatalogService.class);
-        setup();
-    }
+import org.easymock.classextension.EasyMock;
 
-    public void replayBaseMockObjects() {
-        EasyMock.replay(request, pageContext, catalogService);
-    }
+import junit.framework.TestCase;
 
-    public void replayAdditionalMockObjects(){
-        EasyMock.replay(request, pageContext, catalogService);
-    }
 
-    public void replayAdditionalMockObjects(Object o){
-        EasyMock.replay(request, pageContext, catalogService, o);
-    }
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public abstract class BaseTagLibTest extends TestCase {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void replayAdditionalMockObjects(Object o1, Object o2){
-        EasyMock.replay(request, pageContext, catalogService, o1, o2);
-    }
+  /** DOCUMENT ME! */
+  protected CatalogService catalogService;
 
-    public void setPageContext(PageContext pageContext) {
-        this.pageContext = pageContext;
-    }
+  /** DOCUMENT ME! */
+  protected PageContext    pageContext;
 
-    public void verifyBaseMockObjects() {
-        EasyMock.verify(request, pageContext, catalogService);
-    }
+  /** DOCUMENT ME! */
+  protected HttpServletRequest request;
 
-    public void verifyBaseMockObjects(Object o) {
-        EasyMock.verify(request, pageContext, catalogService, o);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public void verifyBaseMockObjects(Object o1, Object o2) {
-        EasyMock.verify(request, pageContext, catalogService, o1, o2);
-    }
-    
-    public abstract void setup();
-    
-}
+  /**
+   * Creates a new BaseTagLibTest object.
+   */
+  public BaseTagLibTest() {
+    pageContext    = EasyMock.createMock(PageContext.class);
+    request        = EasyMock.createMock(HttpServletRequest.class);
+    catalogService = EasyMock.createMock(CatalogService.class);
+    setup();
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  public abstract void setup();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  public void replayAdditionalMockObjects() {
+    EasyMock.replay(request, pageContext, catalogService);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  o  DOCUMENT ME!
+   */
+  public void replayAdditionalMockObjects(Object o) {
+    EasyMock.replay(request, pageContext, catalogService, o);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  o1  DOCUMENT ME!
+   * @param  o2  DOCUMENT ME!
+   */
+  public void replayAdditionalMockObjects(Object o1, Object o2) {
+    EasyMock.replay(request, pageContext, catalogService, o1, o2);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  public void replayBaseMockObjects() {
+    EasyMock.replay(request, pageContext, catalogService);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  pageContext  DOCUMENT ME!
+   */
+  public void setPageContext(PageContext pageContext) {
+    this.pageContext = pageContext;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  public void verifyBaseMockObjects() {
+    EasyMock.verify(request, pageContext, catalogService);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  o  DOCUMENT ME!
+   */
+  public void verifyBaseMockObjects(Object o) {
+    EasyMock.verify(request, pageContext, catalogService, o);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  o1  DOCUMENT ME!
+   * @param  o2  DOCUMENT ME!
+   */
+  public void verifyBaseMockObjects(Object o1, Object o2) {
+    EasyMock.verify(request, pageContext, catalogService, o1, o2);
+  }
+
+} // end class BaseTagLibTest

@@ -16,32 +16,49 @@
 
 package org.broadleafcommerce.common.web;
 
-import org.springframework.security.web.util.AntPathRequestMatcher;
-import org.springframework.security.web.util.RequestMatcher;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
+import java.io.IOException;
+
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Map;
+
+import org.springframework.security.web.util.AntPathRequestMatcher;
+import org.springframework.security.web.util.RequestMatcher;
+
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
+
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class BroadleafGWTModuleURLMappingResourceHttpRequestHandler extends ResourceHttpRequestHandler {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<String, String> urlPatternDispatchMap = (Map<String, String>) getApplicationContext().getBean("blResourceUrlPatternRequestDispatchMap");
-        for (Map.Entry<String, String> entry : urlPatternDispatchMap.entrySet()) {
-            RequestMatcher matcher = new AntPathRequestMatcher(entry.getKey());
-            if (matcher.matches(request)){
-                request.getRequestDispatcher(entry.getValue()).forward(request, response);
-                return;
-            }
-        }
-        super.handleRequest(request, response);
+  /**
+   * @see  org.springframework.web.servlet.resource.ResourceHttpRequestHandler#handleRequest(javax.servlet.http.HttpServletRequest,
+   *       javax.servlet.http.HttpServletResponse)
+   */
+  @Override public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+    IOException {
+    Map<String, String> urlPatternDispatchMap = (Map<String, String>) getApplicationContext().getBean(
+        "blResourceUrlPatternRequestDispatchMap");
+
+    for (Map.Entry<String, String> entry : urlPatternDispatchMap.entrySet()) {
+      RequestMatcher matcher = new AntPathRequestMatcher(entry.getKey());
+
+      if (matcher.matches(request)) {
+        request.getRequestDispatcher(entry.getValue()).forward(request, response);
+
+        return;
+      }
     }
 
-}
+    super.handleRequest(request, response);
+  }
+
+} // end class BroadleafGWTModuleURLMappingResourceHttpRequestHandler

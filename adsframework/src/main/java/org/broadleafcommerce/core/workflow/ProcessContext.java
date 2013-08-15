@@ -18,30 +18,40 @@ package org.broadleafcommerce.core.workflow;
 
 import java.io.Serializable;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface ProcessContext extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Activly informs the workflow process to stop processing
-     * no further activities will be executed
-     *
-     * @return whether or not the stop process call was successful
-     */
-    public boolean stopProcess();
+  /**
+   * Is the process stopped.
+   *
+   * @return  whether or not the process is stopped
+   */
+  boolean isStopped();
 
-    /**
-     * Is the process stopped
-     *
-     * @return whether or not the process is stopped
-     */
-    public boolean isStopped();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Provide seed information to this ProcessContext, usually
-     * provided at time of workflow kickoff by the containing
-     * workflow processor.
-     * 
-     * @param seedObject - initial seed data for the workflow
-     */
-    public void setSeedData(Object seedObject);
+  /**
+   * Provide seed information to this ProcessContext, usually provided at time of workflow kickoff by the containing
+   * workflow processor.
+   *
+   * @param  seedObject  - initial seed data for the workflow
+   */
+  void setSeedData(Object seedObject);
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Activly informs the workflow process to stop processing no further activities will be executed.
+   *
+   * @return  whether or not the stop process call was successful
+   */
+  boolean stopProcess();
+
+} // end interface ProcessContext

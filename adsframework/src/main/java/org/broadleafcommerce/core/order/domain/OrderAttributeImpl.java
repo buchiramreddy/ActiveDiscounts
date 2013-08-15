@@ -16,17 +16,6 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
-import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides;
-import org.broadleafcommerce.common.presentation.override.PropertyType;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,115 +26,187 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
+import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverrides;
+import org.broadleafcommerce.common.presentation.override.PropertyType;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
- * The Class OrderAttributeImpl
- * @see org.broadleafcommerce.core.order.domain.OrderAttribute
+ * The Class OrderAttributeImpl.
+ *
+ * @see      org.broadleafcommerce.core.order.domain.OrderAttribute
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(friendlyName = "OrderAttributeImpl_baseProductAttribute")
+@AdminPresentationMergeOverrides(
+  {
+    @AdminPresentationMergeOverride(
+      name = "",
+      mergeEntries =
+        @AdminPresentationMergeEntry(
+          propertyType         = PropertyType.AdminPresentation.READONLY,
+          booleanOverrideValue = true
+        )
+    )
+  }
+)
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name="BLC_ORDER_ATTRIBUTE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blOrderElements")
-@AdminPresentationMergeOverrides(
-    {
-        @AdminPresentationMergeOverride(name = "", mergeEntries =
-            @AdminPresentationMergeEntry(propertyType = PropertyType.AdminPresentation.READONLY,
-                                            booleanOverrideValue = true))
-    }
-)
-@AdminPresentationClass(friendlyName = "OrderAttributeImpl_baseProductAttribute")
+@Table(name = "BLC_ORDER_ATTRIBUTE")
 public class OrderAttributeImpl implements OrderAttribute {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    
-    @Id
-    @GeneratedValue(generator= "OrderAttributeId")
-    @GenericGenerator(
-        name="OrderAttributeId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="OrderAttributeImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.catalog.domain.OrderAttributeImpl")
-        }
-    )
-    @Column(name = "ORDER_ATTRIBUTE_ID")
-    protected Long id;
-    
-    @Column(name = "NAME", nullable=false)
-    @AdminPresentation(friendlyName = "OrderAttributeImpl_Attribute_Name", order=1000, prominent=true)
-    protected String name;
+  /** DOCUMENT ME! */
+  @Column(name = "ORDER_ATTRIBUTE_ID")
+  @GeneratedValue(generator = "OrderAttributeId")
+  @GenericGenerator(
+    name       = "OrderAttributeId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "OrderAttributeImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.catalog.domain.OrderAttributeImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    /** The value. */
-    @Column(name = "VALUE")
-    @AdminPresentation(friendlyName = "OrderAttributeImpl_Attribute_Value", order=2000, prominent=true)
-    protected String value;
-    
-    @ManyToOne(targetEntity = OrderImpl.class, optional=false)
-    @JoinColumn(name = "ORDER_ID")
-    protected Order order;
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "OrderAttributeImpl_Attribute_Name",
+    order        = 1000,
+    prominent    = true
+  )
+  @Column(
+    name     = "NAME",
+    nullable = false
+  )
+  protected String name;
 
-    @Override
-    public Long getId() {
-        return id;
+  /** The value. */
+  @AdminPresentation(
+    friendlyName = "OrderAttributeImpl_Attribute_Value",
+    order        = 2000,
+    prominent    = true
+  )
+  @Column(name = "VALUE")
+  protected String value;
+
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "ORDER_ID")
+  @ManyToOne(
+    targetEntity = OrderImpl.class,
+    optional     = false
+  )
+  protected Order order;
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#getValue()
+   */
+  @Override public String getValue() {
+    return value;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#setValue(java.lang.String)
+   */
+  @Override public void setValue(String value) {
+    this.value = value;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
+   * @see  java.lang.Object#toString()
+   */
+  @Override public String toString() {
+    return value;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#getOrder()
+   */
+  @Override public Order getOrder() {
+    return order;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.OrderAttribute#setOrder(org.broadleafcommerce.core.order.domain.Order)
+   */
+  @Override public void setOrder(Order order) {
+    this.order = order;
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    return value.hashCode();
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public String getValue() {
-        return value;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setValue(String value) {
-        this.value = value;
+    if (value == null) {
+      return false;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public Order getOrder() {
-        return order;
-    }
-
-    @Override
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        
-        if (value == null) {
-            return false;
-        }
-        
-        return value.equals(((OrderAttribute) obj).getValue());
-    }
-}
+    return value.equals(((OrderAttribute) obj).getValue());
+  }
+} // end class OrderAttributeImpl

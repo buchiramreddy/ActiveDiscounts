@@ -16,6 +16,8 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request;
 
+import java.util.Map;
+
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
@@ -23,67 +25,139 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.DataFor
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
 
-import java.util.Map;
 
 /**
  * Contains the requested ctoConverter, cto and support classes.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class AddSearchMappingRequest {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    private final PersistencePerspective persistencePerspective;
-    private final CriteriaTransferObject requestedCto;
-    private final String ceilingEntityFullyQualifiedClassname;
-    private final Map<String, FieldMetadata> mergedProperties;
-    private final String propertyName;
-    private final FieldManager fieldManager;
-    private final DataFormatProvider dataFormatProvider;
-    private final RestrictionFactory restrictionFactory;
+  private final String                     ceilingEntityFullyQualifiedClassname;
+  private final DataFormatProvider         dataFormatProvider;
+  private final FieldManager               fieldManager;
+  private final Map<String, FieldMetadata> mergedProperties;
 
-    public AddSearchMappingRequest(PersistencePerspective persistencePerspective, CriteriaTransferObject
-            requestedCto, String ceilingEntityFullyQualifiedClassname, Map<String, FieldMetadata> mergedProperties,
-                                   String propertyName, FieldManager fieldManager,
-                                   DataFormatProvider dataFormatProvider, RestrictionFactory restrictionFactory) {
-        this.persistencePerspective = persistencePerspective;
-        this.requestedCto = requestedCto;
-        this.ceilingEntityFullyQualifiedClassname = ceilingEntityFullyQualifiedClassname;
-        this.mergedProperties = mergedProperties;
-        this.propertyName = propertyName;
-        this.fieldManager = fieldManager;
-        this.dataFormatProvider = dataFormatProvider;
-        this.restrictionFactory = restrictionFactory;
-    }
+  private final PersistencePerspective persistencePerspective;
+  private final String                 propertyName;
+  private final CriteriaTransferObject requestedCto;
+  private final RestrictionFactory     restrictionFactory;
 
-    public PersistencePerspective getPersistencePerspective() {
-        return persistencePerspective;
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    public CriteriaTransferObject getRequestedCto() {
-        return requestedCto;
-    }
+  /**
+   * Creates a new AddSearchMappingRequest object.
+   *
+   * @param  persistencePerspective                DOCUMENT ME!
+   * @param  requestedCto                          DOCUMENT ME!
+   * @param  ceilingEntityFullyQualifiedClassname  DOCUMENT ME!
+   * @param  mergedProperties                      DOCUMENT ME!
+   * @param  propertyName                          DOCUMENT ME!
+   * @param  fieldManager                          DOCUMENT ME!
+   * @param  dataFormatProvider                    DOCUMENT ME!
+   * @param  restrictionFactory                    DOCUMENT ME!
+   */
+  public AddSearchMappingRequest(PersistencePerspective persistencePerspective, CriteriaTransferObject requestedCto,
+    String ceilingEntityFullyQualifiedClassname, Map<String, FieldMetadata> mergedProperties,
+    String propertyName, FieldManager fieldManager,
+    DataFormatProvider dataFormatProvider, RestrictionFactory restrictionFactory) {
+    this.persistencePerspective               = persistencePerspective;
+    this.requestedCto                         = requestedCto;
+    this.ceilingEntityFullyQualifiedClassname = ceilingEntityFullyQualifiedClassname;
+    this.mergedProperties                     = mergedProperties;
+    this.propertyName                         = propertyName;
+    this.fieldManager                         = fieldManager;
+    this.dataFormatProvider                   = dataFormatProvider;
+    this.restrictionFactory                   = restrictionFactory;
+  }
 
-    public String getCeilingEntityFullyQualifiedClassname() {
-        return ceilingEntityFullyQualifiedClassname;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Map<String, FieldMetadata> getMergedProperties() {
-        return mergedProperties;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getCeilingEntityFullyQualifiedClassname() {
+    return ceilingEntityFullyQualifiedClassname;
+  }
 
-    public String getPropertyName() {
-        return propertyName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public FieldManager getFieldManager() {
-        return fieldManager;
-    }
-    
-    public DataFormatProvider getDataFormatProvider() {
-        return dataFormatProvider;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DataFormatProvider getDataFormatProvider() {
+    return dataFormatProvider;
+  }
 
-    public RestrictionFactory getRestrictionFactory() {
-        return restrictionFactory;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public FieldManager getFieldManager() {
+    return fieldManager;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, FieldMetadata> getMergedProperties() {
+    return mergedProperties;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public PersistencePerspective getPersistencePerspective() {
+    return persistencePerspective;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getPropertyName() {
+    return propertyName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public CriteriaTransferObject getRequestedCto() {
+    return requestedCto;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public RestrictionFactory getRestrictionFactory() {
+    return restrictionFactory;
+  }
+} // end class AddSearchMappingRequest

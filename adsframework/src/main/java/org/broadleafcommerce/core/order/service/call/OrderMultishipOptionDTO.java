@@ -17,44 +17,96 @@
 package org.broadleafcommerce.core.order.service.call;
 
 /**
- * This DTO is used to bind multiship options in a way that doesn't require
- * the actual objects to be instantiated -- we handle that at the controller
- * level.
- * 
- * @see OrderMultishipOptionForm
- * 
- * @author Andre Azzolini (apazzolini)
+ * This DTO is used to bind multiship options in a way that doesn't require the actual objects to be instantiated -- we
+ * handle that at the controller level.
+ *
+ * @see      OrderMultishipOptionForm
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class OrderMultishipOptionDTO {
+  /** DOCUMENT ME! */
+  protected Long id;
 
-    protected Long id;
-    protected Long orderItemId;
-    protected Long addressId;
-    protected Long fulfillmentOptionId;
-    
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Long getOrderItemId() {
-        return orderItemId;
-    }
-    public void setOrderItemId(Long orderItemId) {
-        this.orderItemId = orderItemId;
-    }
-    public Long getAddressId() {
-        return addressId;
-    }
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
-    }
-    public Long getFulfillmentOptionId() {
-        return fulfillmentOptionId;
-    }
-    public void setFulfillmentOptionId(Long fulfillmentOptionId) {
-        this.fulfillmentOptionId = fulfillmentOptionId;
-    }
+  /** DOCUMENT ME! */
+  protected Long orderItemId;
 
-}
+  /** DOCUMENT ME! */
+  protected Long addressId;
+
+  /** DOCUMENT ME! */
+  protected Long fulfillmentOptionId;
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return id;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getOrderItemId() {
+    return orderItemId;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItemId  DOCUMENT ME!
+   */
+  public void setOrderItemId(Long orderItemId) {
+    this.orderItemId = orderItemId;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getAddressId() {
+    return addressId;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  addressId  DOCUMENT ME!
+   */
+  public void setAddressId(Long addressId) {
+    this.addressId = addressId;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getFulfillmentOptionId() {
+    return fulfillmentOptionId;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentOptionId  DOCUMENT ME!
+   */
+  public void setFulfillmentOptionId(Long fulfillmentOptionId) {
+    this.fulfillmentOptionId = fulfillmentOptionId;
+  }
+
+} // end class OrderMultishipOptionDTO

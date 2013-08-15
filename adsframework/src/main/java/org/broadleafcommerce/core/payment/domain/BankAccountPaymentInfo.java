@@ -16,36 +16,56 @@
 
 package org.broadleafcommerce.core.payment.domain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface BankAccountPaymentInfo extends Referenced {
+  /**
+   * The id.
+   *
+   * @return  the id
+   */
+  @Override Long getId();
 
-    /**
-     * @return the id
-     */
-    public Long getId();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  id  the id to set
+   */
+  @Override void setId(Long id);
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id);
+  /**
+   * The account number.
+   *
+   * @return  the account number
+   */
+  String getAccountNumber();
 
-    /**
-     * @return the account number
-     */
-    public String getAccountNumber();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  accountNumber  number the account number to set
+   */
+  void setAccountNumber(String accountNumber);
 
-    /**
-     * @param account number the account number to set
-     */
-    public void setAccountNumber(String accountNumber);
+  /**
+   * The routing number.
+   *
+   * @return  the routing number
+   */
+  String getRoutingNumber();
 
-    /**
-     * @return the routing number
-     */
-    public String getRoutingNumber();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  routingNumber  number the routing number to set
+   */
+  void setRoutingNumber(String routingNumber);
 
-    /**
-     * @param routing number the routing number to set
-     */
-    public void setRoutingNumber(String routingNumber);
-
-}
+} // end interface BankAccountPaymentInfo

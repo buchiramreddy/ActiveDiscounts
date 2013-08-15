@@ -16,113 +16,279 @@
 
 package org.broadleafcommerce.cms.page.dto;
 
-import org.broadleafcommerce.cms.structure.dto.ItemCriteriaDTO;
-
 import java.io.Serializable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.broadleafcommerce.cms.structure.dto.ItemCriteriaDTO;
+
+
 /**
- * Page fields must be pre-processed (for example to fix image paths).
- * This DTO allows us to process the PageFields once and then cache
- * the results.
+ * Page fields must be pre-processed (for example to fix image paths). This DTO allows us to process the PageFields once
+ * and then cache the results.
  *
- * Created by bpolster.
+ * <p>Created by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class PageDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    protected Long id;
-    protected String description;
-    protected String localeCode;
-    protected String templatePath;
-    protected String url;
-    protected Long sandboxId;
-    protected Integer priority;
-    protected Map<String, String> pageFields = new HashMap<String,String>();
-    protected String ruleExpression;
-    protected List<ItemCriteriaDTO> itemCriteriaDTOList;
+  private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  protected String description;
 
-    public String getDescription() {
-        return description;
-    }
+  /** DOCUMENT ME! */
+  protected Long                  id;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  /** DOCUMENT ME! */
+  protected List<ItemCriteriaDTO> itemCriteriaDTOList;
 
-    public String getLocaleCode() {
-        return localeCode;
-    }
+  /** DOCUMENT ME! */
+  protected String                localeCode;
 
-    public void setLocaleCode(String localeCode) {
-        this.localeCode = localeCode;
-    }
+  /** DOCUMENT ME! */
+  protected Map<String, String>   pageFields     = new HashMap<String, String>();
 
-    public String getTemplatePath() {
-        return templatePath;
-    }
+  /** DOCUMENT ME! */
+  protected Integer               priority;
 
-    public void setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-    }
+  /** DOCUMENT ME! */
+  protected String                ruleExpression;
 
-    public String getUrl() {
-        return url;
-    }
+  /** DOCUMENT ME! */
+  protected Long                  sandboxId;
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+  /** DOCUMENT ME! */
+  protected String                templatePath;
 
-    public Long getSandboxId() {
-        return sandboxId;
-    }
+  /** DOCUMENT ME! */
+  protected String                url;
 
-    public void setSandboxId(Long sandboxId) {
-        this.sandboxId = sandboxId;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Map<String, String> getPageFields() {
-        return pageFields;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getDescription() {
+    return description;
+  }
 
-    public void setPageFields(Map<String, String> pageFields) {
-        this.pageFields = pageFields;
-    }
-    
-    public String getRuleExpression() {
-        return ruleExpression;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setRuleExpression(String ruleExpression) {
-        this.ruleExpression = ruleExpression;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return id;
+  }
 
-    public List<ItemCriteriaDTO> getItemCriteriaDTOList() {
-        return itemCriteriaDTOList;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setItemCriteriaDTOList(List<ItemCriteriaDTO> itemCriteriaDTOList) {
-        this.itemCriteriaDTOList = itemCriteriaDTOList;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<ItemCriteriaDTO> getItemCriteriaDTOList() {
+    return itemCriteriaDTOList;
+  }
 
-    public Integer getPriority() {
-        return priority;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }   
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getLocaleCode() {
+    return localeCode;
+  }
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map<String, String> getPageFields() {
+    return pageFields;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPriority() {
+    return priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRuleExpression() {
+    return ruleExpression;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getSandboxId() {
+    return sandboxId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getTemplatePath() {
+    return templatePath;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getUrl() {
+    return url;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  description  DOCUMENT ME!
+   */
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  itemCriteriaDTOList  DOCUMENT ME!
+   */
+  public void setItemCriteriaDTOList(List<ItemCriteriaDTO> itemCriteriaDTOList) {
+    this.itemCriteriaDTOList = itemCriteriaDTOList;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  localeCode  DOCUMENT ME!
+   */
+  public void setLocaleCode(String localeCode) {
+    this.localeCode = localeCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  pageFields  DOCUMENT ME!
+   */
+  public void setPageFields(Map<String, String> pageFields) {
+    this.pageFields = pageFields;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priority  DOCUMENT ME!
+   */
+  public void setPriority(Integer priority) {
+    this.priority = priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ruleExpression  DOCUMENT ME!
+   */
+  public void setRuleExpression(String ruleExpression) {
+    this.ruleExpression = ruleExpression;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandboxId  DOCUMENT ME!
+   */
+  public void setSandboxId(Long sandboxId) {
+    this.sandboxId = sandboxId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  templatePath  DOCUMENT ME!
+   */
+  public void setTemplatePath(String templatePath) {
+    this.templatePath = templatePath;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  url  DOCUMENT ME!
+   */
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+} // end class PageDTO

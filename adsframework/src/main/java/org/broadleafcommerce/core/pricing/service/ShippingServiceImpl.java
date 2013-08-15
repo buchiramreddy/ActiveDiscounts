@@ -17,31 +17,51 @@
 package org.broadleafcommerce.core.pricing.service;
 
 import org.broadleafcommerce.common.vendor.service.exception.FulfillmentPriceException;
+
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
 import org.broadleafcommerce.core.pricing.service.module.ShippingModule;
 
+
 /**
- * @deprecated Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
- * @see {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}, {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * DOCUMENT ME!
+ *
+ * @deprecated  Should use the {@link org.broadleafcommerce.core.order.domain.FulfillmentOption} paradigm, implemented
+ *              in {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService}
+ * @see         {@link org.broadleafcommerce.core.pricing.service.FulfillmentPricingService},
+ *              {@link org.broadleafcommerce.core.order.domain.FulfillmentOption}
+ * @author      $author$
+ * @version     $Revision$, $Date$
  */
-@Deprecated
-public class ShippingServiceImpl implements ShippingService {
+@Deprecated public class ShippingServiceImpl implements ShippingService {
+  /** DOCUMENT ME! */
+  protected ShippingModule shippingModule;
 
-    protected ShippingModule shippingModule;
+  /**
+   * @see  org.broadleafcommerce.core.pricing.service.ShippingService#calculateShippingForFulfillmentGroup(org.broadleafcommerce.core.order.domain.FulfillmentGroup)
+   */
+  @Override public FulfillmentGroup calculateShippingForFulfillmentGroup(FulfillmentGroup fulfillmentGroup)
+    throws FulfillmentPriceException {
+    FulfillmentGroup group = shippingModule.calculateShippingForFulfillmentGroup(fulfillmentGroup);
 
-    @Override
-    public FulfillmentGroup calculateShippingForFulfillmentGroup(FulfillmentGroup fulfillmentGroup) throws FulfillmentPriceException {
-        FulfillmentGroup group = shippingModule.calculateShippingForFulfillmentGroup(fulfillmentGroup);
-        return group;
-    }
+    return group;
+  }
 
-    public ShippingModule getShippingModule() {
-        return shippingModule;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ShippingModule getShippingModule() {
+    return shippingModule;
+  }
 
-    public void setShippingModule(ShippingModule shippingModule) {
-        this.shippingModule = shippingModule;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  shippingModule  DOCUMENT ME!
+   */
+  public void setShippingModule(ShippingModule shippingModule) {
+    this.shippingModule = shippingModule;
+  }
 
-}
+} // end class ShippingServiceImpl

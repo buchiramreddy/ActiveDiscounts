@@ -16,13 +16,21 @@
 
 package org.broadleafcommerce.openadmin.server.service;
 
+import java.lang.reflect.Constructor;
+
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.security.service.CleanStringException;
 import org.broadleafcommerce.common.security.service.ExploitProtectionService;
+
 import org.broadleafcommerce.openadmin.dto.BatchDynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.BatchPersistencePackage;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
@@ -32,230 +40,327 @@ import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManager;
 import org.broadleafcommerce.openadmin.server.service.persistence.TargetModeType;
+
 import org.codehaus.jackson.map.util.LRUMap;
+
 import org.springframework.beans.BeansException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Constructor;
-import java.util.Map;
 
-import javax.annotation.Resource;
 /**
- * @author jfischer
+ * DOCUMENT ME!
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Service("blDynamicEntityRemoteService")
-@Transactional(value="blTransactionManager", rollbackFor = ServiceException.class)
+@Transactional(
+  value       = "blTransactionManager",
+  rollbackFor = ServiceException.class
+)
 public class DynamicEntityRemoteService implements DynamicEntityService, DynamicEntityRemote, ApplicationContextAware {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public static final String DEFAULTPERSISTENCEMANAGERREF = "blPersistenceManager";
-    private static final Log LOG = LogFactory.getLog(DynamicEntityRemoteService.class);
-    protected static final Map<BatchPersistencePackage, BatchDynamicResultSet> METADATA_CACHE = MapUtils.synchronizedMap(new LRUMap<BatchPersistencePackage, BatchDynamicResultSet>(100, 1000));
+  /** DOCUMENT ME! */
+  public static final String                                                 DEFAULTPERSISTENCEMANAGERREF =
+    "blPersistenceManager";
+  private static final Log                                                   LOG                          = LogFactory
+    .getLog(DynamicEntityRemoteService.class);
 
-    protected String persistenceManagerRef = DEFAULTPERSISTENCEMANAGERREF;
-    private ApplicationContext applicationContext;
+  /** DOCUMENT ME! */
+  protected static final Map<BatchPersistencePackage, BatchDynamicResultSet> METADATA_CACHE = MapUtils.synchronizedMap(
+      new LRUMap<BatchPersistencePackage, BatchDynamicResultSet>(100, 1000));
 
-    @Resource(name="blExploitProtectionService")
-    protected ExploitProtectionService exploitProtectionService;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+  /** DOCUMENT ME! */
+  @Resource(name = "blExploitProtectionService")
+  protected ExploitProtectionService exploitProtectionService;
+
+  /** DOCUMENT ME! */
+  protected String           persistenceManagerRef = DEFAULTPERSISTENCEMANAGERREF;
+  private ApplicationContext applicationContext;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.DynamicEntityService#add(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Entity add(PersistencePackage persistencePackage) throws ServiceException {
+    cleanEntity(persistencePackage.getEntity());
+
+    if (persistencePackage.getEntity().isValidationFailure()) {
+      return persistencePackage.getEntity();
     }
 
-    /*@Override
-    public BatchDynamicResultSet batchInspect(BatchPersistencePackage batchPersistencePackage) throws ServiceException {
-        try {
-            List<DynamicResultSet> dynamicResultSetList = new ArrayList<DynamicResultSet>(15);
-            List<PersistencePackage> persistencePackageList;
-            boolean containsCache = false;
-            if (METADATA_CACHE.containsKey(batchPersistencePackage)) {
-                containsCache = true;
-                persistencePackageList = new ArrayList<PersistencePackage>();
-                for (PersistencePackage persistencePackage : batchPersistencePackage.getPersistencePackages()) {
-                    if (persistencePackage.getPersistencePerspective().getUseServerSideInspectionCache()) {
-                        checkResultSetList: {
-                            for (DynamicResultSet dynamicResultSet : METADATA_CACHE.get(batchPersistencePackage).getDynamicResultSets()) {
-                                if (dynamicResultSet.getBatchId().equals(persistencePackage.getBatchId())) {
-                                    dynamicResultSetList.add(dynamicResultSet);
-                                    break checkResultSetList;
-                                }
-                            }
-                            throw new IllegalArgumentException("Unable to find a result for batchId(" + persistencePackage.getBatchId() + ") in cached batch result set.");
-                        }
-                    } else {
-                        persistencePackageList.add(persistencePackage);
-                    }
-                }
-            } else {
-                persistencePackageList = Arrays.asList(batchPersistencePackage.getPersistencePackages());
-            }
-            for (PersistencePackage persistencePackage : persistencePackageList) {
-                DynamicResultSet resultSet = inspect(persistencePackage);
-                resultSet.setBatchId(persistencePackage.getBatchId());
-                dynamicResultSetList.add(resultSet);
-            }
-            Collections.sort(dynamicResultSetList, new Comparator<DynamicResultSet>() {
-                @Override
-                public int compare(DynamicResultSet o1, DynamicResultSet o2) {
-                    return o1.getBatchId().compareTo(o2.getBatchId());
-                }
-            });
-            BatchDynamicResultSet batchResults = new BatchDynamicResultSet();
-            batchResults.setDynamicResultSets(dynamicResultSetList.toArray(new DynamicResultSet[dynamicResultSetList.size()]));
-            if (!containsCache) {
-                METADATA_CACHE.put(batchPersistencePackage, batchResults);
-                return METADATA_CACHE.get(batchPersistencePackage);
-            } else {
-                return batchResults;
-            }
-        } catch (IllegalArgumentException e) {
-            LOG.error("Problem performing batch inspect", e);
-            throw new ServiceException("Problem performing batch inspect", e);
-        }
-    }*/
+    try {
+      PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
+      persistenceManager.setTargetMode(TargetModeType.SANDBOX);
 
-    protected ServiceException recreateSpecificServiceException(ServiceException e, String message, Throwable cause) {
-        try {
-            ServiceException newException;
-            if (cause == null) {
-                Constructor constructor = e.getClass().getConstructor(String.class);
-                newException = (ServiceException) constructor.newInstance(message);
-            } else {
-                Constructor constructor = e.getClass().getConstructor(String.class, Throwable.class);
-                newException = (ServiceException) constructor.newInstance(message, cause);
-            }
+      return persistenceManager.add(persistencePackage);
+    } catch (ServiceException e) {
+      if (e instanceof ValidationException) {
+        LOG.warn("Not saving entity as it has failed validation");
 
-            return newException;
-        } catch (Exception e1) {
-            throw new RuntimeException(e1);
-        }
+        return ((ValidationException) e).getEntity();
+      } else if (e.getCause() instanceof ValidationException) {
+        LOG.warn("Not saving entity as it has failed validation");
+
+        return ((ValidationException) e.getCause()).getEntity();
+      }
+
+      String message = exploitProtectionService.cleanString(e.getMessage());
+      LOG.error("Problem adding new " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
+      throw recreateSpecificServiceException(e, message, e.getCause());
+    }
+  } // end method add
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.DynamicEntityService#fetch(org.broadleafcommerce.openadmin.dto.PersistencePackage,
+   *       org.broadleafcommerce.openadmin.dto.CriteriaTransferObject)
+   */
+  @Override public DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto)
+    throws ServiceException {
+    try {
+      PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
+      persistenceManager.setTargetMode(TargetModeType.SANDBOX);
+
+      return persistenceManager.fetch(persistencePackage, cto);
+    } catch (ServiceException e) {
+      LOG.error("Problem fetching results for " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
+
+      String message = exploitProtectionService.cleanString(e.getMessage());
+      throw recreateSpecificServiceException(e, message, e.getCause());
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.DynamicEntityRemote#getPersistenceManagerRef()
+   */
+  @Override public String getPersistenceManagerRef() {
+    return persistenceManagerRef;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.DynamicEntityService#inspect(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public DynamicResultSet inspect(PersistencePackage persistencePackage) throws ServiceException {
+    String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
+
+    try {
+      PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
+      persistenceManager.setTargetMode(TargetModeType.SANDBOX);
+
+      return persistenceManager.inspect(persistencePackage);
+    } catch (ServiceException e) {
+      String message = exploitProtectionService.cleanString(e.getMessage());
+      throw recreateSpecificServiceException(e, message, e.getCause());
+    } catch (Exception e) {
+      LOG.error("Problem inspecting results for " + ceilingEntityFullyQualifiedClassname, e);
+      throw new ServiceException(exploitProtectionService.cleanString(
+          "Unable to fetch results for " + ceilingEntityFullyQualifiedClassname), e);
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.DynamicEntityService#remove(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public void remove(PersistencePackage persistencePackage) throws ServiceException {
+    try {
+      PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
+      persistenceManager.setTargetMode(TargetModeType.SANDBOX);
+      persistenceManager.remove(persistencePackage);
+    } catch (ServiceException e) {
+      LOG.error("Problem removing " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
+
+      String message = exploitProtectionService.cleanString(e.getMessage());
+      throw recreateSpecificServiceException(e, message, e.getCause());
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+   */
+  @Override public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.DynamicEntityRemote#setPersistenceManagerRef(java.lang.String)
+   */
+  @Override public void setPersistenceManagerRef(String persistenceManagerRef) {
+    this.persistenceManagerRef = persistenceManagerRef;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.DynamicEntityService#update(org.broadleafcommerce.openadmin.dto.PersistencePackage)
+   */
+  @Override public Entity update(PersistencePackage persistencePackage) throws ServiceException {
+    cleanEntity(persistencePackage.getEntity());
+
+    if (persistencePackage.getEntity().isValidationFailure()) {
+      return persistencePackage.getEntity();
     }
 
-    @Override
-    public DynamicResultSet inspect(PersistencePackage persistencePackage) throws ServiceException {
-        String ceilingEntityFullyQualifiedClassname = persistencePackage.getCeilingEntityFullyQualifiedClassname();
-        try {
-            PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
-            persistenceManager.setTargetMode(TargetModeType.SANDBOX);
-            return persistenceManager.inspect(persistencePackage);
-        } catch (ServiceException e) {
-            String message = exploitProtectionService.cleanString(e.getMessage());
-            throw recreateSpecificServiceException(e, message, e.getCause());
-        } catch (Exception e) {
-            LOG.error("Problem inspecting results for " + ceilingEntityFullyQualifiedClassname, e);
-            throw new ServiceException(exploitProtectionService.cleanString("Unable to fetch results for " + ceilingEntityFullyQualifiedClassname), e);
-        }
-    }
+    try {
+      PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
+      persistenceManager.setTargetMode(TargetModeType.SANDBOX);
 
-    @Override
-    public DynamicResultSet fetch(PersistencePackage persistencePackage, CriteriaTransferObject cto) throws ServiceException {
-        try {
-            PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
-            persistenceManager.setTargetMode(TargetModeType.SANDBOX);
-            return persistenceManager.fetch(persistencePackage, cto);
-        } catch (ServiceException e) {
-            LOG.error("Problem fetching results for " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
-            String message = exploitProtectionService.cleanString(e.getMessage());
-            throw recreateSpecificServiceException(e, message, e.getCause());
-        }
-    }
+      return persistenceManager.update(persistencePackage);
+    } catch (ServiceException e) {
+      if (e instanceof ValidationException) {
+        LOG.warn("Not saving entity as it has failed validation");
 
-    protected void cleanEntity(Entity entity) throws ServiceException {
-        Property currentProperty = null;
-        try {
-            for (Property property : entity.getProperties()) {
-                currentProperty = property;
-                property.setRawValue(property.getValue());
-                property.setValue(exploitProtectionService.cleanStringWithResults(property.getValue()));
-                property.setUnHtmlEncodedValue(StringEscapeUtils.unescapeHtml(property.getValue()));
-            }
-        } catch (CleanStringException e) {
-            StringBuilder sb = new StringBuilder();
-            for (int j=0;j<e.getCleanResults().getNumberOfErrors();j++){
-                sb.append(j+1);
-                sb.append(") ");
-                sb.append((String) e.getCleanResults().getErrorMessages().get(j));
-                sb.append("\n");
-            }
-            sb.append("\nNote - ");
-            sb.append(exploitProtectionService.getAntiSamyPolicyFileLocation());
-            sb.append(" policy in effect. Set a new policy file to modify validation behavior/strictness.");
-            entity.addValidationError(currentProperty.getName(), sb.toString());
-        }
-    }
+        return ((ValidationException) e).getEntity();
+      } else if (e.getCause() instanceof ValidationException) {
+        LOG.warn("Not saving entity as it has failed validation");
 
-    @Override
-    public Entity add(PersistencePackage persistencePackage) throws ServiceException {
-        cleanEntity(persistencePackage.getEntity());
-        if (persistencePackage.getEntity().isValidationFailure()) {
-            return persistencePackage.getEntity();
-        }
-        try {
-            PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
-            persistenceManager.setTargetMode(TargetModeType.SANDBOX);
-            return persistenceManager.add(persistencePackage);
-        } catch (ServiceException e) {
-            if (e instanceof ValidationException) {
-                LOG.warn("Not saving entity as it has failed validation");
-                return ((ValidationException) e).getEntity();
-            } else if (e.getCause() instanceof ValidationException) {
-                LOG.warn("Not saving entity as it has failed validation");
-                return ((ValidationException) e.getCause()).getEntity();
-            }
-            
-            String message = exploitProtectionService.cleanString(e.getMessage());
-            LOG.error("Problem adding new " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
-            throw recreateSpecificServiceException(e, message, e.getCause());
-        }
-    }
+        return ((ValidationException) e.getCause()).getEntity();
+      }
 
-    @Override
-    public Entity update(PersistencePackage persistencePackage) throws ServiceException {
-        cleanEntity(persistencePackage.getEntity());
-        if (persistencePackage.getEntity().isValidationFailure()) {
-            return persistencePackage.getEntity();
-        }
-        try {
-            PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
-            persistenceManager.setTargetMode(TargetModeType.SANDBOX);
-            return persistenceManager.update(persistencePackage);
-        } catch (ServiceException e) {
-            if (e instanceof ValidationException) {
-                LOG.warn("Not saving entity as it has failed validation");
-                return ((ValidationException) e).getEntity();
-            } else if (e.getCause() instanceof ValidationException) {
-                LOG.warn("Not saving entity as it has failed validation");
-                return ((ValidationException) e.getCause()).getEntity();
-            }
-            LOG.error("Problem updating " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
-            String message = exploitProtectionService.cleanString(e.getMessage());
-            throw recreateSpecificServiceException(e, message, e.getCause());
-        }
-    }
+      LOG.error("Problem updating " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
 
-    @Override
-    public void remove(PersistencePackage persistencePackage) throws ServiceException {
-        try {
-            PersistenceManager persistenceManager = (PersistenceManager) applicationContext.getBean(persistenceManagerRef);
-            persistenceManager.setTargetMode(TargetModeType.SANDBOX);
-            persistenceManager.remove(persistencePackage);
-        } catch (ServiceException e) {
-            LOG.error("Problem removing " + persistencePackage.getCeilingEntityFullyQualifiedClassname(), e);
-            String message = exploitProtectionService.cleanString(e.getMessage());
-            throw recreateSpecificServiceException(e, message, e.getCause());
-        }
+      String message = exploitProtectionService.cleanString(e.getMessage());
+      throw recreateSpecificServiceException(e, message, e.getCause());
     }
+  } // end method update
 
-    @Override
-    public String getPersistenceManagerRef() {
-        return persistenceManagerRef;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setPersistenceManagerRef(String persistenceManagerRef) {
-        this.persistenceManagerRef = persistenceManagerRef;
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   entity  DOCUMENT ME!
+   *
+   * @throws  ServiceException  DOCUMENT ME!
+   */
+  protected void cleanEntity(Entity entity) throws ServiceException {
+    Property currentProperty = null;
+
+    try {
+      for (Property property : entity.getProperties()) {
+        currentProperty = property;
+        property.setRawValue(property.getValue());
+        property.setValue(exploitProtectionService.cleanStringWithResults(property.getValue()));
+        property.setUnHtmlEncodedValue(StringEscapeUtils.unescapeHtml(property.getValue()));
+      }
+    } catch (CleanStringException e) {
+      StringBuilder sb = new StringBuilder();
+
+      for (int j = 0; j < e.getCleanResults().getNumberOfErrors(); j++) {
+        sb.append(j + 1);
+        sb.append(") ");
+        sb.append((String) e.getCleanResults().getErrorMessages().get(j));
+        sb.append("\n");
+      }
+
+      sb.append("\nNote - ");
+      sb.append(exploitProtectionService.getAntiSamyPolicyFileLocation());
+      sb.append(" policy in effect. Set a new policy file to modify validation behavior/strictness.");
+      entity.addValidationError(currentProperty.getName(), sb.toString());
     }
-}
+  } // end method cleanEntity
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /*@Override
+  public BatchDynamicResultSet batchInspect(BatchPersistencePackage batchPersistencePackage) throws ServiceException {
+      try {
+          List<DynamicResultSet> dynamicResultSetList = new ArrayList<DynamicResultSet>(15);
+          List<PersistencePackage> persistencePackageList;
+          boolean containsCache = false;
+          if (METADATA_CACHE.containsKey(batchPersistencePackage)) {
+              containsCache = true;
+              persistencePackageList = new ArrayList<PersistencePackage>();
+              for (PersistencePackage persistencePackage : batchPersistencePackage.getPersistencePackages()) {
+                  if (persistencePackage.getPersistencePerspective().getUseServerSideInspectionCache()) {
+                      checkResultSetList: {
+                          for (DynamicResultSet dynamicResultSet : METADATA_CACHE.get(batchPersistencePackage).getDynamicResultSets()) {
+                              if (dynamicResultSet.getBatchId().equals(persistencePackage.getBatchId())) {
+                                  dynamicResultSetList.add(dynamicResultSet);
+                                  break checkResultSetList;
+                              }
+                          }
+                          throw new IllegalArgumentException("Unable to find a result for batchId(" + persistencePackage.getBatchId() + ") in cached batch result set.");
+                      }
+                  } else {
+                      persistencePackageList.add(persistencePackage);
+                  }
+              }
+          } else {
+              persistencePackageList = Arrays.asList(batchPersistencePackage.getPersistencePackages());
+          }
+          for (PersistencePackage persistencePackage : persistencePackageList) {
+              DynamicResultSet resultSet = inspect(persistencePackage);
+              resultSet.setBatchId(persistencePackage.getBatchId());
+              dynamicResultSetList.add(resultSet);
+          }
+          Collections.sort(dynamicResultSetList, new Comparator<DynamicResultSet>() {
+              @Override
+              public int compare(DynamicResultSet o1, DynamicResultSet o2) {
+                  return o1.getBatchId().compareTo(o2.getBatchId());
+              }
+          });
+          BatchDynamicResultSet batchResults = new BatchDynamicResultSet();
+          batchResults.setDynamicResultSets(dynamicResultSetList.toArray(new DynamicResultSet[dynamicResultSetList.size()]));
+          if (!containsCache) {
+              METADATA_CACHE.put(batchPersistencePackage, batchResults);
+              return METADATA_CACHE.get(batchPersistencePackage);
+          } else {
+              return batchResults;
+          }
+      } catch (IllegalArgumentException e) {
+          LOG.error("Problem performing batch inspect", e);
+          throw new ServiceException("Problem performing batch inspect", e);
+      }
+  }*/
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   e        DOCUMENT ME!
+   * @param   message  DOCUMENT ME!
+   * @param   cause    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  RuntimeException  DOCUMENT ME!
+   */
+  protected ServiceException recreateSpecificServiceException(ServiceException e, String message, Throwable cause) {
+    try {
+      ServiceException newException;
+
+      if (cause == null) {
+        Constructor constructor = e.getClass().getConstructor(String.class);
+        newException = (ServiceException) constructor.newInstance(message);
+      } else {
+        Constructor constructor = e.getClass().getConstructor(String.class, Throwable.class);
+        newException = (ServiceException) constructor.newInstance(message, cause);
+      }
+
+      return newException;
+    } catch (Exception e1) {
+      throw new RuntimeException(e1);
+    }
+  }
+} // end class DynamicEntityRemoteService

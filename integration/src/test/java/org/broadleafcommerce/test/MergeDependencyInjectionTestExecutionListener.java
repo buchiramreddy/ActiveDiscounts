@@ -17,21 +17,33 @@
 package org.broadleafcommerce.test;
 
 import org.broadleafcommerce.common.extensibility.context.MergeClassPathXMLApplicationContext;
+
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 @SuppressWarnings("deprecation")
 public class MergeDependencyInjectionTestExecutionListener extends DependencyInjectionTestExecutionListener {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    protected void injectDependencies(TestContext testContext) throws Exception {
-        MergeClassPathXMLApplicationContext context = BaseTest.getContext();
-        Object bean = testContext.getTestInstance();
-        AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
-        beanFactory.autowireBeanProperties(bean, AutowireCapableBeanFactory.AUTOWIRE_AUTODETECT, true);
-        beanFactory.initializeBean(bean, testContext.getTestClass().getName());
-        testContext.removeAttribute(REINJECT_DEPENDENCIES_ATTRIBUTE);
-    }
+  /**
+   * @see  org.springframework.test.context.support.DependencyInjectionTestExecutionListener#injectDependencies(org.springframework.test.context.TestContext)
+   */
+  @Override protected void injectDependencies(TestContext testContext) throws Exception {
+    MergeClassPathXMLApplicationContext context     = BaseTest.getContext();
+    Object                              bean        = testContext.getTestInstance();
+    AutowireCapableBeanFactory          beanFactory = context.getAutowireCapableBeanFactory();
+    beanFactory.autowireBeanProperties(bean, AutowireCapableBeanFactory.AUTOWIRE_AUTODETECT, true);
+    beanFactory.initializeBean(bean, testContext.getTestClass().getName());
+    testContext.removeAttribute(REINJECT_DEPENDENCIES_ATTRIBUTE);
+  }
 
 }

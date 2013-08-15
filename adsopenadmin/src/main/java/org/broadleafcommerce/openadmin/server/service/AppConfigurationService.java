@@ -17,12 +17,21 @@
 package org.broadleafcommerce.openadmin.server.service;
 
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface AppConfigurationService {
-    
-    public Boolean getBooleanPropertyValue(String propertyName);
-    
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   propertyName  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getBooleanPropertyValue(String propertyName);
+
 }

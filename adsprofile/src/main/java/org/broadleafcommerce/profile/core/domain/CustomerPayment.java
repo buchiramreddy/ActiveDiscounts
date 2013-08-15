@@ -17,32 +17,123 @@
 package org.broadleafcommerce.profile.core.domain;
 
 import java.io.Serializable;
+
 import java.util.Map;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerPayment extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, String> getAdditionalFields();
 
-    public Long getId();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Customer getCustomer();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Address getBillingAddress();
 
-    public void setCustomer(Customer customer);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Address getBillingAddress();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Customer getCustomer();
 
-    public void setBillingAddress(Address billingAddress);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getPaymentToken();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public void setPaymentToken(String paymentToken);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public boolean isDefault();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getPaymentToken();
 
-    public void setDefault(boolean isDefault);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Map<String, String> getAdditionalFields();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  boolean isDefault();
 
-    public void setAdditionalFields(Map<String, String> additionalFields);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  additionalFields  DOCUMENT ME!
+   */
+  void setAdditionalFields(Map<String, String> additionalFields);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  billingAddress  DOCUMENT ME!
+   */
+  void setBillingAddress(Address billingAddress);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customer  DOCUMENT ME!
+   */
+  void setCustomer(Customer customer);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isDefault  DOCUMENT ME!
+   */
+  void setDefault(boolean isDefault);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentToken  DOCUMENT ME!
+   */
+  void setPaymentToken(String paymentToken);
+
+} // end interface CustomerPayment

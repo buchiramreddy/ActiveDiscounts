@@ -16,74 +16,148 @@
 
 package org.broadleafcommerce.core.search.domain;
 
-import org.broadleafcommerce.core.catalog.domain.Product;
-
 import java.util.List;
 
+import org.broadleafcommerce.core.catalog.domain.Product;
+
+
 /**
- * Container that holds the result of a ProductSearch
- * 
- * @author Andre Azzolini (apazzolini)
+ * Container that holds the result of a ProductSearch.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class ProductSearchResult {
-    
-    protected List<Product> products;
-    protected List<SearchFacetDTO> facets;
-    
-    protected Integer totalResults;
-    protected Integer page;
-    protected Integer pageSize;
+  /** DOCUMENT ME! */
+  protected List<Product>        products;
 
-    public List<Product> getProducts() {
-        return products;
-    }
+  /** DOCUMENT ME! */
+  protected List<SearchFacetDTO> facets;
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+  /** DOCUMENT ME! */
+  protected Integer totalResults;
 
-    public List<SearchFacetDTO> getFacets() {
-        return facets;
-    }
+  /** DOCUMENT ME! */
+  protected Integer page;
 
-    public void setFacets(List<SearchFacetDTO> facets) {
-        this.facets = facets;
-    }
+  /** DOCUMENT ME! */
+  protected Integer pageSize;
 
-    public Integer getTotalResults() {
-        return totalResults;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<Product> getProducts() {
+    return products;
+  }
 
-    public void setTotalResults(Integer totalResults) {
-        this.totalResults = totalResults;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  products  DOCUMENT ME!
+   */
+  public void setProducts(List<Product> products) {
+    this.products = products;
+  }
 
-    public Integer getPage() {
-        return page;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<SearchFacetDTO> getFacets() {
+    return facets;
+  }
 
-    public void setPage(Integer page) {
-        this.page = page;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  facets  DOCUMENT ME!
+   */
+  public void setFacets(List<SearchFacetDTO> facets) {
+    this.facets = facets;
+  }
 
-    public Integer getPageSize() {
-        return pageSize;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getTotalResults() {
+    return totalResults;
+  }
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-    
-    public Integer getStartResult() {
-        return (products == null || products.size() == 0) ? 0 : ((page - 1) * pageSize) + 1;
-    }
-    
-    public Integer getEndResult() {
-        return Math.min(page * pageSize, totalResults);
-    }
-    
-    public Integer getTotalPages() {
-        return (products == null || products.size() == 0) ? 1 : (int) Math.ceil(totalResults * 1.0 / pageSize);
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  totalResults  DOCUMENT ME!
+   */
+  public void setTotalResults(Integer totalResults) {
+    this.totalResults = totalResults;
+  }
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPage() {
+    return page;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  page  DOCUMENT ME!
+   */
+  public void setPage(Integer page) {
+    this.page = page;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPageSize() {
+    return pageSize;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  pageSize  DOCUMENT ME!
+   */
+  public void setPageSize(Integer pageSize) {
+    this.pageSize = pageSize;
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getStartResult() {
+    return ((products == null) || (products.size() == 0)) ? 0 : (((page - 1) * pageSize) + 1);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getEndResult() {
+    return Math.min(page * pageSize, totalResults);
+  }
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getTotalPages() {
+    return ((products == null) || (products.size() == 0)) ? 1 : (int) Math.ceil(totalResults * 1.0 / pageSize);
+  }
+
+} // end class ProductSearchResult

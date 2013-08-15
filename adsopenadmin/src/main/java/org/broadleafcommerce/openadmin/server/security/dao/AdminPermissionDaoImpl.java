@@ -16,19 +16,11 @@
 
 package org.broadleafcommerce.openadmin.server.security.dao;
 
-import org.apache.commons.lang.ClassUtils;
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionImpl;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
-import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
-import org.hibernate.ejb.QueryHints;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -37,114 +29,182 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang.ClassUtils;
+
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.openadmin.server.security.domain.AdminPermission;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionImpl;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
+
+import org.hibernate.ejb.QueryHints;
+
+import org.springframework.stereotype.Repository;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Repository("blAdminPermissionDao")
 public class AdminPermissionDaoImpl implements AdminPermissionDao {
-    
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    public void deleteAdminPermission(AdminPermission permission) {
-        if (!em.contains(permission)) {
-            permission = readAdminPermissionById(permission.getId());
-        }
-        em.remove(permission);
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao#deleteAdminPermission(org.broadleafcommerce.openadmin.server.security.domain.AdminPermission)
+   */
+  @Override public void deleteAdminPermission(AdminPermission permission) {
+    if (!em.contains(permission)) {
+      permission = readAdminPermissionById(permission.getId());
     }
 
-    public AdminPermission readAdminPermissionById(Long id) {
-        return (AdminPermission) em.find(entityConfiguration.lookupEntityClass("org.broadleafcommerce.openadmin.server.security.domain.AdminPermission"), id);
-    }
-    
-    @Override
-    public AdminPermission readAdminPermissionByName(String name) {
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<AdminPermission> criteria = builder.createQuery(AdminPermission.class);
-        Root<AdminPermissionImpl> adminPerm = criteria.from(AdminPermissionImpl.class);
-        criteria.select(adminPerm);
+    em.remove(permission);
+  }
 
-        List<Predicate> restrictions = new ArrayList<Predicate>();
-        restrictions.add(builder.equal(adminPerm.get("name"), name));
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-        // Execute the query with the restrictions
-        criteria.where(restrictions.toArray(new Predicate[restrictions.size()]));
-        List<AdminPermission> results = em.createQuery(criteria).getResultList();
-        if (results == null || results.size() == 0) {
-            return null;
-        } else {
-            return results.get(0);
-        }
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao#doesOperationExistForCeilingEntity(org.broadleafcommerce.openadmin.server.security.service.type.PermissionType,
+   *       java.lang.String)
+   */
+  @Override public boolean doesOperationExistForCeilingEntity(PermissionType permissionType,
+    String ceilingEntityFullyQualifiedName) {
+    // the ceiling may be an impl, which will fail because entity permission is normally specified for the interface
+    // try the passed in ceiling first, but also try an interfaces implemented
+    List<String> testClasses = new ArrayList<String>();
+    testClasses.add(ceilingEntityFullyQualifiedName);
 
-    public AdminPermission saveAdminPermission(AdminPermission permission) {
-        return em.merge(permission);
+    try {
+      for (Object interfaze : ClassUtils.getAllInterfaces(Class.forName(ceilingEntityFullyQualifiedName))) {
+        testClasses.add(((Class<?>) interfaze).getName());
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<AdminPermission> readAllAdminPermissions() {
-        Query query = em.createNamedQuery("BC_READ_ALL_ADMIN_PERMISSIONS");
-        List<AdminPermission> permissions = query.getResultList();
-        return permissions;
+    for (String testClass : testClasses) {
+      Query query = em.createNamedQuery("BC_COUNT_PERMISSIONS_BY_TYPE_AND_CEILING_ENTITY");
+      query.setParameter("type", permissionType.getType());
+      query.setParameter("ceilingEntity", testClass);
+      query.setHint(QueryHints.HINT_CACHEABLE, true);
+
+      Long count = (Long) query.getSingleResult();
+
+      if (count > 0) {
+        return true;
+      }
     }
 
-    public boolean isUserQualifiedForOperationOnCeilingEntity(AdminUser adminUser, PermissionType permissionType, String ceilingEntityFullyQualifiedName) {
-        //the ceiling may be an impl, which will fail because entity permission is normally specified for the interface
-        //try the passed in ceiling first, but also try an interfaces implemented
-        List<String> testClasses = new ArrayList<String>();
-        testClasses.add(ceilingEntityFullyQualifiedName);
-        try {
-            for (Object interfaze : ClassUtils.getAllInterfaces(Class.forName(ceilingEntityFullyQualifiedName))) {
-                testClasses.add(((Class<?>) interfaze).getName());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    return false;
+  } // end method doesOperationExistForCeilingEntity
 
-        for (String testClass : testClasses) {
-            Query query = em.createNamedQuery("BC_COUNT_PERMISSIONS_FOR_USER_BY_TYPE_AND_CEILING_ENTITY");
-            query.setParameter("adminUser", adminUser);
-            query.setParameter("type", permissionType.getType());
-            query.setParameter("ceilingEntity", testClass);
-            query.setHint(QueryHints.HINT_CACHEABLE, true);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-            Long count = (Long) query.getSingleResult();
-            if (count > 0) {
-                return true;
-            }
-        }
-        return false;
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao#isUserQualifiedForOperationOnCeilingEntity(org.broadleafcommerce.openadmin.server.security.domain.AdminUser,
+   *       org.broadleafcommerce.openadmin.server.security.service.type.PermissionType, java.lang.String)
+   */
+  @Override public boolean isUserQualifiedForOperationOnCeilingEntity(AdminUser adminUser,
+    PermissionType permissionType, String ceilingEntityFullyQualifiedName) {
+    // the ceiling may be an impl, which will fail because entity permission is normally specified for the interface
+    // try the passed in ceiling first, but also try an interfaces implemented
+    List<String> testClasses = new ArrayList<String>();
+    testClasses.add(ceilingEntityFullyQualifiedName);
+
+    try {
+      for (Object interfaze : ClassUtils.getAllInterfaces(Class.forName(ceilingEntityFullyQualifiedName))) {
+        testClasses.add(((Class<?>) interfaze).getName());
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
 
-    public boolean doesOperationExistForCeilingEntity(PermissionType permissionType, String ceilingEntityFullyQualifiedName) {
-        //the ceiling may be an impl, which will fail because entity permission is normally specified for the interface
-        //try the passed in ceiling first, but also try an interfaces implemented
-        List<String> testClasses = new ArrayList<String>();
-        testClasses.add(ceilingEntityFullyQualifiedName);
-        try {
-            for (Object interfaze : ClassUtils.getAllInterfaces(Class.forName(ceilingEntityFullyQualifiedName))) {
-                testClasses.add(((Class<?>) interfaze).getName());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    for (String testClass : testClasses) {
+      Query query = em.createNamedQuery("BC_COUNT_PERMISSIONS_FOR_USER_BY_TYPE_AND_CEILING_ENTITY");
+      query.setParameter("adminUser", adminUser);
+      query.setParameter("type", permissionType.getType());
+      query.setParameter("ceilingEntity", testClass);
+      query.setHint(QueryHints.HINT_CACHEABLE, true);
 
-        for (String testClass : testClasses) {
-            Query query = em.createNamedQuery("BC_COUNT_PERMISSIONS_BY_TYPE_AND_CEILING_ENTITY");
-            query.setParameter("type", permissionType.getType());
-            query.setParameter("ceilingEntity", testClass);
-            query.setHint(QueryHints.HINT_CACHEABLE, true);
+      Long count = (Long) query.getSingleResult();
 
-            Long count = (Long) query.getSingleResult();
-            if (count > 0) {
-                return true;
-            }
-        }
-        return false;
+      if (count > 0) {
+        return true;
+      }
     }
-}
+
+    return false;
+  } // end method isUserQualifiedForOperationOnCeilingEntity
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao#readAdminPermissionById(java.lang.Long)
+   */
+  @Override public AdminPermission readAdminPermissionById(Long id) {
+    return (AdminPermission) em.find(entityConfiguration.lookupEntityClass(
+          "org.broadleafcommerce.openadmin.server.security.domain.AdminPermission"), id);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao#readAdminPermissionByName(java.lang.String)
+   */
+  @Override public AdminPermission readAdminPermissionByName(String name) {
+    CriteriaBuilder                builder   = em.getCriteriaBuilder();
+    CriteriaQuery<AdminPermission> criteria  = builder.createQuery(AdminPermission.class);
+    Root<AdminPermissionImpl>      adminPerm = criteria.from(AdminPermissionImpl.class);
+    criteria.select(adminPerm);
+
+    List<Predicate> restrictions = new ArrayList<Predicate>();
+    restrictions.add(builder.equal(adminPerm.get("name"), name));
+
+    // Execute the query with the restrictions
+    criteria.where(restrictions.toArray(new Predicate[restrictions.size()]));
+
+    List<AdminPermission> results = em.createQuery(criteria).getResultList();
+
+    if ((results == null) || (results.size() == 0)) {
+      return null;
+    } else {
+      return results.get(0);
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao#readAllAdminPermissions()
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<AdminPermission> readAllAdminPermissions() {
+    Query                 query       = em.createNamedQuery("BC_READ_ALL_ADMIN_PERMISSIONS");
+    List<AdminPermission> permissions = query.getResultList();
+
+    return permissions;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.dao.AdminPermissionDao#saveAdminPermission(org.broadleafcommerce.openadmin.server.security.domain.AdminPermission)
+   */
+  @Override public AdminPermission saveAdminPermission(AdminPermission permission) {
+    return em.merge(permission);
+  }
+} // end class AdminPermissionDaoImpl

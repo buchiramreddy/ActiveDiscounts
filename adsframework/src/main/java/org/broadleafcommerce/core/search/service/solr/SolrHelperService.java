@@ -16,162 +16,191 @@
 
 package org.broadleafcommerce.core.search.service.solr;
 
+import java.util.List;
+
 import org.apache.solr.common.SolrInputDocument;
+
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.locale.domain.Locale;
+
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.search.domain.Field;
 import org.broadleafcommerce.core.search.domain.solr.FieldType;
 
-import java.util.List;
 
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public interface SolrHelperService {
+  /**
+   * Swaps the primary and reindex cores. If the reindex core is null, we are operating in single core mode. In this
+   * scenario, no swap occurs.
+   *
+   * @throws  org.broadleafcommerce.common.exception.ServiceException
+   */
+  void swapActiveCores() throws ServiceException;
 
-    /**
-     * Swaps the primary and reindex cores.
-     * If the reindex core is null, we are operating in single core mode. In this scenario, no swap occurs.
-     * 
-     * @throws org.broadleafcommerce.common.exception.ServiceException 
-     */
-    public void swapActiveCores() throws ServiceException;
+  /**
+   * Determines the current namespace we are operating on. For example, if you have multiple sites set up, you may want
+   * to filter that here.
+   *
+   * <ul>
+   *   <li>Note: This method should ALWAYS return a non-empty string.</li>
+   * </ul>
+   *
+   * @return  the global namespace
+   */
+  String getCurrentNamespace();
 
-    /**
-     * Determines the current namespace we are operating on. For example, if you have multiple sites set up, 
-     * you may want to filter that here. 
-     * 
-     * <ul>
-     *     <li>Note: This method should ALWAYS return a non-empty string.</li>
-     * </ul>
-     * 
-     * @return the global namespace 
-     */
-    public String getCurrentNamespace();
+  /**
+   * This property is needed to be non-null to allow filtering by multiple facets at one time and have the results be an
+   * AND of the facets. Apart from being non-empty, the actual value does not matter.
+   *
+   * @return  the non-empty global facet tag field
+   */
+  String getGlobalFacetTagField();
 
-    /**
-     * This property is needed to be non-null to allow filtering by multiple facets at one time and have the results
-     * be an AND of the facets. Apart from being non-empty, the actual value does not matter.
-     * 
-     * @return the non-empty global facet tag field
-     */
-    public String getGlobalFacetTagField();
+  /**
+   * Returns the property name for the given field, field type, and prefix.
+   *
+   * @param   field                DOCUMENT ME!
+   * @param   searchableFieldType  DOCUMENT ME!
+   * @param   prefix               DOCUMENT ME!
+   *
+   * @return  the property name for the field and fieldtype
+   */
+  String getPropertyNameForFieldSearchable(Field field, FieldType searchableFieldType, String prefix);
 
-    /**
-     * Returns the property name for the given field, field type, and prefix
-     * 
-     * @param field
-     * @param searchableFieldType
-     * @param prefix
-     * @return the property name for the field and fieldtype
-     */
-    public String getPropertyNameForFieldSearchable(Field field, FieldType searchableFieldType, String prefix);
+  /**
+   * Returns the property name for the given field, its configured facet field type, and the given prefix.
+   *
+   * @param   field   DOCUMENT ME!
+   * @param   prefix  DOCUMENT ME!
+   *
+   * @return  the property name for the facet type of this field
+   */
+  String getPropertyNameForFieldFacet(Field field, String prefix);
 
-    /**
-     * Returns the property name for the given field, its configured facet field type, and the given prefix
-     * 
-     * @param field
-     * @param prefix
-     * @return the property name for the facet type of this field
-     */
-    public String getPropertyNameForFieldFacet(Field field, String prefix);
-    
-    /**
-     * Returns the searchable field types for the given field. If there were none configured, will return
-     * a list with TEXT FieldType.
-     * 
-     * @param field
-     * @return the searchable field types for the given field
-     */
-    public List<FieldType> getSearchableFieldTypes(Field field);
+  /**
+   * Returns the searchable field types for the given field. If there were none configured, will return a list with TEXT
+   * FieldType.
+   *
+   * @param   field  DOCUMENT ME!
+   *
+   * @return  the searchable field types for the given field
+   */
+  List<FieldType> getSearchableFieldTypes(Field field);
 
-    /**
-     * Returns the property name for the given field and field type. This will apply the global prefix to the field,
-     * and it will also apply either the locale prefix or the pricelist prefix, depending on whether or not the field
-     * type was set to FieldType.PRICE
-     * 
-     * @param field
-     * @param searchableFieldType
-     * @return the property name for the field and fieldtype
-     */
-    public String getPropertyNameForFieldSearchable(Field field, FieldType searchableFieldType);
+  /**
+   * Returns the property name for the given field and field type. This will apply the global prefix to the field, and
+   * it will also apply either the locale prefix or the pricelist prefix, depending on whether or not the field type was
+   * set to FieldType.PRICE
+   *
+   * @param   field                DOCUMENT ME!
+   * @param   searchableFieldType  DOCUMENT ME!
+   *
+   * @return  the property name for the field and fieldtype
+   */
+  String getPropertyNameForFieldSearchable(Field field, FieldType searchableFieldType);
 
-    /**
-     * Returns the property name for the given field and its configured facet field type. This will apply the global prefix 
-     * to the field, and it will also apply either the locale prefix or the pricelist prefix, depending on whether or not 
-     * the field type was set to FieldType.PRICE
-     * 
-     * @param field
-     * @return the property name for the facet type of this field
-     */
-    public String getPropertyNameForFieldFacet(Field field);
-    
-    /**
-     * @param product
-     * @return the Solr id of this product
-     */
-    public String getSolrDocumentId(SolrInputDocument document, Product product);
+  /**
+   * Returns the property name for the given field and its configured facet field type. This will apply the global
+   * prefix to the field, and it will also apply either the locale prefix or the pricelist prefix, depending on whether
+   * or not the field type was set to FieldType.PRICE
+   *
+   * @param   field  DOCUMENT ME!
+   *
+   * @return  the property name for the facet type of this field
+   */
+  String getPropertyNameForFieldFacet(Field field);
 
-    /**
-     * @return the name of the field that keeps track what namespace this document belongs to
-     */
-    public String getNamespaceFieldName();
+  /**
+   * The Solr id of this product.
+   *
+   * @param   document  DOCUMENT ME!
+   * @param   product   DOCUMENT ME!
+   *
+   * @return  the Solr id of this product
+   */
+  String getSolrDocumentId(SolrInputDocument document, Product product);
 
-    /**
-     * @return the id field name, with the global prefix as appropriate
-     */
-    public String getIdFieldName();
-    
-    /**
-     * @return the productId field name
-     */
-    public String getProductIdFieldName();
+  /**
+   * The name of the field that keeps track what namespace this document belongs to.
+   *
+   * @return  the name of the field that keeps track what namespace this document belongs to
+   */
+  String getNamespaceFieldName();
 
-    /**
-     * @return the category field name, with the global prefix as appropriate
-     */
-    public String getCategoryFieldName();
+  /**
+   * The id field name, with the global prefix as appropriate.
+   *
+   * @return  the id field name, with the global prefix as appropriate
+   */
+  String getIdFieldName();
 
-    /**
-     * @return the explicit category field name, with the global prefix as appropriate
-     */
-    public String getExplicitCategoryFieldName();
+  /**
+   * The productId field name.
+   *
+   * @return  the productId field name
+   */
+  String getProductIdFieldName();
 
-    /**
-     * @param category
-     * @return the default sort field name for this category
-     */
-    public String getCategorySortFieldName(Category category);
+  /**
+   * The category field name, with the global prefix as appropriate.
+   *
+   * @return  the category field name, with the global prefix as appropriate
+   */
+  String getCategoryFieldName();
 
-    /**
-     * Determines if there is a locale prefix that needs to be applied to the given field for this particular request.
-     * By default, a locale prefix is not applicable for category, explicitCategory, or fields that have type Price.
-     * Also, it is not applicable for non-translatable fields
-     * 
-     * <ul>
-     *     <li>Note: This method should NOT return null. There must be a default locale configured.</li>
-     * </ul>
-     * 
-     * @return the global prefix if there is one, "" if there isn't
-     */
-    public String getLocalePrefix();
+  /**
+   * The explicit category field name, with the global prefix as appropriate.
+   *
+   * @return  the explicit category field name, with the global prefix as appropriate
+   */
+  String getExplicitCategoryFieldName();
 
-    /**
-     * @return the default locale's prefix
-     */
-    public String getDefaultLocalePrefix();
+  /**
+   * The default sort field name for this category.
+   *
+   * @param   category  DOCUMENT ME!
+   *
+   * @return  the default sort field name for this category
+   */
+  String getCategorySortFieldName(Category category);
 
-    /**
-     * Returns the default locale. Will cache the result for subsequent use.
-     * 
-     * Note: There is no currently configured cache invalidation strategy for the the default locale. 
-     * Override this method to provide for one if you need it.
-     * 
-     * @return the default locale
-     */
-    public Locale getDefaultLocale();
+  /**
+   * Determines if there is a locale prefix that needs to be applied to the given field for this particular request. By
+   * default, a locale prefix is not applicable for category, explicitCategory, or fields that have type Price. Also, it
+   * is not applicable for non-translatable fields
+   *
+   * <ul>
+   *   <li>Note: This method should NOT return null. There must be a default locale configured.</li>
+   * </ul>
+   *
+   * @return  the global prefix if there is one, "" if there isn't
+   */
+  String getLocalePrefix();
+
+  /**
+   * The default locale's prefix.
+   *
+   * @return  the default locale's prefix
+   */
+  String getDefaultLocalePrefix();
+
+  /**
+   * Returns the default locale. Will cache the result for subsequent use.
+   *
+   * <p>Note: There is no currently configured cache invalidation strategy for the the default locale. Override this
+   * method to provide for one if you need it.</p>
+   *
+   * @return  the default locale
+   */
+  Locale getDefaultLocale();
 
 
-}
+} // end interface SolrHelperService

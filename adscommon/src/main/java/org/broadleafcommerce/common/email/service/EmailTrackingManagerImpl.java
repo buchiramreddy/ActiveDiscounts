@@ -16,82 +16,114 @@
 
 package org.broadleafcommerce.common.email.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.broadleafcommerce.common.email.dao.EmailReportingDao;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.broadleafcommerce.common.email.dao.EmailReportingDao;
+
+import org.springframework.stereotype.Service;
+
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 @Service("blEmailTrackingManager")
 public class EmailTrackingManagerImpl implements EmailTrackingManager {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final Log LOG = LogFactory.getLog(EmailTrackingManagerImpl.class);
+  private static final Log LOG = LogFactory.getLog(EmailTrackingManagerImpl.class);
 
-    @Resource(name = "blEmailReportingDao")
-    protected EmailReportingDao emailReportingDao;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Long createTrackedEmail(String emailAddress, String type, String extraValue) {
-        return emailReportingDao.createTracking(emailAddress, type, extraValue);
+  /** DOCUMENT ME! */
+  @Resource(name = "blEmailReportingDao")
+  protected EmailReportingDao emailReportingDao;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.email.service.EmailTrackingManager#createTrackedEmail(java.lang.String,java.lang.String,
+   *       java.lang.String)
+   */
+  @Override public Long createTrackedEmail(String emailAddress, String type, String extraValue) {
+    return emailReportingDao.createTracking(emailAddress, type, extraValue);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.email.service.EmailTrackingManager#recordClick(java.lang.Long, java.util.Map,
+   *       java.lang.String, java.util.Map)
+   */
+  @Override public void recordClick(Long emailId, Map<String, String> parameterMap, String customerId,
+    Map<String, String> extraValues) {
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("recordClick() => Click detected for Email[" + emailId + "]");
     }
 
-    public void recordClick(Long emailId, Map<String, String> parameterMap, String customerId, Map<String, String> extraValues) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("recordClick() => Click detected for Email[" + emailId + "]");
-        }
+    Iterator<String> keys = parameterMap.keySet().iterator();
 
-        Iterator<String> keys = parameterMap.keySet().iterator();
-        // clean up and normalize the query string
-        ArrayList<String> queryParms = new ArrayList<String>();
-        while (keys.hasNext()) {
-            String p = keys.next();
-            // exclude email_id from the parms list
-            if (!p.equals("email_id")) {
-                queryParms.add(p);
-            }
-        }
+    // clean up and normalize the query string
+    ArrayList<String> queryParms = new ArrayList<String>();
 
-        String newQuery = null;
+    while (keys.hasNext()) {
+      String p = keys.next();
 
-        if (!queryParms.isEmpty()) {
-
-            String[] p = queryParms.toArray(new String[queryParms.size()]);
-            Arrays.sort(p);
-
-            StringBuffer newQueryParms = new StringBuffer();
-            for (int cnt = 0; cnt < p.length; cnt++) {
-                newQueryParms.append(p[cnt]);
-                newQueryParms.append("=");
-                newQueryParms.append(parameterMap.get(p[cnt]));
-                if (cnt != p.length - 1) {
-                    newQueryParms.append("&");
-                }
-            }
-            newQuery = newQueryParms.toString();
-        }
-
-        emailReportingDao.recordClick(emailId, customerId, extraValues.get("requestUri"), newQuery);
+      // exclude email_id from the parms list
+      if (!p.equals("email_id")) {
+        queryParms.add(p);
+      }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.containerstore.web.task.service.EmailTrackingManager#recordOpen(java
-     * .lang.String, javax.servlet.http.HttpServletRequest)
-     */
-    public void recordOpen(Long emailId, Map<String, String> extraValues) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Recording open for email id: " + emailId);
+    String newQuery = null;
+
+    if (!queryParms.isEmpty()) {
+      String[] p = queryParms.toArray(new String[queryParms.size()]);
+      Arrays.sort(p);
+
+      StringBuffer newQueryParms = new StringBuffer();
+
+      for (int cnt = 0; cnt < p.length; cnt++) {
+        newQueryParms.append(p[cnt]);
+        newQueryParms.append("=");
+        newQueryParms.append(parameterMap.get(p[cnt]));
+
+        if (cnt != (p.length - 1)) {
+          newQueryParms.append("&");
         }
-        // extract necessary information from the request and record the open
-        emailReportingDao.recordOpen(emailId, extraValues.get("userAgent"));
+      }
+
+      newQuery = newQueryParms.toString();
     }
 
-}
+    emailReportingDao.recordClick(emailId, customerId, extraValues.get("requestUri"), newQuery);
+  } // end method recordClick
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /*
+   * (non-Javadoc)
+   * @see
+   * com.containerstore.web.task.service.EmailTrackingManager#recordOpen(java
+   * .lang.String, javax.servlet.http.HttpServletRequest)
+   */
+  @Override public void recordOpen(Long emailId, Map<String, String> extraValues) {
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Recording open for email id: " + emailId);
+    }
+
+    // extract necessary information from the request and record the open
+    emailReportingDao.recordOpen(emailId, extraValues.get("userAgent"));
+  }
+
+} // end class EmailTrackingManagerImpl

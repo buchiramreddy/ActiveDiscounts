@@ -17,13 +17,25 @@
 package org.broadleafcommerce.core.web.processor.extension;
 
 import org.thymeleaf.Arguments;
+
 import org.thymeleaf.dom.Element;
 
+
 /**
- * @author Jerry Ocanas (jocanas)
+ * DOCUMENT ME!
+ *
+ * @author   Jerry Ocanas (jocanas)
+ * @version  $Revision$, $Date$
  */
 public interface HeadProcessorExtensionListener {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void processAttributeValues(Arguments arguments, Element element);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  arguments  DOCUMENT ME!
+   * @param  element    DOCUMENT ME!
+   */
+  void processAttributeValues(Arguments arguments, Element element);
 
 }

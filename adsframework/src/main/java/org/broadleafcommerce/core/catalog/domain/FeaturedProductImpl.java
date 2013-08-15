@@ -16,14 +16,6 @@
 
 package org.broadleafcommerce.core.catalog.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentation;
-import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,99 +26,157 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentation;
+import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_PRODUCT_FEATURED")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
 public class FeaturedProductImpl implements FeaturedProduct {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-
-    /** The id. */
-    @Id
-    @GeneratedValue(generator= "FeaturedProductId")
-    @GenericGenerator(
-        name="FeaturedProductId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="FeaturedProductImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.catalog.domain.FeaturedProductImpl")
-        }
-    )
-    @Column(name = "FEATURED_PRODUCT_ID")
-    protected Long id;
-    
-    @Column(name = "SEQUENCE")
-    @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
-    protected Long sequence;
-
-    @Column(name = "PROMOTION_MESSAGE")
-    @AdminPresentation(friendlyName = "FeaturedProductImpl_Featured_Product_Promotion_Message", largeEntry=true)
-    protected String promotionMessage;
-    
-    @ManyToOne(targetEntity = CategoryImpl.class)
-    @JoinColumn(name = "CATEGORY_ID")
-    @Index(name="PRODFEATURED_CATEGORY_INDEX", columnNames={"CATEGORY_ID"})
-    protected Category category = new CategoryImpl();
-
-    @ManyToOne(targetEntity = ProductImpl.class)
-    @JoinColumn(name = "PRODUCT_ID")
-    @Index(name="PRODFEATURED_PRODUCT_INDEX", columnNames={"PRODUCT_ID"})
-    protected Product product = new ProductImpl();
-
-    @Override
-    public Long getId() {
-        return id;
+  /** The id. */
+  @Column(name = "FEATURED_PRODUCT_ID")
+  @GeneratedValue(generator = "FeaturedProductId")
+  @GenericGenerator(
+    name       = "FeaturedProductId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "FeaturedProductImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.catalog.domain.FeaturedProductImpl"
+      )
     }
+  )
+  @Id protected Long id;
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    @Override
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(visibility = VisibilityEnum.HIDDEN_ALL)
+  @Column(name = "SEQUENCE")
+  protected Long sequence;
 
-    @Override
-    public Long getSequence() {
-        return this.sequence;
-    }
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "FeaturedProductImpl_Featured_Product_Promotion_Message",
+    largeEntry   = true
+  )
+  @Column(name = "PROMOTION_MESSAGE")
+  protected String promotionMessage;
 
-    @Override
-    public String getPromotionMessage() {
-        return promotionMessage;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "PRODFEATURED_CATEGORY_INDEX",
+    columnNames = { "CATEGORY_ID" }
+  )
+  @JoinColumn(name = "CATEGORY_ID")
+  @ManyToOne(targetEntity = CategoryImpl.class)
+  protected Category category = new CategoryImpl();
 
-    @Override
-    public void setPromotionMessage(String promotionMessage) {
-        this.promotionMessage = promotionMessage;
-    }
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "PRODFEATURED_PRODUCT_INDEX",
+    columnNames = { "PRODUCT_ID" }
+  )
+  @JoinColumn(name = "PRODUCT_ID")
+  @ManyToOne(targetEntity = ProductImpl.class)
+  protected Product product = new ProductImpl();
 
-    @Override
-    public Category getCategory() {
-        return category;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
 
-    @Override
-    public Product getProduct() {
-        return product;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#setSequence(java.lang.Long)
+   */
+  @Override public void setSequence(Long sequence) {
+    this.sequence = sequence;
+  }
 
-    @Override
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    
-    @Override
-    public Product getRelatedProduct() {
-        return product;
-    }
-    
-}
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#getSequence()
+   */
+  @Override public Long getSequence() {
+    return this.sequence;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#getPromotionMessage()
+   */
+  @Override public String getPromotionMessage() {
+    return promotionMessage;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#setPromotionMessage(java.lang.String)
+   */
+  @Override public void setPromotionMessage(String promotionMessage) {
+    this.promotionMessage = promotionMessage;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#getCategory()
+   */
+  @Override public Category getCategory() {
+    return category;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#setCategory(org.broadleafcommerce.core.catalog.domain.Category)
+   */
+  @Override public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#getProduct()
+   */
+  @Override public Product getProduct() {
+    return product;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#setProduct(org.broadleafcommerce.core.catalog.domain.Product)
+   */
+  @Override public void setProduct(Product product) {
+    this.product = product;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.FeaturedProduct#getRelatedProduct()
+   */
+  @Override public Product getRelatedProduct() {
+    return product;
+  }
+
+} // end class FeaturedProductImpl

@@ -17,45 +17,61 @@
 package org.broadleafcommerce.cms.web;
 
 /**
- * Implementation of {@code URLProcessor} that indicates the URL was not able to be
- * processed by any of the configured processors.
+ * Implementation of {@code URLProcessor} that indicates the URL was not able to be processed by any of the configured
+ * processors.
  *
- * This is a valid state used to indicate a URL that although not processed by
- * the URL processors will likely be processed by other mechanisms (e.g. Spring-MVC)
- * within the web application.
+ * <p>This is a valid state used to indicate a URL that although not processed by the URL processors will likely be
+ * processed by other mechanisms (e.g. Spring-MVC) within the web application.</p>
  *
- * Created by bpolster.
+ * <p>Created by bpolster.</p>
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class NullURLProcessor implements URLProcessor {
-    private static NullURLProcessor _instance = new NullURLProcessor();
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
+  private static NullURLProcessor _instance = new NullURLProcessor();
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
 
-    public static NullURLProcessor getInstance() {
-        return _instance;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static NullURLProcessor getInstance() {
+    return _instance;
+  }
 
-    /**
-     * Always returns true.
-     *
-     * @param requestURI
-     *
-     * @return true if this URLProcessor is able to process the passed in request
-     */
-    @Override
-    public boolean canProcessURL(String requestURI) {
-        return true;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     *  The processURL method should not be called on the NullURLProcessor.   This class provides a cacheable
-     *  instance of URLProcessor that indicates to the controlling program (@see BroadleafProcessURLFilter)
-     *  that the current URL cannot be processed.
-     *
-     * @param requestURI The requestURI with the context path trimmed off
-     * @return true if the processor was able to process the passed in URL.
-     * @throws UnsupportedOperationException
-     */
-    public boolean processURL(String requestURI) {
-        throw new UnsupportedOperationException();
-    }
-}
+  /**
+   * Always returns true.
+   *
+   * @param   requestURI  DOCUMENT ME!
+   *
+   * @return  true if this URLProcessor is able to process the passed in request
+   */
+  @Override public boolean canProcessURL(String requestURI) {
+    return true;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The processURL method should not be called on the NullURLProcessor. This class provides a cacheable instance of
+   * URLProcessor that indicates to the controlling program (@see BroadleafProcessURLFilter) that the current URL cannot
+   * be processed.
+   *
+   * @param   requestURI  The requestURI with the context path trimmed off
+   *
+   * @return  true if the processor was able to process the passed in URL.
+   *
+   * @throws  UnsupportedOperationException
+   */
+  @Override public boolean processURL(String requestURI) {
+    throw new UnsupportedOperationException();
+  }
+} // end class NullURLProcessor

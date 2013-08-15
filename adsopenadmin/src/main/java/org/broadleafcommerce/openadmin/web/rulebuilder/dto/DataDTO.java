@@ -17,52 +17,120 @@
 package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class DataDTO implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected Long id;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected Integer quantity;
+  /** DOCUMENT ME! */
+  protected String groupOperator;
 
-    protected String groupOperator;
+  /** DOCUMENT ME! */
+  protected ArrayList<DataDTO> groups = new ArrayList<DataDTO>();
 
-    protected ArrayList<DataDTO> groups = new ArrayList<DataDTO>();
+  /** DOCUMENT ME! */
+  protected Long id;
 
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  protected Integer quantity;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Integer getQuantity() {
-        return quantity;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getGroupOperator() {
+    return groupOperator;
+  }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getGroupOperator() {
-        return groupOperator;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public ArrayList<DataDTO> getGroups() {
+    return groups;
+  }
 
-    public void setGroupOperator(String groupOperator) {
-        this.groupOperator = groupOperator;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public ArrayList<DataDTO> getGroups() {
-        return groups;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return id;
+  }
 
-    public void setGroups(ArrayList<DataDTO> groups) {
-        this.groups = groups;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getQuantity() {
+    return quantity;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  groupOperator  DOCUMENT ME!
+   */
+  public void setGroupOperator(String groupOperator) {
+    this.groupOperator = groupOperator;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  groups  DOCUMENT ME!
+   */
+  public void setGroups(ArrayList<DataDTO> groups) {
+    this.groups = groups;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
+  }
+} // end class DataDTO

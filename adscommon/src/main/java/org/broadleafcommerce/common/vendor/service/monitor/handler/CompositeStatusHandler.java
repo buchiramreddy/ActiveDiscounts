@@ -16,28 +16,56 @@
 
 package org.broadleafcommerce.common.vendor.service.monitor.handler;
 
-import org.broadleafcommerce.common.vendor.service.monitor.StatusHandler;
-import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.common.vendor.service.monitor.StatusHandler;
+import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class CompositeStatusHandler implements StatusHandler {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected List<StatusHandler> handlers = new ArrayList<StatusHandler>();
+  /** DOCUMENT ME! */
+  protected List<StatusHandler> handlers = new ArrayList<StatusHandler>();
 
-    public void handleStatus(String serviceName, ServiceStatusType status) {
-        for (StatusHandler statusHandler : handlers) {
-            statusHandler.handleStatus(serviceName, status);
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<StatusHandler> getHandlers() {
+    return handlers;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.vendor.service.monitor.StatusHandler#handleStatus(java.lang.String, org.broadleafcommerce.common.vendor.service.type.ServiceStatusType)
+   */
+  @Override public void handleStatus(String serviceName, ServiceStatusType status) {
+    for (StatusHandler statusHandler : handlers) {
+      statusHandler.handleStatus(serviceName, status);
     }
+  }
 
-    public List<StatusHandler> getHandlers() {
-        return handlers;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setHandlers(List<StatusHandler> handlers) {
-        this.handlers = handlers;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  handlers  DOCUMENT ME!
+   */
+  public void setHandlers(List<StatusHandler> handlers) {
+    this.handlers = handlers;
+  }
 
-}
+} // end class CompositeStatusHandler

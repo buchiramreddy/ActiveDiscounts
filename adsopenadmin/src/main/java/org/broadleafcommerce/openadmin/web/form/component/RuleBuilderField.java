@@ -19,54 +19,138 @@ package org.broadleafcommerce.openadmin.web.form.component;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataWrapper;
 
+
 /**
- * @author Elbert Bautista (elbertbautista)
+ * DOCUMENT ME!
+ *
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 public class RuleBuilderField extends Field {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String fieldBuilder;
-    protected String styleClass;
-    protected DataWrapper dataWrapper;
-    protected String json;
-    protected String jsonFieldName;
+  /** DOCUMENT ME! */
+  protected DataWrapper dataWrapper;
 
-    public String getFieldBuilder() {
-        return fieldBuilder;
-    }
+  /** DOCUMENT ME! */
+  protected String fieldBuilder;
 
-    public void setFieldBuilder(String fieldBuilder) {
-        this.fieldBuilder = fieldBuilder;
-    }
+  /** DOCUMENT ME! */
+  protected String json;
 
-    public String getStyleClass() {
-        return styleClass;
-    }
+  /** DOCUMENT ME! */
+  protected String jsonFieldName;
 
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
+  /** DOCUMENT ME! */
+  protected String styleClass;
 
-    public DataWrapper getDataWrapper() {
-        return dataWrapper;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setDataWrapper(DataWrapper dataWrapper) {
-        this.dataWrapper = dataWrapper;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public DataWrapper getDataWrapper() {
+    return dataWrapper;
+  }
 
-    public String getJson() {
-        return json;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setJson(String json) {
-        this.json = json;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getFieldBuilder() {
+    return fieldBuilder;
+  }
 
-    public String getJsonFieldName() {
-        return jsonFieldName;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setJsonFieldName(String jsonFieldName) {
-        this.jsonFieldName = jsonFieldName;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getJson() {
+    return json;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getJsonFieldName() {
+    return jsonFieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getStyleClass() {
+    return styleClass;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  dataWrapper  DOCUMENT ME!
+   */
+  public void setDataWrapper(DataWrapper dataWrapper) {
+    this.dataWrapper = dataWrapper;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fieldBuilder  DOCUMENT ME!
+   */
+  public void setFieldBuilder(String fieldBuilder) {
+    this.fieldBuilder = fieldBuilder;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  json  DOCUMENT ME!
+   */
+  public void setJson(String json) {
+    this.json = json;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  jsonFieldName  DOCUMENT ME!
+   */
+  public void setJsonFieldName(String jsonFieldName) {
+    this.jsonFieldName = jsonFieldName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  styleClass  DOCUMENT ME!
+   */
+  public void setStyleClass(String styleClass) {
+    this.styleClass = styleClass;
+  }
+} // end class RuleBuilderField

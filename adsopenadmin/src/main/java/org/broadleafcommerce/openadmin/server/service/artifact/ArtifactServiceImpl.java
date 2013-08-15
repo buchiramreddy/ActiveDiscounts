@@ -16,52 +16,78 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact;
 
-import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
-import org.springframework.stereotype.Service;
-
 import java.io.InputStream;
+
 import java.util.Map;
 
+import org.broadleafcommerce.openadmin.server.service.artifact.image.Operation;
+
+import org.springframework.stereotype.Service;
+
+
 /**
- * Created by IntelliJ IDEA.
- * User: jfischer
- * Date: 9/10/11
- * Time: 2:24 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jfischer Date: 9/10/11 Time: 2:24 PM To change this template use File | Settings |
+ * File Templates.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 @Service("blArtifactService")
 public class ArtifactServiceImpl implements ArtifactService {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected ArtifactProcessor[] artifactProcessors;
+  /** DOCUMENT ME! */
+  protected ArtifactProcessor[] artifactProcessors;
 
-    @Override
-    public InputStream convert(InputStream artifactStream, Operation[] operations, String mimeType) throws Exception {
-        for (ArtifactProcessor artifactProcessor : artifactProcessors) {
-            if (artifactProcessor.isSupported(artifactStream, mimeType)) {
-                return artifactProcessor.convert(artifactStream, operations, mimeType);
-            }
-        }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-        return artifactStream;
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.artifact.ArtifactService#buildOperations(java.util.Map,java.io.InputStream,
+   *       java.lang.String)
+   */
+  @Override public Operation[] buildOperations(Map<String, String> parameterMap, InputStream artifactStream,
+    String mimeType) {
+    for (ArtifactProcessor artifactProcessor : artifactProcessors) {
+      if (artifactProcessor.isSupported(artifactStream, mimeType)) {
+        return artifactProcessor.buildOperations(parameterMap, artifactStream, mimeType);
+      }
     }
 
-    public Operation[] buildOperations(Map<String, String> parameterMap, InputStream artifactStream, String mimeType) {
-        for (ArtifactProcessor artifactProcessor : artifactProcessors) {
-            if (artifactProcessor.isSupported(artifactStream, mimeType)) {
-                return artifactProcessor.buildOperations(parameterMap, artifactStream, mimeType);
-            }
-        }
+    return null;
+  }
 
-        return null;
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.artifact.ArtifactService#convert(java.io.InputStream,org.broadleafcommerce.openadmin.server.service.artifact.image.Operation[],
+   *       java.lang.String)
+   */
+  @Override public InputStream convert(InputStream artifactStream, Operation[] operations, String mimeType)
+    throws Exception {
+    for (ArtifactProcessor artifactProcessor : artifactProcessors) {
+      if (artifactProcessor.isSupported(artifactStream, mimeType)) {
+        return artifactProcessor.convert(artifactStream, operations, mimeType);
+      }
     }
 
-    @Override
-    public ArtifactProcessor[] getArtifactProcessors() {
-        return artifactProcessors;
-    }
+    return artifactStream;
+  }
 
-    @Override
-    public void setArtifactProcessors(ArtifactProcessor[] artifactProcessors) {
-        this.artifactProcessors = artifactProcessors;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.artifact.ArtifactService#getArtifactProcessors()
+   */
+  @Override public ArtifactProcessor[] getArtifactProcessors() {
+    return artifactProcessors;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.artifact.ArtifactService#setArtifactProcessors(org.broadleafcommerce.openadmin.server.service.artifact.ArtifactProcessor[])
+   */
+  @Override public void setArtifactProcessors(ArtifactProcessor[] artifactProcessors) {
+    this.artifactProcessors = artifactProcessors;
+  }
+} // end class ArtifactServiceImpl

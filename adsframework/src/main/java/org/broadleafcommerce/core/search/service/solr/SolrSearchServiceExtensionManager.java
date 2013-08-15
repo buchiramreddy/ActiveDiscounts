@@ -17,18 +17,23 @@
 package org.broadleafcommerce.core.search.service.solr;
 
 import org.broadleafcommerce.core.extension.ExtensionManager;
+
 import org.springframework.stereotype.Service;
 
 
 /**
- * Manages extension points for SolrSearchService
- * @author bpolster
+ * Manages extension points for SolrSearchService.
+ *
+ * @author   bpolster
+ * @version  $Revision$, $Date$
  */
 @Service("blSolrSearchServiceExtensionManager")
 public class SolrSearchServiceExtensionManager extends ExtensionManager<SolrSearchServiceExtensionHandler> {
-
-    public SolrSearchServiceExtensionManager() {
-        super(SolrSearchServiceExtensionHandler.class);
-    }
+  /**
+   * Creates a new SolrSearchServiceExtensionManager object.
+   */
+  public SolrSearchServiceExtensionManager() {
+    super(SolrSearchServiceExtensionHandler.class);
+  }
 
 }

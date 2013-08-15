@@ -16,51 +16,71 @@
 
 package org.broadleafcommerce.core.order.dao;
 
-import org.broadleafcommerce.common.persistence.EntityConfiguration;
-import org.broadleafcommerce.core.order.domain.FulfillmentOption;
-import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
-import org.broadleafcommerce.core.order.service.type.FulfillmentType;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+
+import org.broadleafcommerce.core.order.domain.FulfillmentOption;
+import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
+import org.broadleafcommerce.core.order.service.type.FulfillmentType;
+
+import org.springframework.stereotype.Repository;
+
 
 /**
- * 
- * @author Phillip Verheyden
+ * DOCUMENT ME!
+ *
+ * @author   Phillip Verheyden
+ * @version  $Revision$, $Date$
  */
 @Repository("blFulfillmentOptionDao")
 public class FulfillmentOptionDaoImpl implements FulfillmentOptionDao {
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEntityConfiguration")
+  protected EntityConfiguration entityConfiguration;
 
-    @Resource(name="blEntityConfiguration")
-    protected EntityConfiguration entityConfiguration;
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentOptionDao#readFulfillmentOptionById(java.lang.Long)
+   */
+  @Override public FulfillmentOption readFulfillmentOptionById(final Long fulfillmentOptionId) {
+    return em.find(FulfillmentOptionImpl.class, fulfillmentOptionId);
+  }
 
-    @Override
-    public FulfillmentOption readFulfillmentOptionById(final Long fulfillmentOptionId) {
-        return em.find(FulfillmentOptionImpl.class, fulfillmentOptionId);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentOptionDao#save(org.broadleafcommerce.core.order.domain.FulfillmentOption)
+   */
+  @Override public FulfillmentOption save(FulfillmentOption option) {
+    return em.merge(option);
+  }
 
-    @Override
-    public FulfillmentOption save(FulfillmentOption option) {
-        return em.merge(option);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentOptionDao#readAllFulfillmentOptions()
+   */
+  @Override public List<FulfillmentOption> readAllFulfillmentOptions() {
+    TypedQuery<FulfillmentOption> query = em.createNamedQuery("BC_READ_ALL_FULFILLMENT_OPTIONS",
+        FulfillmentOption.class);
 
-    @Override
-    public List<FulfillmentOption> readAllFulfillmentOptions() {
-        TypedQuery<FulfillmentOption> query = em.createNamedQuery("BC_READ_ALL_FULFILLMENT_OPTIONS", FulfillmentOption.class);
-        return query.getResultList();
-    }
+    return query.getResultList();
+  }
 
-    @Override
-    public List<FulfillmentOption> readAllFulfillmentOptionsByFulfillmentType(FulfillmentType type) {
-        TypedQuery<FulfillmentOption> query = em.createNamedQuery("BC_READ_ALL_FULFILLMENT_OPTIONS_BY_TYPE", FulfillmentOption.class);
-        query.setParameter("fulfillmentType", type.getType());
-        return query.getResultList();
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.core.order.dao.FulfillmentOptionDao#readAllFulfillmentOptionsByFulfillmentType(org.broadleafcommerce.core.order.service.type.FulfillmentType)
+   */
+  @Override public List<FulfillmentOption> readAllFulfillmentOptionsByFulfillmentType(FulfillmentType type) {
+    TypedQuery<FulfillmentOption> query = em.createNamedQuery("BC_READ_ALL_FULFILLMENT_OPTIONS_BY_TYPE",
+        FulfillmentOption.class);
+    query.setParameter("fulfillmentType", type.getType());
+
+    return query.getResultList();
+  }
+} // end class FulfillmentOptionDaoImpl

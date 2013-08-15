@@ -16,39 +16,49 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.presentation.AdminPresentationClass;
-import org.broadleafcommerce.core.catalog.domain.Sku;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.broadleafcommerce.common.presentation.AdminPresentationClass;
+
+import org.broadleafcommerce.core.catalog.domain.Sku;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
 /**
- * 
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
+@AdminPresentationClass(friendlyName = "DynamicPriceDiscreteOrderItemImpl_dynamicPriceOrderItem")
+@Cache(
+  usage  = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,
+  region = "blOrderElements"
+)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_DYN_DISCRETE_ORDER_ITEM")
-@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region="blOrderElements")
-@AdminPresentationClass(friendlyName = "DynamicPriceDiscreteOrderItemImpl_dynamicPriceOrderItem")
 public class DynamicPriceDiscreteOrderItemImpl extends DiscreteOrderItemImpl implements DynamicPriceDiscreteOrderItem {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.DiscreteOrderItem#setSku(org.broadleafcommerce.core.catalog.domain.Sku)
+   */
+  @Override public void setSku(Sku sku) {
+    this.sku  = sku;
+    this.name = sku.getName();
+  }
 
-    @Override
-    public void setSku(Sku sku) {
-        this.sku = sku;
-        this.name = sku.getName();
-    }
-
-    @Override
-    public boolean updateSaleAndRetailPrices() {
-        return false;
-    }
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.DiscreteOrderItemImpl#updateSaleAndRetailPrices()
+   */
+  @Override public boolean updateSaleAndRetailPrices() {
+    return false;
+  }
 
 }

@@ -19,20 +19,25 @@ package org.broadleafcommerce.common.logging;
 import org.apache.log4j.spi.Filter;
 import org.apache.log4j.spi.LoggingEvent;
 
+
 /**
- * Log4J filter that will remove any SUPPORT level
- * log messages from appearing
+ * Log4J filter that will remove any SUPPORT level log messages from appearing.
  *
- * @author Jeff Fischer
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class SupportLevelFilter extends Filter {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public int decide(LoggingEvent event) {
-        if(SupportLevel.SUPPORT.equals(event.getLevel())) {
-            return Filter.DENY;
-        }
-        return Filter.ACCEPT;
+  /**
+   * @see  org.apache.log4j.spi.Filter#decide(org.apache.log4j.spi.LoggingEvent)
+   */
+  @Override public int decide(LoggingEvent event) {
+    if (SupportLevel.SUPPORT.equals(event.getLevel())) {
+      return Filter.DENY;
     }
+
+    return Filter.ACCEPT;
+  }
 
 }

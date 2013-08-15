@@ -16,15 +16,27 @@
 
 package org.broadleafcommerce.openadmin.server.dao;
 
-import org.broadleafcommerce.openadmin.dto.FieldMetadata;
-
 import java.util.Map;
 
+import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public interface PropertyBuilder {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Map<String, FieldMetadata> execute(Boolean overridePopulateManyToOne);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   overridePopulateManyToOne  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Map<String, FieldMetadata> execute(Boolean overridePopulateManyToOne);
 
 }

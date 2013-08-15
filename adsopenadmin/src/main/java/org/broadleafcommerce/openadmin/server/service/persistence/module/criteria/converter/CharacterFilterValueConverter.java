@@ -18,19 +18,27 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 
 import org.springframework.stereotype.Component;
 
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blCharacterFilterValueConverter")
 public class CharacterFilterValueConverter implements FilterValueConverter<Character> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Character convert(String stringValue) {
-        if ("true".equals(stringValue)) {
-            return 'Y';
-        } else if ("false".equals(stringValue)) {
-            return 'N';
-        }
-        return stringValue.charAt(0);
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter#convert(java.lang.String)
+   */
+  @Override public Character convert(String stringValue) {
+    if ("true".equals(stringValue)) {
+      return 'Y';
+    } else if ("false".equals(stringValue)) {
+      return 'N';
     }
+
+    return stringValue.charAt(0);
+  }
 }

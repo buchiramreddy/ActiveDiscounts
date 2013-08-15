@@ -16,31 +16,92 @@
 
 package org.broadleafcommerce.core.payment.dao;
 
+import java.util.List;
+
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.PaymentInfo;
 import org.broadleafcommerce.core.payment.domain.PaymentLog;
 import org.broadleafcommerce.core.payment.domain.PaymentResponseItem;
 
-import java.util.List;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PaymentInfoDao {
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfo readPaymentInfoById(Long paymentId);
 
-    public PaymentInfo readPaymentInfoById(Long paymentId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentInfo  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfo save(PaymentInfo paymentInfo);
 
-    public PaymentInfo save(PaymentInfo paymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   paymentResponseItem  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentResponseItem save(PaymentResponseItem paymentResponseItem);
 
-    public PaymentResponseItem save(PaymentResponseItem paymentResponseItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   log  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentLog save(PaymentLog log);
 
-    public PaymentLog save(PaymentLog log);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   order  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<PaymentInfo> readPaymentInfosForOrder(Order order);
 
-    public List<PaymentInfo> readPaymentInfosForOrder(Order order);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentInfo create();
 
-    public PaymentInfo create();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  paymentInfo  DOCUMENT ME!
+   */
+  void delete(PaymentInfo paymentInfo);
 
-    public void delete(PaymentInfo paymentInfo);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentResponseItem createResponseItem();
 
-    public PaymentResponseItem createResponseItem();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  PaymentLog createLog();
 
-    public PaymentLog createLog();
-
-}
+} // end interface PaymentInfoDao

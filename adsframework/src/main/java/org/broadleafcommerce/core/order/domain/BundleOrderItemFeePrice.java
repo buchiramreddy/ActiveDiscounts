@@ -16,36 +16,105 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.money.Money;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface BundleOrderItemFeePrice extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public abstract Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public abstract void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BundleOrderItem getBundleOrderItem();
 
-    public abstract BundleOrderItem getBundleOrderItem();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bundleOrderItem  DOCUMENT ME!
+   */
+  void setBundleOrderItem(BundleOrderItem bundleOrderItem);
 
-    public abstract void setBundleOrderItem(BundleOrderItem bundleOrderItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getAmount();
 
-    public abstract Money getAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(Money amount);
 
-    public abstract void setAmount(Money amount);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public abstract String getName();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
 
-    public abstract void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean isTaxable();
 
-    public abstract Boolean isTaxable();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  isTaxable  DOCUMENT ME!
+   */
+  void setTaxable(Boolean isTaxable);
 
-    public abstract void setTaxable(Boolean isTaxable);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getReportingCode();
 
-    public abstract String getReportingCode();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  reportingCode  DOCUMENT ME!
+   */
+  void setReportingCode(String reportingCode);
 
-    public abstract void setReportingCode(String reportingCode);
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override BundleOrderItemFeePrice clone();
 
-    public BundleOrderItemFeePrice clone();
-
-}
+} // end interface BundleOrderItemFeePrice

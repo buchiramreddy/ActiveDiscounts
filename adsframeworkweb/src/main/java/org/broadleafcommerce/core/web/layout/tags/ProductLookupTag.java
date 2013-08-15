@@ -16,39 +16,86 @@
 
 package org.broadleafcommerce.core.web.layout.tags;
 
-import org.broadleafcommerce.core.catalog.service.CatalogService;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import org.broadleafcommerce.core.catalog.service.CatalogService;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ProductLookupTag extends BodyTagSupport {
-    private static final long serialVersionUID = 1L;
-    private String var;
-    private long productId;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public long getProductId() {
-        return productId;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Override
-    public int doStartTag() throws JspException {
-        WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(pageContext.getServletContext());
-        CatalogService catalogService = (CatalogService) applicationContext.getBean("blCatalogService");
-        pageContext.setAttribute(var, catalogService.findProductById(productId));
-        return EVAL_PAGE;
-    }
+  private long   productId;
+  private String var;
 
-    public String getVar() {
-        return var;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setVar(String var) {
-        this.var = var;
-    }
-}
+  /**
+   * @see  javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
+   */
+  @Override public int doStartTag() throws JspException {
+    WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(
+        pageContext.getServletContext());
+    CatalogService        catalogService     = (CatalogService) applicationContext.getBean("blCatalogService");
+    pageContext.setAttribute(var, catalogService.findProductById(productId));
+
+    return EVAL_PAGE;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public long getProductId() {
+    return productId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getVar() {
+    return var;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  productId  DOCUMENT ME!
+   */
+  public void setProductId(long productId) {
+    this.productId = productId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  var  DOCUMENT ME!
+   */
+  public void setVar(String var) {
+    this.var = var;
+  }
+} // end class ProductLookupTag

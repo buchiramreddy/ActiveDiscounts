@@ -20,13 +20,26 @@ import net.sf.ehcache.Cache;
 
 
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface ServiceResponseCacheable {
-    
-    public void clearCache();
-    
-    public Cache getCache();
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  void clearCache();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Cache getCache();
 
 }

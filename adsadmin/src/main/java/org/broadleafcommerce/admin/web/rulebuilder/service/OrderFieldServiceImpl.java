@@ -17,81 +17,60 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service;
 
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+
 import org.broadleafcommerce.openadmin.server.service.type.RuleIdentifier;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
 import org.broadleafcommerce.openadmin.web.rulebuilder.service.AbstractRuleBuilderFieldService;
+
 import org.springframework.stereotype.Service;
 
+
 /**
- * An implementation of a RuleBuilderFieldService
- * that constructs metadata necessary
- * to build the supported fields for an Order entity
+ * An implementation of a RuleBuilderFieldService that constructs metadata necessary to build the supported fields for
+ * an Order entity.
  *
- * @author Elbert Bautista (elbertbautista)
+ * @author   Elbert Bautista (elbertbautista)
+ * @version  $Revision$, $Date$
  */
 @Service("blOrderFieldService")
 public class OrderFieldServiceImpl extends AbstractRuleBuilderFieldService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void init() {
-        fields.add(new FieldData.Builder()
-                .label("rule_orderCurrenceIsDefault")
-                .name("currency.defaultFlag")
-                .operators("blcOperators_Boolean")
-                .options("[]")
-                .type(SupportedFieldType.BOOLEAN)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_orderCurrencyCode")
-                .name("currency.currencyCode")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_orderCurrencyName")
-                .name("currency.friendlyName")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_orderLocaleIsDefault")
-                .name("locale.defaultFlag")
-                .operators("blcOperators_Boolean")
-                .options("[]")
-                .type(SupportedFieldType.BOOLEAN)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_orderLocaleCode")
-                .name("locale.localeCode")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_orderLocaleName")
-                .name("locale.friendlyName")
-                .operators("blcOperators_Text")
-                .options("[]")
-                .type(SupportedFieldType.STRING)
-                .build());
-        fields.add(new FieldData.Builder()
-                .label("rule_orderSubtotal")
-                .name("subTotal")
-                .operators("blcOperators_Numeric")
-                .options("[]")
-                .type(SupportedFieldType.MONEY)
-                .build());
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.AbstractRuleBuilderFieldService#getDtoClassName()
+   */
+  @Override public String getDtoClassName() {
+    return "org.broadleafcommerce.core.order.domain.OrderImpl";
+  }
 
-    @Override
-    public String getName() {
-        return RuleIdentifier.ORDER;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public String getDtoClassName() {
-        return "org.broadleafcommerce.core.order.domain.OrderImpl";
-    }
-}
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService#getName()
+   */
+  @Override public String getName() {
+    return RuleIdentifier.ORDER;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.web.rulebuilder.service.AbstractRuleBuilderFieldService#init()
+   */
+  @Override public void init() {
+    fields.add(new FieldData.Builder().label("rule_orderCurrenceIsDefault").name("currency.defaultFlag").operators(
+        "blcOperators_Boolean").options("[]").type(SupportedFieldType.BOOLEAN).build());
+    fields.add(new FieldData.Builder().label("rule_orderCurrencyCode").name("currency.currencyCode").operators(
+        "blcOperators_Text").options("[]").type(SupportedFieldType.STRING).build());
+    fields.add(new FieldData.Builder().label("rule_orderCurrencyName").name("currency.friendlyName").operators(
+        "blcOperators_Text").options("[]").type(SupportedFieldType.STRING).build());
+    fields.add(new FieldData.Builder().label("rule_orderLocaleIsDefault").name("locale.defaultFlag").operators(
+        "blcOperators_Boolean").options("[]").type(SupportedFieldType.BOOLEAN).build());
+    fields.add(new FieldData.Builder().label("rule_orderLocaleCode").name("locale.localeCode").operators(
+        "blcOperators_Text").options("[]").type(SupportedFieldType.STRING).build());
+    fields.add(new FieldData.Builder().label("rule_orderLocaleName").name("locale.friendlyName").operators(
+        "blcOperators_Text").options("[]").type(SupportedFieldType.STRING).build());
+    fields.add(new FieldData.Builder().label("rule_orderSubtotal").name("subTotal").operators("blcOperators_Numeric")
+      .options("[]").type(SupportedFieldType.MONEY).build());
+  }
+} // end class OrderFieldServiceImpl

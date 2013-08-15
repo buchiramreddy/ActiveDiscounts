@@ -16,31 +16,57 @@
 
 package org.broadleafcommerce.core.order.service.call;
 
-import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.domain.OrderItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.broadleafcommerce.core.order.domain.Order;
+import org.broadleafcommerce.core.order.domain.OrderItem;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class ReconstructCartResponse {
+  private Order order;
 
-    private Order order;
+  private List<OrderItem> removedItems = new ArrayList<OrderItem>();
 
-    private List<OrderItem> removedItems = new ArrayList<OrderItem>();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Order getOrder() {
+    return order;
+  }
 
-    public Order getOrder() {
-        return order;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  order  DOCUMENT ME!
+   */
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-    public void setOrder(Order order) {
-        this.order = order;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<OrderItem> getRemovedItems() {
+    return removedItems;
+  }
 
-    public List<OrderItem> getRemovedItems() {
-        return removedItems;
-    }
-
-    public void setRemovedItems(List<OrderItem> removedItems) {
-        this.removedItems = removedItems;
-    }
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  removedItems  DOCUMENT ME!
+   */
+  public void setRemovedItems(List<OrderItem> removedItems) {
+    this.removedItems = removedItems;
+  }
+} // end class ReconstructCartResponse

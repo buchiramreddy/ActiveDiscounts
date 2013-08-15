@@ -22,14 +22,47 @@ import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.SimpleValueMapStructure;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface PersistencePerspectiveItemVisitor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void visit(AdornedTargetList adornedTargetList);
-    
-    public void visit(MapStructure mapStructure);
-    
-    public void visit(SimpleValueMapStructure simpleValueMapStructure);
-    
-    public void visit(ForeignKey foreignKey);
-    
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  adornedTargetList  DOCUMENT ME!
+   */
+  void visit(AdornedTargetList adornedTargetList);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  mapStructure  DOCUMENT ME!
+   */
+  void visit(MapStructure mapStructure);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  simpleValueMapStructure  DOCUMENT ME!
+   */
+  void visit(SimpleValueMapStructure simpleValueMapStructure);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  foreignKey  DOCUMENT ME!
+   */
+  void visit(ForeignKey foreignKey);
+
+} // end interface PersistencePerspectiveItemVisitor

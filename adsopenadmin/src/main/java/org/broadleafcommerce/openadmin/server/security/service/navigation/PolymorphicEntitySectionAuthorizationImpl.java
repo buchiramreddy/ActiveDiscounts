@@ -16,44 +16,62 @@
 
 package org.broadleafcommerce.openadmin.server.security.service.navigation;
 
-import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
-import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
-import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
+
+import org.springframework.stereotype.Component;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blPolymorphicEntityCheckSectionAuthorization")
 public class PolymorphicEntitySectionAuthorizationImpl implements SectionAuthorization {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blDynamicEntityDao")
-    protected DynamicEntityDao dynamicEntityDao;
+  /** DOCUMENT ME! */
+  @Resource(name = "blDynamicEntityDao")
+  protected DynamicEntityDao dynamicEntityDao;
 
-    @PersistenceContext(unitName = "blPU")
-    protected EntityManager em;
+  /** DOCUMENT ME! */
+  @PersistenceContext(unitName = "blPU")
+  protected EntityManager em;
 
-    @PostConstruct
-    public void init() {
-        dynamicEntityDao.setStandardEntityManager(em);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  @PostConstruct public void init() {
+    dynamicEntityDao.setStandardEntityManager(em);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.security.service.navigation.SectionAuthorization#isUserAuthorizedToViewSection(org.broadleafcommerce.openadmin.server.security.domain.AdminUser,
+   *       org.broadleafcommerce.openadmin.server.security.domain.AdminSection)
+   */
+  @Override public boolean isUserAuthorizedToViewSection(AdminUser adminUser, AdminSection section) {
+    try {
+      // Only display this section if there are 1 or more entities relative to the ceiling
+      // for this section that are qualified to be created by the admin
+      return
+        dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(
+          Class.forName(section.getCeilingEntity()), false).length > 0;
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    @Override
-    public boolean isUserAuthorizedToViewSection(AdminUser adminUser, AdminSection section) {
-
-        try {
-            //Only display this section if there are 1 or more entities relative to the ceiling 
-            //for this section that are qualified to be created by the admin
-            return dynamicEntityDao.getAllPolymorphicEntitiesFromCeiling(
-                    Class.forName(section.getCeilingEntity()), false).length > 0;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-}
+} // end class PolymorphicEntitySectionAuthorizationImpl

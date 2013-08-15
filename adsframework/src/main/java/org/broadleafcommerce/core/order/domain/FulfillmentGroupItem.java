@@ -16,95 +16,205 @@
 
 package org.broadleafcommerce.core.order.domain;
 
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
-
 import java.io.Serializable;
+
 import java.util.List;
 
+import org.broadleafcommerce.common.money.Money;
+
+import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface FulfillmentGroupItem extends Serializable {
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
 
-    public void setId(Long id);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroup getFulfillmentGroup();
 
-    public FulfillmentGroup getFulfillmentGroup();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
 
-    public void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  OrderItem getOrderItem();
 
-    public OrderItem getOrderItem();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  void setOrderItem(OrderItem orderItem);
 
-    public void setOrderItem(OrderItem orderItem);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  int getQuantity();
 
-    public int getQuantity();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  void setQuantity(int quantity);
 
-    public void setQuantity(int quantity);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getRetailPrice();
 
-    public Money getRetailPrice();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getSalePrice();
 
-    public Money getSalePrice();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @return      DOCUMENT ME!
+   *
+   * @deprecated  Use {@link #getTotalItemAmount()} or {@link #getTotalItemTaxableAmount()}
+   */
+  Money getPrice();
 
-    /**
-     * @deprecated Use {@link #getTotalItemAmount()} or {@link #getTotalItemTaxableAmount()}
-     */
-    public Money getPrice();
-    
-    public Money getTotalItemAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getTotalItemAmount();
 
-    public void setTotalItemAmount(Money amount);
-    
-    public Money getProratedOrderAdjustmentAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setTotalItemAmount(Money amount);
 
-    public void setProratedOrderAdjustmentAmount(Money amount);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getProratedOrderAdjustmentAmount();
 
-    public Money getTotalItemTaxableAmount();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setProratedOrderAdjustmentAmount(Money amount);
 
-    public void setTotalItemTaxableAmount(Money amount);    
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getTotalItemTaxableAmount();
 
-    public FulfillmentGroupStatusType getStatus();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setTotalItemTaxableAmount(Money amount);
 
-    public void setStatus(FulfillmentGroupStatusType status);
-    
-    public void removeAssociations();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  FulfillmentGroupStatusType getStatus();
 
-    public FulfillmentGroupItem clone();
-    
-    /**
-     * Gets a list of TaxDetail objects, which are taxes that apply directly to this item.
-     * The amount in each TaxDetail takes into account the quantity of this item
-     * 
-     * @return a list of taxes that apply to this item
-     */
-    public List<TaxDetail> getTaxes();
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  status  DOCUMENT ME!
+   */
+  void setStatus(FulfillmentGroupStatusType status);
 
-    /**
-     * Sets the list of TaxDetail objects, which are taxes that apply directly to this item.
-     * The amount in each TaxDetail must take into account the quantity of this item
-     * 
-     * @param taxes the list of taxes on this item
-     */
-    public void setTaxes(List<TaxDetail> taxes);
-    
-    /**
-     * Gets the total tax for this item, which is the sum of all taxes for this item.
-     * This total is calculated in the TotalActivity stage of the pricing workflow.
-     *
-     * @return the total tax for this item
-     */
-    public Money getTotalTax();
+  /**
+   * DOCUMENT ME!
+   */
+  void removeAssociations();
 
-    /**
-     * Sets the total tax for this item, which is the sum of all taxes for this item.
-     * This total should only be set during the TotalActivity stage of the pricing workflow.
-     *
-     * @param totalTax the total tax for this item
-     */
-    public void setTotalTax(Money totalTax);
+  /**
+   * @see  java.lang.Object#clone()
+   */
+  @Override FulfillmentGroupItem clone();
 
-    /**
-     * Returns true if this item has pro-rated order adjustments.
-     * @return
-     */
-    boolean getHasProratedOrderAdjustments();
+  /**
+   * Gets a list of TaxDetail objects, which are taxes that apply directly to this item. The amount in each TaxDetail
+   * takes into account the quantity of this item
+   *
+   * @return  a list of taxes that apply to this item
+   */
+  List<TaxDetail> getTaxes();
 
-}
+  /**
+   * Sets the list of TaxDetail objects, which are taxes that apply directly to this item. The amount in each TaxDetail
+   * must take into account the quantity of this item
+   *
+   * @param  taxes  the list of taxes on this item
+   */
+  void setTaxes(List<TaxDetail> taxes);
+
+  /**
+   * Gets the total tax for this item, which is the sum of all taxes for this item. This total is calculated in the
+   * TotalActivity stage of the pricing workflow.
+   *
+   * @return  the total tax for this item
+   */
+  Money getTotalTax();
+
+  /**
+   * Sets the total tax for this item, which is the sum of all taxes for this item. This total should only be set during
+   * the TotalActivity stage of the pricing workflow.
+   *
+   * @param  totalTax  the total tax for this item
+   */
+  void setTotalTax(Money totalTax);
+
+  /**
+   * Returns true if this item has pro-rated order adjustments.
+   *
+   * @return  true if this item has pro-rated order adjustments.
+   */
+  boolean getHasProratedOrderAdjustments();
+
+} // end interface FulfillmentGroupItem

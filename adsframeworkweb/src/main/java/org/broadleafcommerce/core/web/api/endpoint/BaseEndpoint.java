@@ -17,25 +17,44 @@
 package org.broadleafcommerce.core.web.api.endpoint;
 
 import org.springframework.beans.BeansException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public abstract class BaseEndpoint implements ApplicationContextAware, MessageSourceAware {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected ApplicationContext context;
+  /** DOCUMENT ME! */
+  protected ApplicationContext context;
 
-    protected MessageSource messageSource;
+  /** DOCUMENT ME! */
+  protected MessageSource messageSource;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = applicationContext;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
+  /**
+   * @see  org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+   */
+  @Override public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.context = applicationContext;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.MessageSourceAware#setMessageSource(org.springframework.context.MessageSource)
+   */
+  @Override public void setMessageSource(MessageSource messageSource) {
+    this.messageSource = messageSource;
+  }
+
+} // end class BaseEndpoint

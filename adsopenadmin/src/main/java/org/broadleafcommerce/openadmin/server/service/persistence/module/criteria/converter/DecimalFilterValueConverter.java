@@ -16,26 +16,35 @@
 
 package org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.stereotype.Component;
+
+
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 @Component("blDecimalFilterValueConverter")
 public class DecimalFilterValueConverter implements FilterValueConverter<BigDecimal> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public BigDecimal convert(String stringValue) {
-        if (StringUtils.isEmpty(stringValue)) {
-            return null;
-        }
-        try {
-            return new BigDecimal(stringValue);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+  /**
+   * @see  org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter#convert(java.lang.String)
+   */
+  @Override public BigDecimal convert(String stringValue) {
+    if (StringUtils.isEmpty(stringValue)) {
+      return null;
     }
+
+    try {
+      return new BigDecimal(stringValue);
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
 }

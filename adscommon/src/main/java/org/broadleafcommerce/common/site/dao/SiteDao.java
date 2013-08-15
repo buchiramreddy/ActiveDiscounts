@@ -16,44 +16,68 @@
 
 package org.broadleafcommerce.common.site.dao;
 
-import org.broadleafcommerce.common.site.domain.Site;
-
 import java.util.List;
 
+import org.broadleafcommerce.common.site.domain.Site;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface SiteDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    /**
-     * Finds a site by its id.
-     * @param id
-     * @return
-     */
-    public Site retrieve(Long id);
+  /**
+   * A List of all sites in the system.
+   *
+   * @return  a List of all sites in the system
+   */
+  List<Site> readAllActiveSites();
 
-    /**
-     * Finds a site by its domain or domain prefix.
-     * @param domain
-     * @param prefix
-     * @return
-     */
-    public Site retrieveSiteByDomainOrDomainPrefix(String domain, String prefix);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Persists the site changes.
-     * @param site
-     * @return
-     */
-    public Site save(Site site);
+  /**
+   * Finds a site by its id.
+   *
+   * @param   id  DOCUMENT ME!
+   *
+   * @return  finds a site by its id.
+   */
+  Site retrieve(Long id);
 
-    /**
-     * Returns a default site.   This method returns null in the out of box implementation of Broadleaf.
-     * Extend for implementation specific behavior. 
-     * 
-     * @return
-     */
-    public Site retrieveDefaultSite();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return a List of all sites in the system
-     */
-    public List<Site> readAllActiveSites();
-}
+  /**
+   * Returns a default site. This method returns null in the out of box implementation of Broadleaf. Extend for
+   * implementation specific behavior.
+   *
+   * @return  a default site.
+   */
+  Site retrieveDefaultSite();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Finds a site by its domain or domain prefix.
+   *
+   * @param   domain  DOCUMENT ME!
+   * @param   prefix  DOCUMENT ME!
+   *
+   * @return  finds a site by its domain or domain prefix.
+   */
+  Site retrieveSiteByDomainOrDomainPrefix(String domain, String prefix);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Persists the site changes.
+   *
+   * @param   site  DOCUMENT ME!
+   *
+   * @return  persists the site changes.
+   */
+  Site save(Site site);
+} // end interface SiteDao

@@ -19,16 +19,67 @@ package org.broadleafcommerce.common.email.dao;
 import org.broadleafcommerce.common.email.domain.EmailTarget;
 import org.broadleafcommerce.common.email.domain.EmailTracking;
 
+
 /**
- * @author jfischer
+ * DOCUMENT ME!
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public interface EmailReportingDao {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long createTracking(String emailAddress, String type, String extraValue) ;
-    public void recordOpen(Long emailId, String userAgent);
-    public void recordClick(Long emailId, String customerId, String destinationUri, String queryString);
-    public EmailTracking retrieveTracking(Long emailId);
-    public EmailTarget createTarget();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  EmailTarget createTarget();
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailAddress  DOCUMENT ME!
+   * @param   type          DOCUMENT ME!
+   * @param   extraValue    DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long createTracking(String emailAddress, String type, String extraValue);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailId         DOCUMENT ME!
+   * @param  customerId      DOCUMENT ME!
+   * @param  destinationUri  DOCUMENT ME!
+   * @param  queryString     DOCUMENT ME!
+   */
+  void recordClick(Long emailId, String customerId, String destinationUri, String queryString);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailId    DOCUMENT ME!
+   * @param  userAgent  DOCUMENT ME!
+   */
+  void recordOpen(Long emailId, String userAgent);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   emailId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  EmailTracking retrieveTracking(Long emailId);
+
+} // end interface EmailReportingDao

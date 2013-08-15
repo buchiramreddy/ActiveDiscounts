@@ -16,13 +16,10 @@
 
 package com.activediscounts.api.endpoint.cart;
 
-import org.broadleafcommerce.core.web.api.wrapper.OrderWrapper;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -32,26 +29,38 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.broadleafcommerce.core.web.api.wrapper.OrderWrapper;
+
+import org.springframework.context.annotation.Scope;
+
+import org.springframework.stereotype.Component;
+
+
 /**
- * This is a reference REST API endpoint for order history. This can be modified, used as is, or removed. 
- * The purpose is to provide an out of the box RESTful order history service implementation, but also 
- * to allow the implementor to have fine control over the actual API, URIs, and general JAX-RS annotations.
- * 
- * @author Kelly Tisdell
+ * This is a reference REST API endpoint for order history. This can be modified, used as is, or removed. The purpose is
+ * to provide an out of the box RESTful order history service implementation, but also to allow the implementor to have
+ * fine control over the actual API, URIs, and general JAX-RS annotations.
  *
+ * @author   Kelly Tisdell
+ * @version  $Revision$, $Date$
  */
 @Component
-@Scope("singleton")
+@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 @Path("/orders/")
 @Produces(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Scope("singleton")
 public class OrderHistoryEndpoint extends org.broadleafcommerce.core.web.api.endpoint.order.OrderHistoryEndpoint {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    @GET
-    public List<OrderWrapper> findOrdersForCustomer(@Context HttpServletRequest request,
-            @QueryParam("orderStatus") @DefaultValue("SUBMITTED") String orderStatus) {
-        return super.findOrdersForCustomer(request, orderStatus);
-    }
+  /**
+   * @see  org.broadleafcommerce.core.web.api.endpoint.order.OrderHistoryEndpoint#findOrdersForCustomer(javax.servlet.http.HttpServletRequest,
+   *       java.lang.String)
+   */
+  @GET @Override public List<OrderWrapper> findOrdersForCustomer(@Context HttpServletRequest request,
+    @DefaultValue("SUBMITTED")
+    @QueryParam("orderStatus")
+    String orderStatus) {
+    return super.findOrdersForCustomer(request, orderStatus);
+  }
 
 }

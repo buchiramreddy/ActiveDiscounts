@@ -17,26 +17,61 @@
 package org.broadleafcommerce.common.filter;
 
 /**
- * @author Jeff Fischer
+ * DOCUMENT ME!
+ *
+ * @author   Jeff Fischer
+ * @version  $Revision$, $Date$
  */
 public class FilterParameter {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    protected String name;
-    protected String type;
+  /** DOCUMENT ME! */
+  protected String name;
 
-    public String getName() {
-        return name;
-    }
+  /** DOCUMENT ME! */
+  protected String type;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public String getType() {
-        return type;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getName() {
+    return name;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  type  DOCUMENT ME!
+   */
+  public void setType(String type) {
+    this.type = type;
+  }
+} // end class FilterParameter

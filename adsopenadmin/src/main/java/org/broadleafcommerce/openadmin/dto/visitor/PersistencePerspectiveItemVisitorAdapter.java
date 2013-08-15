@@ -22,25 +22,46 @@ import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.SimpleValueMapStructure;
 
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class PersistencePerspectiveItemVisitorAdapter implements PersistencePerspectiveItemVisitor {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void visit(AdornedTargetList adornedTargetList) {
-        //do nothing
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor#visit(org.broadleafcommerce.openadmin.dto.AdornedTargetList)
+   */
+  @Override public void visit(AdornedTargetList adornedTargetList) {
+    // do nothing
+  }
 
-    @Override
-    public void visit(MapStructure mapStructure) {
-        //do nothing
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public void visit(SimpleValueMapStructure simpleValueMapStructure) {
-        //do nothing
-    }
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor#visit(org.broadleafcommerce.openadmin.dto.MapStructure)
+   */
+  @Override public void visit(MapStructure mapStructure) {
+    // do nothing
+  }
 
-    @Override
-    public void visit(ForeignKey foreignKey) {
-        //do nothing
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor#visit(org.broadleafcommerce.openadmin.dto.SimpleValueMapStructure)
+   */
+  @Override public void visit(SimpleValueMapStructure simpleValueMapStructure) {
+    // do nothing
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.openadmin.dto.visitor.PersistencePerspectiveItemVisitor#visit(org.broadleafcommerce.openadmin.dto.ForeignKey)
+   */
+  @Override public void visit(ForeignKey foreignKey) {
+    // do nothing
+  }
+} // end class PersistencePerspectiveItemVisitorAdapter

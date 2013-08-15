@@ -16,26 +16,99 @@
 
 package org.broadleafcommerce.profile.core.service;
 
-import org.broadleafcommerce.profile.core.domain.CustomerPhone;
-
 import java.util.List;
 
+import org.broadleafcommerce.profile.core.domain.CustomerPhone;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface CustomerPhoneService {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public CustomerPhone saveCustomerPhone(CustomerPhone customerPhone);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone create();
 
-    public List<CustomerPhone> readActiveCustomerPhonesByCustomerId(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public CustomerPhone readCustomerPhoneById(Long customerPhoneId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPhoneId  DOCUMENT ME!
+   */
+  void deleteCustomerPhoneById(Long customerPhoneId);
 
-    public void makeCustomerPhoneDefault(Long customerPhoneId, Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void deleteCustomerPhoneById(Long customerPhoneId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone findDefaultCustomerPhone(Long customerId);
 
-    public CustomerPhone findDefaultCustomerPhone(Long customerId);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<CustomerPhone> readAllCustomerPhonesByCustomerId(Long customerId);
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  customerPhoneId  DOCUMENT ME!
+   * @param  customerId       DOCUMENT ME!
+   */
+  void makeCustomerPhoneDefault(Long customerPhoneId, Long customerId);
 
-    public CustomerPhone create();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPhone> readActiveCustomerPhonesByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<CustomerPhone> readAllCustomerPhonesByCustomerId(Long customerId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPhoneId  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone readCustomerPhoneById(Long customerPhoneId);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   customerPhone  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  CustomerPhone saveCustomerPhone(CustomerPhone customerPhone);
+
+} // end interface CustomerPhoneService

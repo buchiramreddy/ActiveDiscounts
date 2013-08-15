@@ -17,50 +17,185 @@
 package org.broadleafcommerce.openadmin.server.security.domain;
 
 import java.io.Serializable;
+
 import java.util.List;
 
+
 /**
+ * DOCUMENT ME!
  *
- * @author elbertbautista
- *
+ * @author   elbertbautista
+ * @version  $Revision$, $Date$
  */
 public interface AdminSection extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getId();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getCeilingEntity();
 
-    public String getName();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setName(String name);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getDisplayController();
 
-    public String getSectionKey();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setSectionKey(String sectionKey);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Integer getDisplayOrder();
 
-    public String getUrl();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setUrl(String url);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
 
-    public List<AdminPermission> getPermissions();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setPermissions(List<AdminPermission> permissions);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  AdminModule getModule();
 
-    public void setDisplayController(String displayController);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getDisplayController();
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getName();
 
-    public AdminModule getModule();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setModule(AdminModule module);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  List<AdminPermission> getPermissions();
 
-    public Boolean getUseDefaultHandler();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setUseDefaultHandler(Boolean useDefaultHandler);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getSectionKey();
 
-    public String getCeilingEntity();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setCeilingEntity(String ceilingEntity);
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  String getUrl();
 
-    public Integer getDisplayOrder();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setDisplayOrder(Integer displayOrder);
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean getUseDefaultHandler();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ceilingEntity  DOCUMENT ME!
+   */
+  void setCeilingEntity(String ceilingEntity);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayController  DOCUMENT ME!
+   */
+  void setDisplayController(String displayController);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  displayOrder  DOCUMENT ME!
+   */
+  void setDisplayOrder(Integer displayOrder);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  module  DOCUMENT ME!
+   */
+  void setModule(AdminModule module);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  permissions  DOCUMENT ME!
+   */
+  void setPermissions(List<AdminPermission> permissions);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sectionKey  DOCUMENT ME!
+   */
+  void setSectionKey(String sectionKey);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  url  DOCUMENT ME!
+   */
+  void setUrl(String url);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  useDefaultHandler  DOCUMENT ME!
+   */
+  void setUseDefaultHandler(Boolean useDefaultHandler);
+} // end interface AdminSection

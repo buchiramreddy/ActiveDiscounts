@@ -16,35 +16,55 @@
 
 package org.broadleafcommerce.core.payment.domain;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public interface GiftCardPaymentInfo extends Referenced {
+  /**
+   * The id.
+   *
+   * @return  the id
+   */
+  @Override Long getId();
 
-    /**
-     * @return the id
-     */
-    public Long getId();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  id  the id to set
+   */
+  @Override void setId(Long id);
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id);
+  /**
+   * The pan.
+   *
+   * @return  the pan
+   */
+  String getPan();
 
-    /**
-     * @return the pan
-     */
-    public String getPan();
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  pan  the pan to set
+   */
+  void setPan(String pan);
 
-    /**
-     * @param pan the pan to set
-     */
-    public void setPan(String pan);
+  /**
+   * The pin.
+   *
+   * @return  the pin
+   */
+  String getPin();
 
-    /**
-     * @return the pin
-     */
-    public String getPin();
-
-    /**
-     * @param pin the pin to set
-     */
-    public void setPin(String pin);
-}
+  /**
+   *
+   * DOCUMENT ME!
+   *
+   * @param  pin  the pin to set
+   */
+  void setPin(String pin);
+} // end interface GiftCardPaymentInfo

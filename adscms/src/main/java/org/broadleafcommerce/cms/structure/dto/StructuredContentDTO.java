@@ -17,100 +17,251 @@
 package org.broadleafcommerce.cms.structure.dto;
 
 import java.io.Serializable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created by bpolster.
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
  */
 public class StructuredContentDTO implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    protected Long id;
-    protected String contentName;
-    protected String contentType;
-    protected String localeCode;
-    protected Integer priority;
-    protected Long sandboxId;    
-    protected Map values = new HashMap<String,String>();
-    protected String ruleExpression;
-    protected List<ItemCriteriaDTO> itemCriteriaDTOList;
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public Long getId() {
-        return id;
-    }
+  /** DOCUMENT ME! */
+  protected String contentName;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  /** DOCUMENT ME! */
+  protected String contentType;
 
-    public String getContentName() {
-        return contentName;
-    }
+  /** DOCUMENT ME! */
+  protected Long                  id;
 
-    public void setContentName(String contentName) {
-        values.put("contentName", contentName);
-        this.contentName = contentName;
-    }
+  /** DOCUMENT ME! */
+  protected List<ItemCriteriaDTO> itemCriteriaDTOList;
 
-    public String getContentType() {
-        return contentType;
-    }
+  /** DOCUMENT ME! */
+  protected String                localeCode;
 
-    public void setContentType(String contentType) {
-        values.put("contentType", contentType);
-        this.contentType = contentType;
-    }
+  /** DOCUMENT ME! */
+  protected Integer               priority;
 
-    public String getLocaleCode() {
-        return localeCode;
-    }
+  /** DOCUMENT ME! */
+  protected String                ruleExpression;
 
-    public void setLocaleCode(String localeCode) {
-        values.put("localeCode", localeCode);
-        this.localeCode = localeCode;
-    }
+  /** DOCUMENT ME! */
+  protected Long                  sandboxId;
 
-    public Integer getPriority() {
-        return priority;
-    }
+  /** DOCUMENT ME! */
+  protected Map                   values = new HashMap<String, String>();
 
-    public void setPriority(Integer priority) {
-        values.put("priority", priority);
-        this.priority = priority;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public Long getSandboxId() {
-        return sandboxId;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getContentName() {
+    return contentName;
+  }
 
-    public void setSandboxId(Long sandboxId) {
-        this.sandboxId = sandboxId;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public Map getValues() {
-        return values;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getContentType() {
+    return contentType;
+  }
 
-    public void setValues(Map values) {
-        this.values = values;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public String getRuleExpression() {
-        return ruleExpression;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getId() {
+    return id;
+  }
 
-    public void setRuleExpression(String ruleExpression) {
-        this.ruleExpression = ruleExpression;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public List<ItemCriteriaDTO> getItemCriteriaDTOList() {
-        return itemCriteriaDTOList;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public List<ItemCriteriaDTO> getItemCriteriaDTOList() {
+    return itemCriteriaDTOList;
+  }
 
-    public void setItemCriteriaDTOList(List<ItemCriteriaDTO> itemCriteriaDTOList) {
-        this.itemCriteriaDTOList = itemCriteriaDTOList;
-    }
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getLocaleCode() {
+    return localeCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Integer getPriority() {
+    return priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getRuleExpression() {
+    return ruleExpression;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Long getSandboxId() {
+    return sandboxId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Map getValues() {
+    return values;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  contentName  DOCUMENT ME!
+   */
+  public void setContentName(String contentName) {
+    values.put("contentName", contentName);
+    this.contentName = contentName;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  contentType  DOCUMENT ME!
+   */
+  public void setContentType(String contentType) {
+    values.put("contentType", contentType);
+    this.contentType = contentType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  itemCriteriaDTOList  DOCUMENT ME!
+   */
+  public void setItemCriteriaDTOList(List<ItemCriteriaDTO> itemCriteriaDTOList) {
+    this.itemCriteriaDTOList = itemCriteriaDTOList;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  localeCode  DOCUMENT ME!
+   */
+  public void setLocaleCode(String localeCode) {
+    values.put("localeCode", localeCode);
+    this.localeCode = localeCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priority  DOCUMENT ME!
+   */
+  public void setPriority(Integer priority) {
+    values.put("priority", priority);
+    this.priority = priority;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  ruleExpression  DOCUMENT ME!
+   */
+  public void setRuleExpression(String ruleExpression) {
+    this.ruleExpression = ruleExpression;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  sandboxId  DOCUMENT ME!
+   */
+  public void setSandboxId(Long sandboxId) {
+    this.sandboxId = sandboxId;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  values  DOCUMENT ME!
+   */
+  public void setValues(Map values) {
+    this.values = values;
+  }
+} // end class StructuredContentDTO

@@ -16,81 +16,144 @@
 
 package org.broadleafcommerce.profile.core.service.type;
 
-import org.broadleafcommerce.common.BroadleafEnumerationType;
-
 import java.io.Serializable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.broadleafcommerce.common.BroadleafEnumerationType;
 
 
 /**
  * An extendible enumeration of customer address types.
- * 
- * @author jfischer
+ *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class CustomerAddressType implements Serializable, BroadleafEnumerationType {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-        private static final Map<String, CustomerAddressType> TYPES = new LinkedHashMap<String, CustomerAddressType>();
+  private static final Map<String, CustomerAddressType> TYPES = new LinkedHashMap<String, CustomerAddressType>();
 
-        public static final CustomerAddressType SHIPPING  = new CustomerAddressType("SHIPPING", "Shipping");
-        public static final CustomerAddressType BILLING  = new CustomerAddressType("BILLING", "Billing");
-        public static final CustomerAddressType OTHER  = new CustomerAddressType("OTHER", "Other");
+  /** DOCUMENT ME! */
+  public static final CustomerAddressType SHIPPING = new CustomerAddressType("SHIPPING", "Shipping");
 
-        public static CustomerAddressType getInstance(final String type) {
-            return TYPES.get(type);
-        }
+  /** DOCUMENT ME! */
+  public static final CustomerAddressType BILLING = new CustomerAddressType("BILLING", "Billing");
 
-        private String type;
-        private String friendlyType;
+  /** DOCUMENT ME! */
+  public static final CustomerAddressType OTHER = new CustomerAddressType("OTHER", "Other");
 
-        public CustomerAddressType() {
-            //do nothing
-        }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-        public CustomerAddressType(final String type, final String friendlyType) {
-            this.friendlyType = friendlyType;
-            setType(type);
-        }
+  private String friendlyType;
 
-        public String getType() {
-            return type;
-        }
+  private String type;
 
-        public String getFriendlyType() {
-            return friendlyType;
-        }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-        private void setType(final String type) {
-            this.type = type;
-            if (!TYPES.containsKey(type)) {
-                TYPES.put(type, this);
-            }
-        }
+  /**
+   * Creates a new CustomerAddressType object.
+   */
+  public CustomerAddressType() {
+    // do nothing
+  }
 
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((type == null) ? 0 : type.hashCode());
-            return result;
-        }
+  /**
+   * Creates a new CustomerAddressType object.
+   *
+   * @param  type          DOCUMENT ME!
+   * @param  friendlyType  DOCUMENT ME!
+   */
+  public CustomerAddressType(final String type, final String friendlyType) {
+    this.friendlyType = friendlyType;
+    setType(type);
+  }
 
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            CustomerAddressType other = (CustomerAddressType) obj;
-            if (type == null) {
-                if (other.type != null)
-                    return false;
-            } else if (!type.equals(other.type))
-                return false;
-            return true;
-        }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   type  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static CustomerAddressType getInstance(final String type) {
+    return TYPES.get(type);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+
+    if (obj == null) {
+      return false;
+    }
+
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+
+    CustomerAddressType other = (CustomerAddressType) obj;
+
+    if (type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!type.equals(other.type)) {
+      return false;
+    }
+
+    return true;
+  } // end method equals
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getFriendlyType()
+   */
+  @Override public String getFriendlyType() {
+    return friendlyType;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.BroadleafEnumerationType#getType()
+   */
+  @Override public String getType() {
+    return type;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  private void setType(final String type) {
+    this.type = type;
+
+    if (!TYPES.containsKey(type)) {
+      TYPES.put(type, this);
+    }
+  }
+} // end class CustomerAddressType

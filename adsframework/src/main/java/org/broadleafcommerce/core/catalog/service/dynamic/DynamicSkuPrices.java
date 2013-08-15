@@ -16,45 +16,83 @@
 
 package org.broadleafcommerce.core.catalog.service.dynamic;
 
-import org.broadleafcommerce.common.money.Money;
-
 import java.io.Serializable;
 
+import org.broadleafcommerce.common.money.Money;
+
+
 /**
- * DTO to represent pricing overrides returned from invocations to {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}
- * @author jfischer
- * @see {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}
+ * DTO to represent pricing overrides returned from invocations to
+ * {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}.
+ *
+ * @author   jfischer
+ * @see      {@link org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService}
+ * @version  $Revision$, $Date$
  */
 public class DynamicSkuPrices implements Serializable {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  protected Money retailPrice;
 
-    protected Money retailPrice;
-    protected Money salePrice;
-    protected Money priceAdjustment;
+  /** DOCUMENT ME! */
+  protected Money salePrice;
 
-    public Money getRetailPrice() {
-        return retailPrice;
-    }
+  /** DOCUMENT ME! */
+  protected Money priceAdjustment;
 
-    public void setRetailPrice(Money retailPrice) {
-        this.retailPrice = retailPrice;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Money getRetailPrice() {
+    return retailPrice;
+  }
 
-    public Money getSalePrice() {
-        return salePrice;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  retailPrice  DOCUMENT ME!
+   */
+  public void setRetailPrice(Money retailPrice) {
+    this.retailPrice = retailPrice;
+  }
 
-    public void setSalePrice(Money salePrice) {
-        this.salePrice = salePrice;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Money getSalePrice() {
+    return salePrice;
+  }
 
-    public Money getPriceAdjustment() {
-        return priceAdjustment;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  salePrice  DOCUMENT ME!
+   */
+  public void setSalePrice(Money salePrice) {
+    this.salePrice = salePrice;
+  }
 
-    public void setPriceAdjustment(Money priceAdjustment) {
-        this.priceAdjustment = priceAdjustment;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public Money getPriceAdjustment() {
+    return priceAdjustment;
+  }
 
-}
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  priceAdjustment  DOCUMENT ME!
+   */
+  public void setPriceAdjustment(Money priceAdjustment) {
+    this.priceAdjustment = priceAdjustment;
+  }
+
+} // end class DynamicSkuPrices

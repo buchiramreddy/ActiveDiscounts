@@ -18,15 +18,30 @@ package org.broadleafcommerce.security.service.dataprovider;
 
 import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminRoleImpl;
+
 import org.testng.annotations.DataProvider;
 
-public class AdminRoleDataProvider {
-    @DataProvider(name = "setupAdminRole")
-    public static Object[][] createAdminRole() {
-        AdminRole adminRole = new AdminRoleImpl();
-        adminRole.setName("TestAdminUserRole");
-        adminRole.setDescription("Test Admin Role");
 
-        return new Object[][] { new Object[] { adminRole } };
-    }
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+public class AdminRoleDataProvider {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  @DataProvider(name = "setupAdminRole")
+  public static Object[][] createAdminRole() {
+    AdminRole adminRole = new AdminRoleImpl();
+    adminRole.setName("TestAdminUserRole");
+    adminRole.setDescription("Test Admin Role");
+
+    return new Object[][] { new Object[] { adminRole } };
+  }
 }

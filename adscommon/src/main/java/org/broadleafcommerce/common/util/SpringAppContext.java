@@ -17,29 +17,42 @@
 package org.broadleafcommerce.common.util;
 
 import org.springframework.beans.BeansException;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+
 /**
- * Provides a means for classes that do not normally have access to
- * a servlet context or application context to be able to obtain
- * the current Spring ApplicationContext instance. This should be a last
- * resort, as it is unlikely this class is ever needed unless an
- * instance of ApplicationContext is required in a custom class
- * instantiated by third-party code.
- * 
- * @author jfischer
+ * Provides a means for classes that do not normally have access to a servlet context or application context to be able
+ * to obtain the current Spring ApplicationContext instance. This should be a last resort, as it is unlikely this class
+ * is ever needed unless an instance of ApplicationContext is required in a custom class instantiated by third-party
+ * code.
  *
+ * @author   jfischer
+ * @version  $Revision$, $Date$
  */
 public class SpringAppContext implements ApplicationContextAware {
-    
-    private static ApplicationContext appContext;
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
-        this.appContext = appContext;
-    }
+  private static ApplicationContext appContext;
 
-    public static ApplicationContext getApplicationContext() {
-        return appContext;
-    }
-}
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public static ApplicationContext getApplicationContext() {
+    return appContext;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+   */
+  @Override public void setApplicationContext(ApplicationContext appContext) throws BeansException {
+    this.appContext = appContext;
+  }
+} // end class SpringAppContext

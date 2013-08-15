@@ -16,12 +16,6 @@
 
 package org.broadleafcommerce.core.pricing.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Parameter;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -32,181 +26,287 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-@Entity
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Parameter;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
+@Cache(
+  usage  = CacheConcurrencyStrategy.READ_WRITE,
+  region = "blStandardElements"
+)
+@Deprecated @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_SHIPPING_RATE")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region="blStandardElements")
-@Deprecated
 public class ShippingRateImpl implements ShippingRate {
+  private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+  /** DOCUMENT ME! */
+  @Column(name = "ID")
+  @GeneratedValue(generator = "ShippingRateId")
+  @GenericGenerator(
+    name       = "ShippingRateId",
+    strategy   = "org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
+    parameters = {
+      @Parameter(
+        name   = "segment_value",
+        value  = "ShippingRateImpl"
+      ),
+      @Parameter(
+        name   = "entity_name",
+        value  = "org.broadleafcommerce.core.pricing.domain.ShippingRateImpl"
+      )
+    }
+  )
+  @Id protected Long id;
 
-    @Id
-    @GeneratedValue(generator = "ShippingRateId")
-    @GenericGenerator(
-        name="ShippingRateId",
-        strategy="org.broadleafcommerce.common.persistence.IdOverrideTableGenerator",
-        parameters = {
-            @Parameter(name="segment_value", value="ShippingRateImpl"),
-            @Parameter(name="entity_name", value="org.broadleafcommerce.core.pricing.domain.ShippingRateImpl")
-        }
-    )
-    @Column(name = "ID")
-    protected Long id;
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "FEE_TYPE",
+    nullable = false
+  )
+  @Index(
+    name        = "SHIPPINGRATE_FEE_INDEX",
+    columnNames = { "FEE_TYPE" }
+  )
+  protected String feeType;
 
-    @Column(name = "FEE_TYPE", nullable=false)
-    @Index(name="SHIPPINGRATE_FEE_INDEX", columnNames={"FEE_TYPE"})
-    protected String feeType;
+  /** DOCUMENT ME! */
+  @Column(name = "FEE_SUB_TYPE")
+  @Index(
+    name        = "SHIPPINGRATE_FEESUB_INDEX",
+    columnNames = { "FEE_SUB_TYPE" }
+  )
+  protected String feeSubType;
 
-    @Column(name = "FEE_SUB_TYPE")
-    @Index(name="SHIPPINGRATE_FEESUB_INDEX", columnNames={"FEE_SUB_TYPE"})
-    protected String feeSubType;
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "FEE_BAND",
+    nullable = false
+  )
+  protected Integer feeBand;
 
-    @Column(name = "FEE_BAND", nullable=false)
-    protected Integer feeBand;
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "BAND_UNIT_QTY",
+    nullable = false
+  )
+  protected BigDecimal bandUnitQuantity;
 
-    @Column(name = "BAND_UNIT_QTY", nullable=false)
-    protected BigDecimal bandUnitQuantity;
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "BAND_RESULT_QTY",
+    nullable = false
+  )
+  protected BigDecimal bandResultQuantity;
 
-    @Column(name = "BAND_RESULT_QTY", nullable=false)
-    protected BigDecimal bandResultQuantity;
+  /** DOCUMENT ME! */
+  @Column(
+    name     = "BAND_RESULT_PCT",
+    nullable = false
+  )
+  protected Integer bandResultPercent;
 
-    @Column(name = "BAND_RESULT_PCT", nullable=false)
-    protected Integer bandResultPercent;
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
 
-    @Override
-    public Long getId() {
-        return id;
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#getFeeType()
+   */
+  @Override public String getFeeType() {
+    return feeType;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#setFeeType(java.lang.String)
+   */
+  @Override public void setFeeType(String feeType) {
+    this.feeType = feeType;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#getFeeSubType()
+   */
+  @Override public String getFeeSubType() {
+    return feeSubType;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#setFeeSubType(java.lang.String)
+   */
+  @Override public void setFeeSubType(String feeSubType) {
+    this.feeSubType = feeSubType;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#getFeeBand()
+   */
+  @Override public Integer getFeeBand() {
+    return feeBand;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#setFeeBand(java.lang.Integer)
+   */
+  @Override public void setFeeBand(Integer feeBand) {
+    this.feeBand = feeBand;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#getBandUnitQuantity()
+   */
+  @Override public BigDecimal getBandUnitQuantity() {
+    return bandUnitQuantity;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#setBandUnitQuantity(java.math.BigDecimal)
+   */
+  @Override public void setBandUnitQuantity(BigDecimal bandUnitQuantity) {
+    this.bandUnitQuantity = bandUnitQuantity;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#getBandResultQuantity()
+   */
+  @Override public BigDecimal getBandResultQuantity() {
+    return bandResultQuantity;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#setBandResultQuantity(java.math.BigDecimal)
+   */
+  @Override public void setBandResultQuantity(BigDecimal bandResultQuantity) {
+    this.bandResultQuantity = bandResultQuantity;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#getBandResultPercent()
+   */
+  @Override public Integer getBandResultPercent() {
+    return bandResultPercent;
+  }
+
+  /**
+   * @see  org.broadleafcommerce.core.pricing.domain.ShippingRate#setBandResultPercent(java.lang.Integer)
+   */
+  @Override public void setBandResultPercent(Integer bandResultPercent) {
+    this.bandResultPercent = bandResultPercent;
+  }
+
+  /**
+   * @see  java.lang.Object#toString()
+   */
+  @Override public String toString() {
+    return getFeeSubType() + " " + getBandResultQuantity() + " " + getBandResultPercent();
+  }
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((bandResultPercent == null) ? 0 : bandResultPercent.hashCode());
+    result = (prime * result) + ((bandResultQuantity == null) ? 0 : bandResultQuantity.hashCode());
+    result = (prime * result) + ((bandUnitQuantity == null) ? 0 : bandUnitQuantity.hashCode());
+    result = (prime * result) + ((feeBand == null) ? 0 : feeBand.hashCode());
+    result = (prime * result) + ((feeSubType == null) ? 0 : feeSubType.hashCode());
+    result = (prime * result) + ((feeType == null) ? 0 : feeType.hashCode());
+
+    return result;
+  }
+
+  /**
+   * @see  java.lang.Object#equals(java.lang.Object)
+   */
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    if (obj == null) {
+      return false;
     }
 
-    @Override
-    public String getFeeType() {
-        return feeType;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
 
-    @Override
-    public void setFeeType(String feeType) {
-        this.feeType = feeType;
+    ShippingRateImpl other = (ShippingRateImpl) obj;
+
+    if ((id != null) && (other.id != null)) {
+      return id.equals(other.id);
     }
 
-    @Override
-    public String getFeeSubType() {
-        return feeSubType;
+    if (bandResultPercent == null) {
+      if (other.bandResultPercent != null) {
+        return false;
+      }
+    } else if (!bandResultPercent.equals(other.bandResultPercent)) {
+      return false;
     }
 
-    @Override
-    public void setFeeSubType(String feeSubType) {
-        this.feeSubType = feeSubType;
+    if (bandResultQuantity == null) {
+      if (other.bandResultQuantity != null) {
+        return false;
+      }
+    } else if (!bandResultQuantity.equals(other.bandResultQuantity)) {
+      return false;
     }
 
-    @Override
-    public Integer getFeeBand() {
-        return feeBand;
+    if (bandUnitQuantity == null) {
+      if (other.bandUnitQuantity != null) {
+        return false;
+      }
+    } else if (!bandUnitQuantity.equals(other.bandUnitQuantity)) {
+      return false;
     }
 
-    @Override
-    public void setFeeBand(Integer feeBand) {
-        this.feeBand = feeBand;
+    if (feeBand == null) {
+      if (other.feeBand != null) {
+        return false;
+      }
+    } else if (!feeBand.equals(other.feeBand)) {
+      return false;
     }
 
-    @Override
-    public BigDecimal getBandUnitQuantity() {
-        return bandUnitQuantity;
+    if (feeSubType == null) {
+      if (other.feeSubType != null) {
+        return false;
+      }
+    } else if (!feeSubType.equals(other.feeSubType)) {
+      return false;
     }
 
-    @Override
-    public void setBandUnitQuantity(BigDecimal bandUnitQuantity) {
-        this.bandUnitQuantity = bandUnitQuantity;
+    if (feeType == null) {
+      if (other.feeType != null) {
+        return false;
+      }
+    } else if (!feeType.equals(other.feeType)) {
+      return false;
     }
 
-    @Override
-    public BigDecimal getBandResultQuantity() {
-        return bandResultQuantity;
-    }
+    return true;
+  } // end method equals
 
-    @Override
-    public void setBandResultQuantity(BigDecimal bandResultQuantity) {
-        this.bandResultQuantity = bandResultQuantity;
-    }
-
-    @Override
-    public Integer getBandResultPercent() {
-        return bandResultPercent;
-    }
-
-    @Override
-    public void setBandResultPercent(Integer bandResultPercent) {
-        this.bandResultPercent = bandResultPercent;
-    }
-
-    @Override
-    public String toString() {
-        return getFeeSubType() + " " + getBandResultQuantity() + " " + getBandResultPercent();
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((bandResultPercent == null) ? 0 : bandResultPercent.hashCode());
-        result = prime * result + ((bandResultQuantity == null) ? 0 : bandResultQuantity.hashCode());
-        result = prime * result + ((bandUnitQuantity == null) ? 0 : bandUnitQuantity.hashCode());
-        result = prime * result + ((feeBand == null) ? 0 : feeBand.hashCode());
-        result = prime * result + ((feeSubType == null) ? 0 : feeSubType.hashCode());
-        result = prime * result + ((feeType == null) ? 0 : feeType.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ShippingRateImpl other = (ShippingRateImpl) obj;
-
-        if (id != null && other.id != null) {
-            return id.equals(other.id);
-        }
-
-        if (bandResultPercent == null) {
-            if (other.bandResultPercent != null)
-                return false;
-        } else if (!bandResultPercent.equals(other.bandResultPercent))
-            return false;
-        if (bandResultQuantity == null) {
-            if (other.bandResultQuantity != null)
-                return false;
-        } else if (!bandResultQuantity.equals(other.bandResultQuantity))
-            return false;
-        if (bandUnitQuantity == null) {
-            if (other.bandUnitQuantity != null)
-                return false;
-        } else if (!bandUnitQuantity.equals(other.bandUnitQuantity))
-            return false;
-        if (feeBand == null) {
-            if (other.feeBand != null)
-                return false;
-        } else if (!feeBand.equals(other.feeBand))
-            return false;
-        if (feeSubType == null) {
-            if (other.feeSubType != null)
-                return false;
-        } else if (!feeSubType.equals(other.feeSubType))
-            return false;
-        if (feeType == null) {
-            if (other.feeType != null)
-                return false;
-        } else if (!feeType.equals(other.feeType))
-            return false;
-        return true;
-    }
-
-}
+} // end class ShippingRateImpl

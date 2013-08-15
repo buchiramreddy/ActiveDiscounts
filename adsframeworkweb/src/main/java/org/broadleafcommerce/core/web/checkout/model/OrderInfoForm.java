@@ -18,24 +18,44 @@ package org.broadleafcommerce.core.web.checkout.model;
 
 import java.io.Serializable;
 
+
 /**
- * A form to model checking out as guest
- * 
- * @author Andre Azzolini (apazzolini)
+ * A form to model checking out as guest.
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class OrderInfoForm implements Serializable {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-    private static final long serialVersionUID = 62974989700147353L;
-    
-    protected String emailAddress;
+  private static final long serialVersionUID = 62974989700147353L;
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-    
-    
-}
+  /** DOCUMENT ME! */
+  protected String emailAddress;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public String getEmailAddress() {
+    return emailAddress;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailAddress  DOCUMENT ME!
+   */
+  public void setEmailAddress(String emailAddress) {
+    this.emailAddress = emailAddress;
+  }
+
+
+} // end class OrderInfoForm

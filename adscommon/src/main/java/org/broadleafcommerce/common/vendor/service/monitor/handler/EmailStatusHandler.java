@@ -16,44 +16,89 @@
 
 package org.broadleafcommerce.common.vendor.service.monitor.handler;
 
+import javax.annotation.Resource;
+
 import org.broadleafcommerce.common.email.domain.EmailTarget;
 import org.broadleafcommerce.common.email.service.EmailService;
 import org.broadleafcommerce.common.email.service.info.EmailInfo;
 import org.broadleafcommerce.common.vendor.service.monitor.StatusHandler;
 import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
 
-import javax.annotation.Resource;
 
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public class EmailStatusHandler implements StatusHandler {
+  //~ Instance fields --------------------------------------------------------------------------------------------------
 
-    @Resource(name="blEmailService")
-    protected EmailService emailService;
+  /** DOCUMENT ME! */
+  protected EmailInfo emailInfo;
 
-    protected EmailInfo emailInfo;
-    protected EmailTarget emailTarget;
+  /** DOCUMENT ME! */
+  @Resource(name = "blEmailService")
+  protected EmailService emailService;
 
-    public void handleStatus(String serviceName, ServiceStatusType status) {
-        String message = serviceName + " is reporting a status of " + status.getType();
-        EmailInfo copy = emailInfo.clone();
-        copy.setMessageBody(message);
-        copy.setSubject(message);
-        emailService.sendBasicEmail(copy, emailTarget, null);
-    }
+  /** DOCUMENT ME! */
+  protected EmailTarget  emailTarget;
 
-    public EmailInfo getEmailInfo() {
-        return emailInfo;
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void setEmailInfo(EmailInfo emailInfo) {
-        this.emailInfo = emailInfo;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public EmailInfo getEmailInfo() {
+    return emailInfo;
+  }
 
-    public EmailTarget getEmailTarget() {
-        return emailTarget;
-    }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
-    public void setEmailTarget(EmailTarget emailTarget) {
-        this.emailTarget = emailTarget;
-    }
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  public EmailTarget getEmailTarget() {
+    return emailTarget;
+  }
 
-}
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.vendor.service.monitor.StatusHandler#handleStatus(java.lang.String, org.broadleafcommerce.common.vendor.service.type.ServiceStatusType)
+   */
+  @Override public void handleStatus(String serviceName, ServiceStatusType status) {
+    String    message = serviceName + " is reporting a status of " + status.getType();
+    EmailInfo copy    = emailInfo.clone();
+    copy.setMessageBody(message);
+    copy.setSubject(message);
+    emailService.sendBasicEmail(copy, emailTarget, null);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailInfo  DOCUMENT ME!
+   */
+  public void setEmailInfo(EmailInfo emailInfo) {
+    this.emailInfo = emailInfo;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  emailTarget  DOCUMENT ME!
+   */
+  public void setEmailTarget(EmailTarget emailTarget) {
+    this.emailTarget = emailTarget;
+  }
+
+} // end class EmailStatusHandler

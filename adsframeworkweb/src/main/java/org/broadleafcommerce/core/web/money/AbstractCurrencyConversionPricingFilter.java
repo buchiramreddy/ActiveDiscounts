@@ -16,34 +16,59 @@
 
 package org.broadleafcommerce.core.web.money;
 
-import org.broadleafcommerce.common.money.CurrencyConversionContext;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import java.io.IOException;
 
+import org.broadleafcommerce.common.money.CurrencyConversionContext;
+
+
+/**
+ * DOCUMENT ME!
+ *
+ * @author   $author$
+ * @version  $Revision$, $Date$
+ */
 public abstract class AbstractCurrencyConversionPricingFilter implements CurrencyConversionPricingFilter {
-    
-    public void destroy() {
-        //do nothing
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        CurrencyConversionContext.setCurrencyConversionContext(getCurrencyConversionContext(request));
-        CurrencyConversionContext.setCurrencyConversionService(getCurrencyConversionService(request));
-        try {
-            filterChain.doFilter(request, response);
-        } finally {
-            CurrencyConversionContext.setCurrencyConversionContext(null);
-            CurrencyConversionContext.setCurrencyConversionService(null);
-        }
-    }
+  /**
+   * @see  javax.servlet.Filter#destroy()
+   */
+  @Override public void destroy() {
+    // do nothing
+  }
 
-    public void init(FilterConfig arg0) throws ServletException {
-        //do nothing
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse,
+   *       javax.servlet.FilterChain)
+   */
+  @Override public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+    throws IOException, ServletException {
+    CurrencyConversionContext.setCurrencyConversionContext(getCurrencyConversionContext(request));
+    CurrencyConversionContext.setCurrencyConversionService(getCurrencyConversionService(request));
+
+    try {
+      filterChain.doFilter(request, response);
+    } finally {
+      CurrencyConversionContext.setCurrencyConversionContext(null);
+      CurrencyConversionContext.setCurrencyConversionService(null);
     }
-    
-}
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  javax.servlet.Filter#init(javax.servlet.FilterConfig)
+   */
+  @Override public void init(FilterConfig arg0) throws ServletException {
+    // do nothing
+  }
+
+} // end class AbstractCurrencyConversionPricingFilter

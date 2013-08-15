@@ -18,14 +18,21 @@ package org.broadleafcommerce.core.workflow;
 
 
 /**
- * @author Andre Azzolini (apazzolini)
+ * DOCUMENT ME!
+ *
+ * @author   Andre Azzolini (apazzolini)
+ * @version  $Revision$, $Date$
  */
 public class ExplicitPrioritySequenceProcessor extends SequenceProcessor {
-    
-    // TODO: Factor in priority for activity order
-    public ProcessContext doActivities(Object seedData) throws WorkflowException {
-        return super.doActivities(seedData);
-    }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  // TODO: Factor in priority for activity order
+  /**
+   * @see  org.broadleafcommerce.core.workflow.SequenceProcessor#doActivities(java.lang.Object)
+   */
+  @Override public ProcessContext doActivities(Object seedData) throws WorkflowException {
+    return super.doActivities(seedData);
+  }
 
 
 }
