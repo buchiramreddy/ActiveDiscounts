@@ -16,10 +16,11 @@
 
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.impl;
 
-import java.awt.Rectangle;
+import java.awt.*;
 
 import java.util.StringTokenizer;
 
+import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.ConversionException;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.Parameter;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.ParameterConverter;
 
@@ -36,7 +37,7 @@ public class RectangleParameterConverter implements ParameterConverter {
   /* (non-Javadoc)
    * @see com.xpressdocs.email.asset.effects.chain.conversion.ParameterConverter#convert(java.lang.String, double)
    */
-  @Override public Parameter convert(String value, Double factor, boolean applyFactor) throws ConversionException {
+  public Parameter convert(String value, Double factor, boolean applyFactor) throws ConversionException {
     StringTokenizer tokens = new StringTokenizer(value, ",");
     Rectangle       rect   = new Rectangle();
     rect.x      = (int) ((applyFactor && (factor != null)) ? (Integer.parseInt(tokens.nextToken()) / factor)

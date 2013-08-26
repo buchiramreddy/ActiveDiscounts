@@ -32,19 +32,16 @@ import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
  * @version  $Revision$, $Date$
  */
 public interface FulfillmentGroupItem extends Serializable {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
   /**
    * DOCUMENT ME!
    *
    * @return  DOCUMENT ME!
    */
-  Long getId();
+  FulfillmentGroupItem clone();
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  id  DOCUMENT ME!
-   */
-  void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -53,12 +50,16 @@ public interface FulfillmentGroupItem extends Serializable {
    */
   FulfillmentGroup getFulfillmentGroup();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * DOCUMENT ME!
    *
-   * @param  fulfillmentGroup  DOCUMENT ME!
+   * @return  DOCUMENT ME!
    */
-  void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
+  Long getId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -67,40 +68,7 @@ public interface FulfillmentGroupItem extends Serializable {
    */
   OrderItem getOrderItem();
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  orderItem  DOCUMENT ME!
-   */
-  void setOrderItem(OrderItem orderItem);
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  int getQuantity();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  quantity  DOCUMENT ME!
-   */
-  void setQuantity(int quantity);
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  Money getRetailPrice();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  Money getSalePrice();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    *
@@ -112,19 +80,7 @@ public interface FulfillmentGroupItem extends Serializable {
    */
   Money getPrice();
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  Money getTotalItemAmount();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  amount  DOCUMENT ME!
-   */
-  void setTotalItemAmount(Money amount);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -133,26 +89,34 @@ public interface FulfillmentGroupItem extends Serializable {
    */
   Money getProratedOrderAdjustmentAmount();
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  amount  DOCUMENT ME!
-   */
-  void setProratedOrderAdjustmentAmount(Money amount);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
    *
    * @return  DOCUMENT ME!
    */
-  Money getTotalItemTaxableAmount();
+  int getQuantity();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
    *
-   * @param  amount  DOCUMENT ME!
+   * @return  DOCUMENT ME!
    */
-  void setTotalItemTaxableAmount(Money amount);
+  Money getRetailPrice();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getSalePrice();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -161,22 +125,7 @@ public interface FulfillmentGroupItem extends Serializable {
    */
   FulfillmentGroupStatusType getStatus();
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  status  DOCUMENT ME!
-   */
-  void setStatus(FulfillmentGroupStatusType status);
-
-  /**
-   * DOCUMENT ME!
-   */
-  void removeAssociations();
-
-  /**
-   * @see  java.lang.Object#clone()
-   */
-  @Override FulfillmentGroupItem clone();
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * Gets a list of TaxDetail objects, which are taxes that apply directly to this item. The amount in each TaxDetail
@@ -186,13 +135,25 @@ public interface FulfillmentGroupItem extends Serializable {
    */
   List<TaxDetail> getTaxes();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
-   * Sets the list of TaxDetail objects, which are taxes that apply directly to this item. The amount in each TaxDetail
-   * must take into account the quantity of this item
+   * DOCUMENT ME!
    *
-   * @param  taxes  the list of taxes on this item
+   * @return  DOCUMENT ME!
    */
-  void setTaxes(List<TaxDetail> taxes);
+  Money getTotalItemAmount();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Money getTotalItemTaxableAmount();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * Gets the total tax for this item, which is the sum of all taxes for this item. This total is calculated in the
@@ -202,6 +163,97 @@ public interface FulfillmentGroupItem extends Serializable {
    */
   Money getTotalTax();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   */
+  void removeAssociations();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  fulfillmentGroup  DOCUMENT ME!
+   */
+  void setFulfillmentGroup(FulfillmentGroup fulfillmentGroup);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  orderItem  DOCUMENT ME!
+   */
+  void setOrderItem(OrderItem orderItem);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setProratedOrderAdjustmentAmount(Money amount);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  quantity  DOCUMENT ME!
+   */
+  void setQuantity(int quantity);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  status  DOCUMENT ME!
+   */
+  void setStatus(FulfillmentGroupStatusType status);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the list of TaxDetail objects, which are taxes that apply directly to this item. The amount in each TaxDetail
+   * must take into account the quantity of this item
+   *
+   * @param  taxes  the list of taxes on this item
+   */
+  void setTaxes(List<TaxDetail> taxes);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setTotalItemAmount(Money amount);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setTotalItemTaxableAmount(Money amount);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * Sets the total tax for this item, which is the sum of all taxes for this item. This total should only be set during
    * the TotalActivity stage of the pricing workflow.
@@ -209,6 +261,8 @@ public interface FulfillmentGroupItem extends Serializable {
    * @param  totalTax  the total tax for this item
    */
   void setTotalTax(Money totalTax);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * Returns true if this item has pro-rated order adjustments.

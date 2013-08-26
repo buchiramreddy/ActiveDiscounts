@@ -31,9 +31,11 @@ public interface AdminUser extends AdminSecurityContext {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override AdminUser clone();
+  AdminUser clone();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 
@@ -47,16 +49,20 @@ public interface AdminUser extends AdminSecurityContext {
   //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#getAllPermissions()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override Set<AdminPermission> getAllPermissions();
+  Set<AdminPermission> getAllPermissions();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#getAllRoles()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override Set<AdminRole> getAllRoles();
+  Set<AdminRole> getAllRoles();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 
@@ -145,16 +151,20 @@ public interface AdminUser extends AdminSecurityContext {
   //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#setAllPermissions(java.util.Set)
+   * DOCUMENT ME!
+   *
+   * @param  allPermissions  DOCUMENT ME!
    */
-  @Override void setAllPermissions(Set<AdminPermission> allPermissions);
+  void setAllPermissions(Set<AdminPermission> allPermissions);
 
   //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  org.broadleafcommerce.openadmin.server.security.domain.AdminSecurityContext#setAllRoles(java.util.Set)
+   * DOCUMENT ME!
+   *
+   * @param  allRoles  DOCUMENT ME!
    */
-  @Override void setAllRoles(Set<AdminRole> allRoles);
+  void setAllRoles(Set<AdminRole> allRoles);
 
   //~ ------------------------------------------------------------------------------------------------------------------
 

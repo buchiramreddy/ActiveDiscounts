@@ -34,9 +34,11 @@ public interface AdminPermission extends Serializable {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override AdminPermission clone();
+  AdminPermission clone();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 

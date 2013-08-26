@@ -28,33 +28,7 @@ import org.broadleafcommerce.common.money.Money;
  * @version  $Revision$, $Date$
  */
 public interface DiscreteOrderItemFeePrice extends Serializable {
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  Long getId();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  id  DOCUMENT ME!
-   */
-  void setId(Long id);
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  DiscreteOrderItem getDiscreteOrderItem();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  discreteOrderItem  DOCUMENT ME!
-   */
-  void setDiscreteOrderItem(DiscreteOrderItem discreteOrderItem);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -63,12 +37,16 @@ public interface DiscreteOrderItemFeePrice extends Serializable {
    */
   Money getAmount();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * DOCUMENT ME!
    *
-   * @param  amount  DOCUMENT ME!
+   * @return  DOCUMENT ME!
    */
-  void setAmount(Money amount);
+  Long getId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -77,12 +55,7 @@ public interface DiscreteOrderItemFeePrice extends Serializable {
    */
   String getName();
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  name  DOCUMENT ME!
-   */
-  void setName(String name);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -91,6 +64,35 @@ public interface DiscreteOrderItemFeePrice extends Serializable {
    */
   String getReportingCode();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(Money amount);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * DOCUMENT ME!
    *
@@ -98,9 +100,31 @@ public interface DiscreteOrderItemFeePrice extends Serializable {
    */
   void setReportingCode(String reportingCode);
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override DiscreteOrderItemFeePrice clone();
+  DiscreteOrderItemFeePrice clone();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  DiscreteOrderItem getDiscreteOrderItem();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  discreteOrderItem  DOCUMENT ME!
+   */
+  void setDiscreteOrderItem(DiscreteOrderItem discreteOrderItem);
 
 } // end interface DiscreteOrderItemFeePrice

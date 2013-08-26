@@ -27,9 +27,11 @@ public interface AdminPermissionQualifiedEntity {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override AdminPermissionQualifiedEntity clone();
+  AdminPermissionQualifiedEntity clone();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 

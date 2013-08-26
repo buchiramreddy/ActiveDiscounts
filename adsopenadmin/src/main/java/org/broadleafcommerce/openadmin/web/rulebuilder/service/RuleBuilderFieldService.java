@@ -44,9 +44,13 @@ public interface RuleBuilderFieldService extends Cloneable {
   //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   *
+   * @throws  CloneNotSupportedException  DOCUMENT ME!
    */
-  @Override RuleBuilderFieldService clone() throws CloneNotSupportedException;
+  RuleBuilderFieldService clone() throws CloneNotSupportedException;
 
   //~ ------------------------------------------------------------------------------------------------------------------
 

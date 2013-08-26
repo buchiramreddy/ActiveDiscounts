@@ -28,33 +28,7 @@ import org.broadleafcommerce.common.money.Money;
  * @version  $Revision$, $Date$
  */
 public interface BundleOrderItemFeePrice extends Serializable {
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  Long getId();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  id  DOCUMENT ME!
-   */
-  void setId(Long id);
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  BundleOrderItem getBundleOrderItem();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  bundleOrderItem  DOCUMENT ME!
-   */
-  void setBundleOrderItem(BundleOrderItem bundleOrderItem);
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -63,12 +37,25 @@ public interface BundleOrderItemFeePrice extends Serializable {
    */
   Money getAmount();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * DOCUMENT ME!
    *
-   * @param  amount  DOCUMENT ME!
+   * @return  DOCUMENT ME!
    */
-  void setAmount(Money amount);
+  BundleOrderItem getBundleOrderItem();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Long getId();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -77,26 +64,7 @@ public interface BundleOrderItemFeePrice extends Serializable {
    */
   String getName();
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  name  DOCUMENT ME!
-   */
-  void setName(String name);
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  Boolean isTaxable();
-
-  /**
-   * DOCUMENT ME!
-   *
-   * @param  isTaxable  DOCUMENT ME!
-   */
-  void setTaxable(Boolean isTaxable);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -105,6 +73,53 @@ public interface BundleOrderItemFeePrice extends Serializable {
    */
   String getReportingCode();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  Boolean isTaxable();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  amount  DOCUMENT ME!
+   */
+  void setAmount(Money amount);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  bundleOrderItem  DOCUMENT ME!
+   */
+  void setBundleOrderItem(BundleOrderItem bundleOrderItem);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  id  DOCUMENT ME!
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param  name  DOCUMENT ME!
+   */
+  void setName(String name);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * DOCUMENT ME!
    *
@@ -112,9 +127,22 @@ public interface BundleOrderItemFeePrice extends Serializable {
    */
   void setReportingCode(String reportingCode);
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @param  isTaxable  DOCUMENT ME!
    */
-  @Override BundleOrderItemFeePrice clone();
+  void setTaxable(Boolean isTaxable);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  BundleOrderItemFeePrice clone();
 
 } // end interface BundleOrderItemFeePrice

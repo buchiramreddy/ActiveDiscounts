@@ -30,6 +30,17 @@ import org.broadleafcommerce.common.value.ValueAssignable;
  * @version  $Revision$, $Date$
  */
 public interface OrderItemAttribute extends ValueAssignable<String> {
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Provide support for a deep copy of an order item.
+   *
+   * @return  provide support for a deep copy of an order item.
+   */
+  OrderItemAttribute clone();
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * Gets the id.
    *
@@ -37,12 +48,7 @@ public interface OrderItemAttribute extends ValueAssignable<String> {
    */
   Long getId();
 
-  /**
-   * Sets the id.
-   *
-   * @param  id  the new id
-   */
-  void setId(Long id);
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * Gets the parent orderItem.
@@ -51,17 +57,21 @@ public interface OrderItemAttribute extends ValueAssignable<String> {
    */
   OrderItem getOrderItem();
 
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets the id.
+   *
+   * @param  id  the new id
+   */
+  void setId(Long id);
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
   /**
    * Sets the orderItem.
    *
    * @param  orderItem  the associated orderItem
    */
   void setOrderItem(OrderItem orderItem);
-
-  /**
-   * Provide support for a deep copy of an order item.
-   *
-   * @return  provide support for a deep copy of an order item.
-   */
-  @Override OrderItemAttribute clone();
 } // end interface OrderItemAttribute

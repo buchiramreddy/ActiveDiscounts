@@ -31,9 +31,11 @@ public interface AdminRole extends Serializable {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override AdminRole clone();
+  AdminRole clone();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 

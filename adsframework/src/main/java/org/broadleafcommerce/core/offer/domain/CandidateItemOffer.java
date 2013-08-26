@@ -33,9 +33,11 @@ public interface CandidateItemOffer extends Serializable {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * @see  java.lang.Object#clone()
+   * DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
    */
-  @Override CandidateItemOffer clone();
+  CandidateItemOffer clone();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 
