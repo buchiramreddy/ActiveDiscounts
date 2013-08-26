@@ -38,7 +38,7 @@ public interface Site extends Serializable {
    *
    * @return  a deep copy of this site
    */
-  @Override Site clone();
+  Site clone();
 
   //~ ------------------------------------------------------------------------------------------------------------------
 
