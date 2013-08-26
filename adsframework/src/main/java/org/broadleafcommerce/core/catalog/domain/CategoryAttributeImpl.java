@@ -51,7 +51,23 @@ import org.hibernate.annotations.Parameter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_CATEGORY_ATTRIBUTE")
 public class CategoryAttributeImpl implements CategoryAttribute {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
   private static final long serialVersionUID = 1L;
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @Index(
+    name        = "CATEGORYATTRIBUTE_INDEX",
+    columnNames = { "CATEGORY_ID" }
+  )
+  @JoinColumn(name = "CATEGORY_ID")
+  @ManyToOne(
+    targetEntity = CategoryImpl.class,
+    optional     = false
+  )
+  protected Category category;
 
   /** DOCUMENT ME! */
   @Column(name = "CATEGORY_ATTRIBUTE_ID")
@@ -85,6 +101,11 @@ public class CategoryAttributeImpl implements CategoryAttribute {
   protected String name;
 
   /** DOCUMENT ME! */
+  @AdminPresentation(excluded = true)
+  @Column(name = "SEARCHABLE")
+  protected Boolean searchable = false;
+
+  /** DOCUMENT ME! */
   @AdminPresentation(
     friendlyName = "ProductAttributeImpl_Attribute_Value",
     order        = 2,
@@ -94,116 +115,7 @@ public class CategoryAttributeImpl implements CategoryAttribute {
   @Column(name = "VALUE")
   protected String value;
 
-  /** DOCUMENT ME! */
-  @AdminPresentation(excluded = true)
-  @Column(name = "SEARCHABLE")
-  protected Boolean searchable = false;
-
-  /** DOCUMENT ME! */
-  @Index(
-    name        = "CATEGORYATTRIBUTE_INDEX",
-    columnNames = { "CATEGORY_ID" }
-  )
-  @JoinColumn(name = "CATEGORY_ID")
-  @ManyToOne(
-    targetEntity = CategoryImpl.class,
-    optional     = false
-  )
-  protected Category category;
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getId()
-   */
-  @Override public Long getId() {
-    return id;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setId(java.lang.Long)
-   */
-  @Override public void setId(Long id) {
-    this.id = id;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getValue()
-   */
-  @Override public String getValue() {
-    return value;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setValue(java.lang.String)
-   */
-  @Override public void setValue(String value) {
-    this.value = value;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.common.value.Searchable#getSearchable()
-   */
-  @Override public Boolean getSearchable() {
-    if (searchable == null) {
-      return Boolean.FALSE;
-    } else {
-      return searchable;
-    }
-  }
-
-  /**
-   * @see  org.broadleafcommerce.common.value.Searchable#setSearchable(java.lang.Boolean)
-   */
-  @Override public void setSearchable(Boolean searchable) {
-    this.searchable = searchable;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getName()
-   */
-  @Override public String getName() {
-    return name;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setName(java.lang.String)
-   */
-  @Override public void setName(String name) {
-    this.name = name;
-  }
-
-  /**
-   * @see  java.lang.Object#toString()
-   */
-  @Override public String toString() {
-    return value;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getCategory()
-   */
-  @Override public Category getCategory() {
-    return category;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setCategory(org.broadleafcommerce.core.catalog.domain.Category)
-   */
-  @Override public void setCategory(Category category) {
-    this.category = category;
-  }
-
-  /**
-   * @see  java.lang.Object#hashCode()
-   */
-  @Override public int hashCode() {
-    final int prime  = 31;
-    int       result = 1;
-    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
-    result = (prime * result) + ((category == null) ? 0 : category.hashCode());
-    result = (prime * result) + ((value == null) ? 0 : value.hashCode());
-
-    return result;
-  }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * @see  java.lang.Object#equals(java.lang.Object)
@@ -253,5 +165,123 @@ public class CategoryAttributeImpl implements CategoryAttribute {
 
     return true;
   } // end method equals
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getCategory()
+   */
+  @Override public Category getCategory() {
+    return category;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.value.Searchable#getSearchable()
+   */
+  @Override public Boolean getSearchable() {
+    if (searchable == null) {
+      return Boolean.FALSE;
+    } else {
+      return searchable;
+    }
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#getValue()
+   */
+  @Override public String getValue() {
+    return value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+    result = (prime * result) + ((category == null) ? 0 : category.hashCode());
+    result = (prime * result) + ((value == null) ? 0 : value.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setCategory(org.broadleafcommerce.core.catalog.domain.Category)
+   */
+  @Override public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.common.value.Searchable#setSearchable(java.lang.Boolean)
+   */
+  @Override public void setSearchable(Boolean searchable) {
+    this.searchable = searchable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.catalog.domain.CategoryAttribute#setValue(java.lang.String)
+   */
+  @Override public void setValue(String value) {
+    this.value = value;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#toString()
+   */
+  @Override public String toString() {
+    return value;
+  }
 
 } // end class CategoryAttributeImpl

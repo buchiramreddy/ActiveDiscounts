@@ -75,9 +75,34 @@ import org.hibernate.annotations.Parameter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "BLC_BUND_ITEM_FEE_PRICE")
 public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
+  //~ Static fields/initializers ---------------------------------------------------------------------------------------
+
   /** DOCUMENT ME! */
   public static final Log   LOG              = LogFactory.getLog(BundleOrderItemFeePriceImpl.class);
   private static final long serialVersionUID = 1L;
+
+  //~ Instance fields --------------------------------------------------------------------------------------------------
+
+  /** DOCUMENT ME! */
+  @AdminPresentation(
+    friendlyName = "BundleOrderItemFeePriceImpl_Amount",
+    order        = 2,
+    prominent    = true
+  )
+  @Column(
+    name      = "AMOUNT",
+    precision = 19,
+    scale     = 5
+  )
+  protected BigDecimal amount;
+
+  /** DOCUMENT ME! */
+  @JoinColumn(name = "BUND_ORDER_ITEM_ID")
+  @ManyToOne(
+    targetEntity = BundleOrderItemImpl.class,
+    optional     = false
+  )
+  protected BundleOrderItem bundleOrderItem;
 
   /** DOCUMENT ME! */
   @Column(name = "BUND_ITEM_FEE_PRICE_ID")
@@ -98,27 +123,6 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
   )
   @Id protected Long id;
 
-  /** DOCUMENT ME! */
-  @JoinColumn(name = "BUND_ORDER_ITEM_ID")
-  @ManyToOne(
-    targetEntity = BundleOrderItemImpl.class,
-    optional     = false
-  )
-  protected BundleOrderItem bundleOrderItem;
-
-  /** DOCUMENT ME! */
-  @AdminPresentation(
-    friendlyName = "BundleOrderItemFeePriceImpl_Amount",
-    order        = 2,
-    prominent    = true
-  )
-  @Column(
-    name      = "AMOUNT",
-    precision = 19,
-    scale     = 5
-  )
-  protected BigDecimal amount;
-
   @AdminPresentation(
     friendlyName = "BundleOrderItemFeePriceImpl_Name",
     order        = 1,
@@ -128,6 +132,13 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
   private String name;
 
   @AdminPresentation(
+    friendlyName = "BundleOrderItemFeePriceImpl_Taxable",
+    order        = 4
+  )
+  @Column(name = "IS_TAXABLE")
+  private Boolean isTaxable = Boolean.FALSE;
+
+  @AdminPresentation(
     friendlyName = "BundleOrderItemFeePriceImpl_Reporting_Code",
     order        = 3,
     prominent    = true
@@ -135,96 +146,7 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
   @Column(name = "REPORTING_CODE")
   private String reportingCode;
 
-  @AdminPresentation(
-    friendlyName = "BundleOrderItemFeePriceImpl_Taxable",
-    order        = 4
-  )
-  @Column(name = "IS_TAXABLE")
-  private Boolean isTaxable = Boolean.FALSE;
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getId()
-   */
-  @Override public Long getId() {
-    return id;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setId(java.lang.Long)
-   */
-  @Override public void setId(Long id) {
-    this.id = id;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getBundleOrderItem()
-   */
-  @Override public BundleOrderItem getBundleOrderItem() {
-    return bundleOrderItem;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setBundleOrderItem(org.broadleafcommerce.core.order.domain.BundleOrderItem)
-   */
-  @Override public void setBundleOrderItem(BundleOrderItem bundleOrderItem) {
-    this.bundleOrderItem = bundleOrderItem;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getAmount()
-   */
-  @Override public Money getAmount() {
-    return convertToMoney(amount);
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setAmount(org.broadleafcommerce.common.money.Money)
-   */
-  @Override public void setAmount(Money amount) {
-    this.amount = Money.toAmount(amount);
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getName()
-   */
-  @Override public String getName() {
-    return name;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setName(java.lang.String)
-   */
-  @Override public void setName(String name) {
-    this.name = name;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#isTaxable()
-   */
-  @Override public Boolean isTaxable() {
-    return isTaxable;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setTaxable(java.lang.Boolean)
-   */
-  @Override public void setTaxable(Boolean isTaxable) {
-    this.isTaxable = isTaxable;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getReportingCode()
-   */
-  @Override public String getReportingCode() {
-    return reportingCode;
-  }
-
-  /**
-   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setReportingCode(java.lang.String)
-   */
-  @Override public void setReportingCode(String reportingCode) {
-    this.reportingCode = reportingCode;
-  }
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * DOCUMENT ME!
@@ -247,16 +169,7 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
     }
   }
 
-  /**
-   * DOCUMENT ME!
-   *
-   * @param   amount  DOCUMENT ME!
-   *
-   * @return  DOCUMENT ME!
-   */
-  protected Money convertToMoney(BigDecimal amount) {
-    return (amount == null) ? null : BroadleafCurrencyUtils.getMoney(amount, bundleOrderItem.getOrder().getCurrency());
-  }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#clone()
@@ -286,21 +199,7 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
     return clone;
   }
 
-  /**
-   * @see  java.lang.Object#hashCode()
-   */
-  @Override public int hashCode() {
-    final int prime  = 31;
-    int       result = 1;
-    result = (prime * result) + ((amount == null) ? 0 : amount.hashCode());
-    result = (prime * result) + ((bundleOrderItem == null) ? 0 : bundleOrderItem.hashCode());
-    result = (prime * result) + ((id == null) ? 0 : id.hashCode());
-    result = (prime * result) + (isTaxable ? 1231 : 1237);
-    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
-    result = (prime * result) + ((reportingCode == null) ? 0 : reportingCode.hashCode());
-
-    return result;
-  }
+  //~ ------------------------------------------------------------------------------------------------------------------
 
   /**
    * @see  java.lang.Object#equals(java.lang.Object)
@@ -366,4 +265,143 @@ public class BundleOrderItemFeePriceImpl implements BundleOrderItemFeePrice {
 
     return true;
   } // end method equals
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getAmount()
+   */
+  @Override public Money getAmount() {
+    return convertToMoney(amount);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getBundleOrderItem()
+   */
+  @Override public BundleOrderItem getBundleOrderItem() {
+    return bundleOrderItem;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getId()
+   */
+  @Override public Long getId() {
+    return id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getName()
+   */
+  @Override public String getName() {
+    return name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#getReportingCode()
+   */
+  @Override public String getReportingCode() {
+    return reportingCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  java.lang.Object#hashCode()
+   */
+  @Override public int hashCode() {
+    final int prime  = 31;
+    int       result = 1;
+    result = (prime * result) + ((amount == null) ? 0 : amount.hashCode());
+    result = (prime * result) + ((bundleOrderItem == null) ? 0 : bundleOrderItem.hashCode());
+    result = (prime * result) + ((id == null) ? 0 : id.hashCode());
+    result = (prime * result) + (isTaxable ? 1231 : 1237);
+    result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+    result = (prime * result) + ((reportingCode == null) ? 0 : reportingCode.hashCode());
+
+    return result;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#isTaxable()
+   */
+  @Override public Boolean isTaxable() {
+    return isTaxable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setAmount(org.broadleafcommerce.common.money.Money)
+   */
+  @Override public void setAmount(Money amount) {
+    this.amount = Money.toAmount(amount);
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setBundleOrderItem(org.broadleafcommerce.core.order.domain.BundleOrderItem)
+   */
+  @Override public void setBundleOrderItem(BundleOrderItem bundleOrderItem) {
+    this.bundleOrderItem = bundleOrderItem;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setId(java.lang.Long)
+   */
+  @Override public void setId(Long id) {
+    this.id = id;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setName(java.lang.String)
+   */
+  @Override public void setName(String name) {
+    this.name = name;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setReportingCode(java.lang.String)
+   */
+  @Override public void setReportingCode(String reportingCode) {
+    this.reportingCode = reportingCode;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * @see  org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice#setTaxable(java.lang.Boolean)
+   */
+  @Override public void setTaxable(Boolean isTaxable) {
+    this.isTaxable = isTaxable;
+  }
+
+  //~ ------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * DOCUMENT ME!
+   *
+   * @param   amount  DOCUMENT ME!
+   *
+   * @return  DOCUMENT ME!
+   */
+  protected Money convertToMoney(BigDecimal amount) {
+    return (amount == null) ? null : BroadleafCurrencyUtils.getMoney(amount, bundleOrderItem.getOrder().getCurrency());
+  }
 } // end class BundleOrderItemFeePriceImpl
