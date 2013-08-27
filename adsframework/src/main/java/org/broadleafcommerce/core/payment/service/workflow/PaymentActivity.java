@@ -104,6 +104,7 @@ public class PaymentActivity extends BaseActivity<WorkflowPaymentContext> {
           } else if (seed.getActionType().equals(PaymentActionType.AUTHORIZEANDDEBIT)) {
             try {
               paymentResponseItem = paymentService.authorizeAndDebit(paymentContext);
+              paymentResponseItem.setTransactionAmount(paymentResponseItem.getAmountPaid());
             } finally {
               referenced.setReferenceNumber(info.getReferenceNumber());
               replaceItems.put(info, referenced);
