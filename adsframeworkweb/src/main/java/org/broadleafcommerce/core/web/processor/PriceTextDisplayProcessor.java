@@ -16,8 +16,6 @@
 
 package org.broadleafcommerce.core.web.processor;
 
-import java.text.NumberFormat;
-
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
 
@@ -84,14 +82,14 @@ public class PriceTextDisplayProcessor extends AbstractTextChildModifierAttrProc
 
     BroadleafRequestContext brc = BroadleafRequestContext.getBroadleafRequestContext();
 
-    if (brc.getJavaLocale() != null) {
+    /*if (brc.getJavaLocale() != null) {
       NumberFormat format = NumberFormat.getCurrencyInstance(brc.getJavaLocale());
       format.setCurrency(price.getCurrency());
 
       return format.format(price.getAmount());
-    } else {
-      // Setup your BLC_CURRENCY and BLC_LOCALE to display a diff default.
-      return "$ " + price.getAmount().toString();
-    }
+    } else {*/
+    // Setup your BLC_CURRENCY and BLC_LOCALE to display a diff default.
+    return "₹ " + price.getAmount().toString();
+      /*}*/
   } // end method getText
 } // end class PriceTextDisplayProcessor

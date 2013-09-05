@@ -19,8 +19,6 @@ package org.broadleafcommerce.core.web.processor;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import java.text.NumberFormat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,7 +64,7 @@ import org.thymeleaf.standard.expression.StandardExpressionProcessor;
 public class ProductOptionsProcessor extends AbstractModelVariableModifierProcessor {
   //~ Static fields/initializers ---------------------------------------------------------------------------------------
 
-  private static final Log                   LOG        = LogFactory.getLog(ProductOptionsProcessor.class);
+  private static final Log LOG = LogFactory.getLog(ProductOptionsProcessor.class);
 
   /** DOCUMENT ME! */
   protected static final Map<Object, String> JSON_CACHE = Collections.synchronizedMap(new LRUMap<Object, String>(100,
@@ -181,15 +179,15 @@ public class ProductOptionsProcessor extends AbstractModelVariableModifierProces
 
     BroadleafRequestContext brc = BroadleafRequestContext.getBroadleafRequestContext();
 
-    if (brc.getJavaLocale() != null) {
+    /*if (brc.getJavaLocale() != null) {
       NumberFormat format = NumberFormat.getCurrencyInstance(brc.getJavaLocale());
       format.setCurrency(price.getCurrency());
 
       return format.format(price.getAmount());
-    } else {
-      // Setup your BLC_CURRENCY and BLC_LOCALE to display a diff default.
-      return "$ " + price.getAmount().toString();
-    }
+    } else {*/
+    // Setup your BLC_CURRENCY and BLC_LOCALE to display a diff default.
+    return "₹ " + price.getAmount().toString();
+      /*}*/
   }
 
   //~ ------------------------------------------------------------------------------------------------------------------

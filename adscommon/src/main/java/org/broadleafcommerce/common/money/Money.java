@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import java.util.Currency;
-import java.util.Locale;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -333,7 +332,7 @@ public class Money implements Serializable, Cloneable, Comparable<Money>, Extern
       return Currency.getInstance(brc.getBroadleafCurrency().getCurrencyCode());
     }
 
-    if (System.getProperty("currency.default") != null) {
+    /*if (System.getProperty("currency.default") != null) {
       return Currency.getInstance(System.getProperty("currency.default"));
     }
 
@@ -341,9 +340,9 @@ public class Money implements Serializable, Cloneable, Comparable<Money>, Extern
 
     if ((locale.getCountry() != null) && (locale.getCountry().length() == 2)) {
       return Currency.getInstance(locale);
-    }
+    }*/
 
-    return Currency.getInstance("USD");
+    return Currency.getInstance("INR");
   } // end method defaultCurrency
 
   //~ ------------------------------------------------------------------------------------------------------------------
