@@ -331,10 +331,10 @@ header {
     #header_content #logo h1, #header_content_checkout #logo h1 {
         width: 299px;
         height: 101px;
-        background: url('../img/the-heat-clinic-logo-internal.png') top left no-repeat;
+        background: url('../img/logo.png') top left no-repeat;
         text-indent: -9999px;
         margin-top: -5px;
-        display: block;
+        display: block;                   
     }
     
     #header_content #logo h1 a:link, #header_content_checkout #logo h1 a:link,  #logo h1 a:visited {
