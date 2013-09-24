@@ -1,0 +1,6 @@
+<div id="search">
+    <blc:form th:action="@{/search}" method="GET">
+        <input type="search" class="search" name="q" th:value="${originalQuery}" />
+        <input type="submit" id="search_button" value="Search" />
+    </blc:form>
+</div>
