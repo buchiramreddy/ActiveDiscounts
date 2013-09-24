@@ -21,18 +21,16 @@
                 </a>
                 &nbsp;|&nbsp; 
             </div>
-
-
             <a id="cartLink" class="fancycart" th:href="@{/cart}">
-                <img th:src="@{/img/shopping_cart.png}" alt="Shopping Cart Icon" />
-                &nbsp; 
-                <span class="headerCartItemsCount" th:text="${cart.itemCount}" />
-                <span class="headerCartItemsCountWord" th:text="${cart.itemCount == 1} ? #{home.item} :  #{home.items}" />
+                <div class="myCart">
+                    <span class="headerCartItemsCount" th:text="${cart.itemCount}" /><!--
+                    <span class="headerCartItemsCountWord" th:text="${cart.itemCount == 1} ? #{home.item} :  #{home.items}" />-->
+                </div>
             </a>
 
         </div>
 
-       <!-- <div id="languages">
+        <div id="languages">
             <span id="selectedLocale" th:text="${session.blLocale.localeCode}" style="display: none" />
 
             <a href="javascript:;" onclick="BLC.addUrlParam(document.location.search, 'blLocaleCode', 'en_US')">
@@ -54,15 +52,9 @@
                 <img id="fr_FR" src="img/flags/Mexico.png" th:src="@{/img/flags/France.png}" alt="France" title="French (France)" />
             </a>
 
-        </div>-->
+        </div>        
 
-        <div id="logo"><h1><a th:href="@{/}">Active Discounts</a></h1></div>
+        <div id="logo"><h1><a th:href="@{/}">The Heat Clinic Home</a></h1></div>       
         
-        <div id="search">
-            <blc:form th:action="@{/search}" method="GET">
-            <input type="search" class="search" name="q" th:value="${originalQuery}" />
-            <input type="submit" id="search_button" value="go" />
-            </blc:form>
-        </div>
     </div>
 </header>

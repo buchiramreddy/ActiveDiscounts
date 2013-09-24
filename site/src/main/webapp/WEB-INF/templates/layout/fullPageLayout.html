@@ -11,9 +11,9 @@
     <header th:substituteby="layout/partials/header" />
     
     <div id="content" class="width_setter group" role="main">
-    
-        <nav th:substituteby="layout/partials/nav" />
-        
+        <section id="left_column">
+            <nav th:substituteby="layout/partials/nav" />
+        </section>
         <div th:substituteby="${templateName}" />
             
     </div>

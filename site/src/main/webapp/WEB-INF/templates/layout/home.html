@@ -4,102 +4,40 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 
-<blc:head pageTitle="Active Discounts - smart way to buy online" />
+<blc:head pageTitle="Broadleaf Demo - Heat Clinic" />
 
 <body>
-    <!--<div id="notification_bar"></div>-->
-    <div class="header">
-        <div class="header-left">
+    <div id="notification_bar"></div>
+    <header th:substituteby="layout/partials/header" />
+    
+    <div id="content" class="width_setter group" role="main">        
 
-            <!--<div class="logo">
-
-                </div>-->
-            <header th:substituteby="layout/partials/header" />
-            <div class="left-categories-main-div">
-                <div class="left-categories-head fnt-tahoma ">
-                    <span class="">See All Categories</span>
-                </div>
-
-
+        <section id="right_column">
+            <nav th:substituteby="layout/partials/search" />
+                
+            <blc:content contentType="Homepage Banner Ad" />       
+            <div id="banners" th:if="${contentItem}">
+                <a th:href="@{${contentItem['targetUrl']}}"><img th:src="@{${contentItem['imageUrl']}}" alt="Buy One Get One" /></a>        
             </div>
-
-
-
-
-         </div>
-    </div>
-
-    <div id="content_wrapper">
-
-        <div class="page-main-cont">
-            <div class="home-deal-cont">
-                <div class="cont-left">
-                    <div id="leftNavNemu" class="leftNavAjax ">
-
-                            <div class="left-categories-cont fnt-tahoma navwrapper ">
-                                <nav th:substituteby="layout/partials/nav" />
-                            </div>
-
-                    </div>
-                </div>
-                <div class="cont-right">
-
-                            <div class="main-deals-cont">
-                                <ul id="products" class="group">
-                                    <li th:each="product : ${products}" th:object="${product}" th:include="catalog/partials/productListItem" class="product_container"></li>
-                                </ul>
-                            </div>
-                    </div>
-            </div>
-        </div>
-
-    </div>
-
-
-
-    <!--<div id="content" class="width_setter group" role="main">
-
-        <table style="width: 400px;">
-
-        <tr>
-
-            <td style="width: 100%;">
-                <blc:content contentType="Homepage Featured Products Title" />
-            </td>
-        </tr>
-
-        <tr>
-        <td style="width: 15%;">
-            <div id="menu" style="background-color:#FFD700;height:200px;width:100px;float:left;margin-top: 60px;">
-                <nav th:substituteby="layout/partials/nav" />
-            </div>
-        </td>
-        &lt;!&ndash;<blc:content contentType="Homepage Banner Ad" />
-        <div id="banners" th:if="${contentItem}">
-            <a th:href="@{${contentItem['targetUrl']}}"><img th:src="@{${contentItem['imageUrl']}}" alt="Buy One Get One" /></a>        
-        </div>&ndash;&gt;
-
-       &lt;!&ndash; <div id="body" style="background-color:#EEEEEE;height:200px;width:400px;float:left;">&ndash;&gt;
-
-            &lt;!&ndash;<blc:content contentType="Homepage Middle Promo Snippet" />
-
+            
+            <blc:content contentType="Homepage Middle Promo Snippet" /> 
+            
             <a th:href="@{/register}" th:if="${contentItem}" style="text-decoration:none">
                 <div id="home_feature" th:utext="${contentItem['htmlContent']}"></div>
-            </a>&ndash;&gt;
-
-           <td style="width: 85%;" align="right">
-
-                <div th:if="${contentItem}" class="title_bar" th:text="${contentItem['messageText']}"></div>
-               <ul id="products" class="group">
-                   <li th:each="product : ${products}" th:object="${product}" th:include="catalog/partials/productListItem" class="product_container"></li>
-               </ul>
-           </td>
-        </tr>
-
-        </table>
-        &lt;!&ndash;&ndash;&gt;
-         &lt;!&ndash;</div>&ndash;&gt;
-    </div>-->
+            </a>
+    
+            
+            <blc:content contentType="Homepage Featured Products Title" />    
+            <div th:if="${contentItem}" class="title_bar" th:text="${contentItem['messageText']}"></div>
+            
+            <ul id="products" class="group">
+                <li th:each="product : ${products}" th:object="${product}" th:include="catalog/partials/productListItem" class="product_container"></li>
+            </ul>
+        </section>
+        <section id="left_column">
+            <nav th:substituteby="layout/partials/nav" />
+        </section>    
+    </div>
     
     <footer th:substituteby="layout/partials/footer" />
     

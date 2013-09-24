@@ -2,7 +2,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title th:unless="${pageTitle == 'TEMPLATE'}" th:text="${#strings.isEmpty(pageTitle) ? 'Active Discounts - smart way to buy online' : pageTitle}"></title>
+    <title th:unless="${pageTitle == 'TEMPLATE'}" th:text="${#strings.isEmpty(pageTitle) ? 'Broadleaf Demo - Heat Clinic' : pageTitle}"></title>
     
     <title th:if="${pageTitle == 'TEMPLATE'}" th:remove="tag">
         <title th:inline="text" th:include="${templateName} :: title" />
@@ -17,10 +17,7 @@
     <blc:bundle name="style.css" 
                 mapping-prefix="/css/"
                 files="style.css,
-                       jquery.rating.css,
-                       home.css,
-                       ads.css,
-                       jquery-ui-1.css" />
+                       jquery.rating.css" />
     
     <link rel="stylesheet" th:unless="${#strings.isEmpty(additionalCss)}" />
     

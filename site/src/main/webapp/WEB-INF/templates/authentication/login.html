@@ -1,6 +1,5 @@
-<div id="account">  
-    <div style="display:none;" th:fragment="title" th:inline="text">Login - Broadleaf Demo - Heat Clinic</div>
-    
+<section id="right_column">
+    <nav th:substituteby="layout/partials/search" />
     <div id="login">
         <h3><span th:text="#{login.loginToAccount}">Login to Your Account</span></h3>
         <p><span th:text="#{login.alreadyMember}">Already a member? Sign in using the form below</span>.</p>
@@ -35,4 +34,4 @@
             </blc:form>
         </div>
     </div>
-</div>
+</section>

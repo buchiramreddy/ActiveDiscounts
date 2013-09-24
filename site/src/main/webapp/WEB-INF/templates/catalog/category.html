@@ -12,10 +12,10 @@
     
     <div id="content" class="width_setter group" role="main">
     
-        <nav th:substituteby="layout/partials/nav" />
+       
         
-        <section id="left_column">
-    
+        <section id="right_column">
+            <nav th:substituteby="layout/partials/search" />
             <header>
                 <h1 th:inline="text">
                     <span th:text="#{category.viewing}">Viewing</span> [[${category.name}]] ([[${result.startResult}]] - [[${result.endResult}]] <span th:text="#{category.of}">of</span> [[${result.totalResults}]])
@@ -31,7 +31,8 @@
             
         </section>
     
-        <section id="right_column">
+        <section id="left_column">
+            <nav th:substituteby="layout/partials/nav" />            
             <header><span th:text="#{category.filterResults}">Filter your results</span></header>
             <div id="options">
                 
@@ -39,7 +40,7 @@
                 
                 <div th:substituteby="catalog/partials/rightHandBannerAds" />
                 
-                <section id="right_column">
+                <section id="left_column">
                     <header><span th:text="#{category.featuredProducts}">Featured Products</span></header>
                     <div id="options">
                         <div class="section" th:object="${category}">
