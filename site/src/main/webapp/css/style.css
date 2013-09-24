@@ -1274,14 +1274,15 @@ ul#payment_methods li {
     .fancybox-inner #multiship-products #multiship-actions {
         position: absolute;
         bottom: 0;
-        background-color: white;
-        width: 680px;
+        background-color: #F9F9F9;
+        width: 600px;
         border-top: 1px dotted #C8C3C1;
-		padding-bottom:20px;
+		padding-bottom:0;
+        height: 50px:
     }
 
 .fancybox-inner .multishipContainer {
-    width: 680px;
+    width: 650px;
     overflow: auto;
     max-height: 516px;
     margin-bottom: 44px;
@@ -2783,7 +2784,8 @@ and (max-width : 480px) {
 }
 
 .fancybox-skin {
-    position: relative;
+    position: absolute;
+    top: 20px;
     padding: 0;
     margin: 0;
     background: #f9f9f9;
