@@ -1136,6 +1136,7 @@ li.promotion,  ul.promotion{
 }
 .order_summary tbody tr td{
     vertical-align:top;
+    border-bottom: 1px dotted gray;
 }
 #cart_total {
     width: 260px;
@@ -1274,15 +1275,15 @@ ul#payment_methods li {
     .fancybox-inner #multiship-products #multiship-actions {
         position: absolute;
         bottom: 0;
-        background-color: #F9F9F9;
-        width: 600px;
+        background-color: #2A9CD6;
+        width: 690px;
         border-top: 1px dotted #C8C3C1;
 		padding-bottom:0;
         height: 50px:
     }
 
 .fancybox-inner .multishipContainer {
-    width: 650px;
+    width: 690px;
     overflow: auto;
     max-height: 516px;
     margin-bottom: 44px;

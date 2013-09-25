@@ -61,9 +61,9 @@
         </div>
             
         <div id="multiship-actions">
-            <input type="submit" class="save medium red" value="Save" />
-            <a class="add-address-link small-button dark-button" th:href="@{/checkout/add-address}"><span th:text="#{cart.addAddress}">Add New Address</span></a>
-            <a th:href="@{/checkout}" class="cancel small-button gray-button"><span th:text="#{cart.cancel}">Cancel</span></a>
+            <td><a class="add-address-link small-button dark-button" th:href="@{/checkout/add-address}"><span th:text="#{cart.addAddress}">Add New Address</span></a></td>
+            <td><a th:href="@{/checkout}" class="cancel small-button gray-button"><span th:text="#{cart.cancel}">Cancel</span></a></td>
+            <td><input type="submit" class="save medium red" value="Save" /></td>           
         </div>
     </blc:form>
 </div>
