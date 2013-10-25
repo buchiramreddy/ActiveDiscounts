@@ -1,6 +1,6 @@
 <nav>
-    <header><span>Categories</span></header>
-    <blc:categories resultVar="navCategories" parentCategory="Primary Nav" maxResults="6" />        
+    <header><span>Shop by Categories</span></header>
+    <blc:categories resultVar="navCategories" parentCategory="Primary Nav" maxResults="15" />        
     <ul>
         <li th:each="category : ${navCategories}">
             <a class="home" th:href="@{${category.url}}" th:class="${categoryStat.first}? 'home'" th:text="${category.name}"></a>
