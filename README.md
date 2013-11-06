@@ -84,6 +84,11 @@ And pass this JVM Parameter for the correct environment.
 eg: -Druntime.environment=production
 
 
+CMS Config:
+-----------
+a. Add Path to store Assets (asset.server.file.system.path)
+
+
 
 
 
